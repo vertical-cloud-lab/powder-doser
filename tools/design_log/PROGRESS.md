@@ -43,7 +43,7 @@ rather than a tilde; say "not reported" where the record is silent.
 | --- | --- | --- | --: | --- |
 | 2026-06-06 | Copilot | 2026-05-28 | 97 | Original log (#73). |
 | 2026-10-01 | Claude | 2026-10-01 | 128 | June–October entries e098–e128. |
-| 2026-11-17 | Claude ([run](https://github.com/vertical-cloud-lab/powder-doser/actions/runs/44167457665)) | 2026-11-17 | 164 | 36 entries from five thread groups; multi-doser group still being drafted. Two new entries predate the old e128 (PCB v3 on 29 Sep, bulk-to-tap on 1 Oct), so the 1 Oct render is now e130. |
+| 2026-11-17 | Claude ([run](https://github.com/vertical-cloud-lab/powder-doser/actions/runs/44167457665)) | 2026-11-17 | 183 | 55 new entries (e128–e183 except e130) from 33 threads; all threads below are `done` or `skipped`. |
 
 ## Threads with activity since 2026-10-01
 
@@ -59,12 +59,12 @@ Status: `todo` · `drafting` · `done` · `skipped (reason)`.
 | single-doser | main 8284d63, dfaf8ca, 046d099 (2 Oct) | Gerber for the single-doser PCB | done (Doser PCB v3; 8284d63/046d099 only add and delete a placeholder) |
 | build-prints | PR #181 | New dosers: print plan, inventory, build order | done (mounting plate v1, v2; remote printing; 25-auger batch; build hardware) |
 | build-prints | Issue #197 / PR #200 | Assembly prints with new files only | done (mounting plate v3) |
-| multi-doser | Issue #128 | Multi-doser design (from 1 Oct) | drafting |
-| multi-doser | PR #185 | Chain carousel v2, vertical twin-chain test rig | drafting |
-| multi-doser | PR #188 | CalculiX FEA of carousel parts | drafting |
-| multi-doser | Issue #202 | Linear actuator selection | drafting |
-| multi-doser | Issue #204 | Fixed multi-auger design | drafting |
-| multi-doser | PR #115 | BOM, carousel parts list and mechanism panel (from 1 Oct) | drafting |
+| multi-doser | Issue #128 | Multi-doser design (from 1 Oct) | done (roller-chain multi-doser v3: the team's compact carriage) |
+| multi-doser | PR #185 | Chain carousel v2, vertical twin-chain test rig | done (chain carousel v1–v9, paternoster, shared station) |
+| multi-doser | PR #188 | CalculiX FEA of carousel parts | done (CalculiX FEA) |
+| multi-doser | Issue #202 | Linear actuator selection | done (actuator selection) |
+| multi-doser | Issue #204 | Fixed multi-auger design | done (fixed multi-auger doser v1–v4) |
+| multi-doser | PR #115 | BOM, carousel parts list and mechanism panel (from 1 Oct) | skipped (only parts purchasing since 1 Oct) |
 | cad-tooling | Issue #171 | Fusion 360 agent mode | done (folded into the fsgen entry) |
 | cad-tooling | Issue #172 / PR #176 | text-to-cad recreation, servos-above variant | done (text-to-cad recreation; servos-above v1, v2; native Onshape trees) |
 | cad-tooling | PR #178 | fsgen: servos-above baseplate as an Onshape tree | done |
@@ -85,15 +85,31 @@ Status: `todo` · `drafting` · `done` · `skipped (reason)`.
 | control | Issue #210 | Data assimilation project | skipped (data requests and literature; notes no temperature/RH logging) |
 | control | Issue #144 | Usage instructions | done (print guidance v1) |
 
-## Open items
+## Next update
 
-- **Multi-doser group** (Issue #128 from 1 Oct, PR #185, PR #188, Issue #202, Issue #204,
-  PR #115): drafting in this session; if the table above still says `drafting`, redo it.
-  Issue #204 has many session branches (`claude/issue-204-*`) holding its renders.
-- **New stand (fitted 2 Oct 2026):** back and side stand brackets, wood legs and a
-  printed Base, designed only in a lab Onshape document. It is mentioned inside the
-  Onshape-recreation and build-hardware entries but has no entry of its own. Sources:
-  [PR #176 comment](https://github.com/vertical-cloud-lab/powder-doser/pull/176#issuecomment-6094125789)
-  and a team member's 13 Oct explanation on PR #176.
+Start from comments after **2026-11-17 20:00 UTC**. Threads that were still moving then:
+
+- PR #185: chain carousel v9 posted 17 Nov, no reply yet.
+- Issue #204: fixed multi-auger doser v4, clevis-block holes dimensioned 17 Nov.
+- PR #181 / PR #200: doser #1 assembly waiting on six bought parts; two augers printing
+  on the H2D on 17 Nov.
+- Issue #203: plate-mounted solenoid bracket v1, no print yet.
+- Issue #191: hinge-bolt nut inset decided 10 Nov, no revised plate linked yet.
+- Also re-run the inventory query for new threads
+  (`gh api "repos/vertical-cloud-lab/powder-doser/issues?state=all&since=<date>"`) and the
+  GraphQL branch query for `claude/issue-*` session branches that have no PR.
+
+## Notes for reviewers
+
 - **Anchors moved once:** the old `#e128` (1 Oct render) is now `#e130`, because two
-  entries dated earlier were added before it. Later updates should append only.
+  entries dated earlier (Doser PCB v3, bulk-to-tap) were added before it. Later updates
+  should append only.
+- **Naming:** PR #185's carousels keep the PR's own labels (chain carousel v1–v9). The
+  team's compact electronics carriage of 8 Oct continues the older chain as roller-chain
+  multi-doser v3. Doser PCB v3 is the 29 Sep Gerber, which the team still files as "V2".
+- **No image:** entries for work that lives only in lab Onshape documents (centering
+  device, solenoid bracket, review fixes, hinge-nut inset, PCB v3) have no render, since
+  nothing was committed or attached.
+- **Approximate time:** the stand entry's time of day comes from livestream frames.
+- **Checks run (2026-11-17):** every image URL in the new entries returned HTTP 200, and
+  every `issuecomment` link resolved to the issue or PR it names.

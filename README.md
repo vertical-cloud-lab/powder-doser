@@ -13,9 +13,12 @@ each entry with render views, a short note on **what** changed, the **rationale*
 An [index by subsystem](DESIGN-LOG.md#index-by-subsystem) and a machine-readable
 YAML summary at the top group the iterations and link to each one; both are
 regenerated from the entries by
-[`tools/design_log/build_design_log.py`](tools/design_log/build_design_log.py).
+[`tools/design_log/build_design_log.py`](tools/design_log/build_design_log.py)
+(or its GNU awk port, `build_design_log.awk`, where Python is unavailable).
 Printed-part photos pulled from issue/PR comments are archived under
-[`docs/assets/`](docs/assets).
+[`docs/assets/`](docs/assets). The log runs to November 2026;
+[`tools/design_log/PROGRESS.md`](tools/design_log/PROGRESS.md) records which threads
+each update covered and where the next one should start.
 
 ## Paper
 

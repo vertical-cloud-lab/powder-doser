@@ -20,9 +20,9 @@ Built in response to issue [#73](https://github.com/vertical-cloud-lab/powder-do
 ```yaml
 title: "Record of Designs"
 kind: design-log
-entries: 164
+entries: 183
 date_span: [2026-04-23, 2026-11-17]
-iteration_chains: 18
+iteration_chains: 20
 subsystems:
   - name: "Scoop / excavator"
     entries: 13
@@ -39,7 +39,7 @@ subsystems:
   - name: "Doser module"
     entries: 13
   - name: "Mounting plate & hinge"
-    entries: 31
+    entries: 32
   - name: "Electronics & PCB"
     entries: 11
   - name: "Firmware & control"
@@ -49,7 +49,7 @@ subsystems:
   - name: "Powder characterization"
     entries: 3
   - name: "Multi-doser"
-    entries: 2
+    entries: 20
   - name: "Simulation & digital twin"
     entries: 3
   - name: "Design tooling"
@@ -110,19 +110,19 @@ Designs are logged chronologically below, but iterations of one object are scatt
 | --- | --: | --- |
 | Scoop / excavator | 13 | [Original powder-excavator scoop concept](#e001)<br>[Powder excavator concept diagram](#e002)<br>[Powder excavator corrected subpanels](#e003)<br>[Ferris-wheel trough pivot](#e004)<br>[Longitudinal-pivot sideways-tilt trough](#e005)<br>[Pin-defined-path actuation variant](#e006)<br>[Mechanism-panel alignment refinement](#e007)<br>[Bimodal compliant trough mechanism](#e008)<br>[3D-printable bimodal trough prototype](#e009)<br>[Continuous chamfered rim lip](#e010)<br>**Parametric CAD excavator assembly:** [v1](#e011) → [v2](#e013)<br>[Bimodal flexure curve fix](#e012) |
 | Sieve-cup alternatives (A–H) | 11 | [Preliminary sieve-cup concepts A/G](#e014)<br>[Alternative A tap-sieve cup](#e020)<br>[Alternative B Pez-style chamber strip](#e021)<br>[Alternative C capillary wiper](#e022)<br>[Alternative D brush-comb pickup](#e023)<br>[Alternative E shaker dispenser](#e024)<br>[Alternative F passive auger](#e025)<br>[Alternative G ERM-augmented sieve](#e026)<br>[Alternative H solenoid-tapped sieve](#e027)<br>[A–H annotated explainer panels](#e028)<br>[CadQuery-grounded A–H spatial scenes](#e034) |
-| Auger | 26 | [Monolithic Archimedes auger preview](#e015)<br>[Print-ready monolithic auger](#e016)<br>[Auger internal-helix x-ray views](#e017)<br>[Two-part fixed-shaft/rotating-housing auger](#e018)<br>[Short workshop-test auger](#e019)<br>[Large integrated H2D auger](#e032)<br>[Through-cut loading slots](#e033)<br>[Central-supported helix](#e044)<br>[Hollow-core auger](#e045)<br>**Geared Archimedes auger assembly:** [v1](#e053) → [v2](#e055)<br>[Geared Archimedes auger full-length](#e056)<br>[Geared Archimedes auger short alternate](#e057)<br>[Large top opening with pour lip](#e061)<br>[Tapered-shaft auger exit](#e087)<br>[Continuous funnel helix auger](#e089)<br>[Phase-matched funnel helix auger](#e090)<br>[Nozzle test auger type 1](#e094)<br>[Nozzle test auger type 2](#e095)<br>[Nozzle test auger type 3](#e096)<br>[Nozzle test auger type 4](#e097)<br>[Auger type 4 adopted as main design](#e098)<br>[Threaded auger with screw-on cap](#e109)<br>[Reduced-volume 1 mL and 10 mL augers](#e112)<br>[Labelled campaign augers with separate caps](#e114)<br>[25-auger H2D batch](#e150) |
+| Auger | 26 | [Monolithic Archimedes auger preview](#e015)<br>[Print-ready monolithic auger](#e016)<br>[Auger internal-helix x-ray views](#e017)<br>[Two-part fixed-shaft/rotating-housing auger](#e018)<br>[Short workshop-test auger](#e019)<br>[Large integrated H2D auger](#e032)<br>[Through-cut loading slots](#e033)<br>[Central-supported helix](#e044)<br>[Hollow-core auger](#e045)<br>**Geared Archimedes auger assembly:** [v1](#e053) → [v2](#e055)<br>[Geared Archimedes auger full-length](#e056)<br>[Geared Archimedes auger short alternate](#e057)<br>[Large top opening with pour lip](#e061)<br>[Tapered-shaft auger exit](#e087)<br>[Continuous funnel helix auger](#e089)<br>[Phase-matched funnel helix auger](#e090)<br>[Nozzle test auger type 1](#e094)<br>[Nozzle test auger type 2](#e095)<br>[Nozzle test auger type 3](#e096)<br>[Nozzle test auger type 4](#e097)<br>[Auger type 4 adopted as main design](#e098)<br>[Threaded auger with screw-on cap](#e109)<br>[Reduced-volume 1 mL and 10 mL augers](#e112)<br>[Labelled campaign augers with separate caps](#e114)<br>[25-auger H2D batch](#e156) |
 | Auger bracket | 8 | **Auger bracket:** [v1](#e049) → [v2](#e050) → [v3](#e051) → [v4](#e052) → [v5](#e058)<br>**Parametric auger clamp bracket:** [v1](#e062) → [v2](#e064)<br>[CADsmith-style auger bracket](#e063) |
 | Sealing cap | 6 | **Bayonet plug sealing cap:** [v1](#e036) → [v2](#e046)<br>**Spring hatch sealing cap:** [v1](#e037) → [v2](#e047)<br>**Twist shutter sealing cap:** [v1](#e038) → [v2](#e048) |
-| Tap collar | 6 | **Tap collar assembly:** [v1](#e059) → [v2](#e069) → [v3](#e070) → [v4](#e073)<br>[Plate-mounted tapper concepts](#e157)<br>[Plate-mounted solenoid bracket](#e158) |
-| Doser module | 13 | [Inward collection cup architecture](#e031)<br>**Single-channel powder-doser module:** [v1](#e035) → [v2](#e039) → [v2.0b](#e040) → [v3-r1](#e041) → [v3-r2](#e042) → [v4](#e043)<br>**Current-design assembly render:** [v1](#e130) → [v2](#e132)<br>[Fastener BOM and assembly walkthrough](#e133)<br>**Print guidance for doser parts:** [v1](#e152) → [v2](#e164)<br>[Build hardware for the #193 assembly](#e160) |
-| Mounting plate & hinge | 31 | [Hinged mounting plate + baseplate assembly](#e060)<br>**Mounting plate + hinged baseplate:** [v1](#e065) → [v2](#e067) → [v3](#e074) → [v4](#e076) → [v5](#e078) → [v6](#e081) → [v7](#e083)<br>[Mounting-plate/baseplate assembly](#e066)<br>[Real-geometry mounting assembly](#e068)<br>[Offset-hinge mounting plate](#e072)<br>[Drawing-aligned mounting assembly](#e075)<br>[Face-mounted motor and side-hinge assembly](#e077)<br>[Centered-auger hinge assembly](#e079)<br>[CADsmith mounting/base plates](#e080)<br>[Lifted-bracket sandwich-hinge assembly](#e082)<br>[Baseplate contact cleanup](#e084)<br>[Servo-driven hinge gear assembly](#e085)<br>[Involute servo-hinge gearing](#e086)<br>[Corrected MG996R hole-pattern mount](#e088)<br>[Raised-spline rescaled servo gearing](#e091)<br>[Dual-servo tilt drive](#e103)<br>[Locknuts against vibration loosening](#e113)<br>[Tap-collar clearance and flat-at-0° check](#e121)<br>**Servos-above baseplate:** [v1](#e135) → [v2](#e136)<br>**Repeat-doser mounting plate:** [v1](#e146) → [v2](#e151) → [v3](#e163)<br>[Pre-production review fixes to the Onshape parts](#e156)<br>[Hinge-bolt nut inset in the mounting plate](#e161) |
+| Tap collar | 6 | **Tap collar assembly:** [v1](#e059) → [v2](#e069) → [v3](#e070) → [v4](#e073)<br>[Plate-mounted tapper concepts](#e168)<br>[Plate-mounted solenoid bracket](#e170) |
+| Doser module | 13 | [Inward collection cup architecture](#e031)<br>**Single-channel powder-doser module:** [v1](#e035) → [v2](#e039) → [v2.0b](#e040) → [v3-r1](#e041) → [v3-r2](#e042) → [v4](#e043)<br>**Current-design assembly render:** [v1](#e130) → [v2](#e132)<br>[Fastener BOM and assembly walkthrough](#e133)<br>**Print guidance for doser parts:** [v1](#e158) → [v2](#e182)<br>[Build hardware for the #193 assembly](#e173) |
+| Mounting plate & hinge | 32 | [Hinged mounting plate + baseplate assembly](#e060)<br>**Mounting plate + hinged baseplate:** [v1](#e065) → [v2](#e067) → [v3](#e074) → [v4](#e076) → [v5](#e078) → [v6](#e081) → [v7](#e083)<br>[Mounting-plate/baseplate assembly](#e066)<br>[Real-geometry mounting assembly](#e068)<br>[Offset-hinge mounting plate](#e072)<br>[Drawing-aligned mounting assembly](#e075)<br>[Face-mounted motor and side-hinge assembly](#e077)<br>[Centered-auger hinge assembly](#e079)<br>[CADsmith mounting/base plates](#e080)<br>[Lifted-bracket sandwich-hinge assembly](#e082)<br>[Baseplate contact cleanup](#e084)<br>[Servo-driven hinge gear assembly](#e085)<br>[Involute servo-hinge gearing](#e086)<br>[Corrected MG996R hole-pattern mount](#e088)<br>[Raised-spline rescaled servo gearing](#e091)<br>[Dual-servo tilt drive](#e103)<br>[Locknuts against vibration loosening](#e113)<br>[Tap-collar clearance and flat-at-0° check](#e121)<br>[Adjustable open-front stand](#e134)<br>**Servos-above baseplate:** [v1](#e136) → [v2](#e137)<br>**Repeat-doser mounting plate:** [v1](#e150) → [v2](#e157) → [v3](#e180)<br>[Pre-production review fixes to the Onshape parts](#e165)<br>[Hinge-bolt nut inset in the mounting plate](#e174) |
 | Electronics & PCB | 11 | **Actuator electronics schematic:** [v1](#e029) → [v2](#e030)<br>[Satellite rev-a PCB](#e054)<br>[Single-Pico-W test-module schematic](#e071)<br>[Pico-W schematic alignment and shunt regulator](#e092)<br>[DRV8825 carrier schematic](#e093)<br>[Tic T500 stepper controller replaces DRV8825](#e099)<br>**Doser PCB:** [v1](#e100) → [v2](#e111) → [v3](#e128)<br>[Haptic motor reinstatement](#e118) |
-| Firmware & control | 10 | [Closed-loop dosing on balance feedback](#e102)<br>[Three-phase bulk/fine/tap dosing controller](#e107)<br>[Kalman-filter bang-bang bulk stop](#e119)<br>[Actuator-gated balance filter](#e122)<br>[Chance-constrained trim method](#e125)<br>[Bayesian-optimization dosing campaign](#e127)<br>[Bulk-to-tap dosing variant](#e129)<br>[Refill-tap endgame](#e139)<br>[Cutoff-margin campaign](#e142)<br>[Powder-fingerprint transfer for the optimizer](#e153) |
-| Test method & rig | 12 | [Rig livestream and balance data streaming](#e106)<br>[Pi Zero 2 W bridge for remote operation](#e108)<br>[On-device characterization sweep](#e110)<br>[Per-powder test battery, protocols A–G](#e115)<br>[Single-tap depletion test](#e116)<br>[Granite isolation slab for the balance](#e123)<br>[Protocol H small-dose targets](#e124)<br>[Balance drift traced to powder under the pan](#e126)<br>[Replicate validation of optimized salt profiles](#e137)<br>**Doser centering device:** [v1](#e138) → [v2](#e143)<br>[Al 4047 atomizer-cup production dosing](#e147) |
-| Powder characterization | 3 | [Doser flowability proxies for LPBF spreading](#e140)<br>[In-house powder property test concepts](#e159)<br>[Per-jar campaign session plan](#e162) |
-| Multi-doser | 2 | **Roller-chain multi-doser:** [v1](#e117) → [v2](#e120) |
-| Simulation & digital twin | 3 | [DEM digital twin of the rig auger](#e144)<br>[Micro-auger geometry sweep](#e145)<br>[Physics-simulation method survey](#e155) |
-| Design tooling | 9 | [Zoo Design Studio multi-doser trial](#e101)<br>[Spec-driven Copilot-only CadQuery assembly](#e104)<br>[Fusion 360 recreations of the AI-made parts](#e105)<br>[Onshape API assembly of the Fusion 360 parts](#e131)<br>[text-to-cad recreation of the current doser](#e134)<br>[fsgen native Onshape feature-tree trial](#e141)<br>[Native Onshape feature trees for the servos-above parts](#e148)<br>[Approval-gated remote printing](#e149)<br>[Onshape recreations of the Fusion 360 parts](#e154) |
+| Firmware & control | 10 | [Closed-loop dosing on balance feedback](#e102)<br>[Three-phase bulk/fine/tap dosing controller](#e107)<br>[Kalman-filter bang-bang bulk stop](#e119)<br>[Actuator-gated balance filter](#e122)<br>[Chance-constrained trim method](#e125)<br>[Bayesian-optimization dosing campaign](#e127)<br>[Bulk-to-tap dosing variant](#e129)<br>[Refill-tap endgame](#e140)<br>[Cutoff-margin campaign](#e144)<br>[Powder-fingerprint transfer for the optimizer](#e160) |
+| Test method & rig | 12 | [Rig livestream and balance data streaming](#e106)<br>[Pi Zero 2 W bridge for remote operation](#e108)<br>[On-device characterization sweep](#e110)<br>[Per-powder test battery, protocols A–G](#e115)<br>[Single-tap depletion test](#e116)<br>[Granite isolation slab for the balance](#e123)<br>[Protocol H small-dose targets](#e124)<br>[Balance drift traced to powder under the pan](#e126)<br>[Replicate validation of optimized salt profiles](#e138)<br>**Doser centering device:** [v1](#e139) → [v2](#e145)<br>[Al 4047 atomizer-cup production dosing](#e153) |
+| Powder characterization | 3 | [Doser flowability proxies for LPBF spreading](#e141)<br>[In-house powder property test concepts](#e171)<br>[Per-jar campaign session plan](#e176) |
+| Multi-doser | 20 | **Roller-chain multi-doser:** [v1](#e117) → [v2](#e120) → [v3](#e143)<br>**Chain carousel:** [v1](#e147) → [v2](#e149) → [v3](#e161) → [v4](#e163) → [v5](#e167) → [v6](#e175) → [v7](#e177) → [v8](#e178) → [v9](#e183)<br>[Paternoster multi-doser carousel](#e151)<br>[Shared carousel dosing station](#e152)<br>[CalculiX FEA of the carousel parts](#e159)<br>[Dosing-station linear actuator selection](#e166)<br>**Fixed multi-auger doser:** [v1](#e169) → [v2](#e172) → [v3](#e179) → [v4](#e181) |
+| Simulation & digital twin | 3 | [DEM digital twin of the rig auger](#e146)<br>[Micro-auger geometry sweep](#e148)<br>[Physics-simulation method survey](#e164) |
+| Design tooling | 9 | [Zoo Design Studio multi-doser trial](#e101)<br>[Spec-driven Copilot-only CadQuery assembly](#e104)<br>[Fusion 360 recreations of the AI-made parts](#e105)<br>[Onshape API assembly of the Fusion 360 parts](#e131)<br>[text-to-cad recreation of the current doser](#e135)<br>[fsgen native Onshape feature-tree trial](#e142)<br>[Native Onshape feature trees for the servos-above parts](#e154)<br>[Approval-gated remote printing](#e155)<br>[Onshape recreations of the Fusion 360 parts](#e162) |
 
 <!-- INDEX:END -->
 
@@ -1677,8 +1677,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
-<!-- ENTRY date=2026-10-03T19:05:49Z pr=176 sub=tooling -->
+<!-- ENTRY date=2026-10-02T17:14:00Z pr=176 sub=mounting -->
 <a id="e134"></a>
+### 2026-10-02 — Adjustable open-front stand · PR #176
+**Trigger:** A team member redrew the baseplate in a lab Onshape document between 29 Sep and 1 Oct, and on 2 Oct the livestream showed the doser being fitted to a new stand. No issue or PR mentioned it until another team member asked on 10 Oct why the rig no longer matched the CAD ([PR #176](https://github.com/vertical-cloud-lab/powder-doser/pull/176#issuecomment-6094122610)).
+**Design:** A black open-front baseplate with the same hinge lugs and servo posts, but longer front arms with rows of holes, no front legs and two rails running back, plus a perforated post behind the doser and perforated legs beside the balance. The stand sits on the bench over the balance instead of on the 38 mm board ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/176#issuecomment-6094125789)). The holes take 3D-printed brackets, and the stands can be printed or laser cut ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/176#issuecomment-6152655733)).
+**Rationale:** Bolt-on brackets make the stand's width and height adjustable.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/7669f3b4cf14d1590df5f52b6a255c31cbe94e03/cad/text-to-cad/reference/as-built/livestream_vs_cad.jpg" width="300">
+
+**Outcome ✅ — in use:** the doser was back in its room with the salt auger on 5 Oct ([#144](https://github.com/vertical-cloud-lab/powder-doser/issues/144#issuecomment-6002953410)) and was on the new stand in the 9 Oct livestream frames above. The stand's back and side brackets and wood leg are part of the Onshape set for the repeat dosers ([#193](https://github.com/vertical-cloud-lab/powder-doser/issues/193#issuecomment-6504703603)). Strength and stiffness tests are not reported.
+
+---
+
+<!-- ENTRY date=2026-10-03T19:05:49Z pr=176 sub=tooling -->
+<a id="e135"></a>
 ### 2026-10-03 — text-to-cad recreation of the current doser · PR #176 / Issue #172
 **Trigger:** A team member asked the AI agent (Claude) to install text-to-cad and recreate the latest design with all electronics, fasteners and the PCB assembled, then run interference, printability and particle-based powder simulations and make an assembly GIF ([#172](https://github.com/vertical-cloud-lab/powder-doser/issues/172)).
 **Design:** The AI agent rebuilt PR #170's doser with cadgen 0.7.10 and build123d in `cad/text-to-cad/`: printed parts matching the Fusion files to IoU ≥ 0.9995 (the auger and cap by volume only), purchased parts (parametric where step.parts had no model), step.parts fasteners and the POWDER_DOSER_V2 PCB from its Gerbers on a printed holder, assembled with tilt, auger and plunger kinematics, interference and clearance sweeps at 0–45°, and assembly and tilt/turn/tap GIFs. A coarse soft-sphere DEM of the auger outlet (0.8–1.0 mm spheres, repose angle calibrated to 32.6°) gave about 285 mg per revolution at 22.5–45°, no leakage at 45° with the tube stopped, and taps that only cleared the funnel with free-flowing powder but released 67 mg after cohesive powder bridged; the AI agent advised reading its trends, not absolute milligrams ([summary](https://github.com/vertical-cloud-lab/powder-doser/issues/172#issuecomment-5974028256)).
@@ -1691,7 +1704,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-03T19:05:49Z pr=176 sub=mounting -->
-<a id="e135"></a>
+<a id="e136"></a>
 ### 2026-10-03 — Servos-above baseplate v1 · PR #176 / Issue #172
 **Trigger:** The same request asked to bring the nozzle much closer to the dispense cup by flipping the servos to drive from above, leaving the nozzle fairly unobstructed ([#172](https://github.com/vertical-cloud-lab/powder-doser/issues/172)).
 **Design:** In the text-to-cad model the baseplate loses its front arms, legs and servo posts: the servos sit in open-top cradles on the hinge towers, a slot between the towers clears the tap-collar hardware, and the plate overhangs the base board's front edge by 44.6 mm. On the mounting plate the two 28T gears are turned 180° about the hinge so the 14T servo pinions mesh from above.
@@ -1704,7 +1717,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-05T21:25:09Z pr=176 sub=mounting -->
-<a id="e136"></a>
+<a id="e137"></a>
 ### 2026-10-05 — Servos-above baseplate v2 · PR #176
 **Trigger:** A team member asked whether the whole system could be lowered by removing material, noting that at least the "table" could be thinner ([PR #176](https://github.com/vertical-cloud-lab/powder-doser/pull/176#issuecomment-6002726948)), and asked for the same edits to be tried in Onshape through its API ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/176#issuecomment-6002751214)).
 **Design:** The tilting system and servos drop 5 mm (hinge 38.25 mm above the base board, was 43.25; towers and servo cradles 5 mm shorter), the baseplate gets a relief pocket under the mounting plate's floor down to a 2 mm skin, and the slot widens from 54 to 57.8 mm. After the 6 Oct tap-collar correction, the base board's edge moved from y = 100 to 108 mm and its front screws to y = 120 ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/176#issuecomment-6022854275)).
@@ -1717,7 +1730,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-06T03:15:15Z pr=166 sub=test-rig -->
-<a id="e137"></a>
+<a id="e138"></a>
 ### 2026-10-06 — Replicate validation of optimized salt profiles · PR #166 / PR #131
 **Trigger:** A team member asked the AI agent (Claude) to validate the campaign's recommended salt point `bo-005` and `corner-09`, a point with a 0.05 g bulk→trim threshold, to see how the doser handles smaller thresholds ([PR #166](https://github.com/vertical-cloud-lab/powder-doser/pull/166#issuecomment-6008596237)).
 **Design:** Each point is dosed 8 times at 0.5 g inside the campaign that found it (`--validate-point` picks a Pareto point by label, added 1 Oct). The block is saved to MongoDB `dosing_profiles` with its statistics and marked validated if no replicate jams and no spill is flagged, and `dose.py` then doses from the newest validated profile unless `--profile` names another ([how validation works](https://github.com/vertical-cloud-lab/powder-doser/pull/166#issuecomment-5936131097)).
@@ -1730,7 +1743,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-06T16:16:05Z pr=0 sub=test-rig -->
-<a id="e138"></a>
+<a id="e139"></a>
 ### 2026-10-06 — Doser centering device v1 · Issue #177
 **Trigger:** A team member opened [#177](https://github.com/vertical-cloud-lab/powder-doser/issues/177) because the augers had been centred over the hole in the balance enclosure by eye.
 **Design:** A printed jig, modelled in Onshape ("Doser Centering Device"), to centre the auger over the enclosure's hole; its dimensions are not recorded.
@@ -1741,7 +1754,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-06T18:06:07Z pr=154 sub=firmware -->
-<a id="e139"></a>
+<a id="e140"></a>
 ### 2026-10-06 — Refill-tap endgame · PR #154 / PR #166
 **Trigger:** A team member proposed a tap method that tracks a running average of tap yield and turns the auger between taps to refill the tube tip when that yield is far below what is still needed ([PR #154](https://github.com/vertical-cloud-lab/powder-doser/pull/154#issuecomment-6022056843)).
 **Design:** The AI agent (Claude) wrote `main_trickle_refill.py`, which keeps the bulk and PI trickle and changes only the tap stage: after each tap, if 20 × the average of the last 4 tap yields is less than the mass still needed, the auger turns 10°, the balance is read and the average restarts. Refills are skipped inside the last 25 mg, within 2 taps of the previous refill, when the largest refill seen so far would overshoot, or after 20 refills. On 9 Oct it became a production-only option, `dose.py --endgame refill`, which campaigns never use ([PR #166](https://github.com/vertical-cloud-lab/powder-doser/pull/166#issuecomment-6088402864)).
@@ -1754,7 +1767,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-07T06:13:22Z pr=0 sub=powder-tests -->
-<a id="e140"></a>
+<a id="e141"></a>
 ### 2026-10-07 — Doser flowability proxies for LPBF spreading · Issue #163
 **Trigger:** After an atomizer meeting asked for a flowability number for every atomized batch, a team member asked for a doser procedure that gives a couple of flowability proxies relevant to LPBF powder spreading, since a commercial spreadability tester costs tens of thousands of dollars ([#163](https://github.com/vertical-cloud-lab/powder-doser/issues/163#issuecomment-6032144810)).
 **Design:** The AI agent (Claude), with an Edison literature query and an Edison analysis of the #116 and #166 data, proposed sieving and drying each batch, then a taps-off run of about 15 minutes against a same-session AlSi10Mg reference: prime at 45°/30 rpm, 20 single revolutions at 90°/30 rpm with a settled balance read after each, and 6 continuous revolutions at 45°/15 rpm (tilts in the #116 battery's units, where "90" is a 45° tube angle, entry [e115](#e115)). Two proxies come out: V_g, the volumetric feed per revolution at 90° relative to AlSi10Mg, and I_stop, the share of 15 rpm balance increments below max(2 mg, 3σ of the motor-off noise), with a provisional flag at V_g < 0.8, I_stop more than 0.30 above the reference, or a failed prime.
@@ -1767,7 +1780,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-08T11:40:26Z pr=178 sub=tooling -->
-<a id="e141"></a>
+<a id="e142"></a>
 ### 2026-10-08 — fsgen native Onshape feature-tree trial · PR #178 / Issue #171
 **Trigger:** A team member tried Fusion 360's agent mode and asked whether it was any good; the AI agent (Claude) found user reports rating it poor for modelling ([#171](https://github.com/vertical-cloud-lab/powder-doser/issues/171#issuecomment-5941114449)) and compared reports of agents driving Onshape ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/171#issuecomment-5946441515)). fsgen's author then suggested the tool ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/171#issuecomment-6055694044)), and a team member asked the AI agent to try it on PR #176's Onshape job and count the API calls ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/171#issuecomment-6058774043)).
 **Design:** The AI agent wrote the servos-above baseplate (v2) as an fsgen script, built and checked it locally at 0 API calls, and pushed it to a public Onshape document as a 14-feature native tree driven by 7 variables, with the thinner-table edit on a branch. The study was repeated on 10 Oct with fsgen 0.2.0, which its author released in response ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/178#issuecomment-6096623233)).
@@ -1779,8 +1792,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-10-08T20:15:01Z pr=0 sub=multi-doser -->
+<a id="e143"></a>
+### 2026-10-08 — Roller-chain multi-doser v3 · Issue #128
+**Trigger:** A team member posted "the newest version of the multidoser" in Onshape ([#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6068230211)).
+**Design:** A "cleaner, smaller carriage with the motor turned around", drawn in the same Onshape document as the module's mounting plate; the printed carriage carries the stepper and the tap solenoid under the auger's gear. The AI agent's rigs below reuse this plate and carriage (the team member revised the plate in Onshape on 13 Oct, [comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6216129591)).
+**Rationale:** The carriage was "designed for compactness, not interfacing with the gondolas or anything" ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6503653801)).
+
+<img src="https://github.com/user-attachments/assets/9b3965de-d059-499b-b7b1-8cc03004eea5" width="300"> <img src="https://github.com/user-attachments/assets/83531323-dc6b-4289-9e95-9880f4fe452a" width="300">
+
+**Outcome ✅ — printed fit check** ([#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6069301669), team): "This version works well!", although the stepper's wires did not quite fit and the solenoid sat very close to the front, which another team member expected to give larger taps ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6094307040)). No dosing test is reported.
+
+---
+
 <!-- ENTRY date=2026-10-09T20:27:41Z pr=166 sub=firmware -->
-<a id="e142"></a>
+<a id="e144"></a>
 ### 2026-10-09 — Cutoff-margin campaign · PR #166
 **Trigger:** A team member observed that much of each dose was spent tapping after the PI trickle and asked what searching the "tap begin threshold" would change ([PR #166](https://github.com/vertical-cloud-lab/powder-doser/pull/166#issuecomment-6050096344)); after the AI agent's analysis, the team member asked for it in the campaign ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/166#issuecomment-6088395818)).
 **Design:** `--variant three-stage-margin` adds the PI trickle's cutoff margin (`cutoff_margin_g`, until then fixed at 35 mg) as a 9th searched knob over 0–35 mg. The campaign warm-starts Ax with all 60 earlier salt doses at 35 mg, re-doses the 16 screening corners at 0 mg so the old fractional-factorial design is crossed with the margin, and scores an overshoot like a jam.
@@ -1793,7 +1819,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-09T21:35:08Z pr=0 sub=test-rig -->
-<a id="e143"></a>
+<a id="e145"></a>
 ### 2026-10-09 — Doser centering device v2 · Issue #177
 **Trigger:** A second team member redrew the jig after v1 proved too wide ([#177](https://github.com/vertical-cloud-lab/powder-doser/issues/177)).
 **Design:** The new version, in the same Onshape Part Studio, is "adjusted so that the tip of the auger will be 5mm further over the opening of the scale lid" ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/177#issuecomment-6089643947)). Whether this is the redesign mentioned on 6 Oct or a further change to it is not stated.
@@ -1804,7 +1830,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-10T05:34:14Z pr=180 sub=sim -->
-<a id="e144"></a>
+<a id="e146"></a>
 ### 2026-10-10 — DEM digital twin of the rig auger · PR #180 / Issue #158
 **Trigger:** A team member opened [#158](https://github.com/vertical-cloud-lab/powder-doser/issues/158) on using digital twins to iterate quickly on designs, then asked the AI agent (Claude) for extensive twin simulations grounded in the rig's data, how many particles one auger could hold, and how internal auger geometry affects very fine doses ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/158#issuecomment-6094250711)). The work moved to PR #180.
 **Design:** A LIGGGHTS DEM model of the rig's `threaded-auger-final` auger: a 21 mm bore, a solid 8 mm core whose conical tip sits in the 3 mm exit and leaves a 1.07 mm annulus (about 2.5 salt grains), and a 0.5 mm flight at 10.4 mm pitch running down a 37° funnel. The funnel and 1.5 flights are filled with about 29k real-size salt grains (d50 0.425 mm) with textbook friction, no coarse-graining and no calibration.
@@ -1816,8 +1842,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-10-10T06:21:27Z pr=185 sub=multi-doser -->
+<a id="e147"></a>
+### 2026-10-10 — Chain carousel v1 · Issue #128 / PR #185
+**Trigger:** A team member asked the AI agent (Claude) for a PR "focused on using and testing out the chain", designed in Onshape through the API, with assembly steps and a full BoM of real parts ([#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6094328717)).
+**Design:** The AI agent's version (`cad/chain-carousel/`): the 96-link #35 chain already on order lies flat on a 1/2 in HDPE deck round two 19T sprockets, with 12 printed carriages bolted to A-1 attachment links every 8 pitches. The NEMA 34 already in the lab drives one sprocket directly, and the station has a deck window, hold-down blocks and two hall switches. The 250 mm auger set the deck at 1050 × 740 mm, and the BoM came to $641.03 for the rig ($783.42 with test gear); the parametric CadQuery model was imported into a public Onshape document ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6094331731)).
+**Rationale:** Test the bought chain before the station exists, with hold-downs rather than the chain taking the station's upward push, an open question from the August pitch.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/9e715c3981385119dc7998ccfa1b1f48b79d4ca4/cad/chain-carousel/renders/onshape/onshape_front_iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/9e715c3981385119dc7998ccfa1b1f48b79d4ca4/cad/chain-carousel/renders/assembly_steps.gif" width="300">
+
+**Outcome — superseded** ([#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6154928445)): a team member found it "remarkably close to what we need" and kept the hold-down tabs, but asked for vertical chains (v2, below). Not built. The branch had no PR of its own and was brought into PR #185 unchanged.
+
+---
+
 <!-- ENTRY date=2026-10-10T07:23:32Z pr=180 sub=sim -->
-<a id="e145"></a>
+<a id="e148"></a>
 ### 2026-10-10 — Micro-auger geometry sweep · PR #180 / Issue #158
 **Trigger:** The same request asked for geometry aimed at #117's milligram doses and very expensive powders such as scandium ([#158](https://github.com/vertical-cloud-lab/powder-doser/issues/158#issuecomment-6094250711)); the rig auger gives about 105 mg/rev with about 1 g parked in its funnel.
 **Design:** The AI agent (Claude) swept a 10 mm bore micro-auger family in the DEM twin at the trickle tilt (15°, 55 rpm, salt), changing one internal dimension at a time from a baseline with an open 4 mm core, 5 mm pitch, 2.5 mm exit and 27° funnel: a solid shaft, a rig-style core tip in the exit, a 1.8 mm exit, 3 mm pitch, a 2-start flight, short 45° and long 17° funnels, an illustrative cohesive case, finer grains and a combined design.
@@ -1829,8 +1868,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-10-13T21:32:20Z pr=185 sub=multi-doser -->
+<a id="e149"></a>
+### 2026-10-13 — Chain carousel v2 · PR #185 / Issue #128
+**Trigger:** A team member asked for vertical chain loops, two chains (front and back, far enough apart for the whole auger), four sprocket corners, augers inside the loop with the carriage connections outside, and the footprint cut to what a vertical module needs, on an 8020 frame ([#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6154928445)).
+**Design:** The AI agent (Claude)'s version (`cad/chain-carousel-v2/`): two #35 chains in vertical planes 305 mm apart, 104 links each, run round four 32T sprockets whose corner shafts carry both chains. 13 carriages bolt to an A-1 tab on each chain from outside the loop, and the modules ride inside it, held shut by printed snap hooks because each module turns over once per lap. The 2020 frame with 1/4 in aluminium side plates stands 435 × 244 mm on the bench and 596 mm tall, with the NEMA 34 inside it on a 1:1 drive chain; BoM $1,035 ($894 without test gear) ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/128#issuecomment-6154935911)).
+**Rationale:** Shrink the rig to a vertical module's footprint (v1's deck was 1050 × 740 mm); the 32T sprockets keep the auger's gear clear of the corner shafts.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/30b793c783764bad75096f80f73313e3d44445c4/cad/chain-carousel-v2/renders/rig_loop.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/30b793c783764bad75096f80f73313e3d44445c4/cad/chain-carousel-v2/renders/rig_tilt90.png" width="300">
+
+**Outcome — superseded:** not built. In the 18 Oct leakage simulation each lap's roll pumped 108 proxy grains (about one revolution's dose) out of a primed auger and none with the loop reversed, so the loop now runs the other way ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6271740887)). The shared station was added next (below), and a team member's 29 Oct critiques led to v3 and v4.
+
+---
+
 <!-- ENTRY date=2026-10-15T04:22:42Z pr=181 sub=mounting -->
-<a id="e146"></a>
+<a id="e150"></a>
 ### 2026-10-15 — Repeat-doser mounting plate v1 · PR #181
 **Trigger:** The AI agent (Claude) opened a getting-started guide for building 25 more dosers, with a print plan, inventory checklist and build order ([PR #181](https://github.com/vertical-cloud-lab/powder-doser/pull/181)), and a team member asked it to print a plate on the A1 mini ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6184013368)).
 **Design:** PR #170's Fusion 360 mounting-plate STEP was split into its five bodies and sliced for the A1 mini as two plates: the plate itself (46.8 g, 3 walls, 25 % infill, tree supports under the two hinge knuckles, which start 27.9 mm up) and the two 28T tilt gears with their links (19.2 g) ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6184077134)). The plan's size check put every printed part except the 190 mm baseplate and the 250 mm auger on the A1 mini's 180 mm bed.
@@ -1842,8 +1894,34 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-10-16T14:17:28Z pr=185 sub=multi-doser -->
+<a id="e151"></a>
+### 2026-10-16 — Paternoster multi-doser carousel · PR #185
+**Trigger:** A team member asked for "an alternative design of a paternoster", independent of the chain carousel, under the same requirements: OEM parts, a cost estimate, an Actuonix feedback actuator, physics simulation and an assembly animation ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6216120088), [requirements](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6216105493)).
+**Design:** The AI agent (Claude) hung 12 printed gondolas on shoulder-screw pivots between two #35 chains (120 links each) running round four 32T corners, so gravity keeps each module upright all the way round. At the station an Actuonix P16-150-22-12-P lifts the team member's electronics carriage through the gondola floor, docks it under the plate and tilts both; modules hang on two M5 thumb screws for tool-free swaps. BoM $1,652 ($1,526 without test gear) ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6216129591)).
+**Rationale:** No hinge, flap or outlet is ever sideways or upside down, unlike chain carousel v2, whose modules turn over every lap.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/815ee2b6891652d8f1629175d009643602795c23/cad/paternoster/renders/rig_iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/815ee2b6891652d8f1629175d009643602795c23/cad/paternoster/renders/paternoster.gif" width="300">
+
+**Outcome — not yet tested:** MuJoCo runs set the motion: a loaded gondola is a 2.54 Hz pendulum, so each index takes 1.5 s with ramps of one period, and continuous moves are capped at 130 mm/s after a 4 s lap flipped a gondola; they also added hold-down strips at the station and a 20–40° default tilt ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6216129591)). On 29 Oct a team member worried that airborne powder would still cross-contaminate in the paternoster and the other designs ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6503653801)); later rounds developed only the chain carousel.
+
+---
+
+<!-- ENTRY date=2026-10-18T06:24:05Z pr=185 sub=multi-doser -->
+<a id="e152"></a>
+### 2026-10-18 — Shared carousel dosing station · PR #185
+**Trigger:** A team member asked about auger leakage (should the nozzles point slightly up, or the augers run in reverse?) and whether the module's weight keeps the auger gear in mesh with the stepper pinion at speed and at every angle ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6245422977)).
+**Design:** The AI agent (Claude) gave chain carousel v2 and the paternoster one station: a 5 V electromagnet pulls a steel tab under each plate while docked, and the electronics carriage pivots at its centre-of-mass height on stub pins in a U-yoke on the P16's rod, with a steel 20T pinion, two locating pins and a 32.25 mm centre distance (the team member drew 32.1 mm). After each dose the auger stops, holds 0.5 s, tilts back and reverses one revolution at rest ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6271740887)).
+**Rationale:** Shigley hand calculations gave only 0.04–1.13 N of weight preload on the mesh against 3.6 N of separating force at the NEMA 11's holding torque, and in MuJoCo the carriage as drawn, an inverted pendulum, fell off the plate at 30° and above.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/1c135e040a4eec28ddbbf5d121f05b0f592e6e05/cad/gear-mesh/out/mujoco/compare_t30_r60.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/1c135e040a4eec28ddbbf5d121f05b0f592e6e05/cad/paternoster/renders/rig_station_dock.png" width="300">
+
+**Outcome — superseded:** in MuJoCo with tooth contact the motor stalled before any tooth jumped at every tilt (0 jumps in 16 runs at 30–240 rpm), and a level module leaked no proxy grains, so the nozzles were not tilted up. A 27 Oct check against vendor drawings found that the P16's rod end and rear clevis did not fit the yoke and that its cross bolt could never have been fitted; all were corrected ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6452043264)). On 29 Oct the yoke gave way to a kinematic dock and guide cradle (chain carousel v3, below).
+
+---
+
 <!-- ENTRY date=2026-10-19T23:10:31Z pr=0 sub=test-rig -->
-<a id="e147"></a>
+<a id="e153"></a>
 ### 2026-10-19 — Al 4047 atomizer-cup production dosing · Issue #186
 **Trigger:** A team member asked the AI agent (Claude) to dose Al 4047 into weighed atomizer cups at set weight percentages for atomizer runs ([#186](https://github.com/vertical-cloud-lab/powder-doser/issues/186)), following the 30 Sep 8 g doses (entry [e127](#e127)).
 **Design:** Each target comes from the weighed cup, with wt% defined as powder / (cup + plug + powder). Doses use the salt `bo-005` bulk settings (40°, 100 rpm, 2 Hz taps) in the bulk-only mode, aimed short, then a stepwise top-up with a stable reading after each step. When the tube clogged, half-turn reverse auger steps at 0° with 3-tap bursts, suggested by a team member, were the first reverse running of the auger ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/186#issuecomment-6281865650)), and hand-driven steps are now logged to MongoDB as `mode: "manual"` records ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/186#issuecomment-6305814412)).
@@ -1856,7 +1934,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-20T22:30:19Z pr=0 sub=tooling -->
-<a id="e148"></a>
+<a id="e154"></a>
 ### 2026-10-20 — Native Onshape feature trees for the servos-above parts · Issue #172
 **Trigger:** A team member asked the AI agent (Claude) to build the auger in Onshape through the REST API with an editable feature tree ([#172](https://github.com/vertical-cloud-lab/powder-doser/issues/172#issuecomment-6302837422)), and later to resume the servos-above model there ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/172#issuecomment-6432839877)).
 **Design:** The auger was pushed with fsgen as a 21-feature tree driven by 16 variables (53,361 mm³, against 53,358 mm³ for the Fusion auger). On 27 Oct the AI agent wrote fsgen scripts for all nine printed parts of the servos-above doser (IoU 0.9977–1.0 against text-to-cad's STEP, checked locally at 0 calls), plus paste-in FeatureScript features that build all 11 printed parts in place with Tilt and Auger-turn parameters.
@@ -1869,7 +1947,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-22T22:49:39Z pr=181 sub=tooling -->
-<a id="e149"></a>
+<a id="e155"></a>
 ### 2026-10-22 — Approval-gated remote printing · PR #181
 **Trigger:** The A1 mini refused a print start sent from the doser Pi (`err_code 84033543`, Bambu's rejection of unsigned commands; [comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6184077134)), so team members tested the approval-gated `@claude-print` workflow (PR #183) and then asked it to "Print a plate on the A1 mini" ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6353015168)).
 **Design:** A person comments `@claude-print`; once a member of the lab's print-approvers team approves the run, the AI agent (Claude) logs Bambu Studio in to the lab account on a virtual display with an authenticator code, reads the printer's state, nozzles and camera, posts a frame of the plate, waits for objections, then sends and watches the print. The first test found that Studio re-sliced the committed 3MF with stock settings (2 walls, 15 % infill, no supports) until the file's `different_settings_to_system` field was filled in (`d8f4674`, [comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6352282576)).
@@ -1882,7 +1960,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-23T05:41:45Z pr=181 sub=auger -->
-<a id="e150"></a>
+<a id="e156"></a>
 ### 2026-10-23 — 25-auger H2D batch · PR #181
 **Trigger:** A team member asked the print run to fill the H2D's plate "with whatever you can" while the printers were free ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6357666126)).
 **Design:** All 25 augers, one per doser, in a hand-laid 5 × 5 grid on a 60 mm pitch, standing on their solid outlet end with tree supports under the 44T gear's flat underside 80 mm up. They were sliced for the 0.6 mm nozzles then fitted (0.24 mm layers, 3 walls, 25 % infill, 5 mm brim): 1,680 g of PLA and about 1 d 15 h ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6357672576)).
@@ -1895,7 +1973,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-23T23:55:50Z pr=181 sub=mounting -->
-<a id="e151"></a>
+<a id="e157"></a>
 ### 2026-10-23 — Repeat-doser mounting plate v2 · PR #181
 **Trigger:** A team member reported that the gears and arms had printed as separate parts ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6376796564)), and another asked the AI agent (Claude) to make any redesign needed in Onshape ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6379304832)).
 **Design:** The plate, both 28T tilt gears and both links as one solid. The AI agent first fused PR #170's five bodies (`c960e12`), then switched to a team member's Onshape Mounting plate, already one part, after moving its NEMA-11 holes from 24.4 × 23.0 mm onto the motor's 23 mm square (`52aaf8f`, [comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6379308649)). It was sliced flat for the A1 mini with tree supports under both gears, both hinge knuckles and into the stepper bore: 68.71 g, 274 layers, 2 h 32 min.
@@ -1908,7 +1986,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-10-27T16:42:18Z pr=0 sub=module -->
-<a id="e152"></a>
+<a id="e158"></a>
 ### 2026-10-27 — Print guidance for doser parts v1 · Issue #144
 **Trigger:** A team member added printing rules to the usage-instructions issue ([#144](https://github.com/vertical-cloud-lab/powder-doser/issues/144#issuecomment-6447810425)); another team member followed with photos of a failed 25-auger plate ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/144#issuecomment-6451425685)) and of a mounting plate printed in another orientation ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/144#issuecomment-6451584193)).
 **Design:** Gears are printed face down for tooth strength and fidelity, including the gear on the mounting plate, which a team member designed so that its stepper mount acts as support when the plate is printed on its side; supports are allowed. Every part uses a 0.4 mm nozzle, and augers are printed 5–10 per plate.
@@ -1920,8 +1998,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-10-27T19:47:40Z pr=188 sub=multi-doser -->
+<a id="e159"></a>
+### 2026-10-27 — CalculiX FEA of the carousel parts · PR #188 / PR #185
+**Trigger:** A team member asked for "a ton of CalculiX FEA simulations on all the parts, looking at deflections, loadings, etc." ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6451796244)); the AI agent (Claude) opened PR #188, and when the first run failed the team member asked it to redo the work on PR #185's latest design ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/188#issuecomment-6506971576)).
+**Design:** The AI agent meshed each design's CadQuery parts in gmsh (second-order tetrahedra) and solved them single-threaded in CalculiX 2.21, after checking the toolkit against hand solutions (cantilever deflection within 0.7 %, buckling 805 against 804 N). The first run on 27 Oct died, probably out of memory, and was redone on 29 Oct on chain carousel v3 and v4 (below) and the paternoster carousel, with the NEMA 34 modelled as its 5.6 kg envelope, covering the frames, motor mounts, shafts, carriages, station and gondola. A 31 Oct follow-up added heat transfer, forced vibration from the motor's torque ripple and material swaps ([request](https://github.com/vertical-cloud-lab/powder-doser/pull/188#issuecomment-6536556686)).
+**Rationale:** Check deflections and loads on every part before anything is built, starting with "a heavy motor cantilevering on the side of the wall".
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/64e6caf764e4b453c1258da318b39d734c1a33b2/cad/fea/out/frame/chain-carousel-v3_pads_jam_motor.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/20d5680a7db107d7495684e330293b3c52a1cd68/cad/fea/out/frame/chain-carousel-v4_pads_mode4.png" width="300">
+
+**Outcome ⚠️ — several parts short of strength** ([PR #188](https://github.com/vertical-cloud-lab/powder-doser/pull/188#issuecomment-6506979281)): these are predictions, as nothing is built. The motor on its wall is strong enough in all three designs (safety factor 20 for v3 and 16 for v4 in a 12 N·m jam, 7.7 on the paternoster's standoffs). But all three frames tip under a 35–67 N sideways push at the top rail and must be clamped to the bench, v4's plate latch holds nothing as drawn (safety factor 0.73 under a 40 N auger pull even when bridged to its side strip), v4's kinematic dock tips open from 15° of tilt, and v4's motor and back plate have a 50.6 Hz mode that the full-step rate reaches inside v4's speed range, which two added 2020 posts raised to 68.6 Hz in the model. A full 6.0 A motor hold would heat the PETG parts on the back plate to 54–65 °C, close to PETG's 69 °C softening point ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/188#issuecomment-6536561415)). Whether any of these fixes reached a later carousel version is not recorded.
+
+---
+
 <!-- ENTRY date=2026-10-27T22:02:40Z pr=166 sub=firmware -->
-<a id="e153"></a>
+<a id="e160"></a>
 ### 2026-10-27 — Powder-fingerprint transfer for the optimizer · PR #166
 **Trigger:** A team member asked for an example of how powder properties could narrow the search for related powders ([PR #166](https://github.com/vertical-cloud-lab/powder-doser/pull/166#issuecomment-6454248349)).
 **Design:** The AI agent (Claude) proposed a short fingerprint block before screening: bulk feed at 40° and 20 and 100 rpm, afterflow τ, mass per tap at 15°, and the lowest tilt that feeds. Properties enter Ax as hard limits only where the physics is clear (an afterflow constraint linking the bulk→trim threshold to rpm, and a no-feed tilt bound), and otherwise as context inputs held at the new powder's values, so earlier powders' doses carry over. It was worked through on real data for AlSi10Mg warm-started from salt.
@@ -1933,8 +2024,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-10-29T18:02:57Z pr=185 sub=multi-doser -->
+<a id="e161"></a>
+### 2026-10-29 — Chain carousel v3 · PR #185
+**Trigger:** A team member listed critiques for "at least two new versions": kinematic couplings and magnets on the compact electronics carriage, a guide it can retreat into, a door over each auger's outlet, a clip that holds the plate upside down, plexiglass walls with hatches, side tabs for swaps, no funnel, and the real balance in the assembly ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6503653801)).
+**Design:** The AI agent (Claude)'s version, with the augers still inside the loop: a Kelvin-clamp dock (two steel balls in the plate on a cone and a vee, a third on a steel flat) with N52 magnets, and a printed guide cradle where the carriage parks 20 mm under the passing carriages. A spring shutter over each 3 mm outlet is opened by a finger on the carriage, a spring-bolt plate latch is released by a fixed station rail, a 455 × 262 × 740 mm acrylic enclosure has front and side hatches, and the lab's A&D HR-100A is modelled at the dose point; BoM $1,920.33 ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6510926546)).
+**Rationale:** Make the dock land the same way every time, keep powder in the augers between doses, and dose into a beaker on the real balance with no shared funnel.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a94824f2beb8b6e8e8fafcf95cfff677f57c1879/cad/chain-carousel-v3/renders/features/how_it_works_station.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a94824f2beb8b6e8e8fafcf95cfff677f57c1879/cad/chain-carousel-v3/renders/features/scale_fit.gif" width="300">
+
+**Outcome ⚠️ — station fails in simulation as drawn** ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6510926546)): the carriage toppled in its guide, the door finger overlapped its push strip by only 0.8 mm, and the dock slid sideways before the NEMA 11 stalled; fixes worked in the model but were not put in the CAD. The balance did not fit: 19 kinds of part stood inside its breeze break. Later versions built on v4.
+
+---
+
 <!-- ENTRY date=2026-10-29T18:12:51Z pr=0 sub=tooling -->
-<a id="e154"></a>
+<a id="e162"></a>
 ### 2026-10-29 — Onshape recreations of the Fusion 360 parts · Issue #193
 **Trigger:** A team member thanked a second team member for recreating the Fusion parts in Onshape and asked for the links and screen recordings ([PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170#issuecomment-6226383850)), in line with the note that all lab files go on Onshape from now on ([#177](https://github.com/vertical-cloud-lab/powder-doser/issues/177)); [#193](https://github.com/vertical-cloud-lab/powder-doser/issues/193) collects them for building the 25 new dosers.
 **Design:** The parts were transferred by hand into lab Onshape documents: baseplate, mounting plate, auger, tap collar, servo and stepper pinions, back and side stand brackets, a wood leg and an assembly ([list](https://github.com/vertical-cloud-lab/powder-doser/issues/193#issuecomment-6504703603)); the snap-in C-clip auger bracket ("Flexible Bracket") was added to the list on 7 Nov. The tap-collar base has no Onshape version and is still the AI part from PR #51 ([PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170#issuecomment-6612576245)).
@@ -1944,8 +2048,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-10-29T19:59:59Z pr=185 sub=multi-doser -->
+<a id="e163"></a>
+### 2026-10-29 — Chain carousel v4 · PR #185
+**Trigger:** Item 7 of the same critiques: hold the augers outside the loop so they can be swapped with their brackets, with the electronics carriage reaching up and around the auger ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6503653801)).
+**Design:** The AI agent (Claude)'s version: v3 with each module on its carriage's outer face, swinging up into the loop through a 51.6 mm opening to dose. The electronics carriage, turned over, reaches past the auger on two arms carrying the cone, vee and magnets (no electromagnet), a 4 mm pin replaces the latch bolt, and a tube rest holds the module at the station. Tilt is limited to 50° (the cap reaches the top run at about 55°), the frame widens to 380 mm, and the carriage parks 28 mm under its dock after a sweep found passing augers hitting its arms at 20 mm; BoM $1,983.89 ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6510926546)).
+**Rationale:** An auger can be pulled straight off its plate at the side hatch while the door, plate and carriage stay on the chain.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a94824f2beb8b6e8e8fafcf95cfff677f57c1879/cad/chain-carousel-v4/renders/features/outside_loop.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/a94824f2beb8b6e8e8fafcf95cfff677f57c1879/cad/chain-carousel-v4/renders/features/side_tabs_swap.gif" width="300">
+
+**Outcome ⚠️ — station fails in simulation as drawn** ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6510926546)): the same faults as v3, and the coil-less dock also lifted off before the motor stalled; 11 kinds of part still stood in the balance's way. The FEA (above) found that the latch held nothing as drawn. v5 rebuilt the station around the balance.
+
+---
+
 <!-- ENTRY date=2026-10-31T01:41:08Z pr=196 sub=sim -->
-<a id="e155"></a>
+<a id="e164"></a>
 ### 2026-10-31 — Physics-simulation method survey · PR #196 / PR #184
 **Trigger:** A team member asked on the optimization-paper PR #184 for Edison queries and full texts read through the doser Pi to find which physics-based simulations fit the paper's discussion, and for an attempt at running all of them ([PR #184](https://github.com/vertical-cloud-lab/powder-doser/pull/184#issuecomment-6537306678)); the AI agent (Claude) opened PR #196.
 **Design:** 21 method families were catalogued and 31 small runs made in 11 codes (LIGGGHTS, LAMMPS, Yade, MercuryDPM, Chrono, LMGC90, OpenFOAM, 4C, Taichi, GrainLearning, GNS) plus self-written solvers. They covered the #180 auger twin, DEM versions of the standard tests (angle of repose, rotating drum, Hall/Carney, tapping, shear cell, blade spreading), liquid bridges, tribocharging, CFD–DEM, continuum models, closed-form orifice and screw models, cellular automata, Bayesian calibration and learned simulators, mostly with the #180 salt parameters run dry and cohesive (Bond number about 5).
@@ -1958,7 +2075,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-11-01T01:55:47Z pr=0 sub=mounting -->
-<a id="e156"></a>
+<a id="e165"></a>
 ### 2026-11-01 — Pre-production review fixes to the Onshape parts · Issue #191
 **Trigger:** Before building the 25 new dosers, two team members reviewed the baseplate, side and back stand brackets and tap collar from #193 against the Fusion STEP files and hand measurements of the working doser ([#191](https://github.com/vertical-cloud-lab/powder-doser/issues/191#issuecomment-6552028706)).
 **Design:** The side stand brackets were adjusted to match the original STEP file, the gap between the baseplate's servo-mount posts was widened by 0.1 mm, and the holes in those posts were moved to line up with the servos' holes. The AI agent had also edited the stepper mounting holes, and gear interference carried over from the Fusion files was fixed during the hand transfer; the mounting plate was declared ready for a one-unit test print.
@@ -1968,8 +2085,34 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-11-03T17:54:43Z pr=0 sub=multi-doser -->
+<a id="e166"></a>
+### 2026-11-03 — Dosing-station linear actuator selection · Issue #202
+**Trigger:** A team member asked for the parameters a linear actuator for the newest multi-doser versions should meet, and parts for sale, before ordering one ([#202](https://github.com/vertical-cloud-lab/powder-doser/issues/202)).
+**Design:** From PR #185's CAD and MuJoCo runs, the AI agent (Claude) specified a rod actuator with potentiometer feedback and a clevis at each end: at least 100 mm of stroke (150 mm for the full tilt range), a closed length of about 200 mm or less, 40–50 N peak force, at least 30 N of holding force with the power off, 20–50 mm/s and ±0.6 mm repeatability. It picked the Actuonix P16-150-22-12-P (150 mm stroke, 197 mm closed, 50 N, 75 N holding) with an LAC control board, the actuator the PR #185 station was already drawn around ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/202#issuecomment-6610909990)).
+**Rationale:** One actuator at the station lifts the electronics carriage into its dock, tilts the module to the dose angle and holds it through taps.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/5066eae310dde970f710efc3bab5454194e3a590/hardware/linear-actuator/stroke_vs_tilt.png" width="300">
+
+**Outcome — not yet ordered** ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/202#issuecomment-6624329180)): a team member noted that Actuonix is what they had used before; a check against that earlier work kept the pick, adding a stroke limit for chain carousel v4 and a note that the rig scripts' pigpio needs Raspberry Pi OS bookworm. The fixed multi-auger doser also uses this actuator. No order is recorded.
+
+---
+
+<!-- ENTRY date=2026-11-04T19:21:18Z pr=185 sub=multi-doser -->
+<a id="e167"></a>
+### 2026-11-04 — Chain carousel v5 · PR #185
+**Trigger:** A team member asked whether the multi-doser was "actually using a scale", saying it needs a real one, probably one of the lab's A&D balances ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6638960108)).
+**Design:** The AI agent (Claude)'s version: v4 with the station rebuilt round an A&D HR-202i (220 g × 0.1 mg). The electronics carriage rides on a lift bar carried by two P16s, one each side of the balance, with guided shoes on two posts; the carousel sits 80 mm higher, and a 25 mL beaker on a printed riser sits 154 mm under the outlet with no funnel. BoM $2,361.63 ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6638969198)).
+**Rationale:** Earlier versions weighed into a vial on a 100 g load cell under a shared funnel, and the HR-100A did not fit v3's or v4's station.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/353dae78829ef8fffaa1bd584876a157145a0b76/cad/chain-carousel-v5/renders/rig_balance_front.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/353dae78829ef8fffaa1bd584876a157145a0b76/cad/chain-carousel-v5/renders/features/balance_dose.gif" width="300">
+
+**Outcome — superseded:** the HR-202i is discontinued (the GH-202 replaces it), and no record shows the lab owns one ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6638969198)). Tilt was limited to 40°, because past about 41° the lift bar reached the neighbouring modules ([`353dae7`](https://github.com/vertical-cloud-lab/powder-doser/commit/353dae7)). While drawing labelled explainer GIFs on 10 Nov, the AI agent found the latch rail's cam on the wrong side of the followers, where it could never push one open, and moved it ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6775381432)). A team member's notes the same day led to v6.
+
+---
+
 <!-- ENTRY date=2026-11-07T22:30:52Z pr=0 sub=tap-collar -->
-<a id="e157"></a>
+<a id="e168"></a>
 ### 2026-11-07 — Plate-mounted tapper concepts · Issue #203
 **Trigger:** A team member asked for concepts that make the tap collar and solenoid part of the mounting plate, so augers can be switched without removing and refitting the collar ([#203](https://github.com/vertical-cloud-lab/powder-doser/issues/203#issuecomment-6713572059)).
 **Design:** The AI agent (Claude) modelled four CadQuery concepts on PR #170's assembly (`8312d30`): a bolt-on tap tower on the hard-stop base's two M3 holes, with slotted ears to set the plunger gap and a strike on the side of the tube; the same tower printed as one part with the front C-clip bracket; a see-saw hammer whose 2.4:1 lever knocks the tube from below; and a flip-away saddle, the old collar cut in half on a hinge pin. All four strike 42.3 mm behind the hinge, where the collar strikes now, and must hold the Adafruit 412's brass cap about 3–4 mm from the tube.
@@ -1981,8 +2124,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-11-07T22:58:03Z pr=0 sub=multi-doser -->
+<a id="e169"></a>
+### 2026-11-07 — Fixed multi-auger doser v1 · Issue #204
+**Trigger:** A team member asked for concepts that put 2–3 of the existing dosers on one fixed base so their augers can dose into one beaker without anyone swapping augers: either two modules nose-to-nose, or the servos and tilt gears removed and each plate raised by a linear actuator from underneath ([#204](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6713774818)).
+**Design:** The AI agent (Claude) placed copies of the PR #170 module and swept their tilt for the closest spacing that keeps 2 mm between modules. Two current modules on their own baseplates need 93 mm hinge to hinge, limited first by the baseplates and then the MG996R servos rather than the big gears. The concepts were A1, the servos turned end for end on a new shared base (41 mm); A2, one gear and servo per module on opposite flanks (37 mm); B1, a gearless pair, each tilted by an actuator pinned 95 mm behind and 45 mm below its hinge (37 mm); and B2, a gearless tri-star of three modules at 120° with the hinges 32 mm from the beaker axis. The actuator was #202's pick, an Actuonix P16-150 with an LAC board, needing 149 mm of rod travel for 90°.
+**Rationale:** Only the actuator route fits three augers: three servo modules would need their hinges 66 mm from the beaker axis.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/811ed6d560be8c98d7be34717e7275599063fb11/design/multi-auger-fixed-base/renders/a1_concept.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/811ed6d560be8c98d7be34717e7275599063fb11/design/multi-auger-fixed-base/renders/b2_concept.png" width="300">
+
+**Outcome — superseded:** the team member took the three-auger actuator concept (B2) forward ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6754868739)). The AI agent's suggested first build, A1's shared base under two existing modules, is not reported. The new parts were placeholders, and nothing was printed or ordered ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6713779015)).
+
+---
+
 <!-- ENTRY date=2026-11-07T23:59:49Z pr=0 sub=tap-collar -->
-<a id="e158"></a>
+<a id="e170"></a>
 ### 2026-11-07 — Plate-mounted solenoid bracket v1 · Issue #203
 **Trigger:** A team member posted a "New solenoid bracket first iteration" in Onshape, with an assembly in the same document ([#203](https://github.com/vertical-cloud-lab/powder-doser/issues/203#issuecomment-6714762206)).
 **Design:** A bracket that attaches the solenoid to the mounting plate instead of to a collar around the auger ([#203](https://github.com/vertical-cloud-lab/powder-doser/issues/203)); its geometry, and which of the AI agent's concepts it follows, are not described in the thread.
@@ -1993,7 +2149,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-11-09T22:21:55Z pr=205 sub=powder-tests -->
-<a id="e159"></a>
+<a id="e171"></a>
 ### 2026-11-09 — In-house powder property test concepts · PR #205 / PR #196
 **Trigger:** After the AI agent recommended measuring angle of repose, size distribution and densities on the jars rather than using handbook values ([PR #196](https://github.com/vertical-cloud-lab/powder-doser/pull/196#issuecomment-6624119778)), a team member asked for a PR to design powder property tests the existing doser could run in-house ([PR #196](https://github.com/vertical-cloud-lab/powder-doser/pull/196#issuecomment-6753028389)).
 **Design:** Ten concept tests that reuse the doser's stepper, tilt servo, solenoid tapper, 0.1 mg balance, Pi and camera with small printed fixtures, in three tiers. Tier 1: a heap angle of repose built by the doser on a 20 mm pedestal on the balance and photographed in silhouette, bulk and tapped density in a glass tube tapped by the doser's solenoid, a tilting plate for wall friction on PLA and steel at 50–400 Pa, and size and shape from macro images. Tier 2 adds an orifice cup with 1–6 mm discs, humidity chambers and a rotating drum on the auger's stepper; tier 3 unconfined strength, blade spreading and a Faraday cup.
@@ -2005,8 +2161,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-11-10T00:26:10Z pr=0 sub=multi-doser -->
+<a id="e172"></a>
+### 2026-11-10 — Fixed multi-auger doser v2 · Issues #204 / #203
+**Trigger:** A team member asked for a render of their new tap-collar bracket from #203 on the three-auger actuator concept, where it replaces the front auger bracket ([#204](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6754868739)).
+**Design:** The AI agent (Claude) exported the bracket from the team member's Onshape assembly and fitted it to each tri-star module in place of the front Flexible Bracket and the tap collar with its base, the solenoid's plunger striking the side of the tube 46 mm behind the hinge. Every solenoid sits on the same side, facing the plain side of the next module like a pinwheel, so the hinges stay 32 mm from the beaker axis and all three modules can still be at 90° at once; the closest gap is 5.8 mm, bracket to bracket with two neighbours at 90° (target 2 mm).
+**Rationale:** The new bracket replaces the front auger bracket, so the tri-star's spacing had to be re-checked with it fitted.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/1b767b9c84b5d4ec9eec7543b8ef77742e504a0a/design/multi-auger-fixed-base/renders/b2_tap_bracket.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/4b23d5d1908e4fb330d52729a0a950a0b90395f8/design/multi-auger-fixed-base/renders/b2_clearance.png" width="300">
+
+**Outcome — superseded** ([review](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6756895160)): a collaborator found it "well-suited for dosing into a beaker or Erlenmeyer flask", vessels used for long polymerizations, and asked about the room underneath. The AI agent found that the stand, not the hinge towers, sets it: each actuator hangs 208 mm below the shelf, so the shelf must stand at least 217 mm above the bench, and an Erlenmeyer needs an 80 mm funnel to catch all three outlets ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6756902254)). The actuator mount was detailed next (v3, below).
+
+---
+
 <!-- ENTRY date=2026-11-10T17:38:29Z pr=181 sub=module -->
-<a id="e160"></a>
+<a id="e173"></a>
 ### 2026-11-10 — Build hardware for the #193 assembly · PR #181 / PR #200
 **Trigger:** A team member started the first repeat-doser assembly on 5 Nov ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6671271179)), and another asked for the parts list and an assembly diagram to match the #193 Onshape assembly, reporting that "all the m3 nuts should be nylon-insert locknuts" and the M5 × 45 hinge screws should be M5 × 40 ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6774583379)).
 **Design:** Per doser: 15 M3 nylon-insert locknuts, two M5 × 40 hinge screws, two C-clips in place of the split-clamp auger brackets, and a stand (Base, back and two side brackets, three wood legs, 12 bolts) in place of the Fusion baseplate and its board ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/181#issuecomment-6774592107)); the AI agent (Claude) drew exploded and hardware diagrams placing all 66 fasteners. The 190.4 × 190.4 × 52.6 mm Base fits only the H2D, where a team member printed one by hand on 4 Nov on the 0.4 mm nozzle (79.42 g, 261 layers; [PR #200](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6642790988)).
@@ -2019,7 +2188,7 @@ Designs are logged chronologically below, but iterations of one object are scatt
 ---
 
 <!-- ENTRY date=2026-11-10T18:06:30Z pr=0 sub=mounting -->
-<a id="e161"></a>
+<a id="e174"></a>
 ### 2026-11-10 — Hinge-bolt nut inset in the mounting plate · Issue #191
 **Trigger:** After reviewing the first assembly of the new dosers, a team member reported the decision to change the mounting plate ([#191](https://github.com/vertical-cloud-lab/powder-doser/issues/191#issuecomment-6775216505)).
 **Design:** An inset hole on the auger side of the mounting plate's arms, so that a nut can go on the end of each M5 × 40 hinge bolt; the current design has no nuts there.
@@ -2029,8 +2198,21 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-11-10T20:13:01Z pr=185 sub=multi-doser -->
+<a id="e175"></a>
+### 2026-11-10 — Chain carousel v6 · PR #185
+**Trigger:** A team member asked for a longer mounting plate with a second clip, the plate's pin moved to the back, the kinematic features printed into the plate, ladder-like crossbars instead of posts on the bottom rail, a full 90° tilt, and funnel-type couplings on the actuator guides ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6777053623)).
+**Design:** The AI agent (Claude)'s version: the mounting plate runs on to the cap (252 mm; v5's stopped at 106 mm) with a second clip and a cap saddle, the latch moves to the plate's back end with a rest shelf, and printed domes with pressed-in magnets replace the dock's steel balls. Only the corner posts stand on the base rails, with two 2020 rungs per side; two P16-50s lift the carriage into its dock, a third P16 on the back side plate tilts the docked carriage and module 0–90°, and the guides gain 45° funnel mouths with cone and vee seats ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6777063651)). BoM $2,377.50 ([`5f5ae41`](https://github.com/vertical-cloud-lab/powder-doser/commit/5f5ae41)).
+**Rationale:** v5 could not reach 90°: its lift bar met a neighbouring module's plate at 42°, and 90° needed 161.5 mm from a 150 mm stroke.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/c01b7a8b0fcba21185611594346a76ddcaa770e6/cad/chain-carousel-v6/renders/v6/overview_v6.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/c01b7a8b0fcba21185611594346a76ddcaa770e6/cad/chain-carousel-v6/renders/v6/tilt90_v6.gif" width="300">
+
+**Outcome — superseded** ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6780387885)): a team member kept the ladder rungs, the longer plate and the guide ramps, but rejected the actuator on the back and the cross bars with hooks ("the powder will dose directly onto them"), asked to keep a single actuator, and said the balance model, with a large module at the back, was wrong.
+
+---
+
 <!-- ENTRY date=2026-11-10T20:49:09Z pr=196 sub=powder-tests -->
-<a id="e162"></a>
+<a id="e176"></a>
 ### 2026-11-10 — Per-jar campaign session plan · PR #196
 **Trigger:** A team member asked whether BO campaigns on every powder could also collect dosing data for the simulation and ML models, and for a draft of what that would look like ([PR #196](https://github.com/vertical-cloud-lab/powder-doser/pull/196#issuecomment-6778890390)).
 **Design:** The AI agent (Claude) drafted each campaign as one session on one jar, with the BO between fixed blocks: the #205 tests, a fixed hopper load, an opening fingerprint (protocols C, D, E), a 22-dose screen identical for every powder, 14–20 BO doses, validation repeats plus 0.05, 0.5 and 5 g doses, a closing fingerprint and a same-day salt reference, about 5–6 h per jar with half of it unattended. Every dose would also log jar, lot, auger and session IDs, hopper fill, RH and temperature.
@@ -2042,8 +2224,47 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-11-10T23:29:05Z pr=185 sub=multi-doser -->
+<a id="e177"></a>
+### 2026-11-10 — Chain carousel v7 · PR #185
+**Trigger:** The same team member asked for a mix of v5 and v6: one actuator under the station again, cross bars between the rungs, the kinematic couplings raised on the mounting plate so the electronics carriage can be as short as possible, a 90° tilt, and a profile view of the latch ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6780387885)).
+**Design:** The AI agent (Claude)'s version keeps v6's rungs, long plate, back latch and funnel guides, with one P16-150 under the station that lifts the carriage 10 mm out of its guides and then tilts it 0–90° using 130 mm of stroke. The dock sits on three printed posts beside the tube that reach past the auger's axis, so the carriage (the team member's 13 Oct carriage turned over, with no arms) is 46 mm deep below the auger and parks 10 mm under the dock; the balance is re-modelled as a base and a draft cage with a dosing lid ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6780397130)).
+**Rationale:** One actuator, with the couplings on the scale side of the auger, shortens the push and keeps the station simple.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/f1cb7549d76a3fa5b86e00653e6d0035cf88e2a1/cad/chain-carousel-v7/renders/v7/overview_v7.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/f1cb7549d76a3fa5b86e00653e6d0035cf88e2a1/cad/chain-carousel-v7/renders/v7/station_v7.gif" width="300">
+
+**Outcome ⚠️ — kept as the main version** ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6957695003)): the CAD showed no clashes at any of the 12 tilt angles checked. A team member then found the outlet too high: it sits 154 mm above the beaker's rim, about 1.8 times the single doser's estimated 85 mm ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6831136790)), which led to v8 and v9. After v8 the team member kept v7 as the "main" version to come back to.
+
+---
+
+<!-- ENTRY date=2026-11-12T18:13:33Z pr=185 sub=multi-doser -->
+<a id="e178"></a>
+### 2026-11-12 — Chain carousel v8 · PR #185
+**Trigger:** A team member was concerned about how high the auger sits above the scale, asked for a height comparison with the single doser, and asked for a new electronics carriage "more similar to the first design", with the solenoid turned to face the front just ahead of the gear ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6831123907)).
+**Design:** The AI agent (Claude)'s version: a new carriage on the layout of the team member's 27 Aug carriage, a flat 96 × 50 mm base wholly behind the balance, with the dock posts and guides moved behind the gear. The carousel sits 103.65 mm lower and the pan 38 mm ahead of the outlet on an offset riser, so the outlet is 50 mm above the beaker's rim (v7: 154 mm); the same P16-150 still tilts 0–90°, and four front-cover ideas were pitched ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6831136790)). BoM $2,200.98.
+**Rationale:** Shorten the fall from the auger into the beaker.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/6513ee244df8d677641433b0fed4579f94340c4e/cad/chain-carousel-v8/renders/v8/overview_v8.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/6513ee244df8d677641433b0fed4579f94340c4e/cad/chain-carousel-v8/renders/v8/drop_heights.png" width="300">
+
+**Outcome — superseded** ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6957695003)): the team member called them "great changes" but still preferred v7, and asked for further variations on it (v9, below).
+
+---
+
+<!-- ENTRY date=2026-11-12T23:11:17Z pr=0 sub=multi-doser -->
+<a id="e179"></a>
+### 2026-11-12 — Fixed multi-auger doser v3 · Issue #204
+**Trigger:** A team member asked for the three-auger actuator model broken into its parts with a render of each, how the actuator connects to the mounting plate, and which parts are new or reused, before any Onshape modelling ([#204](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6838104842)).
+**Design:** The AI agent (Claude) kept the auger, cap, rear Flexible Bracket, NEMA 11 stepper, 20T pinion and solenoid unchanged, removed the mounting plate's two 28T gears and their webs, and dropped the baseplate, both servos, the front bracket and the tap collar. The P16's rod end pins (M4 × 20 with a nyloc nut) into a new printed clevis block, a 30 × 24 mm pad screwed under the plate floor through two new M3 holes, 95 mm behind and 45 mm below the hinge; its rear end hangs from the shelf on the P16's own U-bracket. The shelf slots grew from 24 × 75 to 34 × 87 mm, and the actuator is now drawn from its datasheet.
+**Rationale:** The team wanted to adjust the design from renders before spending Onshape API calls.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/f4e467b4db319f4155b5f2a570ce76dc208d0cae/design/multi-auger-fixed-base/renders/parts_overview.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/f4e467b4db319f4155b5f2a570ce76dc208d0cae/design/multi-auger-fixed-base/renders/actuator_connection.png" width="300">
+
+**Outcome — superseded:** the AI agent confirmed that the gearless plate is the PR #170 plate minus its gears and webs, the same 108.2 mm wide with 31 % less plastic ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6867332162)). The team member then removed the gears and their arms in Onshape and asked for a one-piece base (v4, below).
+
+---
+
 <!-- ENTRY date=2026-11-13T00:53:45Z pr=200 sub=mounting -->
-<a id="e163"></a>
+<a id="e180"></a>
 ### 2026-11-13 — Repeat-doser mounting plate v3 · PR #200 / Issue #197
 **Trigger:** A team member opened [#197](https://github.com/vertical-cloud-lab/powder-doser/issues/197) so prints would use only the reviewed #193 Onshape files; another asked for one of each part and to "print all gears sideways (it's better for the cross section of the teeth)", the mounting plate included, plus the auger clips ([PR #200](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6839800610)).
 **Design:** The #193 mounting plate stands on its side, 108 mm tall, with one 28T gear face and the plate's edge on the bed and tree supports under the upper gear; it shares an A1 mini plate with two C-clips, two 14T servo pinions, a 20T stepper pinion and the tap collar (120.2 g, 4 h 53 min). The AI agent (Claude) chose the module 1.0 stepper pinion (the native Onshape one is module 1.3 and cannot mesh with the auger's 44T module 1.0 gear), the imported servo pinion (the native one exported without its 5.5 mm spline socket) and the original split tap collar (the recreation's clamp slot stops about 4 mm short of the bore) ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-6839815138)).
@@ -2055,11 +2276,37 @@ Designs are logged chronologically below, but iterations of one object are scatt
 
 ---
 
+<!-- ENTRY date=2026-11-14T00:00:12Z pr=0 sub=multi-doser -->
+<a id="e181"></a>
+### 2026-11-14 — Fixed multi-auger doser v4 · Issue #204
+**Trigger:** A team member asked for detailed base dimensions with the hinge towers merged into the base, noting they had removed the gears and their arms from the mounting plate, leaving the stepper mount as its widest point ([#204](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6867801204)).
+**Design:** The AI agent (Claude) drew the base as one printed part, 320.5 × 280.2 × 52.25 mm so it fits one H2D nozzle: a 6 mm shelf with three lobes at 120° (100 mm wide, tapering to 48 mm at 174 mm from the beaker axis), a Ø78 mm window, a 34 mm actuator slot in each lobe and six hinge towers copied from the current baseplate. The plate was modelled as the team member described it, 88.1 mm wide with no gears, arms or front wings.
+**Rationale:** One printable base, dimensioned so the team member could draw it in Onshape.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/6f2f016bee04e50943e196e61f661b302a442f7b/design/multi-auger-fixed-base/renders/base_iso.png" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/6f2f016bee04e50943e196e61f661b302a442f7b/design/multi-auger-fixed-base/renders/base_drawing.png" width="300">
+
+**Outcome — in progress** ([comment](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6867806741)): clearance checks gave 5.8 mm between modules and 1.26 mm from the plate to a tower foot at 0°, the same gap as on the current doser. On 17 Nov the AI agent dimensioned the clevis-block holes in the plate (two Ø3.4 mm holes 22 mm apart, 35 mm from the floor's rear edge) and the block itself, now with hexagonal nut pockets and an M4 × 20 pin, because an M4 × 25 would rub the base slot ([holes](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6938452898), [block](https://github.com/vertical-cloud-lab/powder-doser/issues/204#issuecomment-6939120816)). No print or test is reported.
+
+---
+
 <!-- ENTRY date=2026-11-17T17:40:57Z pr=0 sub=module -->
-<a id="e164"></a>
+<a id="e182"></a>
 ### 2026-11-17 — Print guidance for doser parts v2 · Issue #193
 **Trigger:** The 25-auger H2D batch (above) had failed because a 0.6 mm nozzle was installed, which spoiled the surfaces of the Archimedes screw, and a team member set a 0.4 mm maximum for augers ([#193](https://github.com/vertical-cloud-lab/powder-doser/issues/193#issuecomment-6551960707)); on 17 Nov a team member posted print specs for every production part.
 **Design:** All parts at 0.4 mm nozzle or smaller; the baseplate on the H2D with the posts up; the mounting plate gear face down, on the edge closest to the motor mount; the tap collar as mounted on the plate; and augers on the H2D threaded end up, with organic supports on the base only up to the gear face ([spec](https://github.com/vertical-cloud-lab/powder-doser/issues/193#issuecomment-6956001314)).
 **Rationale:** Fix the printer, nozzle and orientation of every production part after the 0.6 mm auger batch failed.
 
 **Outcome — not yet tested:** posted on 17 Nov; no prints to this spec are reported yet.
+
+---
+
+<!-- ENTRY date=2026-11-17T19:23:47Z pr=185 sub=multi-doser -->
+<a id="e183"></a>
+### 2026-11-17 — Chain carousel v9 · PR #185
+**Trigger:** A team member asked for a variation on v7 without the balance's draft cage, relying on closable plexiglass, internal panels and a front bay window instead, with the scale raised on a block, and asked how close the auger could then get ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6957695003)); another team member had suggested a granite block on 5 Nov ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6665180284)).
+**Design:** The AI agent (Claude)'s version: v7 with the draft cage removed, the balance on a granite block so the carousel stays at v7's height, and the beaker on the pan 32 mm under the outlet (v7: 154 mm; v8: 50 mm). Only the carriage's front is cut back (a slim door-finger arm, the solenoid moved behind the gear), and a bay window and a weighing chamber with baffles and a deck under the bottom run replace the cage ([comment](https://github.com/vertical-cloud-lab/powder-doser/pull/185#issuecomment-6957703919)). BoM $2,406.05.
+**Rationale:** Bring the beaker as close to the outlet as the parts passing over it allow, without giving up v7's carriage design.
+
+<img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/5e1a7751a1f1b6ec7737cbed6f4ea83c9295f2fa/cad/chain-carousel-v9/renders/v9/overview_v9.gif" width="300"> <img src="https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/5e1a7751a1f1b6ec7737cbed6f4ea83c9295f2fa/cad/chain-carousel-v9/renders/v9/drop_study.png" width="300">
+
+**Outcome — in progress:** posted on 17 Nov with clean CAD checks (no clashes over 854 instances, tilt 0–90°; [`5e1a775`](https://github.com/vertical-cloud-lab/powder-doser/commit/5e1a775)). Nothing is built, and no reply is recorded yet.
