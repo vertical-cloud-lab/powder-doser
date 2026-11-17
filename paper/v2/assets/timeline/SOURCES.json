@@ -201,5 +201,19 @@
     "commit": "2ddc6793bf3265bbe1bc5050f9187a40be666e30",
     "commit_date": "2026-05-13",
     "note": "PR #35, whole single-channel module, isometric view (replaces the side view in Fig. 2a after the 11 Nov review: upright and sharper). SVG rendered with rsvg-convert -z 2, inverted to black on white, lines thickened with a 3 px minimum filter."
+  },
+  "eng_flexible_bracket_original.png": {
+    "branch": "claude/issue-197-20261103-0056",
+    "path": "cad/onshape-193/brackets-for-auger/flexible-bracket-original/iso.png",
+    "commit": "526f90b9a3d52b329ed5100f875e48fb3894998f",
+    "commit_date": "2026-11-13",
+    "note": "PR #200 (issue #193), the team's original flexible snap-in auger bracket, Onshape shaded view exported through the API. For Fig. 3c (review of 17 Nov): later bracket iterations. Copied, not yet placed in a figure."
+  },
+  "eng_flexible_bracket_current.png": {
+    "branch": "claude/issue-197-20261103-0056",
+    "path": "cad/onshape-193/brackets-for-auger/bracket-recreation/iso.png",
+    "commit": "526f90b9a3d52b329ed5100f875e48fb3894998f",
+    "commit_date": "2026-11-13",
+    "note": "PR #200 (issue #193), 'bracket-recreation', the flexible snap-in auger bracket as in the team's Onshape document on 13 Nov, Onshape shaded view. For Fig. 3c (review of 17 Nov): last image, the bracket on the current doser. Copied, not yet placed in a figure."
   }
 }

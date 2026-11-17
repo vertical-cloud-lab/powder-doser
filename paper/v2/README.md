@@ -20,6 +20,13 @@ compiled to [`figures.pdf`](figures.pdf)); captions are shown as text, never ins
 and open with the takeaway; and Fig. 2b became its own figure, Fig. 3, so the later figures
 moved up by one (old 3 → 4, 4 → 5, 5 → 6, 6 → 7).
 
+**Review of 17 Nov 2026.** Sam's notes on Figs. 1–7 are listed point by point in
+[`../review_2026-11-17/NOTES.md`](../review_2026-11-17/NOTES.md), with the data checks for
+Fig. 6 (the negative tap means are balance noise; the flow comes in one surge per auger
+revolution) and the pictures still needed. The captions in `build_figures.py` and
+`FIGURES-AND-TABLES.md` are updated. The images are not yet re-rendered: on this PR the Claude
+action denies Python, and the notes explain how to lift that.
+
 ## Whiteboard, transcript, and what was made
 
 | Whiteboard | Meeting | v2 item | Status |
