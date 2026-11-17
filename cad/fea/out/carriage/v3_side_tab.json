@@ -1,0 +1,41 @@
+{
+ "module": "carriage",
+ "case": "v3_side_tab",
+ "design": "chain-carousel-v3",
+ "part": "side tab (front, printed)",
+ "load_case": "tongue pushes the lip with 25.0 N (auger pull)",
+ "loads": {},
+ "nodes": 25312,
+ "elements": 14669,
+ "mesh_mm": 1.2,
+ "wall_s": 7.4,
+ "parts": [
+  {
+   "part": "side tab",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 0.3849,
+   "vm_max_MPa": 64.647,
+   "vm_max_at": [
+    -21.0,
+    -4.4,
+    5.5
+   ],
+   "vm_excl_MPa": 64.647,
+   "vm_excl_at": [
+    -21.0,
+    -4.4,
+    5.5
+   ],
+   "allow_MPa": 23.0,
+   "sf": 0.36
+  }
+ ],
+ "key_disp": {
+  "lip tip dw (mm)": 0.33969,
+  "von Mises 1 mm off the sharp root corner (MPa)": 12.35295,
+  "beam estimate 6 F a / (b h^2) at the root (MPa)": 11.80556
+ },
+ "notes": "",
+ "mass_kg": 0.0054,
+ "png": "out/carriage/v3_side_tab.png"
+}

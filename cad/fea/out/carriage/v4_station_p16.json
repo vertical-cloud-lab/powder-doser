@@ -1,0 +1,51 @@
+{
+ "module": "carriage",
+ "case": "v4_station_p16",
+ "design": "chain-carousel-v4",
+ "part": "carriage v4",
+ "load_case": "station: P16 stall 50 N through the hinge, carriage in the hold-down lips",
+ "loads": {
+  "hinge (N)": [
+   0.0,
+   50.0,
+   0.0
+  ],
+  "supports": "hold-down lips (w), A-1 tabs (u, x)"
+ },
+ "nodes": 132030,
+ "elements": 74660,
+ "mesh_mm": 2.2,
+ "wall_s": 25.9,
+ "parts": [
+  {
+   "part": "carriage",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 1.47322,
+   "vm_max_MPa": 10.957,
+   "vm_max_at": [
+    -12.4,
+    -6.3,
+    -6.9
+   ],
+   "vm_excl_MPa": 10.605,
+   "vm_excl_at": [
+    19.7,
+    -11.3,
+    -8.0
+   ],
+   "allow_MPa": 23.0,
+   "sf": 2.17
+  }
+ ],
+ "key_disp": {
+  "hinge lug -u dw (mm)": 0.67795,
+  "hinge lug +u dw (mm)": 0.7918,
+  "latch housing mouth dw (mm)": 0.76807,
+  "mid-span edge strips dw (mm)": 1.34327,
+  "auger cap end dw from carriage bending (mm)": 0.81467,
+  "lips reaction w (N)": -47.12613
+ },
+ "notes": "",
+ "mass_kg": 0.0826,
+ "png": "out/carriage/v4_station_p16.png"
+}

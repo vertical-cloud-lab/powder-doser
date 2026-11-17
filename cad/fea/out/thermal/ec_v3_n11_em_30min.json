@@ -1,0 +1,49 @@
+{
+ "module": "thermal",
+ "case": "ec_v3_n11_em_30min",
+ "design": "v3",
+ "T_air": 22.0,
+ "P_nema11_W": 1.55,
+ "P_electromagnet_W": 0.977,
+ "nema11_max": 36.6,
+ "electromagnet_max": 62.3,
+ "petg_max": 62.1,
+ "petg_next_to": {
+  "NEMA 11": 36.3,
+  "electromagnet": 62.1
+ },
+ "iterations": [
+  {
+   "P11": 1.55,
+   "Pem": 0.977,
+   "n11_max": 36.6
+  }
+ ],
+ "nodes": 64962,
+ "wall_s": 367.8,
+ "electromagnet_current_frac": 0.858,
+ "electromagnet_pull_frac": 0.735,
+ "history": {
+  "N11": [
+   [
+    1800.0,
+    36.46,
+    36.59
+   ]
+  ],
+  "EM": [
+   [
+    1800.0,
+    62.14,
+    62.26
+   ]
+  ],
+  "ECP": [
+   [
+    1800.0,
+    24.94,
+    62.13
+   ]
+  ]
+ }
+}

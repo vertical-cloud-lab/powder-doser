@@ -1,0 +1,51 @@
+{
+ "module": "carriage",
+ "case": "v4_pull",
+ "design": "chain-carousel-v4",
+ "part": "carriage v4",
+ "load_case": "loading: 40 N auger pull at Sam x 102 (latch closed), tongues in the side tabs",
+ "loads": {
+  "latch (N, w)": -39.04,
+  "hinge (N)": [
+   -2.15,
+   -0.96,
+   0.0
+  ]
+ },
+ "nodes": 132030,
+ "elements": 74660,
+ "mesh_mm": 2.2,
+ "wall_s": 26.6,
+ "parts": [
+  {
+   "part": "carriage",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 11.74133,
+   "vm_max_MPa": 31.439,
+   "vm_max_at": [
+    -32.4,
+    -11.3,
+    138.8
+   ],
+   "vm_excl_MPa": 31.439,
+   "vm_excl_at": [
+    -32.4,
+    -11.3,
+    138.8
+   ],
+   "allow_MPa": 23.0,
+   "sf": 0.73
+  }
+ ],
+ "key_disp": {
+  "hinge lug -u dw (mm)": -2.34439,
+  "hinge lug +u dw (mm)": -0.44572,
+  "latch housing mouth dw (mm)": -10.13051,
+  "mid-span edge strips dw (mm)": -0.89329,
+  "auger cap end dw from carriage bending (mm)": -22.39375,
+  "side tabs reaction w (N)": 40.23274
+ },
+ "notes": "",
+ "mass_kg": 0.0826,
+ "png": "out/carriage/v4_pull.png"
+}

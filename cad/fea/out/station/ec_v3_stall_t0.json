@@ -1,0 +1,68 @@
+{
+ "module": "station",
+ "case": "ec_v3_stall_t0",
+ "design": "chain-carousel-v3",
+ "part": "electronics carriage (printed PETG)",
+ "load_case": "stall at 0 deg",
+ "loads": {
+  "P16_N": 50.0,
+  "contact_normal_N": {
+   "A": 20.8,
+   "B": 17.32,
+   "C": 24.43
+  },
+  "A_lateral_N": 0.0,
+  "pin_reaction_N": [
+   -0.21,
+   0.0,
+   48.8
+  ],
+  "pin_reaction_moment_Nmm": [
+   23.3,
+   -31.1,
+   -3.9
+  ],
+  "statics_P16_vector_N": [
+   0.0,
+   0.0,
+   50.0
+  ],
+  "gear_scale": 0.0,
+  "seated": 1.0
+ },
+ "nodes": 111883,
+ "elements": 61576,
+ "mesh_mm": 2.2,
+ "wall_s": 22.6,
+ "parts": [
+  {
+   "part": "EC",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 0.62269,
+   "vm_max_MPa": 19.815,
+   "vm_max_at": [
+    68.0,
+    13.8,
+    -60.8
+   ],
+   "vm_excl_MPa": 19.815,
+   "vm_excl_at": [
+    68.0,
+    13.8,
+    -60.8
+   ],
+   "allow_MPa": 23.0,
+   "sf": 1.16
+  }
+ ],
+ "key_disp": {
+  "cone A |u|": 0.37836,
+  "vee B |u|": 0.31684,
+  "flat C |u|": 0.46819,
+  "motor face |u|": 0.12829,
+  "centre-distance change at the mesh (mm, + opens)": 0.33471
+ },
+ "notes": "v3 EC as drawn has its electromagnet cup and ball C's boss as a separate solid; two bridge ribs added for this run; EC weight smeared over the printed body (mesh COM [49.6, 0.0, -45.1] vs statics [54.0, 0.0, -36.0])",
+ "mass_kg": 0.0417,
+ "png": "out/station/ec_v3_stall_t0.png"
+}

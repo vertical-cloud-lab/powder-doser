@@ -1,0 +1,70 @@
+{
+ "module": "thermal",
+ "case": "chain-carousel-v3_motor_25",
+ "design": "chain-carousel-v3",
+ "current_A": 1.5,
+ "current_frac": 0.25,
+ "P_motor_W": 3.23,
+ "plate": "AL6061",
+ "plate_finish": "al_mill",
+ "T_room": 22.0,
+ "T_enclosure_air": 22.8,
+ "T_enclosure_walls": 22.3,
+ "motor_case_max": 26.1,
+ "motor_case_mean": 25.9,
+ "winding_est": 26.6,
+ "encoder_end": 26.1,
+ "plate_max": 25.6,
+ "plate_mean": 24.6,
+ "printed_parts_on_back_plate_max_C": {
+  "Tensioner block T+ back (printed)": 24.4,
+  "Tensioner block T- back (printed)": 24.4,
+  "Hold-down (back, printed)": 25.0,
+  "Side tab (back, printed)": 24.5
+ },
+ "shed_conv_W": 1.58,
+ "shed_rad_W": 1.66,
+ "by_group": {
+  "motor": {
+   "conv": 0.65,
+   "rad": 1.34,
+   "area": 0.07,
+   "T_surface_mean": 25.86
+  },
+  "plate": {
+   "conv": 0.93,
+   "rad": 0.31,
+   "area": 0.22,
+   "T_surface_mean": 24.68
+  }
+ },
+ "iterations": [
+  {
+   "P_W": 3.21,
+   "T_air": 22.0,
+   "motor_max": 25.7,
+   "shed_W": 3.21
+  },
+  {
+   "P_W": 3.23,
+   "T_air": 22.81,
+   "motor_max": 26.1,
+   "shed_W": 3.23
+  },
+  {
+   "P_W": 3.23,
+   "T_air": 22.8,
+   "motor_max": 26.0,
+   "shed_W": 3.23
+  },
+  {
+   "P_W": 3.23,
+   "T_air": 22.81,
+   "motor_max": 26.1,
+   "shed_W": 3.23
+  }
+ ],
+ "nodes": 133448,
+ "wall_s": 63.0,
+ "png": "out/thermal/chain-carousel-v3_motor_25.png"
+}

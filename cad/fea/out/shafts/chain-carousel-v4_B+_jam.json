@@ -1,0 +1,73 @@
+{
+ "module": "shafts",
+ "case": "chain-carousel-v4_B+_jam",
+ "design": "chain-carousel-v4",
+ "part": "shaft B+",
+ "load_case": "jam",
+ "loads": {
+  "Sprocket 35BS32 B+ front": "F (y, z) = (-203.5, 77.8) N, Mx = -6.00 N*m",
+  "Sprocket 35BS32 B+ back": "F (y, z) = (-203.5, 77.8) N, Mx = -6.00 N*m",
+  "15T drive sprocket": "F (y, z) = (0.0, -543.9) N, Mx = 12.00 N*m"
+ },
+ "nodes": 85771,
+ "elements": 54660,
+ "mesh_mm": 3.0,
+ "wall_s": 38.6,
+ "parts": [
+  {
+   "part": "shaft",
+   "material": "1018 CD steel",
+   "umax_mm": 0.34495,
+   "vm_max_MPa": 85.681,
+   "vm_max_at": [
+    325.5,
+    60.6,
+    426.4
+   ],
+   "vm_excl_MPa": 44.635,
+   "vm_excl_at": [
+    327.4,
+    59.4,
+    426.0
+   ],
+   "allow_MPa": 370.0,
+   "sf": 8.29
+  }
+ ],
+ "key_disp": {
+  "Sprocket 35BS32 B+ front: deflection (mm)": 0.10934,
+  "Sprocket 35BS32 B+ back: deflection (mm)": 0.12525,
+  "15T drive sprocket: deflection (mm)": 0.06014,
+  "bearing 1 slope (mrad)": 2.68739,
+  "bearing 2 slope (mrad)": 3.20171
+ },
+ "notes": "pin-supported at the insert bearings; keyway through Kt (not meshed)",
+ "mass_kg": 0.6683,
+ "beam": {
+  "R_front_N": [
+   203.49,
+   -103.76
+  ],
+  "R_back_N": [
+   203.49,
+   492.03
+  ],
+  "M_max_Nmm": 14833.8,
+  "at_x": 305.0,
+  "sigma_nominal_MPa": 37.77
+ },
+ "fatigue": {
+  "Se_MPa": 148.5,
+  "Kf": 1.74,
+  "Kfs": 2.05,
+  "sigma_a_MPa": 65.76,
+  "sigma_m_MPa": 54.32,
+  "n_goodman": 1.77
+ },
+ "torsion_nominal_MPa": 15.28,
+ "bearings_x": [
+  -41.4,
+  346.4
+ ],
+ "png": "out/shafts/chain-carousel-v4_B+_jam.png"
+}

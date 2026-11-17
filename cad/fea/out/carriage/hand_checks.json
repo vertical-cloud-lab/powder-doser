@@ -1,0 +1,23 @@
+{
+ "hinge pin shear at the P16 stall (MPa)": 1.2732395447351628,
+ "hinge pin bending, 25 N over a 0.5 mm gap + half the 2.2 mm bore and half a 10 mm knuckle (MPa)": 8.352451413462667,
+ "lug bearing at the P16 stall, 25 N on 5 x 2.2 mm (MPa)": 2.272727272727273,
+ "v3 lug tear-out shear at the P16 stall (MPa)": 0.9124087591240876,
+ "v3 vertical run: lug x-bearing from the yaw couple (N each)": 4.260351010909091,
+ "v4 vertical run: lug x-bearing from the yaw couple (N each)": 3.998079514285714,
+ "v4 latch pin, module x1.27: keeper bearing on 4 x 4 mm (MPa)": 0.17124641276223773,
+ "v4 latch pin, module x1.27: pin bending over 2.5 mm to the bore (MPa)": 1.0901885231146067,
+ "v4 latch keeper, module x1.27: shear-out of the hole's 2.9 mm wall (MPa)": 0.11810097431878465,
+ "v4 latch pin, 40 N pull: keeper bearing on 4 x 4 mm (MPa)": 2.4399038461538463,
+ "v4 latch pin, 40 N pull: pin bending over 2.5 mm to the bore (MPa)": 15.53291031137248,
+ "v4 latch keeper, 40 N pull: shear-out of the hole's 2.9 mm wall (MPa)": 1.6826923076923077,
+ "v3 keeper, module x1.27: bearing under the bolt's 3 x 8 mm lap (MPa)": 0.12242387962382445,
+ "v3 keeper, module x1.27: shear at its root, 5 x 10 mm (MPa)": 0.058763462219435736,
+ "v3 keeper, 40 N pull: bearing under the bolt's 3 x 8 mm lap (MPa)": 1.6666666666666667,
+ "v3 keeper, 40 N pull: shear at its root, 5 x 10 mm (MPa)": 0.8,
+ "A-1 screw head on the printed seat: 300 N preload (MPa)": 18.249969585310502,
+ "A-1 screw head seat area (mm^2)": 16.438383559908594,
+ "A-1 tab hole bearing, 46 N P16 front-tab share on 3 x 1.27 mm (MPa)": 12.073490813648293,
+ "A-1 screw in the printed plate's hole, 46 N on 3 x 5 mm (MPa)": 3.066666666666667,
+ "E-stop deceleration / g": 0.06931702344546381
+}
