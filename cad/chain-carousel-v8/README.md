@@ -1,5 +1,7 @@
 # Chain carousel v8: the auger 50 mm over the beaker, a new EC behind the balance
 
+> **A variation on [v7](../chain-carousel-v7/README.md), which is the main version** (Sam, 2026-11-17: "these are great changes. However, I think I still like v7 more"). The next variation is [v9](../chain-carousel-v9/README.md): v7 with no draft cage, the balance on a block and the beaker 32 mm under the exit.
+
 v8 is [v7](../chain-carousel-v7/README.md) with Sam's note of 2026-11-12
 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):
 - **A new electronics carriage (EC), closer to Sam's first design.** Sam's Aug 27 EC was exported from Onshape for this.
