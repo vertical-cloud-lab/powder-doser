@@ -12,10 +12,16 @@ often as it answers. The answers "1a, 2a, yes" chose:
 
 **Outcome:** no trial reached 1 g. Both launches stopped on the agreed safety rule (two stalled
 trials in a row). Every stall happened in the bulk stage at the requested angles. The camera shows
-why. At 60° the tube hangs vertical, and with the tube filled to the brim the salt plugs inside it.
+why. At 60° the tube hangs near vertical, and with the tube filled to the brim the salt plugs inside it.
 Nothing leaves the outlet, so the powder is not missing the cup. At 50° a stream went into the
 beaker. Flow at 40–60° came in bursts, and the stock stall rule (no 2 mg gain in 8 s) ended each
 trial in a pause between bursts.
+
+![Bench camera at 60, 50 and 40 deg](camera_60_50_40deg.png)
+
+Bench-camera frames (overlay clock in lab time, UTC−7) while the auger spun at 55 rpm: 60° in
+launch 1 with no flow, 50° in launch 2 with a stream into the beaker, and 40° in launch 2 with no
+flow. The file is `camera_60_50_40deg.png`.
 
 ## Timeline (UTC)
 
@@ -63,6 +69,7 @@ Each launch folder holds:
 - `session_launch*.log`: the raw telemetry as the Pico printed it. Each line has the Zero's UTC
   receipt time in front, which anchors the Pico's millisecond clock.
 - `tilt_trial_example.png`, `tilt_trials_overview.png`, `tilt_trials_summary.png`: the figures.
+  The scripts that make them were written for 30 trials, so with two trials per launch they are sparse.
 
 The trial numbers restart at 1 in each launch.
 
