@@ -3,7 +3,7 @@
 Source: Sam's comment on PR #209, 17 Nov 2026. Sam's points are paraphrased below, each with
 what was done in the session of 17 Nov and what the next session has to do.
 
-## Why the figures were not re-rendered on 17 Nov
+## Why the figures were not re-rendered on 17 Nov (resolved 18 Nov)
 
 The Claude workflow runs `anthropics/claude-code-action@v1`. That action treats a pull request
 as **untrusted** when its author does not have write access, and any `[bot]` account counts as
@@ -25,6 +25,31 @@ To unblock, a maintainer can do either of the following:
 - **Or ask from an issue instead of this PR.** The restriction applies only to pull requests.
   For example, open an issue that says "`@claude` apply the 17 Nov notes in
   `paper/review_2026-11-17/NOTES.md` on branch `claude/figures-tables-v2` and push there".
+
+## Implemented on 18 Nov (Python allowed)
+
+On 18 Nov Sterling re-enabled Python for this PR ("you should be able to run Python now"), and that
+session implemented every point that needed rendering. Python ran; LaTeX ran through MiKTeX's
+Docker image, because the MiKTeX apt package does not install on the runner's Ubuntu 26.04
+(`paper/v2/tools/pdflatex-miktex-docker.sh`).
+
+| # | Done on 18 Nov |
+|---|---|
+| G | Captions moved to `paper/v2/CAPTIONS.md`, which `build_figures.py` reads. Each preview is now the figure as typeset in LaTeX with its caption underneath; `FIGURES-AND-TABLES.md` also folds the caption text, with its links, under each image. |
+| 1.1 | Dashed box and "section in (c)" removed; the auger-tube callout ends "(section view in (c))". All leaders and labels checked at 600 dpi: none cross or overlap. |
+| 1.2 | Exploded view re-rendered from the #170 assembly (branch `claude/issue-165-20261001-1931`, `7f5b3b7`) without baked-in balloons; only the 13 main parts are numbered (1, 2, 4, 7, 9, 12, 14, 15, 19, 20, 21, 23, 25), each beside its part with a short leader. The full version, every BOM item with the BOM table, is **SI Fig. S4**. Scripts: `render_exploded_view.py` (CAD → render and part-ID map, CadQuery + VTK) and `make_exploded_view.py` (balloons). |
+FIG23_ROWS
+| 4.1 | Request and reply cards are short and wide (text in 78-character lines); the top row went from 1.69 to 0.93 in, and the trace in (c) from 1.19 to 1.62 in tall. |
+| 4.2 | "powder" sits above its arrow, in a wider gap, clear of both boxes. The measurement loop is one path with a single arrowhead. |
+| 4.3 | Curly braces span the bulk (0–7 s), fine (7–64 s) and tap (64–169 s) phases, each joined by a line to its tube position. "Before" is at the left edge and "After" at the right. The Before/After stills are no longer joined to t = 0 and the end: those lines would cross the braces' feet. |
+| 5.1, 5.2 | Re-cropped as planned: (a) `(0.22, 0.25, 0.77, 1.0)`, auger centred; (b) `(0.0, 0.0, 0.33, 1.0)`, the whole auger from its capped end. The row height went from 2.15 to 2.05 in so that (c) and (d) no longer touch. |
+| 5.4 | Sam's 17 Nov line-up photo is in (d), with the crop and callout points checked against the photo; every label sits level with its auger. |
+| 6.1 | (a) and (b) say "at 22.5° tilt" in the axis label; (c) says "15 rpm, 22.5° tilt". |
+| 6.2 | A tap gets a bar only where Table S1 prints it upright (mean more than twice its standard error, run passed screening). The other rows say why in grey: "not resolved: balance noise 29 mg" (AlSi10Mg), "… 20 mg" (coarse Si), "about 0: not resolved" (CMC, both rice flours, fine Si), "not resolved: run failed screening" (fumed silica). No negative bar remains. Note: sodium sulfate's 9.3 mg tap passes Table S1's rule although its run's baseline noise was 24 mg; it keeps its bar, as in the table. |
+| 6.3 | (c) has gridlines every 4 s (one auger revolution at 15 rpm) and a bracket "one auger revolution, 4 s". |
+| 6.4 | **Fig. 6, version B**: alternate rows shaded straight across (a) and (b), which butt together and share the powder names. |
+| 7.1 | Caption says the misses are largely a control problem we are working on, and that each marker is one dose. |
+| 7.2 | **Fig. 7, version B**: the three panels in mg (linear axis to ±78 mg, limit bands ±5, ±10, ±50 mg; 19 doses off scale as arrows with their values). **Version C**: all targets on one mg axis (three lanes per powder row) plus a box plot by target on a symmetric-log axis. Also fixed: Fig. 7's row order for the two powders that delivered nothing came from `set()` order and could swap between runs. |
 
 ## What was done on 17 Nov (no rendering needed)
 

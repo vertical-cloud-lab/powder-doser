@@ -23,9 +23,11 @@ moved up by one (old 3 → 4, 4 → 5, 5 → 6, 6 → 7).
 **Review of 17 Nov 2026.** Sam's notes on Figs. 1–7 are listed point by point in
 [`../review_2026-11-17/NOTES.md`](../review_2026-11-17/NOTES.md), with the data checks for
 Fig. 6 (the negative tap means are balance noise; the flow comes in one surge per auger
-revolution) and the pictures still needed. The captions in `build_figures.py` and
-`FIGURES-AND-TABLES.md` are updated. The images are not yet re-rendered: on this PR the Claude
-action denies Python, and the notes explain how to lift that.
+revolution) and the pictures still needed. They were implemented on 18 Nov, once Python could
+run on this PR. Captions now live in [`CAPTIONS.md`](CAPTIONS.md), which the team edits directly,
+and every preview image carries its caption. Fig. 6 has a version B with banded rows, and Fig. 7
+has versions B and C in milligrams; each follows its figure in
+[`FIGURES-AND-TABLES.md`](FIGURES-AND-TABLES.md) and comes last in `figures.pdf`.
 
 ## Whiteboard, transcript, and what was made
 
@@ -40,7 +42,7 @@ action denies Python, and the notes explain how to lift that.
 | "4a better as table, maybe SI" | 30:32 | **Table S1** | done |
 | "5d, separate, drop or SI" | Fig. 5d implies a link to the y-axis that isn't there; drop it or give times in the text (32:03–32:50) | **Fig. 7** (old 5a–c); times in **Table 3**; old 5d → **SI Fig. S3** on its own | done |
 | "Generative CAD comparisons": "tap collar", "Zoo comparison" → **Fig** (blue), "CADSmith", "Mounting plate gap" | Tool comparison as text in the main text, images in the SI (15:50–16:53); show CADSmith's results (16:04); mounting-plate gap optional (17:05) | **SI Fig. S1** (one prompt, three tools; tap collar; plates) | done |
-| **Fig 3)** (blue) "Assembly steps / instructions, plates, adjusting height" | Instructions and adjusting the height in the SI (26:32); Will's laser-cut modular stand (20:49) | **SI Fig. S4** | not remade: no photos or video of the new stand exist (decision 6) |
+| **Fig 3)** (blue) "Assembly steps / instructions, plates, adjusting height" | Instructions and adjusting the height in the SI (26:32); Will's laser-cut modular stand (20:49) | **SI Fig. S4** | exploded view with every BOM item (18 Nov, from Fig. 1b's re-render); the build steps and the new stand are still to come (decision 6) |
 | "discussion section: lessons learned" | 17:23 | text, not a figure | for the manuscript pass |
 | (not on the board) | Fig. 6 of the draft (Sam's sketch beside his own Onshape model) reads as "drawing, then what the AI made" (23:37) | multi-doser sketch and Onshape model moved into the engineer row of Fig. 2; no separate future-work figure | done (decision 7) |
 
@@ -48,14 +50,14 @@ action denies Python, and the notes explain how to lift that.
 
 | | Main text | SI |
 |---|---|---|
-| Figures | 1 the doser · 2 AI and engineers over time · 3 original AI parts and what replaced them · 4 how a dose runs · 5 using the doser · 6 open-loop delivery · 7 closed-loop doses | S1 generative-CAD comparison · S2 variation between revolutions · S3 time per dose · S4 assembly (existing) |
+| Figures | 1 the doser · 2 AI and engineers over time · 3 original AI parts and what replaced them · 4 how a dose runs · 5 using the doser · 6 open-loop delivery · 7 closed-loop doses | S1 generative-CAD comparison · S2 variation between revolutions · S3 time per dose · S4 every part (exploded view and bill of materials) |
 | Tables | 1 the 13 powders · 2 test protocols · 3 closed loop by target · 4 AI tools, dates and models | S1 open-loop per powder |
 
 Panel PDFs (one per subfigure, at print size, no panel letters) are in [`figures/`](figures/);
 [`figures.tex`](figures.tex) assembles them with `subcaption` and holds every caption and table.
 Figs. 4 and 7 and the SI figures are single images: their panels share axes or leader lines.
-PNG previews in [`preview/`](preview/) are rendered from the compiled LaTeX, without the
-captions. LaTeX and Markdown tables are in [`tables/`](tables/). Every image is a committed render, photograph or video frame;
+PNG previews in [`preview/`](preview/) are rendered from the compiled LaTeX, each with its
+caption. LaTeX and Markdown tables are in [`tables/`](tables/). Every image is a committed render, photograph or video frame;
 [`assets/`](assets/) holds the copies used, and each `SOURCES.json` gives the comment, branch
 or commit it came from.
 
@@ -93,17 +95,35 @@ and Sam's replacement photo for Fig. 5d.
 
 ```bash
 cd paper/v2
-python3 make_results_figures.py     # Figs. 6 (3 panels), 7, S2, S3; Tables 1, 3, S1
+python3 make_results_figures.py     # Figs. 6 (3 panels) and 6B, 7, 7B, 7C, S2, S3; Tables 1, 3, S1
 python3 make_fig2_timeline.py       # Fig. 2 (2 panels), Fig. 3 (3 panels)
 python3 make_photo_figures.py       # Figs. 1 and 5 (4 panels each), 4 (Fig. 4c reads the raw serial log from git)
+python3 make_exploded_view.py       # Fig. 1b balloons and SI Fig. S4 (every BOM item)
 python3 make_si_cad_comparison.py   # SI Fig. S1
 python3 make_tables.py              # Tables 2, 4 and the failure-modes table
-python3 build_figures.py            # figures.tex -> figures.pdf, preview/*.png, FIGURES-AND-TABLES.md
+python3 build_figures.py            # CAPTIONS.md + figures.tex -> figures.pdf, preview/*.png, FIGURES-AND-TABLES.md
 ```
 
-`build_figures.py` needs `pdflatex` and `pdftoppm`; MiKTeX provides both and installs the
-LaTeX packages it needs on first use (`subcaption`, `caption`, `newunicodechar`, `hyperref`,
-`extsizes`, `lm`). Captions are edited in `build_figures.py`, not in the generated files.
+**Captions** are edited in [`CAPTIONS.md`](CAPTIONS.md), never in the generated files: one
+`## Fig. N Title` heading per figure, the caption below it (line breaks inside a caption are
+ignored, so each panel can have its own line). `build_figures.py` reads it, typesets each caption
+under its figure in `figures.pdf`, renders each figure with its caption to `preview/`, and folds
+the caption text, with its links, under each image in `FIGURES-AND-TABLES.md`. The subfigure
+layout of each figure is in `build_figures.py`.
+
+**LaTeX.** `build_figures.py` needs `pdflatex` and `pdftoppm`; MiKTeX provides `pdflatex` and
+installs the LaTeX packages it needs on first use (`subcaption`, `caption`, `newunicodechar`,
+`hyperref`, `extsizes`, `lm`). On Ubuntu 26.04 runners the MiKTeX apt package does not install
+(its build for 24.04 needs libraries 26.04 no longer has), so the 18 Nov build used MiKTeX's
+official Docker image through [`tools/pdflatex-miktex-docker.sh`](tools/pdflatex-miktex-docker.sh),
+installed as `~/bin/pdflatex` (the script says how). `pdftoppm` is in `poppler-utils`.
+
+**Exploded views.** `make_exploded_view.py` places the balloons on a committed render
+(`assets/exploded/`, with a part-ID map), so it needs only matplotlib and SciPy.
+`render_exploded_view.py` redoes the render itself from the PR #170 assembly (branch
+`claude/issue-165-20261001-1931`, commit `7f5b3b7`, `cad/full-assembly/`); it needs CadQuery
+and VTK in a Python 3.12 environment under `xvfb-run`, and only has to be re-run if the CAD
+changes. Provenance is in `assets/exploded/SOURCES.json`.
 
 `make_si_cad_comparison.py` renders the Zoo tap-collar STL once from the issue #104
 attachment (see `assets/cadcompare/SOURCES.json`); the rendered PNG is committed, so later

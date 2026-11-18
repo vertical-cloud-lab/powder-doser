@@ -2,18 +2,23 @@
 """Assemble the v2 figures as LaTeX subfigures, with their captions.
 
 Review of 11 Nov 2026 (paper/review_2026-11-11/NOTES.md, items G1-G3):
-captions are shown as text beside each figure, never inside the image, and the
+captions are text typeset by LaTeX, never drawn inside the image, and the
 multi-panel figures are LaTeX subfigures built from one PDF per panel.
+Review of 17 Nov 2026 (paper/review_2026-11-17/NOTES.md, item G): every
+preview image carries its caption, and the captions live in CAPTIONS.md, which
+the team edits directly.
 
-Captions live here, once, in Markdown.  This script writes
+Captions live in CAPTIONS.md, once, in Markdown.  This script writes
 
     figures.tex             every figure (subcaption) and table, with captions,
                             ready to paste into the manuscript; compiled to
-                            figures.pdf
-    figures-preview.tex     the same figures without their captions, one per
-                            page; each page is rendered to preview/figN_*.png
-    FIGURES-AND-TABLES.md   each preview with its caption as text underneath,
-                            and every table written out in Markdown
+                            figures.pdf.  Alternative versions for review
+                            (e.g. Fig. 7, version B) come last.
+    figures-preview.tex     each figure with its caption, one per page (tall
+                            pages, so nothing breaks); each page is rendered to
+                            preview/figN_*.png
+    FIGURES-AND-TABLES.md   each preview, with the caption text (and its links)
+                            folded underneath, and every table in Markdown
     PR-BODY.md              the same for the PR description (absolute image
                             URLs at a given commit: --sha abc1234)
 
@@ -21,7 +26,9 @@ Run the figure scripts first (see README.md), then:
 
     python3 build_figures.py [--sha <7-char commit>] [--no-latex]
 
-LaTeX: MiKTeX's pdflatex (packages install on first use).
+LaTeX: MiKTeX's pdflatex (packages install on first use).  Where the MiKTeX
+apt package does not install (Ubuntu 26.04 runners), ~/bin/pdflatex can wrap
+the official miktex/miktex Docker image; see README.md.
 """
 
 from __future__ import annotations
@@ -40,29 +47,16 @@ REPO = "https://github.com/vertical-cloud-lab/powder-doser"
 
 
 # ----------------------------------------------------------------------------
-# Captions (Markdown).  First sentence after the title: the takeaway (G2).
-# "#123" becomes a link to that issue or pull request in both outputs.
+# Layout of each figure.  Titles and captions are read from CAPTIONS.md by the
+# figure number n ("## Fig. 6 Title"); "6B" is version B of Fig. 6, shown
+# after Fig. 6 in the previews and FIGURES-AND-TABLES.md, and at the end of
+# figures.tex.
 # ----------------------------------------------------------------------------
+CAPTIONS_MD = HERE / "CAPTIONS.md"
+
 FIGURES = [
     dict(
-        n="1", key="doser", stem="fig1_doser", title="The doser",
-        caption=(
-            "One printed auger tube is both the powder reservoir and the dosing screw; "
-            "the doser turns, tilts and taps it over a cup on an analytical balance. "
-            "(a) The doser as tested in the second round (photographed 11 Sep 2026), with its "
-            "main parts labelled; the auger tube is shown in section in (c). "
-            "(b) Exploded view of the current design, assembled in CAD from the team's parts "
-            "(#170). The main parts, numbered as in the bill of materials in the SI: the auger "
-            "(19) and its screw-on cap (25); the tap collar (21), its solenoid (23) and the "
-            "tap-collar base (15); the two brackets that hold the auger (20); the hinged mounting "
-            "plate (9); the stepper motor (12) and its pinion (14), which turn the auger's "
-            "44-tooth gear; the two tilt servos (4) and their pinions (7); the baseplate (2); and "
-            "the mounting board (1). Screws and nuts are listed only in the SI. "
-            "(c) Section through the tested auger and its screw-on cap, the team's Fusion 360 "
-            "part: the flight fills only the outlet end, and the 44-tooth gear is on the outside "
-            "of the tube. "
-            "(d) The fixed livestream camera's view of the cup after a 0.5 g NaCl dose "
-            "(15 Sep 2026; 0.496 g delivered; #116)."),
+        n="1", key="doser", stem="fig1_doser",
         tex=r"""
 \begin{subfigure}[b]{W(doser_a_photo)}\includegraphics{figures/doser_a_photo.pdf}\caption{As tested}\end{subfigure}\hfill
 \begin{minipage}[b]{W(doser_b_exploded)}
@@ -72,132 +66,35 @@ FIGURES = [
 \end{minipage}"""),
     dict(
         n="2", key="timeline", stem="fig2_timeline",
-        title="AI agents and engineers, April to November 2026",
-        caption=(
-            "AI agents modelled the first parts from text and drawings; from July the engineers "
-            "redrew in conventional CAD the parts that were built and tested, and the agents moved "
-            "on to running the tests and assembling the CAD. "
-            "(a) Key designs on one date axis, each joined to its date. Above the axis are the "
-            "designs modelled by AI agents, each tagged with the agent (purple) and model (grey): "
-            "the powder excavator (#2) and the first auger (#16), from the hackathon; the bracket "
-            "the agent modelled from the team's dimensioned drawing, shown beside the drawing "
-            "(#46, #47; red arrow); the whole module from a single request (#35); the first tap "
-            "collar and the collar after review (#51); the storage auger with its screw cap (#49); "
-            "all 11 parts from one prompt through the Zoo Text-to-CAD API (#104, #110); and the "
-            "team's parts assembled through the Onshape API (#170). Below the axis is the "
-            "engineers' work, each design tagged with the engineer and the tool (green; "
-            "photographs are labelled as photographs): the hackathon sketch (#2), the first "
-            "printed auger, the bracket drawing (#46), the Fusion 360 auger, cap and 44-tooth gear "
-            "that turned in every test (#120), the first dose in a glove box (#117), the "
-            "multi-doser carriage sketch and Onshape model (#128), and the doser as tested (#156). "
-            "The hackathon (22–24 Apr) and the 13-powder test campaign (4 Aug–15 Sep) are shaded "
-            "on the axis. "
-            "(b) When each agent and model was in use, on the same date axis. Claude Code ran "
-            "locally at the hackathon and in GitHub Actions from 30 Jun; both are on one line."),
         tex=r"""
 \begin{subfigure}[b]{\textwidth}\includegraphics{figures/timeline_a.pdf}\caption{Designs over time}\end{subfigure}\\[4pt]
 \begin{subfigure}[b]{\textwidth}\includegraphics{figures/timeline_b_band.pdf}\caption{Agents and models}\end{subfigure}"""),
     dict(
         n="3", key="redesign", stem="fig3_redesign",
-        title="The original AI parts and what replaced them",
-        caption=(
-            "Every AI-modelled part was reviewed, printed and tested, but the tested doser ran on "
-            "later versions, and the parts have kept changing since: the agent revised the tap "
-            "collar and the team then replaced it, and the team redrew the auger in Fusion 360. "
-            "AI parts have purple frames, the team's grey; each image is tagged with who made it "
-            "and in what. "
-            "(a) Tap collar to solenoid bracket: the first AI collar (15 May) and the collar after "
-            "review (#51, by 10 Jun), the collar on the rig during the tests (11 Sep, #156), and "
-            "Ethan's solenoid bracket, which mounts the solenoid on the plate without a collar so "
-            "that an auger can be swapped without taking the tapper off (first version 7 Nov, "
-            "Onshape, #203; photographed 17 Nov). "
-            "(b) Auger, in section: the first auger to be printed and tested, begun at the "
-            "hackathon and shown as the agent's version of 13 May with the flight on a central "
-            "shaft, run with NaCl on 14 May (#16); the agent's storage auger with 16:48 gears "
-            "(16 Jun, #49); and the team's Fusion 360 recreation of it with 20:44 gears (17 Jul, "
-            "#120), which turned in every test. "
-            "(c) Bracket: the team's dimensioned drawing (#46) and the agent's model of it (#47), "
-            "both 14 May, then the team's later iterations, ending with the flexible snap-in "
-            "brackets on the current doser (Onshape)."),
         tex=r"""
 \begin{subfigure}[b]{\textwidth}\includegraphics{figures/redesign_a_tapcollar.pdf}\caption{Tap collar}\end{subfigure}\\[6pt]
 \begin{subfigure}[b]{W(redesign_b_auger)}\includegraphics{figures/redesign_b_auger.pdf}\caption{Auger}\end{subfigure}\hfill
 \begin{subfigure}[b]{W(redesign_c_bracket)}\includegraphics{figures/redesign_c_bracket.pdf}\caption{Bracket}\end{subfigure}"""),
     dict(
-        n="4", key="dosing", stem="fig4_dosing", title="How a dose runs",
-        caption=(
-            "A person asks the AI agent for a dose in a GitHub comment; a three-phase controller "
-            "on the doser's microcontroller then turns, tilts and taps the auger until the balance "
-            "reads the target. "
-            "(a) A request and the agent's reply (8 g of AlSi10Mg for an atomizer charge, #166, "
-            "29 Sep 2026). "
-            "(b) The control loop: the balance is read after every step, and the controller acts "
-            "on the mass still to go. "
-            "(c) One 1 g NaCl dose from the test campaign (12 Aug 2026), with its three phases "
-            "shaded: bulk, fine and tap. A brace above the trace spans each phase, under the tube "
-            "position in that phase (CAD renders of the current design at 45°, 22.5° and 0°); "
-            "the fixed camera's stills before and after a 0.5 g salt dose (15 Sep 2026) mark the "
-            "start and the end. The green band is the ±5% acceptance limit. One image rather than "
-            "subfigures: the braces and lines join the stills to the trace."),
+        n="4", key="dosing", stem="fig4_dosing",
         tex=r"""
 \includegraphics{figures/dosing.pdf}"""),
     dict(
-        n="5", key="use", stem="fig5_use", title="Using the doser",
-        caption=(
-            "Each powder has its own auger, filled once and stored loaded, so changing powder "
-            "means swapping a tube. "
-            "(a) Filling an auger with salt through its open end, then capping it (29 Jul 2026). "
-            "(b) Fitting a filled auger to the doser, and (c) the doser ready over the cup, frames "
-            "from the 30 Sep 2026 dose video: the powder falls through a paper funnel into an "
-            "aluminium cup that stands in the glass beaker. The aluminium cup is part of the alloy "
-            "workflow itself: the dose lands directly in the cup used for the next step in making "
-            "the alloy, so the powder is never transferred. "
-            "(d) The eight augers of the food-safe set (seven powders), capped and labelled "
-            "(17 Nov 2026), each with the mass one auger revolution delivered (\\*at 22.5° tilt; "
-            "Fig. 6a)."),
+        n="5", key="use", stem="fig5_use",
         tex=r"""
-\begin{subfigure}[b]{W(use_a_fill)}\includegraphics{figures/use_a_fill.pdf}\caption{Fill}\end{subfigure}\hfill\raisebox{1.1in}{$\rightarrow$}\hfill
-\begin{subfigure}[b]{W(use_b_fit)}\includegraphics{figures/use_b_fit.pdf}\caption{Fit}\end{subfigure}\hfill\raisebox{1.1in}{$\rightarrow$}\hfill
+\begin{subfigure}[b]{W(use_a_fill)}\includegraphics{figures/use_a_fill.pdf}\caption{Fill}\end{subfigure}\hfill\raisebox{1.05in}{$\rightarrow$}\hfill
+\begin{subfigure}[b]{W(use_b_fit)}\includegraphics{figures/use_b_fit.pdf}\caption{Fit}\end{subfigure}\hfill\raisebox{1.05in}{$\rightarrow$}\hfill
 \begin{subfigure}[b]{W(use_c_ready)}\includegraphics{figures/use_c_ready.pdf}\caption{Over the cup}\end{subfigure}\hfill
 \begin{subfigure}[b]{W(use_d_augers)}\includegraphics{figures/use_d_augers.pdf}\caption{One auger per powder}\end{subfigure}"""),
     dict(
         n="6", key="openloop", stem="fig6_open_loop",
-        title="Open-loop delivery of 13 powders under one fixed set of settings",
-        caption=(
-            "Ten powders moved, from 10 to 231 mg per auger revolution, and three delivered "
-            "nothing measurable; one solenoid tap released up to 20 mg, and under continuous "
-            "rotation the powder arrived in waves, one surge per auger revolution. Every panel was "
-            "measured with the tube tilted at 22.5°. "
-            "(a) Mass per auger revolution at 22.5° tilt (protocol C; mean ± standard error of six "
-            "revolutions; log axis). "
-            "(b) Mass released by one solenoid tap at 22.5° tilt (protocol E): mean ± standard "
-            "deviation of eight taps, the spread to expect from a single tap. A tap cannot remove "
-            "powder: the two negative means, for AlSi10Mg and the coarse silicon, are balance "
-            "noise. In those two runs the balance was noisy (standard deviation 29 and 20 mg "
-            "with nothing moving), so a tap of a few milligrams could not be resolved. Table S1 "
-            "gives the standard errors. "
-            "(c) Mass against time while the auger turned continuously at 15 rpm (protocol D), "
-            "for a representative selection of four powders, from the fastest (AlSi10Mg) to a "
-            "slow one (CMC). The flow came in waves: AlSi10Mg and NaCl each arrived in surges of "
-            "about 200 mg every 4 s, once per auger revolution, with little in between."),
         tex=r"""
 \begin{subfigure}[b]{W(openloop_a_rev)}\includegraphics{figures/openloop_a_rev.pdf}\caption{Per revolution}\end{subfigure}\hfill
 \begin{subfigure}[b]{W(openloop_b_tap)}\includegraphics{figures/openloop_b_tap.pdf}\caption{Per tap}\end{subfigure}\hfill
 \begin{subfigure}[b]{W(openloop_c_time)}\includegraphics{figures/openloop_c_time.pdf}\caption{In time}\end{subfigure}""",
         label="fgr:v2openloop"),
     dict(
-        n="7", key="closedloop", stem="fig7_closed_loop", title="Closed-loop doses",
-        caption=(
-            "Doses of 1 g landed within ±5% for every powder that delivered at least 26 mg per "
-            "revolution; smaller doses missed more often, fast powders tending to overshoot and "
-            "slow ones to fall short. The misses are largely a control problem, which we are "
-            "actively working on, rather than a limit of the hardware. "
-            "Error of every valid closed-loop dose from both test rounds; each marker is one "
-            "dose. One row per powder, ordered by mass per revolution (fastest at the top). The "
-            "green band is the "
-            "acceptance limit: ±10% below 100 mg, ±5% at and above. Times per dose are in "
-            "Table 3 and SI Fig. S3. One image rather than subfigures: the three panels share "
-            "the powder axis."),
+        n="7", key="closedloop", stem="fig7_closed_loop",
         tex=r"""
 \includegraphics{figures/closedloop.pdf}""",
         label="fgr:v2closedloop"),
@@ -205,37 +102,40 @@ FIGURES = [
 
 SI_FIGURES = [
     dict(
-        n="S1", key="cadcompare", stem="figS1_cad_comparison", title="Generative-CAD comparison",
-        caption=(
-            "Asked for the whole doser at once, every tool returned parts that did not make a "
-            "working assembly; one part at a time, with review, worked better. "
-            "(a–c) The same prompt (#104, 22 Jun 2026) given to the GitHub Copilot coding agent, "
-            "CADSmith and the Zoo Text-to-CAD API, each rendered from the same viewpoint. "
-            "(d–f) The tap collar from the coding agent (first version and after review) and from "
-            "Zoo Design Studio (third Zookeeper iteration). (g, h) CADSmith's mounting plate and "
-            "baseplate. (i–l) The coding agent's four mounting-plate iterations: out-of-date input "
-            "files led to a hole, then platforms, then a gap, until the correct files were "
-            "supplied. Not yet reviewed; still one image."),
+        n="S1", key="cadcompare", stem="figS1_cad_comparison",
         tex=r"""
 \includegraphics{figures/figS_cad_comparison.pdf}"""),
     dict(
-        n="S2", key="revvar", stem="figS2_rev_variation", title="Variation between revolutions",
-        caption=(
-            "Most powders varied by 2–18% from one revolution to the next; white rice flour, at "
-            "37%, varied most. Revolution-to-revolution coefficient of variation against mass per "
-            "revolution at 22.5° (old Fig. 3c, without the slow/fast shading). The same numbers "
-            "are in Table S1, so this figure can also be dropped."),
+        n="S2", key="revvar", stem="figS2_rev_variation",
         tex=r"""
 \includegraphics{figures/figS_rev_variation.pdf}"""),
     dict(
-        n="S3", key="dosetime", stem="figS3_dose_time", title="Time per dose",
-        caption=(
-            "Larger doses took longer: for doses within the limit, the median was 52 s at 50 mg, "
-            "152 s at 200 mg and 185 s at 1 g. Time to finish each dose, by target mass; lines "
-            "are the medians of the doses that finished within the acceptance limit "
-            "(old Fig. 5d)."),
+        n="S3", key="dosetime", stem="figS3_dose_time",
         tex=r"""
 \includegraphics{figures/figS_dose_time.pdf}"""),
+    dict(
+        n="S4", key="exploded", stem="figS4_assembly_exploded",
+        tex=r"""
+\includegraphics{figures/figS_assembly_exploded.pdf}"""),
+]
+
+# Alternative versions for review (17 Nov: Fig. 6 with banded rows; Fig. 7 in mg).
+ALTERNATIVES = [
+    dict(
+        n="6B", key="openloopbanded", stem="fig6B_open_loop_banded",
+        tex=r"""
+\begin{subfigure}[b]{W(openloop_a_rev_banded)}\includegraphics{figures/openloop_a_rev_banded.pdf}\caption{Per revolution}\end{subfigure}%
+\begin{subfigure}[b]{W(openloop_b_tap_banded)}\includegraphics{figures/openloop_b_tap_banded.pdf}\caption{Per tap}\end{subfigure}\hfill
+\begin{subfigure}[b]{W(openloop_c_time)}\includegraphics{figures/openloop_c_time.pdf}\caption{In time}\end{subfigure}"""),
+    dict(
+        n="7B", key="closedloopmg", stem="fig7B_closed_loop_mg",
+        tex=r"""
+\includegraphics{figures/closedloop_mg.pdf}"""),
+    dict(
+        n="7C", key="closedloopoverlay", stem="fig7C_closed_loop_mg_overlay",
+        tex=r"""
+\begin{subfigure}[b]{W(closedloop_mg_overlay)}\includegraphics{figures/closedloop_mg_overlay.pdf}\caption{All targets, one axis}\end{subfigure}\hfill
+\begin{subfigure}[b]{W(closedloop_mg_box)}\includegraphics{figures/closedloop_mg_box.pdf}\caption{Spread by target}\end{subfigure}"""),
 ]
 
 TABLES_MD = [  # (heading, markdown file, note)
@@ -263,6 +163,38 @@ TABLES_TEX = ["table_powders.tex", "table_protocols.tex", "table_closed_loop.tex
 
 
 # ----------------------------------------------------------------------------
+def read_captions() -> dict[str, tuple[str, str]]:
+    """{"6": (title, caption)} from CAPTIONS.md; line breaks inside a caption are spaces."""
+    text = CAPTIONS_MD.read_text()
+    caps = {}
+    for mo in re.finditer(r"^## Fig\. (\S+) (.+?)\n(.*?)(?=^## |\Z)", text, flags=re.M | re.S):
+        caps[mo.group(1)] = (mo.group(2).strip(), " ".join(mo.group(3).split()))
+    return caps
+
+
+def attach_captions() -> None:
+    caps = read_captions()
+    for f in FIGURES + SI_FIGURES + ALTERNATIVES:
+        if f["n"] not in caps:
+            raise SystemExit(f"CAPTIONS.md has no caption for Fig. {f['n']}")
+        f["title"], f["caption"] = caps[f["n"]]
+
+
+def fig_name(n: str) -> str:
+    """"6B" -> "6, version B"; "S2" -> "S2"."""
+    mo = re.fullmatch(r"(\d+)([B-Z])", n)
+    return f"{mo.group(1)}, version {mo.group(2)}" if mo else n
+
+
+def figure_order(si: bool = False) -> list[dict]:
+    """Main (or SI) figures, each followed by its alternative versions."""
+    out = []
+    for f in (SI_FIGURES if si else FIGURES):
+        out.append(f)
+        out += [a for a in ALTERNATIVES if re.fullmatch(rf"{f['n']}[B-Z]", a["n"])]
+    return out
+
+
 def pdf_width_in(stem: str) -> float:
     b = (FIGS / f"{stem}.pdf").read_bytes()
     mb = re.search(rb"/MediaBox\s*\[\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\]", b)
@@ -283,11 +215,14 @@ def tex_text(s: str) -> str:
     s = re.sub(r"(?<![\w/])#(\d+)", lambda mo: rf"\href{{{REPO}/issues/{mo.group(1)}}}{{\#{mo.group(1)}}}", s)
     s = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", s)
     s = s.replace("*", r"\textsuperscript{*}")
+    # keep a number with its unit, and "Fig. 6" together, on one line
+    s = re.sub(r"(\d) (mg|g|s|mm|rpm|µm|in|cm|%)(?![\w])", r"\1~\2", s)
+    s = re.sub(r"\b(Fig\.|Figs\.|Table|protocol) (?=[\dS])", r"\1~", s)
     return s
 
 
 PREAMBLE = r"""\documentclass[9pt]{extarticle}
-\usepackage[paperwidth=21cm,paperheight=29.7cm,textwidth=17.1cm,textheight=26cm,centering]{geometry}
+\usepackage[paperwidth=21cm,paperheight=PAPERH,textwidth=17.1cm,textheight=TEXTH,centering]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{graphicx}
@@ -303,6 +238,8 @@ PREAMBLE = r"""\documentclass[9pt]{extarticle}
 \newunicodechar{×}{\ensuremath{\times}}
 \newunicodechar{≈}{\ensuremath{\approx}}
 \newunicodechar{†}{\ensuremath{^\dagger}}
+\newunicodechar{≤}{\ensuremath{\le}}
+\newunicodechar{≥}{\ensuremath{\ge}}
 \usepackage{array,booktabs}
 \usepackage[hidelinks]{hyperref}
 \newcommand{\siref}[1]{S\ref{#1}}
@@ -310,36 +247,47 @@ PREAMBLE = r"""\documentclass[9pt]{extarticle}
 """
 
 
-def figure_env(f: dict, preview: bool, star=True) -> str:
-    env = "figure*" if star else "figure"
+def figure_env(f: dict, preview: bool) -> str:
+    """A float (figures.tex) or, for the previews, the same figure set in place
+    with its caption on a page of its own (no float placement to go wrong)."""
     cap = f"\\caption{{\\textbf{{{tex_text(f['title'])}.}} {tex_text(f['caption'])}}}"
     lab = f.get("label", f"fgr:v2{f['key']}")
     body = layout(f["tex"]).strip("\n")
-    end = "\\stepcounter{figure}" if preview else f"{cap}\n\\label{{{lab}}}"
-    return f"\\begin{{{env}}}[p]\n\\centering\n{body}\n{end}\n\\end{{{env}}}\n"
+    alt = re.fullmatch(r"\d+[B-Z]", f["n"])
+    if preview:
+        env = (f"\\noindent\\begin{{minipage}}{{\\textwidth}}\\captionsetup{{type=figure}}\n"
+               f"\\centering\n{body}\n{cap}\n\\end{{minipage}}\n\\clearpage\n")
+    else:
+        env = f"\\begin{{figure*}}[p]\n\\centering\n{body}\n{cap}\n\\label{{{lab}}}\n\\end{{figure*}}\n"
+    if alt:   # numbered "6, version B", without moving the main sequence on
+        env = (f"\\begingroup\\renewcommand{{\\thefigure}}{{{fig_name(f['n'])}}}\n{env}"
+               f"\\endgroup\\addtocounter{{figure}}{{-1}}\n")
+    return env
 
 
 def write_tex(preview: bool) -> Path:
     name = "figures-preview.tex" if preview else "figures.tex"
-    parts = [f"% Generated by paper/v2/build_figures.py -- do not edit by hand.\n{PREAMBLE}"]
+    pre = PREAMBLE.replace("PAPERH", "70cm" if preview else "29.7cm") \
+                  .replace("TEXTH", "67cm" if preview else "26cm")
+    parts = [f"% Generated by paper/v2/build_figures.py from CAPTIONS.md -- do not edit by hand.\n{pre}"]
     if preview:
         parts.append("\\pagestyle{empty}\n")
     parts.append("\\begin{document}\n")
-    for f in FIGURES:
+    for f in (figure_order() if preview else FIGURES):
         parts.append(figure_env(f, preview))
-        if preview:
-            parts.append("\\clearpage\n")
     if not preview:
         parts.append("\\clearpage\n")
         for t in TABLES_TEX:
             parts.append(f"\\input{{tables/{t}}}\n")
-        parts.append("\\clearpage\n\\setcounter{figure}{0}\n\\renewcommand{\\thefigure}{S\\arabic{figure}}\n")
-    else:
-        parts.append("\\setcounter{figure}{0}\n")
-    for f in SI_FIGURES:
+        parts.append("\\clearpage\n")
+    parts.append("\\setcounter{figure}{0}\n\\renewcommand{\\thefigure}{S\\arabic{figure}}\n")
+    for f in (figure_order(si=True) if preview else SI_FIGURES):
         parts.append(figure_env(f, preview))
-        if preview:
-            parts.append("\\clearpage\n")
+    if not preview and ALTERNATIVES:
+        parts.append("\\clearpage\n\\section*{Alternative versions for review}\n"
+                     "\\renewcommand{\\thefigure}{\\arabic{figure}}\n")
+        for f in ALTERNATIVES:
+            parts.append(figure_env(f, preview))
     parts.append("\\end{document}\n")
     out = HERE / name
     out.write_text("".join(parts))
@@ -363,13 +311,14 @@ def compile_tex(path: Path) -> Path:
 
 
 def render_previews(pdf: Path) -> None:
+    """One page per figure, caption included (17 Nov, item G), trimmed to the ink."""
     PREVIEW.mkdir(exist_ok=True)
     tmp = HERE / ".preview_pages"
     tmp.mkdir(exist_ok=True)
     pdftoppm = shutil.which("pdftoppm") or str(Path.home() / "bin" / "pdftoppm")
     subprocess.run([pdftoppm, "-r", "200", "-png", str(pdf), str(tmp / "p")], check=True)
     pages = sorted(tmp.glob("p-*.png"))
-    stems = [f["stem"] for f in FIGURES] + [f["stem"] for f in SI_FIGURES]
+    stems = [f["stem"] for f in figure_order()] + [f["stem"] for f in figure_order(si=True)]
     assert len(pages) == len(stems), (len(pages), stems)
     for page, stem in zip(pages, stems):
         im = Image.open(page).convert("RGB")
@@ -383,9 +332,12 @@ def render_previews(pdf: Path) -> None:
     shutil.rmtree(tmp)
 
 
-def figure_md(f: dict, img_url: str) -> str:
-    return (f"### Fig. {f['n']} {f['title']}\n\n![Fig. {f['n']}]({img_url})\n\n"
-            f"**Fig. {f['n']} {f['title']}.** {md_links(f['caption'])}\n")
+def figure_md(f: dict, img_url: str, level: str = "###") -> str:
+    name = fig_name(f["n"])
+    return (f"{level} Fig. {name} {f['title']}\n\n![Fig. {name}]({img_url})\n\n"
+            f"<details><summary>Caption as text, with links (edit it in "
+            f"<code>CAPTIONS.md</code>)</summary>\n\n"
+            f"**Fig. {name} {f['title']}.** {md_links(f['caption'])}\n\n</details>\n")
 
 
 def tables_md() -> str:
@@ -396,36 +348,39 @@ def tables_md() -> str:
     return "\n".join(out)
 
 
+S4_NOTE = ("The 19 build steps from PR #170 are still only in "
+           "`paper/figures/figS_assembly_steps.pdf`, and nothing yet shows the new stand (fitted "
+           "2 Oct) being assembled or its height being adjusted.\n")
+
+
 def write_markdown(sha: str | None) -> None:
     intro = (
         "# Figures and tables for review (v2)\n\n"
-        "Every figure is shown with its full draft caption as text underneath (review of "
-        "11 Nov, [`../review_2026-11-11/NOTES.md`](../review_2026-11-11/NOTES.md)). The images "
-        "are rendered from [`figures.tex`](figures.tex), which assembles the panels as LaTeX "
-        "subfigures; [`figures.pdf`](figures.pdf) is the compiled version with captions and "
-        "tables. Title and abstract: [`TITLE-ABSTRACT.md`](TITLE-ABSTRACT.md). How each item maps "
-        "to the whiteboard and the meetings: [`README.md`](README.md).\n\n## Main text\n\n")
+        "Each image is the figure as typeset in [`figures.pdf`](figures.pdf), with its caption "
+        "underneath (review of 17 Nov, [`../review_2026-11-17/NOTES.md`](../review_2026-11-17/NOTES.md)). "
+        "The same caption is folded under each image as text, with its links. **To edit a "
+        "caption, edit [`CAPTIONS.md`](CAPTIONS.md)** and rebuild. Alternative versions for "
+        "review follow their figure (e.g. Fig. 7, version B). The panels are LaTeX subfigures "
+        "assembled in [`figures.tex`](figures.tex). Title and abstract: "
+        "[`TITLE-ABSTRACT.md`](TITLE-ABSTRACT.md). How each item maps to the whiteboard and the "
+        "meetings: [`README.md`](README.md).\n\n## Main text\n\n")
     parts = [intro]
-    for f in FIGURES:
+    for f in figure_order():
         parts.append(figure_md(f, f"preview/{f['stem']}.png") + "\n")
     parts.append("## Tables\n\n" + tables_md() + "\n## Supporting information\n\n")
-    for f in SI_FIGURES:
+    for f in figure_order(si=True):
         parts.append(figure_md(f, f"preview/{f['stem']}.png") + "\n")
-    parts.append("### SI Fig. S4 Assembly steps and adjusting the stand\n\n"
-                 "Not remade. The exploded view and the 19 build steps from PR #170 already exist "
-                 "(`paper/figures/figS_assembly_exploded.pdf`, `paper/figures/figS_assembly_steps.pdf`). "
-                 "Nothing shows the new stand (fitted 2 Oct) being assembled or its height being "
-                 "adjusted.\n")
+    parts.append(S4_NOTE)
     (HERE / "FIGURES-AND-TABLES.md").write_text("".join(parts))
     print("wrote FIGURES-AND-TABLES.md")
     if sha:
         raw = f"{REPO}/blob/{sha}/paper/v2/preview"
         body = [f"<!-- generated by paper/v2/build_figures.py --sha {sha} -->\n"]
-        for f in FIGURES:
-            body.append(figure_md(f, f"{raw}/{f['stem']}.png?raw=true").replace("### ", "#### ") + "\n")
+        for f in figure_order():
+            body.append(figure_md(f, f"{raw}/{f['stem']}.png?raw=true", "####") + "\n")
         (HERE / "PR-FIGURES.md").write_text("".join(body))
-        si = [figure_md(f, f"{raw}/{f['stem']}.png?raw=true").replace("### ", "#### ") + "\n"
-              for f in SI_FIGURES]
+        si = [figure_md(f, f"{raw}/{f['stem']}.png?raw=true", "####") + "\n"
+              for f in figure_order(si=True)]
         (HERE / "PR-SI.md").write_text("".join(si))
         (HERE / "PR-TABLES.md").write_text(tables_md().replace("### ", "#### "))
         print("wrote PR-FIGURES.md, PR-SI.md, PR-TABLES.md")
@@ -436,6 +391,7 @@ if __name__ == "__main__":
     ap.add_argument("--sha", help="7-character commit for absolute image URLs (PR description)")
     ap.add_argument("--no-latex", action="store_true")
     a = ap.parse_args()
+    attach_captions()
     if not a.no_latex:
         compile_tex(write_tex(preview=False))
         render_previews(compile_tex(write_tex(preview=True)))

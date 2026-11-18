@@ -121,7 +121,9 @@ def fig_doser_panels() -> None:
         ("Tilt servo (one of two)\nand 2:1 tilt gears", (640, 1440), (180, 1880), "left"),
         ("Tap collar with\n12 V solenoid", (1480, 430), (2900, 330), "right"),
         ("Electronics", (1830, 820), (2900, 700), "right"),
-        ("Auger tube: the powder\nreservoir, filled from\nthe capped end", (1300, 930), (2900, 1210), "right"),
+        # review of 17 Nov, point 1.1: no dashed box; the callout points to (c)
+        ("Auger tube: the powder\nreservoir, filled from\nthe capped end\n(section view in (c))",
+         (1300, 930), (2900, 1200), "right"),
         ("Outlet, Ø 3 mm", (1470, 1085), (2900, 1650), "right"),
         ("Hinged mounting\nplate", (1350, 1390), (2900, 2050), "right"),
         ("Collection beaker", (1480, 2330), (2900, 2700), "right"),
@@ -135,21 +137,14 @@ def fig_doser_panels() -> None:
                     arrowprops=dict(arrowstyle="-", lw=0.6, color=CALL,
                                     shrinkA=0, shrinkB=1.5), zorder=5)
         ax.plot(px * k, py * k, "o", ms=2.2, color=CALL, zorder=6)
-    # dashed box: the part drawn in section in (c)
-    ax.add_patch(Rectangle((1020 * k, 760 * k), 520 * k, 380 * k, fill=False,
-                           lw=0.9, ec=CALL, ls=(0, (3, 1.5)), zorder=7))
-    ax.text(1020 * k, 750 * k, "section in (c)", fontsize=5.0, color=CALL,
-            ha="left", va="bottom", style="italic", zorder=7,
-            bbox=dict(fc="white", ec="none", alpha=0.8, pad=0.6))
     save(fig, "doser_a_photo")
 
-    # (b) exploded view (PR #170, the drawing only, BOM table cropped off)
-    ex = np.asarray(Image.open(OLD / "assets" / "assembly_exploded_bom.png").convert("RGB"))
-    h, w = ex.shape[:2]
-    ex = ex[:, : int(0.635 * w)]
-    fig, ax = image_panel(DOSER_R_W, DOSER_R_W * ex.shape[0] / ex.shape[1])
-    ax.imshow(ex, interpolation="lanczos")
-    save(fig, "doser_b_exploded")
+    # (b) exploded view: review of 17 Nov, point 1.2.  PR #170's exploded start
+    # re-rendered without balloons (render_exploded_view.py), with balloons for
+    # the 13 main parts only, each beside its part (make_exploded_view.py).  The
+    # print size is that of the PR #170 crop it replaces (870 x 680 px).
+    import make_exploded_view as mev
+    mev.main_panel(DOSER_R_W, DOSER_R_W * 680 / 870)
 
     # (c) auger section, larger than in the composite
     fig = plt.figure(figsize=(1.52, DOSER_LOW_H))
@@ -182,34 +177,70 @@ REPLY = ("Dispensed 8 g of AlSi10Mg: 7.993 g delivered in 315 s. 7.9928 g agains
          "8.000 g target, 7.2 mg short (−0.09 %). The firmware reported ok.")
 
 
-def card(ax, x, y, w, h, who, when, text, colour):
-    ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.008,rounding_size=0.02",
-                                fc="white", ec=colour, lw=0.8, transform=ax.transAxes))
-    ax.text(x + 0.02, y + h - 0.03, who, transform=ax.transAxes, fontsize=5.6,
-            fontweight="bold", color=colour, va="top")
-    ax.text(x + w - 0.02, y + h - 0.03, when, transform=ax.transAxes, fontsize=5.0,
-            color=INK2, va="top", ha="right")
-    ax.text(x + 0.02, y + h - 0.13, textwrap.fill(text, 46), transform=ax.transAxes,
-            fontsize=5.2, color=INK, va="top", linespacing=1.2)
+def inch_axes(fig, rect):
+    """Bare axes whose data coordinates are inches from its lower-left corner,
+    so boxes, padding and rounded corners keep their shape at any size."""
+    ax = fig.add_axes(rect)
+    bare(ax)
+    w_in, h_in = fig.get_size_inches()
+    ax.set_xlim(0, rect[2] * w_in), ax.set_ylim(0, rect[3] * h_in)
+    return ax, rect[2] * w_in, rect[3] * h_in
 
 
-def box(ax, xy, text, w=0.27, h=0.15, fc="#eef1f7", ec="#7a8296"):
-    x, y = xy
-    ax.add_patch(FancyBboxPatch((x - w / 2, y - h / 2), w, h,
-                                boxstyle="round,pad=0.01,rounding_size=0.02",
-                                fc=fc, ec=ec, lw=0.7, transform=ax.transAxes))
-    ax.text(x, y, text, transform=ax.transAxes, ha="center", va="center",
-            fontsize=5.3, linespacing=1.15)
+PT = 1 / 72                     # one point, in inches
 
 
-def arrow(ax, a, b, rad=0.0, text=None):
-    ax.add_patch(FancyArrowPatch(a, b, transform=ax.transAxes, arrowstyle="-|>",
-                                 mutation_scale=6, lw=0.8, color=INK2,
-                                 connectionstyle=f"arc3,rad={rad}"))
-    if text:
-        ax.text((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, text, transform=ax.transAxes,
-                fontsize=4.9, color=INK2, ha="center", va="center", style="italic",
-                bbox=dict(fc="white", ec="none", pad=0.5))
+def card(ax, x, top, w, who, when, text, colour, wrap):
+    """A comment card (inch axes) hanging from `top`, text wrapped at `wrap`
+    characters; returns the card's bottom edge.  Review of 17 Nov, point 4.1:
+    short, wide cards with long lines."""
+    body = textwrap.fill(text, wrap)
+    n = body.count("\n") + 1
+    h = (3.0 + 6.4 + 2.0 + n * 6.6 + 2.0) * PT
+    y = top - h
+    ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.0,rounding_size=0.04",
+                                fc="white", ec=colour, lw=0.8))
+    ax.text(x + 0.06, top - 3.0 * PT, who, fontsize=5.6, fontweight="bold",
+            color=colour, va="top")
+    ax.text(x + w - 0.06, top - 3.0 * PT, when, fontsize=5.0, color=INK2, va="top",
+            ha="right")
+    ax.text(x + 0.06, top - (3.0 + 6.4 + 2.0) * PT, body, fontsize=5.2, color=INK,
+            va="top", linespacing=1.27)
+    return y
+
+
+def box(ax, x0, yc, w, h, text, fc="#eef1f7", ec="#7a8296"):
+    """A block of the control loop (inch axes): left edge x0, centre height yc."""
+    ax.add_patch(FancyBboxPatch((x0, yc - h / 2), w, h,
+                                boxstyle="round,pad=0.0,rounding_size=0.05",
+                                fc=fc, ec=ec, lw=0.7))
+    ax.text(x0 + w / 2, yc, text, ha="center", va="center", fontsize=5.3,
+            linespacing=1.15)
+
+
+def arrow(ax, a, b):
+    ax.add_patch(FancyArrowPatch(a, b, arrowstyle="-|>", mutation_scale=6, lw=0.8,
+                                 color=INK2, shrinkA=0, shrinkB=0))
+
+
+def brace(fig, x0, x1, y0, rx, ry, colour=INK2, lw=0.7):
+    """A horizontal curly brace from x0 to x1 (figure fraction) with its feet
+    on y0 and its tip pointing up; rx, ry: the curl radius in figure fraction.
+    Returns the tip.  Review of 17 Nov, point 4.3: a brace spans a phase, where
+    a leader line read as one moment."""
+    from matplotlib.path import Path
+    from matplotlib.patches import PathPatch
+    xm = (x0 + x1) / 2
+    rx = min(rx, (x1 - x0) / 4)
+    C = Path.CURVE3
+    verts = [(x0, y0), (x0, y0 + ry), (x0 + rx, y0 + ry), (xm - rx, y0 + ry),
+             (xm, y0 + ry), (xm, y0 + 2 * ry), (xm, y0 + ry), (xm + rx, y0 + ry),
+             (x1 - rx, y0 + ry), (x1, y0 + ry), (x1, y0)]
+    codes = [Path.MOVETO, C, C, Path.LINETO, C, C, C, C, Path.LINETO, C, C]
+    fig.add_artist(PathPatch(Path(verts, codes), fill=False, ec=colour, lw=lw,
+                             transform=fig.transFigure, capstyle="round",
+                             joinstyle="round"))
+    return xm, y0 + 2 * ry
 
 
 def nacl_trace():
@@ -228,54 +259,68 @@ PHASE_TEXT = {
 }
 
 
+DOSING_H = 4.75                 # inches
+
+
 def fig_dosing() -> None:
     """Fig. 4 (was 3): request and reply, the control loop, one dose by phase.
 
     Review of 11 Nov 2026: the phone-screen snippet is gone, the loop is drawn
     as one row with a single loop back, and the keyframe leaders are lines.
-    Kept as one image (not subfigures): the leaders cross between panels."""
+    Review of 17 Nov 2026 (points 4.1-4.3): short, wide cards in (a), giving
+    the height to (c); "powder" clear of the blocks and the loop back drawn as
+    one path in (b); braces over the phases, and "Before" moved to the left
+    edge, in (c).  Kept as one image (not subfigures): the braces' leaders
+    cross between panels."""
+    from matplotlib.path import Path
     import build_dose_traces as bt
-    fig = plt.figure(figsize=(W_IN, 4.75))
+    H = DOSING_H
+    fig = plt.figure(figsize=(W_IN, H))
+    top_y, top_h = 0.776, 0.196                 # the row of (a) and (b)
 
-    # (a) the request and the reply (PR #166, 29 Sep 2026)
-    ax = fig.add_axes([0.0, 0.615, 0.40, 0.355])
-    bare(ax)
-    ax.set_xlim(0, 1), ax.set_ylim(0, 1)
-    card(ax, 0.02, 0.53, 0.96, 0.43, "sgbaird", "29 Sep 2026, 22:36 UTC", REQUEST, "#4a3aa7")
-    card(ax, 0.02, 0.02, 0.96, 0.43, "claude[bot]", "22:37 UTC", REPLY, "#1baf7a")
-    arrow(ax, (0.5, 0.53), (0.5, 0.445))
+    # (a) the request and the reply (PR #166, 29 Sep 2026): short, wide cards
+    ax, wa, ha = inch_axes(fig, [0.0, top_y, 0.452, top_h])
+    y = card(ax, 0.02, ha - 0.01, wa - 0.04, "sgbaird", "29 Sep 2026, 22:36 UTC",
+             REQUEST, "#4a3aa7", wrap=78)
+    y2 = y - 0.075
+    arrow(ax, (wa / 2, y - 0.008), (wa / 2, y2 + 0.01))
+    card(ax, 0.02, y2, wa - 0.04, "claude[bot]", "22:37 UTC", REPLY, "#1baf7a", wrap=78)
     label(ax, "a", x=0.0, y=1.0)
 
     # (b) the control loop, left to right, with the measurement looping back
-    axb = fig.add_axes([0.425, 0.615, 0.575, 0.355])
-    bare(axb)
-    axb.set_xlim(0, 1), axb.set_ylim(0, 1)
-    yb, bw, bh = 0.60, 0.175, 0.34
-    xs_ = [0.115, 0.372, 0.628, 0.877]
+    axb, wb, hb = inch_axes(fig, [0.468, top_y, 0.532, top_h])
     texts = ["Dose request\n(target mass)", "Three-phase\ncontroller\n(microcontroller)",
              "Auger rotation,\nsolenoid taps,\ntilt servos", "Analytical\nbalance"]
-    for x_, t_ in zip(xs_, texts):
-        box(axb, (x_, yb), t_, w=bw, h=bh)
-    for x0_, x1_, t_ in [(xs_[0], xs_[1], None), (xs_[1], xs_[2], None),
-                         (xs_[2], xs_[3], "powder")]:
-        arrow(axb, (x0_ + bw / 2 + 0.004, yb), (x1_ - bw / 2 - 0.004, yb))
-        if t_:
-            axb.text((x0_ + x1_) / 2, yb + 0.03, t_, transform=axb.transAxes,
-                     fontsize=4.6, color=INK2, ha="center", va="bottom", style="italic")
-    yl = 0.17                                   # the loop back, under the row
-    axb.plot([xs_[3], xs_[3], xs_[1]], [yb - bh / 2 - 0.01, yl, yl],
-             color=INK2, lw=0.8, transform=axb.transAxes, solid_capstyle="butt")
-    arrow(axb, (xs_[1], yl), (xs_[1], yb - bh / 2 - 0.006))
-    axb.text((xs_[1] + xs_[3]) / 2, yl - 0.035, "measured mass, read after every step",
-             transform=axb.transAxes, fontsize=4.9, color=INK2, ha="center",
-             va="top", style="italic")
-    axb.text(xs_[0], yb + bh / 2 + 0.05, "agent or person", ha="center", fontsize=4.9,
-             color=INK2, style="italic", transform=axb.transAxes)
+    widths = [0.66, 0.80, 0.72, 0.56]           # inches
+    gaps = [0.19, 0.19, 0.38]                   # the last one carries "powder"
+    bh, yb = 0.40, hb - 0.29
+    x0s = [0.04]
+    for w_, g_ in zip(widths[:-1], gaps):
+        x0s.append(x0s[-1] + w_ + g_)
+    for x0_, w_, t_ in zip(x0s, widths, texts):
+        box(axb, x0_, yb, w_, bh, t_)
+    for i in range(3):
+        arrow(axb, (x0s[i] + widths[i] + 0.012, yb), (x0s[i + 1] - 0.012, yb))
+    xg = x0s[2] + widths[2] + gaps[2] / 2       # "powder", above its arrow, in the gap
+    axb.text(xg, yb + 0.035, "powder", fontsize=4.9, color=INK2, ha="center",
+             va="bottom", style="italic")
+    # the measurement loops back as one path with one arrowhead (point 4.2)
+    xc2, xc4 = x0s[1] + widths[1] / 2, x0s[3] + widths[3] / 2
+    yl = yb - bh / 2 - 0.17
+    loop = Path([(xc4, yb - bh / 2 - 0.01), (xc4, yl), (xc2, yl), (xc2, yb - bh / 2 - 0.012)],
+                [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO])
+    axb.add_patch(FancyArrowPatch(path=loop, arrowstyle="-|>", mutation_scale=6, lw=0.8,
+                                  color=INK2, joinstyle="miter", capstyle="butt"))
+    axb.text((xc2 + xc4) / 2, yl - 0.04, "measured mass, read after every step",
+             fontsize=4.9, color=INK2, ha="center", va="top", style="italic")
+    axb.text(x0s[0] + widths[0] / 2, yb - bh / 2 - 0.04, "from an agent\nor a person",
+             ha="center", va="top", fontsize=4.9, color=INK2, style="italic",
+             linespacing=1.1)
     label(axb, "b", x=0.0, y=1.0)
 
-    # (c) one dose, phase by phase
+    # (c) one dose, phase by phase: the trace, with braces up to the keyframes
     dose = nacl_trace()
-    axt = fig.add_axes([0.075, 0.075, 0.905, 0.25])
+    axt = fig.add_axes([0.075, 0.075, 0.905, 0.34])
     tt, mm = bt.trace_xy(dose)
     prev, spans = 0.0, {}
     for ph_ in dose["order"]:
@@ -295,45 +340,59 @@ def fig_dosing() -> None:
     axt.set_ylabel("Mass in the cup (mg)")
     for sp in ("top", "right"):
         axt.spines[sp].set_visible(False)
-    label(axt, "c", x=-0.075, y=1.0)
+    fig.text(0.0, 0.739, "(c)", fontsize=7.5, fontweight="bold", ha="left", va="bottom",
+             color=INK)
 
-    # keyframes above the trace: before, the tube at each phase, after
+    # keyframes above the trace: before (at the left edge), the tube in each
+    # phase, after (at the right edge); each phase image sits over a brace that
+    # spans that phase on the time axis
     frames = [
-        ("salt_demo_before_2026-09-15.jpg", "photo", "Before: empty cup", 0.0),
-        ("cad_tilt45.png", "cad", "", None),
-        ("cad_tilt22p5.png", "cad", "", None),
-        ("cad_tilt00.png", "cad", "", None),
-        ("salt_demo_after_2026-09-15.jpg", "photo", "Done", tt[-1]),
+        ("salt_demo_before_2026-09-15.jpg", "photo", "Before: empty cup", None),
+        ("cad_tilt45.png", "cad", PHASE_TEXT["bulk"], "bulk"),
+        ("cad_tilt22p5.png", "cad", PHASE_TEXT["fine"], "fine"),
+        ("cad_tilt00.png", "cad", PHASE_TEXT["tap"], "tap"),
+        ("salt_demo_after_2026-09-15.jpg", "photo", "After: the dose in the cup", None),
     ]
-    phases_for = [None, "bulk", "fine", "tap", None]
-    n = len(frames)
-    fw, fh, fy = 0.17, 0.215, 0.375
-    xs = np.linspace(0.075, 0.98 - fw, n)
-    for (name, kind, cap, tmark), ph_, x in zip(frames, phases_for, xs):
-        axk = fig.add_axes([x, fy, fw, fh])
+    fy, fh = 0.486, 0.215                       # keyframe row (figure fraction)
+    imgs = []
+    for name, kind, _, _ in frames:
         img = photo(name)
-        H, W = img.shape[:2]
+        Hh, Ww = img.shape[:2]
         if kind == "photo":
-            img = img[int(0.30 * H):int(0.78 * H), int(0.05 * W):int(0.95 * W)]
+            img = img[int(0.30 * Hh):int(0.78 * Hh), int(0.05 * Ww):int(0.95 * Ww)]
         else:
-            img = img[int(0.05 * H):int(0.95 * H), int(0.12 * W):int(0.88 * W)]
-        axk.imshow(img)
+            # one crop for all three tilts (the union of the parts, plus a margin),
+            # so the doser is drawn at the same scale in each
+            img = img[int(0.12 * Hh):int(0.93 * Hh), int(0.29 * Ww):int(0.86 * Ww)]
+        imgs.append(img)
+    fws = [fh * H * im.shape[1] / im.shape[0] / W_IN for im in imgs]   # exact widths
+    x_end = 0.98
+    gap = (x_end - sum(fws)) / (len(fws) - 1)
+    xs, x = [], 0.0
+    for fw_ in fws:
+        xs.append(x)
+        x += fw_ + gap
+    # brace geometry: feet just above the axes, tips under the keyframes
+    ax_pos = axt.get_position()
+    t_to_fig = lambda t: ax_pos.x0 + ax_pos.width * t / (tt[-1] + 4)  # noqa: E731
+    y_feet = ax_pos.y1 + 0.03 / H
+    r_in = 0.045
+    for (name, kind, text, ph_), img, fw_, x in zip(frames, imgs, fws, xs):
+        axk = fig.add_axes([x, fy, fw_, fh])
+        axk.imshow(img, interpolation="lanczos")
         bare(axk)
         for sp in axk.spines.values():
             sp.set_visible(True), sp.set_color(MUTED), sp.set_linewidth(0.6)
-        text = PHASE_TEXT[ph_] if ph_ else cap
-        axk.text(0.0, 1.02, text, transform=axk.transAxes, ha="left",
+        axk.text(0.0, 1.03, text, transform=axk.transAxes, ha="left",
                  va="bottom", fontsize=4.8, color=INK, linespacing=1.1)
-        # leader (a line: it only links the frame to its stretch of the trace)
         if ph_:
             a_, b_ = spans[ph_]
-            tx = (a_ + b_) / 2
-        else:
-            tx = tmark
-        con = ConnectionPatch(xyA=(0.5, 0.0), coordsA=axk.transAxes,
-                              xyB=(tx, 1120), coordsB=axt.transData,
-                              arrowstyle="-", lw=0.6, color=INK2)
-        fig.add_artist(con)
+            xm, ytip = brace(fig, t_to_fig(a_) + 0.0015, t_to_fig(b_) - 0.0015, y_feet,
+                             r_in / W_IN, r_in / H)
+            # up from the tip to the nearest point of the frame's lower edge
+            xk = min(max(xm, x + 0.2 * fw_), x + 0.8 * fw_)
+            fig.add_artist(plt.Line2D([xm, xk], [ytip + 0.004, fy - 0.004],
+                                      transform=fig.transFigure, lw=0.6, color=INK2))
     save(fig, "dosing")
 
 
@@ -343,8 +402,9 @@ def fig_dosing() -> None:
 # Sam's photo of 17 Nov 2026 (review of 17 Nov, point 5.4), replacing the 10 Sep one.
 # The augers lie horizontally, staggered, caps to the right, so no rotation is needed.
 LINEUP_PHOTO = "augers_lineup_2026-11-17.jpg"
-LINEUP_BOX = (1430, 242, 3690, 2812)   # pixel crop of the 4032 x 3024 original:
-                                       # labels and caps, keeping (d) 2.75 in wide
+LINEUP_BOX = (1450, 230, 3720, 2830)   # pixel crop of the 4032 x 3024 original:
+                                       # every label and cap (checked on 18 Nov);
+                                       # the outlet ends, left, are cut
 LINEUP = [  # handwritten label (top to bottom in the photo), powder id
     ("Brown rice flour (auger 1)", "brown-rice-flour"),
     ("Brown rice flour (auger 2)", "brown-rice-flour"),
@@ -358,25 +418,32 @@ LINEUP = [  # handwritten label (top to bottom in the photo), powder id
 
 
 # Callout points: the centre of each auger's cap (the black NaCl tube's end), in
-# pixels of the cropped photo, same order.  Estimated on 17 Nov from the photo
-# without a render (Python was blocked); check them on the first build.
-LINEUP_XY = [(1094, 242), (1213, 488), (1328, 770), (1449, 1042), (1578, 1351),
-             (1725, 1669), (1872, 1996), (2112, 2359)]
+# pixels of the 4032 x 3024 original, same order.  Estimated on 17 Nov without a
+# render; checked against the photo on 18 Nov (each point is on its own cap).
+LINEUP_XY = [(2524, 484), (2643, 730), (2758, 1012), (2879, 1284), (3008, 1593),
+             (3155, 1911), (3302, 2238), (3542, 2601)]
 LINEUP_NAME = ["Brown rice flour (1)", "Brown rice flour (2)", "White rice flour",
                "Sodium alginate", "Calcium lactate", "CMC", "Xanthan gum",
                "NaCl (table salt)"]
 
 
-USE_H = 2.15            # inches: every panel of the row has this height
+USE_H = 2.05            # inches: every panel of the row has this height
 
 
 def fig_use_panels() -> None:
     """Fig. 5 (was 4) as four subfigures of one height (review of 11 Nov 2026:
     aligned panels, a callout for the aluminium cup in (c), no "Label, and
-    delivery..." header in (d), the tilt in the caption with an asterisk)."""
+    delivery..." header in (d), the tilt in the caption with an asterisk).
+
+    Review of 17 Nov 2026: (a) and (b) re-cropped so the auger is in the
+    middle (points 5.1, 5.2; our earlier crops had pushed it to one side), and
+    (d) is Sam's photo of 17 Nov with one level callout per auger (point 5.4)."""
     steps = [
-        ("use_a_fill", "auger_filled_salt_2026-07-29.jpg", (0.05, 0.25, 0.60, 1.0)),
-        ("use_b_fit", "video_fit_auger_t10.jpg", (0.12, 0.0, 0.45, 1.0)),
+        # (a) the auger is at 41-57 % of the photo's width: centre it
+        ("use_a_fill", "auger_filled_salt_2026-07-29.jpg", (0.22, 0.25, 0.77, 1.0)),
+        # (b) left half of the dose video's side-by-side frame: the whole auger,
+        # from its capped end, and the hand that holds it
+        ("use_b_fit", "video_fit_auger_t10.jpg", (0.0, 0.0, 0.33, 1.0)),
         ("use_c_ready", "video_loaded_t17.jpg", (0.60, 0.0, 0.93, 1.0)),
     ]
     for stem, name, crop in steps:
@@ -397,18 +464,21 @@ def fig_use_panels() -> None:
             ax.plot(312, 500, "o", ms=2.2, color=CALL, zorder=6)
         save(fig, stem)
 
-    # (d) one auger per powder, stored filled; callouts from the data
+    # (d) one auger per powder, stored filled; callouts from the data, each level
+    # with its auger (the augers lie horizontally, one above the other)
     img = photo(LINEUP_PHOTO, box=LINEUP_BOX)
-    w_photo = USE_H * img.shape[1] / img.shape[0]
-    w_text = 0.86
+    hp = img.shape[0]
+    w_photo = USE_H * img.shape[1] / hp
+    w_text = 0.82
     fig = plt.figure(figsize=(w_photo + w_text, USE_H))
     axl = fig.add_axes([0, 0, w_photo / (w_photo + w_text), 1])
-    axl.imshow(img)
+    axl.imshow(img, interpolation="lanczos")
     bare(axl)
-    xt = (w_photo + 0.06) / (w_photo + w_text)
-    ys = np.linspace(0.93, 0.07, len(LINEUP))
+    xt = (w_photo + 0.05) / (w_photo + w_text)
     star = "*"                  # on the first value only; the caption explains it
-    for (_, pid), name, (px, py), yy in zip(LINEUP, LINEUP_NAME, LINEUP_XY, ys):
+    for (_, pid), name, (px, py) in zip(LINEUP, LINEUP_NAME, LINEUP_XY):
+        px, py = px - LINEUP_BOX[0], py - LINEUP_BOX[1]
+        yy = 1 - py / hp                        # the auger's height, figure fraction
         if pid in m.DID_NOT_CONVEY:
             val = "none measurable"
         else:
@@ -417,11 +487,12 @@ def fig_use_panels() -> None:
         fig.text(xt, yy, f"{name}\n{val}", fontsize=5.4, color=m.colour(pid),
                  va="center", linespacing=1.1)
         con = ConnectionPatch(xyA=(px, py), coordsA=axl.transData,
-                              xyB=(xt - 0.01, yy), coordsB=fig.transFigure,
+                              xyB=(xt - 0.012, yy), coordsB=fig.transFigure,
                               arrowstyle="-", lw=0.5, color=CALL)
         fig.add_artist(con)
         axl.plot(px, py, "o", ms=2.2, color=CALL)
     save(fig, "use_d_augers")
+    print(f"Fig. 5 panel widths (in): (d) {w_photo + w_text:.3f}")
 
 
 if __name__ == "__main__":
