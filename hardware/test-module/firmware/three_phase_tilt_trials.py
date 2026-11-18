@@ -27,7 +27,14 @@ apart from four hooks that change nothing about its decisions:
    the whole trial, settle waits included (each read is logged, never
    used by the controller);
 3. the bulk tilt schedule (1a): when a bulk poll crosses a band edge
-   the plate steps to the next angle while the auger keeps spinning;
+   the plate steps to the next angle while the auger keeps spinning.
+   Fallback added after the first launch (2026-11-18 06:45 UTC): with
+   the tube freshly filled to the brim, 60 deg holds the tube vertical
+   and the full column plugs -- trials 1 and 2 got 0 mg in 18 auger revs
+   there and stalled, and after priming a 60 deg probe gave one 112 mg
+   slug then nothing.  So if an angle shows no flow (< SCHED_FLOW_G) for
+   SCHED_DWELL_S while spinning, the plate also steps on to the next
+   angle; every step is logged with its reason (band or no-flow);
 4. the dose timeout, the thresholds and every stall rule stay stock.
 
 Parameters that differ from the stock phase dicts (all per the request):
@@ -65,7 +72,7 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-18a"
+SCRIPT_VERSION = "2026-11-18b"
 POWDER_ID = "salt"
 
 N_TRIALS = 30
@@ -74,6 +81,8 @@ TARGET_G = 1.0
 # --- the request (XZaitzeff, PR #131, 2026-11-18; "1a, 2a, yes") ---------
 BULK_RPM = 55.0
 BULK_TILTS = (60.0, 55.0, 50.0, 45.0, 40.0)   # plate deg, stepped as it fills
+SCHED_FLOW_G = 0.002           # a bulk angle "flows" once it gains this ...
+SCHED_DWELL_S = 3.0            # ... and is left after this long without it
 FINE_TILT = 30.0
 FINE_RPM = 25.0
 FINE_ANTICIPATION_G = 0.020
@@ -93,7 +102,7 @@ CUP_NEXT_MARGIN_G = 1.6        # don't start a trial that could pass the cap
 CUP_HARD_G = 46.5              # any frame above this mid-trial -> abort
 BAL_MAX_G = 95.0               # displayed ceiling (balance range 102 g)
 MAX_FAILED_IN_A_ROW = 2        # stalled / scale-error / timeout ... in a row
-SESSION_BUDGET_S = 105 * 60    # don't start a trial after this
+SESSION_BUDGET_S = 95 * 60     # don't start a trial after this
 
 
 # ---------------------------------------------------------------------------
@@ -124,6 +133,8 @@ class Ctx:
     sched_on = False
     sched_band_g = 0.15
     sched_idx = 0
+    sched_ref = None           # bulk mass at the last flow / step
+    sched_t = None             # ticks of the last flow / step
     servo = None
     stepper = None
     scale = None
@@ -219,16 +230,33 @@ class LoggedScale:
 
 
 def _schedule_tilt(m_rel):
-    """1a: step the plate down one band at a time as the cup fills."""
+    """1a: step the plate down one band at a time as the cup fills.
+
+    Plus the no-flow fallback: an angle that delivers nothing for
+    SCHED_DWELL_S while the auger spins is left for the next one.
+    """
+    now = time.ticks_ms()
+    if C.sched_ref is None or m_rel - C.sched_ref >= SCHED_FLOW_G:
+        C.sched_ref = m_rel
+        C.sched_t = now
+    last = len(BULK_TILTS) - 1
     idx = int(m_rel / C.sched_band_g) if m_rel > 0 else 0
-    if idx > len(BULK_TILTS) - 1:
-        idx = len(BULK_TILTS) - 1
-    if idx <= C.sched_idx:
-        return                       # monotonic: never tilts back up
-    ev("tilt schedule: {:.4f} g in the cup -> band {} ({:.1f} deg)".format(
-        m_rel, idx, BULK_TILTS[idx]))
+    if idx > last:
+        idx = last
+    why = "band"
+    if idx <= C.sched_idx:           # monotonic: never tilts back up
+        if (C.sched_idx < last and
+                time.ticks_diff(now, C.sched_t) >= SCHED_DWELL_S * 1000):
+            idx = C.sched_idx + 1
+            why = "no flow for {:.1f} s".format(SCHED_DWELL_S)
+        else:
+            return
+    ev("tilt schedule: {:.4f} g in the cup -> step {} ({:.1f} deg, {})"
+       .format(m_rel, idx, BULK_TILTS[idx], why))
     C.sched_idx = idx
     C.servo.move_to(BULK_TILTS[idx])
+    C.sched_ref = m_rel
+    C.sched_t = time.ticks_ms()
 
 
 def fill_read():
@@ -387,6 +415,8 @@ class Doser(m3.ThreePhaseDoser):
             p["name"], grams, exit_g))
         C.sched_on = (num == 1)
         C.sched_idx = 0
+        C.sched_ref = None
+        C.sched_t = None
         try:
             return m3.ThreePhaseDoser._run_phase(
                 self, num, p, exit_g, target_g, grams, t0, state)
@@ -525,6 +555,8 @@ def main(hw=None):
     thresholds = list(m3.THRESHOLDS)
     C.sched_band_g = (TARGET_G - thresholds[0]) / len(BULK_TILTS)
     meta("bulk_band_g", "{:.4f}".format(C.sched_band_g))
+    meta("bulk_no_flow_step", "{} g within {} s".format(SCHED_FLOW_G,
+                                                         SCHED_DWELL_S))
     for i, p in enumerate(phases):
         meta("phase{}".format(i + 1), json.dumps(p))
     doser = Doser(C.stepper, tap_w, servo_w, C.scale, config,
