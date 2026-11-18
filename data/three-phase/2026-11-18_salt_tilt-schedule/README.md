@@ -37,6 +37,17 @@ flow. The file is `camera_60_50_40deg.png`.
 About **1.6 g** of salt went into the beaker in total, from the priming spin, the probes and the
 partial trials. The balance read 0.458 g before launch 1 and about 2.05 g at the end.
 
+## Balance offsets with the plate tilted
+
+The balance reading moves when the plate tilts, even with no powder flowing. In launch 1, trial 1,
+the reading fell by 20–35 mg while the plate sat at 60° with the auger spinning, and it ended 23 mg
+low after the plate came back to 0°. In each post-roll the plate was still at the last bulk angle,
+and the reading drifted by −31 to −54 mg/min (`postroll_drift_mg_per_min` in the summaries). The
+pre-rolls, at 0°, drifted by −7 to +4 mg/min, except launch 1, trial 2 (+42 mg/min), which
+started right after the plate returned from 60°. Treat mass changes of a few tens of mg at 40–60°
+with care. The raw absolute readings and the commanded tilt are on every CSV row, so this offset
+can be modeled.
+
 ## The no-flow step (launch 2 only)
 
 Launch 1 showed that a mass-banded schedule waits forever at an angle that delivers nothing. So
