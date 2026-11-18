@@ -1,0 +1,24 @@
+{
+  "exploded_render.png": {
+    "what": "PR #170's exploded start of the current doser (every part and fastener backed out along its insertion direction), with no balloons; 2700 x 2040, three times the 900 x 680 view in assembly_exploded_bom.png, same camera",
+    "made_by": "paper/v2/render_exploded_view.py, run 18 Nov 2026 (xvfb, Python 3.12 venv: cadquery 2.8.0, vtk 9.6.2)",
+    "source": "branch claude/issue-165-20261001-1931 (PR #170 / issue #165), commit 7f5b3b7, cad/full-assembly/: assembly_bom.py (scene, bom, View, the 'cam_exploded' camera of main()), build.py, layout.py, hardware.py, components/",
+    "replaces": "paper/figures/assets/assembly_exploded_bom.png (cad/full-assembly/renders/assembly_exploded_bom.png at c508805), which had all 25 balloons baked in"
+  },
+  "exploded_ids.png": {
+    "what": "part-ID map of the same view: 8-bit, pixel value = 1 + index of the instance in exploded_parts.json 'parts' (0 = background); flat unlit colours, no anti-aliasing",
+    "made_by": "paper/v2/render_exploded_view.py, same run"
+  },
+  "exploded_parts.json": {
+    "what": "the 25 bill-of-materials rows (numbers as in PR #170's BOM.md) and, for each of the 68 instances, its BOM item and number and PR #170's balloon anchor projected into the render",
+    "made_by": "paper/v2/render_exploded_view.py, same run"
+  },
+  "exploded_main_balloons.png": {
+    "what": "Fig. 1b: balloons for the 13 main parts only (1, 2, 4, 7, 9, 12, 14, 15, 19, 20, 21, 23, 25), each beside its part; PNG copy of figures/doser_b_exploded.pdf",
+    "made_by": "paper/v2/make_exploded_view.py (main_panel)"
+  },
+  "exploded_full_bom.png": {
+    "what": "SI Fig. S4 (exploded view): a balloon for every one of the 25 BOM items, beside its part, with the bill of materials; PNG copy of figures/figS_assembly_exploded.pdf",
+    "made_by": "paper/v2/make_exploded_view.py (si_panel)"
+  }
+}
