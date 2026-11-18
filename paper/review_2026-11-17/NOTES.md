@@ -38,7 +38,13 @@ Docker image, because the MiKTeX apt package does not install on the runner's Ub
 | G | Captions moved to `paper/v2/CAPTIONS.md`, which `build_figures.py` reads. Each preview is now the figure as typeset in LaTeX with its caption underneath; `FIGURES-AND-TABLES.md` also folds the caption text, with its links, under each image. |
 | 1.1 | Dashed box and "section in (c)" removed; the auger-tube callout ends "(section view in (c))". All leaders and labels checked at 600 dpi: none cross or overlap. |
 | 1.2 | Exploded view re-rendered from the #170 assembly (branch `claude/issue-165-20261001-1931`, `7f5b3b7`) without baked-in balloons; only the 13 main parts are numbered (1, 2, 4, 7, 9, 12, 14, 15, 19, 20, 21, 23, 25), each beside its part with a short leader. The full version, every BOM item with the BOM table, is **SI Fig. S4**. Scripts: `render_exploded_view.py` (CAD → render and part-ID map, CadQuery + VTK) and `make_exploded_view.py` (balloons). |
-FIG23_ROWS
+| 2.1 | The bracket drawing (grey frame, "Drawing given to the agent", Sam) is in the AI row directly left of the bracket made from it (PR #47); the red arrow is a short horizontal one between the two frames and never reaches the axis. The whole-module item stays an AI item; it sits just before the drawing rather than after it, which keeps the row in date order and stops the connectors crossing. |
+| 2.2 | Every engineer item has a green tag (who) and a grey one (tool), like the agents' purple and grey; photographs keep "photo". Authors checked on GitHub: hackathon sketch, Sterling (issue #1, 23 Apr; **Sterling to confirm**); bracket drawing, Sam (#46); Fusion 360 auger, cap and gear, Sam (#120); multi-doser sketch and Onshape model, Sam (#128, 27 Aug: "the simple sketch I made"). The first glove-box dose was **not** Will's: Sterling's #117 comment of 24 Jul lists plampkin, Jacob, swcharles and lbwinters at the University of Utah, so it is tagged "Sam, at U of U". |
+| 2.3 | Both Claude Code bars share one row, each with its own label; the engineers' bar is green. |
+| #74-4 | "First auger" now shows the 24 Apr hackathon design that its tag describes (Claude Code, Sonnet 4.6): Devora's v2 OpenSCAD auger, commit `f3e8aa4` (which carries a `Co-Authored-By: Claude Sonnet 4.6` trailer), rendered in half-section with OpenSCAD (`assets/timeline/ai_first_auger_v2_xsec_2026-04-24.png`). |
+| 3.1 | (a) ends with Ethan's solenoid bracket (#203), from Sam's 17 Nov photo, cropped so the bracket and solenoid fill the frame. The tested collar is tagged "Team, Fusion 360": #120 suggests Will made it, but nothing confirms it. |
+| 3.2 | (b) is first auger (13 May version, tested 14 May) → storage auger (#49) → Sam's Fusion 360 auger (#120). |
+| 3.3 | (c) has five frames: drawing (Sam, 14 May) → AI model (Copilot, 14 May) → split clamp (Sam, Fusion 360, Jul; #120's "Auger Bracket Recorded" share, crop of PR #170's `bracket_old_vs_current.png`) → flexible C-clip (Sam, Fusion 360, Aug; PR #170's README says the rig's bracket behind the 44-tooth gear was Sam's white open C-clip from at least 4 Aug) → C-clip now (Ethan, Onshape, Oct; inferred: Ethan's #193 links this "Bracket Recreation", and on 1 Nov he posted the move of the parts from Fusion to Onshape). **Sam or Ethan to confirm the two C-clip attributions.** No crop of the 11 Sep rig photo: the C-clip is hidden behind the gear there. |
 | 4.1 | Request and reply cards are short and wide (text in 78-character lines); the top row went from 1.69 to 0.93 in, and the trace in (c) from 1.19 to 1.62 in tall. |
 | 4.2 | "powder" sits above its arrow, in a wider gap, clear of both boxes. The measurement loop is one path with a single arrowhead. |
 | 4.3 | Curly braces span the bulk (0–7 s), fine (7–64 s) and tap (64–169 s) phases, each joined by a line to its tube position. "Before" is at the left edge and "After" at the right. The Before/After stills are no longer joined to t = 0 and the end: those lines would cross the braces' feet. |
@@ -161,10 +167,10 @@ Updated after Sam's second comment of 17 Nov (photos, and "check #74").
 
 | For | What | Status |
 |---|---|---|
-| Fig. 3a, last image | Ethan's solenoid bracket (#203) | **Received 17 Nov** (Sam's photo): `assets/photos/solenoid_bracket_2026-11-17.jpg`. Wired into `make_fig2_timeline.py` (`PAIRS`, with a fractional crop); not yet rendered. |
-| Fig. 3b, first image | Cross-section of the first auger (#16) | **Found, no render needed:** the committed cutaway of the version printed and tested on 14 May, `assets/timeline/ai_first_auger_xsec_2026-05-13.png` (see "What #74 settled", item 3). Wired in as the first of three images in (b); not yet rendered. |
-| Fig. 3c | Who made the team's brackets: the closed collars on the tested rig (11 Sep photo) and the two flexible snap-in versions, and when | **Still needed** from Sam or Ethan; #74's design log ends on 28 May. |
-| Fig. 5d | All the labelled augers side by side | **Received 17 Nov**: `assets/photos/augers_lineup_2026-11-17.jpg`. Wired into `make_photo_figures.py` (crop and callout points estimated); not yet rendered. Like the 10 Sep photo, it shows the 8 food-safe augers (7 powders), none of the 6 research powders. |
+| Fig. 3a, last image | Ethan's solenoid bracket (#203) | **Received 17 Nov** (Sam's photo): `assets/photos/solenoid_bracket_2026-11-17.jpg`. **In the figure since 18 Nov.** |
+| Fig. 3b, first image | Cross-section of the first auger (#16) | **Found, no render needed:** the committed cutaway of the version printed and tested on 14 May, `assets/timeline/ai_first_auger_xsec_2026-05-13.png` (see "What #74 settled", item 3). **In the figure since 18 Nov**, the first of three images in (b). |
+| Fig. 3c | Who made the team's brackets, and when | **Inferred on 18 Nov** from #120, #193 and PR #170's README (see point 3.3 above); Sam or Ethan to confirm. |
+| Fig. 5d | All the labelled augers side by side | **Received 17 Nov**: `assets/photos/augers_lineup_2026-11-17.jpg`. **In the figure since 18 Nov**, crop and callouts checked. Like the 10 Sep photo, it shows the 8 food-safe augers (7 powders), none of the 6 research powders. |
 | Fig. 2a, last engineer slot | The final doser on the new stand | Team |
 | SI Fig. S4 | The new stand: CAD or photos, including two heights | Will (see the 12 Nov answer on PR #209) |
 
@@ -215,18 +221,25 @@ Checked on 17 Nov against the PRs and commits it cites.
 
 ## Open questions
 
-Status after Sam's second comment of 17 Nov.
+Status after the 18 Nov build.
 
-1. **Fig. 2a:** is the reading of "swap" in point 2.1 right? *(Open.)*
-2. **Fig. 2a:** who drew the hackathon sketch (#2)? *(Probably answered by #74: Sterling posted it
-   with issue #1. Sterling to confirm.)*
-3. **Fig. 3b:** replace the AI storage auger with the first auger, or keep it as the middle image?
-   *(Kept for now: (b) is first auger → storage auger → Fusion 360 auger, because the Fusion 360
-   auger recreates the storage auger. Say if (b) should be two images.)*
-4. **Fig. 5c:** is the wording about the aluminium cup right, and what is the grade? *(Open.)*
-5. **Fig. 3c:** who made the closed collar brackets on the tested rig (11 Sep photo), and who made
-   the two flexible snap-in versions, and when? *(New; not in #74.)*
-6. **Fig. 2a:** how to fix the "First auger" item (see "What #74 settled", item 4). *(New.)*
-7. **Fig. 5d:** the new photo, like the old one, shows the eight food-safe augers (seven powders),
-   none of the six research powders. Keep it, with the caption saying "the food-safe set", or add a
-   photo of the research-powder augers? *(New.)*
+1. **Fig. 2a "swap":** implemented as the drawing beside the AI bracket, in the AI row (point 2.1). Is
+   that what Sam meant? *(Open.)*
+2. **Fig. 2a, hackathon sketch:** tagged Sterling (issue #1). *(Sterling to confirm.)*
+3. **Fig. 3b:** three images (first auger → storage auger → Fusion 360 auger), or two? *(Open.)*
+4. **Fig. 5c:** is the wording about the aluminium cup right, and what is the grade? The callout
+   still reads "(6063?)". *(Open.)*
+5. **Fig. 3c:** the two C-clip attributions (Sam's open C-clip on the tested rig from Aug; Ethan's
+   Onshape version, Oct), and who made the tested tap collar in Fig. 3a (now "Team"). *(Sam or
+   Ethan to confirm.)*
+6. **Fig. 2a, "First auger":** now the 24 Apr design that matches its tag (#74 item 4).
+   *(Done; say if the tested 13 May version should be shown instead.)*
+7. **Fig. 5d:** the photo shows the eight food-safe augers (seven powders). Keep it, captioned "the
+   food-safe set", or add the research-powder augers? *(Open.)*
+8. **Fig. 6 and Fig. 7 versions:** keep Fig. 6 as is or with banded rows (version B)? Keep Fig. 7 in
+   percent, or switch to milligrams (version B), or use version C? *(New.)*
+9. **Fig. 6b, sodium sulfate:** its 9.3 mg tap passes Table S1's rule (mean more than twice its
+   standard error), so it keeps its bar, but its run's baseline noise was 24 mg. Footnote it, or treat
+   it as not resolved in both the figure and the table? *(New.)*
+10. **Fig. 4c:** the before and after stills are no longer joined to the start and end of the trace,
+    because those lines would cross the braces. *(New; say if they should be.)*

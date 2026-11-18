@@ -218,6 +218,7 @@ def tex_text(s: str) -> str:
     # keep a number with its unit, and "Fig. 6" together, on one line
     s = re.sub(r"(\d) (mg|g|s|mm|rpm|µm|in|cm|%)(?![\w])", r"\1~\2", s)
     s = re.sub(r"\b(Fig\.|Figs\.|Table|protocol) (?=[\dS])", r"\1~", s)
+    s = re.sub(r"(\d) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b", r"\1~\2", s)
     return s
 
 

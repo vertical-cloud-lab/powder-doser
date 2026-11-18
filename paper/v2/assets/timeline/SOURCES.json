@@ -11,7 +11,14 @@
     "path": "cad/auger/archimedes-auger-iso.png",
     "commit": "3c4b80f7977e252cafc32ff16333919de6e62839",
     "commit_date": "2026-05-15",
-    "note": "PR #16, first Archimedes auger"
+    "note": "PR #16, first Archimedes auger Not used since the review of 17 Nov: Fig. 2a's 'First auger' (24 Apr, Claude Code, Sonnet 4.6) now shows the 24 Apr design itself, ai_first_auger_v2_xsec_2026-04-24.png."
+  },
+  "ai_first_auger_v2_xsec_2026-04-24.png": {
+    "branch": "feature/archimedes-auger-attachment (merged; in this branch's history)",
+    "path": "cad/auger/archimedes-auger.scad",
+    "commit": "f3e8aa47624158ae1c303569e69c10b5568702f4",
+    "commit_date": "2026-04-24",
+    "note": "PR #16, the first auger: Devora Najjar's v2 OpenSCAD Archimedes auger of 24 Apr (hackathon), co-authored by Claude Sonnet 4.6 run locally in Claude Code (commit trailer). 20 mm OD x 100 mm, helical fin, conical funnel to a 3 mm exit. Rendered for Fig. 2a on 18 Nov 2026 as a half-section (the half facing the viewer removed, as in the source's own commented-out cross-section view): xvfb-run openscad 2021.01 --render --imgsize=900,2400 --projection=p --colorscheme=Tomorrow --camera=0,0,50,62,0,22,260, on a wrapper that does use<archimedes-auger.scad> and subtracts y < 0; margins trimmed. Copilot's c3cfab1 (24 Apr, evening) made this design manifold for printing; the tube printed at the POSE workshop (eng_pose_tube.png) is this integrated design."
   },
   "ai_whole_module.png": {
     "branch": "copilot/modular-single-channel-powder-doser-design",
@@ -221,13 +228,20 @@
     "path": "cad/onshape-193/brackets-for-auger/flexible-bracket-original/iso.png",
     "commit": "526f90b9a3d52b329ed5100f875e48fb3894998f",
     "commit_date": "2026-11-13",
-    "note": "PR #200 (issue #193), the team's original flexible snap-in auger bracket, Onshape shaded view exported through the API. For Fig. 3c (review of 17 Nov): later bracket iterations. Copied, not yet placed in a figure."
+    "note": "PR #200 (issue #193), the team's original flexible snap-in auger bracket, Onshape shaded view exported through the API. For Fig. 3c (review of 17 Nov): later bracket iterations. Placed in Fig. 3c on 18 Nov. Attribution: Sam's flexible bracket, the open C-clip on the rig behind the 44-tooth gear since at least 4 Aug and through the tests (PR #170 README, 17 Oct; Sam on #117, 31 Jul: 'the flexible brackets could be printed directly with the mounting plate'; #120 lists '(+ Flexible Brackets)' under Sam). In the Onshape document it is an imported part ('Flexible+Bracket (original)', importForeign), so the drawing came from outside Onshape (Fusion 360)."
   },
   "eng_flexible_bracket_current.png": {
     "branch": "claude/issue-197-20261103-0056",
     "path": "cad/onshape-193/brackets-for-auger/bracket-recreation/iso.png",
     "commit": "526f90b9a3d52b329ed5100f875e48fb3894998f",
     "commit_date": "2026-11-13",
-    "note": "PR #200 (issue #193), 'bracket-recreation', the flexible snap-in auger bracket as in the team's Onshape document on 13 Nov, Onshape shaded view. For Fig. 3c (review of 17 Nov): last image, the bracket on the current doser. Copied, not yet placed in a figure."
+    "note": "PR #200 (issue #193), 'bracket-recreation', the flexible snap-in auger bracket as in the team's Onshape document on 13 Nov, Onshape shaded view. For Fig. 3c (review of 17 Nov): last image, the bracket on the current doser. Placed in Fig. 3c on 18 Nov. Attribution: Ethan; #193 (Ethan, 29 Oct) links this element, 'Bracket Recreation', as the current bracket, and Ethan's #193 comment of 1 Nov links his playlist of moving the existing parts from Fusion to Onshape. Inferred, not stated by Ethan; the Onshape document was last modified 7 Nov."
+  },
+  "eng_bracket_split_clamp_fusion.png": {
+    "branch": "claude/issue-165-20261001-1931 (PR #170)",
+    "path": "cad/full-assembly/reference/bracket_old_vs_current.png, panel (b), cropped",
+    "commit": "7f5b3b779e1d036f001c0cbf9f979721139b904d",
+    "commit_date": "2026-10-17",
+    "note": "The team's Fusion 360 recreation of the auger bracket, the bolted split clamp (Fusion share 'Auger Bracket Recorded', version 1, https://a360.co/46XtYN1), from the #120 recreation in July: #120 assigns the brackets (and the flexible brackets) to Sam. Render of brackets.step by PR #170. For Fig. 3c (review of 17 Nov, point 3.3)."
   }
 }
