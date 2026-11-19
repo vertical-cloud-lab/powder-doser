@@ -300,7 +300,7 @@ def _stage_segments(rows):
     return segs
 
 
-def figures(rows_summary, series, out_dir, target):
+def figures(rows_summary, series, out_dir, target, powder="salt"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -332,16 +332,16 @@ def figures(rows_summary, series, out_dir, target):
             lab += "  {:+.1f} mg".format(err)
         ax.set_title(lab, fontsize=8, color=INK, loc="left")
         ax.set_xlim(0, tmax)
-        ax.set_ylim(-0.05, 1.12)
+        ax.set_ylim(-0.05 * target, 1.12 * target)
     for ax in axes[-1]:
         ax.set_xlabel("time since trial start (s)")
     for row in axes:
         row[0].set_ylabel("mass in cup (g)")
     fig.legend(handles=legend, loc="upper right", ncol=4, frameon=False,
                bbox_to_anchor=(0.99, 1.0))
-    fig.suptitle("1 g salt doses: cup mass vs time, colored by controller "
-                 "stage (dashed line = 1 g target)", x=0.01, ha="left",
-                 fontsize=11)
+    fig.suptitle("{0:g} g {1} doses: cup mass vs time, colored by "
+                 "controller stage (dashed line = {0:g} g target)".format(
+                     target, powder), x=0.01, ha="left", fontsize=11)
     fig.tight_layout(rect=(0, 0, 1, 0.965))
     fig.savefig(os.path.join(out_dir, "tilt_trials_overview.png"), dpi=130)
     plt.close(fig)
@@ -356,7 +356,7 @@ def figures(rows_summary, series, out_dir, target):
     a1.plot([p[0] for p in pts], [p[1] for p in pts], "o", ms=6,
             color=STAGE_COLORS["bulk"], mec=SURFACE, mew=1.5)
     a1.set_xlabel("trial")
-    a1.set_ylabel("final mass - 1 g (mg)")
+    a1.set_ylabel("final mass - {:g} g (mg)".format(target))
     a1.set_title("Final error per trial (grey band = +/-1 mg tolerance)",
                  loc="left", fontsize=10)
     bottoms = [0.0] * len(xs)
@@ -472,7 +472,8 @@ def main():
     rows_summary, series = build(d, a.out)
     target = float(d["meta"].get("target_g", "1.0"))
     if not a.no_figures:
-        figures(rows_summary, series, a.out, target)
+        figures(rows_summary, series, a.out, target,
+                d["meta"].get("powder_id", "salt"))
     ok = [r for r in rows_summary if r["error_mg"] != ""]
     print("trials: {}  statuses: {}".format(
         len(rows_summary),
