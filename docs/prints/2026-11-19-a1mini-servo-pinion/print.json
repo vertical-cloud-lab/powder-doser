@@ -1,0 +1,239 @@
+{
+ "request": {
+  "pr": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-7023330997",
+  "by": "brandonmunk",
+  "text": "@claude-print Print 1 servo pinion as found in issue #193 on any available A1 mini",
+  "requested_utc": "2026-11-19T21:57:02Z",
+  "run": "https://github.com/vertical-cloud-lab/powder-doser/actions/runs/44623850888",
+  "job_started_utc": "2026-11-19T21:57:40Z",
+  "tracking_comment": "https://github.com/vertical-cloud-lab/powder-doser/pull/200#issuecomment-7023351189"
+ },
+ "studio": {
+  "version": "02.08.02.61 (AppImage) on the runner, Xvfb :99",
+  "login": "password, then the first authenticator code from bambu-totp (Log In 22:03:36, code confirmed 22:03:54); no e-mailed code asked for",
+  "selected_at_login": "Thumbelina, the A1 Mini (busy); Tinkerbell selected by hand at 22:05:17",
+  "refresh_pressed": false,
+  "signed_out_utc": "2026-11-19T22:37:51Z",
+  "closed_and_config_deleted": "2026-11-19T22:38:27Z"
+ },
+ "printers_seen": {
+  "Thumbelina, the A1 Mini": "busy: job 'Part Studio 2 - AOR tester' downloaded 100 %, bed 64/65 C (22:04); not touched",
+  "BYU VCL H2D - Theoden": "listed online; not opened",
+  "Tinkerbell": "chosen"
+ },
+ "printer": {
+  "name": "Tinkerbell",
+  "model": "Bambu Lab A1 mini (Update tab)",
+  "firmware": "01.03.30.01 (01.08.01.00 on offer; not updated)",
+  "state_before": "idle; last job 'Part Studio 2 - AOR_tester' 100 %, 207/207, Finished; nozzle 22 C, bed 21 C, targets 0",
+  "hms_before": [],
+  "hms_after": [],
+  "filament": "no AMS; external spool set by hand to PLA, blue (#0186D6)",
+  "nozzle_reads": [
+   {
+    "utc": "22:06:56",
+    "nozzle": "0.4 mm stainless steel, Standard"
+   },
+   {
+    "utc": "22:16:21",
+    "nozzle": "0.4 mm stainless steel, Standard"
+   }
+  ],
+  "nozzle_ok_for_this_repo_at_send": "yes: 0.4 mm"
+ },
+ "plate_check": {
+  "frames": [
+   {
+    "utc": "22:06:02",
+    "file": "tinkerbell-frame-20261119T220602Z.png",
+    "kind": "Studio live view (camera pane crop)",
+    "posted_utc": "22:08:55",
+    "commit": "ea4ceb9",
+    "mean_luma": 108.1,
+    "read": "empty textured PEI plate, logo outline only; gantry parked high"
+   },
+   {
+    "utc": "22:16:03",
+    "file": "tinkerbell-frame-20261119T221603Z.png",
+    "kind": "Studio live view",
+    "plate_mean_abs_diff_vs_first": 3.91,
+    "read": "unchanged, empty"
+   }
+  ],
+  "plate_type_sliced_for": "Textured PEI Plate",
+  "people_blurred": true
+ },
+ "go": {
+  "frame": "tinkerbell-frame-20261119T220602Z.png, posted 22:08:55",
+  "wait_ended_utc": "22:10:25 (90 s after the post)",
+  "replies": [],
+  "thread_checked_utc": [
+   "22:09:49",
+   "22:12:59",
+   "22:15:09",
+   "22:16:55"
+  ],
+  "second_frame": "22:16:03, plate unchanged, so no new wait"
+ },
+ "sent": true,
+ "send_utc": "2026-11-19T22:17:00Z",
+ "on_printer_by_utc": "2026-11-19T22:17:40Z",
+ "send_options": {
+  "printer": "Tinkerbell (Bambu Lab A1 mini 0.4mm)",
+  "plate": "PEI (textured)",
+  "filament_mapping": "PLA (filament 1) -> Ext spool",
+  "timelapse": "off",
+  "auto_bed_leveling": "on",
+  "flow_dynamics_calibration": "on",
+  "job_name": "servo_pinion_14T"
+ },
+ "file": {
+  "path": "docs/prints/2026-11-19-a1mini-servo-pinion/servo_pinion_A1mini_PLA.gcode.3mf",
+  "commit": "79c8f32",
+  "re_sliced": false,
+  "plate_gcode_md5": "487bd46dabd93baa2d031a1c35684de5",
+  "sent_3mf_plate_gcode_md5": "not read (slice cache deleted at clean-up); nothing changed between export and Send",
+  "objects": [
+   "servo_pinion_14T.stl"
+  ],
+  "source_stl": "docs/prints/2026-11-19-a1mini-servo-pinion/stl/servo_pinion_14T.stl",
+  "onshape": {
+   "document": "Servo Pinion (35ecacf511109e3b823b3ed0), default tab Complete Servo Pinion (ce683b15c3b969067abfe902)",
+   "document_modified_utc": "2026-11-19T21:52:17Z",
+   "rollback_index": 6,
+   "feature_count": 6,
+   "sourceMicroversion": "9639e023684ca369c23986d0",
+   "export_utc": "2026-11-19T22:09:23Z",
+   "counted_api_calls": 2
+  },
+  "geometry": "14T spur gear, 20.45 x 20.78 x 12.3 mm, 2.886 cm3, watertight; socket 6.88->5.2 mm, 3.4 mm hole, 6.0 mm counterbore",
+  "orientation": "+90 deg about X: socket face on the bed, counterbore up",
+  "printer_preset": "Bambu Lab A1 mini 0.4 nozzle (Sync info against Tinkerbell)",
+  "process": "0.20mm Standard @BBL A1M; wall_loops 3; sparse_infill_density 25% (grid); enable_support 0; brim auto (none generated); no prime tower",
+  "filament": "Bambu PLA Basic @BBL A1M, 220 C",
+  "bed": "Textured PEI Plate, 65 C",
+  "layers": 61,
+  "max_z_mm": 12.2,
+  "weight_g": 2.86,
+  "length_m": 0.94,
+  "estimate": "prediction 1058 s (17 min 38 s); model 11 min 39 s"
+ },
+ "timeline_utc": [
+  [
+   "21:57:02",
+   "request"
+  ],
+  [
+   "21:57:40",
+   "job started (approved)"
+  ],
+  [
+   "22:00:43",
+   "Xvfb, openbox, recorder, Studio"
+  ],
+  [
+   "22:01-22:03",
+   "Studio first run: certificate, wizard, plug-in, Cancel on profile update, Beta prompts"
+  ],
+  [
+   "22:03:14",
+   "Login window"
+  ],
+  [
+   "22:03:54",
+   "authenticator code confirmed"
+  ],
+  [
+   "22:04:07",
+   "Synchronise prompt: No"
+  ],
+  [
+   "22:04:20",
+   "Device page: Thumbelina busy"
+  ],
+  [
+   "22:05:17",
+   "Tinkerbell selected"
+  ],
+  [
+   "22:06:02",
+   "first frame"
+  ],
+  [
+   "22:08:55",
+   "frame posted"
+  ],
+  [
+   "22:09:23",
+   "Onshape STL export"
+  ],
+  [
+   "22:10:25",
+   "90 s window ended"
+  ],
+  [
+   "22:11-22:14",
+   "Sync info, import, 3 walls, 25 %, slice, export"
+  ],
+  [
+   "22:15:30",
+   "sliced file posted (79c8f32)"
+  ],
+  [
+   "22:16:03",
+   "second frame"
+  ],
+  [
+   "22:16:21",
+   "nozzle re-read"
+  ],
+  [
+   "22:17:00",
+   "Send"
+  ],
+  [
+   "22:23:43",
+   "layer 1"
+  ],
+  [
+   "22:34:26",
+   "layer 61"
+  ],
+  [
+   "22:34:59",
+   "100 %, Finished"
+  ],
+  [
+   "22:36:45",
+   "final frame"
+  ],
+  [
+   "22:37:51",
+   "signed out"
+  ],
+  [
+   "22:38:27",
+   "Studio closed, config and slice cache deleted"
+  ],
+  [
+   "22:38:30",
+   "recorder stopped"
+  ]
+ ],
+ "recording": {
+  "file": "docs/prints/2026-11-19-a1mini-servo-pinion/recording-cut-20261119.mp4",
+  "duration_s": 200.9,
+  "size": "1280x720",
+  "left_out": [
+   "login 22:03:14-22:04:07",
+   "Tinkerbell Update tab with serial 22:06:34-22:06:49 (cut 22:06:20-22:06:58)",
+   "account menu at sign-out"
+  ],
+  "uploaded": false
+ },
+ "outcome": {
+  "state_at_sign_out": "finished, 100 %, layer 61/61; heater targets 0; HMS empty",
+  "colour": "blue (Tinkerbell's external spool)",
+  "checked_off_plate": false
+ }
+}
