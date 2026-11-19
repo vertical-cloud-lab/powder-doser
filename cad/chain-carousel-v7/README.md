@@ -4,6 +4,7 @@
 > [v8](../chain-carousel-v8/README.md) and [v9](../chain-carousel-v9/README.md) are variations on it:
 > - **v8** (2026-11-12): a new EC on Sam's Aug 27 layout, wholly behind the balance, and the carousel 104 mm lower, so the exit sits 50 mm over the beaker's rim (v7: 154 mm).
 > - **v9** (2026-11-17, [Onshape](https://cad.onshape.com/documents/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590)): v7 with the balance's draft cage removed, the balance on a granite block, the beaker straight on the pan 32 mm under the exit, v7's EC with only what hung over the beaker cut back, a bay window round the balance and a weighing chamber inside the frame.
+> - **v10** (2026-11-19, [README](../chain-carousel-v10/README.md)): v9 with the station turned upside down: the EC inside the loop on the plate's side, pulled up by a P16-100, a keyed rail (a T-bracket on every plate) instead of the kinematic dock, the wiring out through the front side plate, and the beaker 18 mm under the exit.
 
 v7 is a mix of [v6](../chain-carousel-v6/README.md) and [v5](../chain-carousel-v5/README.md), with Sam's second note of
 2026-11-10 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):

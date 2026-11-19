@@ -1,5 +1,7 @@
 # Chain carousel v9: no draft cage, the balance on a block, the auger 32 mm over the beaker
 
+> The next variation is [v10](../chain-carousel-v10/README.md) (2026-11-19): v9 with the station inside the loop (the EC on the plate's side, pulled up by a P16-100), a keyed rail instead of the kinematic dock, and the beaker 18 mm under the exit.
+
 **v9 is a variation on [v7](../chain-carousel-v7/README.md), which stays the main version** (Sam, 2026-11-17: "I still like v7
 more---keep v7 as a 'main' version we can come back to, but I want to try a few variations still"). [v8](../chain-carousel-v8/README.md)
 is the other variation. v9 follows Sam's note of 2026-11-17 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):

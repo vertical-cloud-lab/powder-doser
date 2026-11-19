@@ -1,0 +1,72 @@
+{
+ "check": "tilt_b",
+ "clashes": [
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt70",
+   "b": "A-1 attachment connecting link (front)",
+   "mm3": 4.94
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt70",
+   "b": "Tab screw M3x12 button head 1",
+   "mm3": 1.96
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt75",
+   "b": "Outer link",
+   "mm3": 12.77
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt75",
+   "b": "Inner link",
+   "mm3": 47.55
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt75",
+   "b": "A-1 attachment connecting link (front)",
+   "mm3": 64.22
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt75",
+   "b": "Inner link",
+   "mm3": 47.55
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt75",
+   "b": "Outer link",
+   "mm3": 12.77
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt75",
+   "b": "Carriage 1",
+   "mm3": 91.02
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt75",
+   "b": "Tab screw M3x12 button head 1",
+   "mm3": 18.19
+  },
+  {
+   "a": "Electronics carriage v10 (printed: the keyed rail and its ramps, the door ramp, the motor's cheeks, the solenoid's holder, the arm with the P16's clevis and the guide shoe) @tilt75",
+   "b": "Tab locknut M3 (in the hook) 1",
+   "mm3": 3.09
+  },
+  {
+   "a": "Cable bundle along the P16 (tied to its body) @tilt75",
+   "b": "Sprocket 35BS32 B- front",
+   "mm3": 21.2
+  },
+  {
+   "a": "Door cable's tab (printed; the EC's ramp lifts it 6 mm) 1 @tilt75",
+   "b": "A-1 attachment connecting link (front)",
+   "mm3": 8.48
+  }
+ ],
+ "angles": [
+  20.0,
+  40.0,
+  60.0,
+  70.0,
+  75.0
+ ]
+}
