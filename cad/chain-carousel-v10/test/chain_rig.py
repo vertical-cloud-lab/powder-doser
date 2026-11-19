@@ -1,21 +1,33 @@
 #!/usr/bin/env python3
-"""Drive and log the chain-carousel test rig v9 (v7's frame, plate and station, unchanged geometry: v9 only takes the balance's
-draft cage off, puts the balance on a granite block with the beaker on the pan 32 mm under the exit, and cuts v7's EC back
-where it hung over the beaker; Sam, 2026-11-17) from a Raspberry Pi (issue #128). The P16's tables below are v7's, which
-v9 shares (layout.p16_7_ext). v7: v6's frame and plate, one P16 under the station; Sam, 2026-11-10.
+"""Drive and log the chain-carousel test rig v10 from a Raspberry Pi (issue #128). v10 (Sam's note of 2026-11-19, PR #185) is
+v9 (the balance on a granite block with no draft cage, the bay window and the weighing chamber) with the station turned upside
+down: the electronics carriage (EC) is inside the loop on the plate's side of the module, a keyed rail replaces the kinematic
+dock, and one P16-100, fully extended between doses, retracts to pull the module up to dose. Nothing of the station is under the
+auger, so the beaker's rim is 18 mm under the exit. The P16's table below is v10's (layout.p16_10_ext).
 
 Hardware (see BOM.md):
 * CL86T closed-loop driver for the NEMA 34 on step/dir/enable through a 74AHCT125 (3.3 V GPIO in, 5 V out to
   PUL+/DIR+/ENA+, the minus terminals to ground).
 * Two US5881 hall switches in the station hold-downs (open drain, 10k pull-ups to 3.3 V): INDEX, in the front
   hold-down, sees the magnet in every carriage's front tongue; HOME, in the back hold-down, only carriage 1's.
-* Station (v7): ONE Actuonix P16-150-22-12-P on ONE LAC board (PIN_LAC, RC mode: 1.0-2.0 ms = 0-150 mm; the pot is fed back
-  inside the LAC). It is pinned to a printed clevis on a cross bar behind the balance (it leans 44.5 deg, back over the draft
-  cage's back-top corner) and to a 2 mm lost-motion slot in the EC's tail. Parked (PARK_EXT, 1.0 mm out) the EC's two tail
-  shoes sit on the guides' cone and vee; extending lifts the EC 10 mm up the guides onto the dock (DOCK_EXT, 8.25 mm: the shoes
-  leave the guides' funnel mouths in the last 4 mm, so the dock decides where it seats), and extending further turns the docked
-  EC and module about the hinge, 0-90 deg (P16_TABLE: 129.7 mm at 90 deg). Retracting brings it back level, then down onto
-  its seats. The paragraphs below are v6's and v5's, kept for the history.
+* Station (v10): ONE Actuonix P16-100-22-12-P on ONE LAC board (PIN_LAC, RC mode: 1.0-2.0 ms = 0-100 mm; the pot is fed back
+  inside the LAC), inside the loop beside the module's path: its base pin on a printed bracket on the front side plate, its rod
+  end on the EC's arm. It is FULLY EXTENDED between doses (P16_HOME_EXT, 99.4 mm: the module at 4 deg and the EC's guide shoe in
+  its funnel seat on the station beam, so the EC can't swing between modules) and RETRACTS to tilt: it pulls the EC, and the
+  module coupled to it, up about the hinge, 4-65 deg (P16_TABLE: 56.7 mm out at 30 deg, 11.3 at 65). There is no dock, no lift,
+  no park and no magnets: every index slides the next module's T-bracket into the T-slot under the EC, whose ramps lift the
+  module 4 deg about its hinge (coupled, TILT_MIN), so its 44T gear meshes with the EC's 20T pinion; the exit ramp sets it back
+  on its carriage. A second ramp on the EC lifts the outlet door's cable tab, so the door is open while the module is in the
+  rail: nothing to drive.
+* Station (v7-v9): ONE Actuonix P16-150-22-12-P under the station (RC 1.0-2.0 ms = 0-150 mm), on a clevis on a cross bar behind
+  the balance (leaning 44.5 deg) and a 2 mm lost-motion slot in the EC's tail. Parked (1.0 mm out) the EC's tail shoes sat on its
+  guides' cone and vee; extending lifted the EC 10 mm up the guides onto a kinematic dock on the module (8.25 mm out: the plate's
+  domes in the EC's cone and vee, the NEMA 11 seeking at 0.25 rev/s over the last 3 mm so the pinion found the gear's gaps,
+  magnets holding the dock), and extending further tilted the docked EC and module 0-90 deg about the hinge (129.7 mm at 90).
+  Retracting tilted them back level and parked the EC on its seats. v7 (Sam, 2026-11-10): v6's frame and plate, one P16 under
+  the station; v9 (Sam, 2026-11-17): v7's station unchanged, the balance's draft cage off, the balance on a granite block with
+  the beaker 32 mm under the exit, and the EC cut back where it hung over the beaker. The paragraphs below are v6's and v5's,
+  kept for the history.
 * Station (v6): the LIFT is two Actuonix P16-50-22-12-P (one each side of the balance on the lower rungs, LACs on PIN_LAC and
   PIN_LAC_B, always the same target, 1.0-2.0 ms = 0-50 mm) carrying a frame of two 8 mm bars; the EC hangs on the bars in two
   hooks. They only dock it (DOCK_EXT); the shoes park on the guides' cone and vee. The TILT is a third P16-150-22-12-P on the
@@ -33,13 +45,16 @@ Hardware (see BOM.md):
   rest until the EC lifts it off.
 * On the electronics carriage: the doser's NEMA 11 (20T steel pinion -> the auger's 44T gear, 2.2:1) on a DRV8825
   whose current limit is set to AUGER_CURRENT_MA = 450 mA (Vref 0.225 V on Pololu's carrier; set it with the pot
-  before the first dock, the Pi can't): 0.067 N*m stall at the pinion, 0.15 N*m at the auger, so a jam stalls the
-  motor before the mesh can open the dock (gear-mesh study); the 12 V tap solenoid on a DRV8871.
+  before the first dose, the Pi can't): 0.067 N*m stall at the pinion, 0.15 N*m at the auger, so a jam stalls the
+  motor (v4-v9: before the mesh could open the dock, gear-mesh study; v10: the rail's lips take the mesh's separating force,
+  TEST-PLAN T6d). v10: the DRV8825's EN pin is on PIN_AUG_ENA, so the motor can be left free while the chain indexes (below).
+  The 12 V tap solenoid on a DRV8871 (v10: on the EC over clip 2, tapping the plate).
 * The scale (v5): an A&D HR-202i (220 g x 0.1 mg) under the dose point, on RS-232 through a MAX3232 (Pi UART, A&D's
   standard format and "Q" command, set to 2400 baud 7E1 in its function table; check against README "The balance"). The
-  lab's HR-100A speaks the same protocol and fits in the same place. v7: its top door is replaced by a dosing lid with a 30 mm
-  hole on the pan's axis (the exit is on the hinge axis, so the stream falls through it at every tilt); the side doors stay
-  shut except to change the beaker. (v5/v6: the top door was slid back by hand before a dose.)
+  lab's HR-100A speaks the same protocol and fits in the same place. v9/v10: its draft cage is off and it stands on a granite
+  block in the weighing chamber; v10: the beaker sits on the pan under the front deck's 16 mm dose hole, its rim 18 mm under the
+  exit, and goes in and out through the bay window's door. (v7: a dosing lid with a 30 mm hole replaced the top door; v5/v6: the
+  top door was slid back by hand before a dose.)
 
 Geometry: one module = 8 pitches = 76.2 mm = 8/32 of a turn of the 32T drive sprocket, so at 4000 pulses/rev a
 module is exactly 1000 steps. Targets are absolute step counts, so rounding never accumulates.
@@ -49,29 +64,38 @@ each module once about its own axis, which acts like an auger turn; this way it 
 the other way it pumps about one revolution's dose out (../auger-leakage/README.md). A positive index here always
 means "the way the machine runs".
 
-Docking (v4, v7's numbers): lift to 3 mm short of the plate (the guides keep the EC square), then finish the last 3 mm while the pinion turns at 0.25 rev/s so its teeth find the gear's gaps (gear-mesh
-study: with the pinion held, about half the starting phases park the gear on the pinion's tips). v7: the plate's posts' domes
-seat in the EC's cone and vee and the EC's ball C lands on post C's flat; the actuator stops with its pin mid-slot, so the
-magnets, not the actuator, hold the dock.
+Indexing (v10): every chain move slides one module's T-bracket out of the EC's rail and the next one's in; over its last 10 mm
+or so the arriving 44T gear slides into mesh with the pinion from the side. A held pinion would make the gear roll round it and
+turn the auger about 50 deg per pass, so the NEMA 11's DRV8825 is disabled (PIN_AUG_ENA high: the motor free, so the pinion
+turns out of the way) before the NEMA 34 moves and enabled again after (Rig.nema11). With --seek it instead steps the pinion
+slowly through the move (SEEK_REV_S, 0.25 rev/s, either direction with --seek-rev-s), as v4-v9's docking seek did over the
+dock's last 3 mm; TEST-PLAN T6a compares the two. The chain only moves with the P16 fully extended.
 
-Dose protocol (auger-leakage study): dock, tilt to the dose angle, turn the auger, stop, hold 0.5 s at
-the dose tilt (the tail falls into the vial), tilt back to level, then reverse the auger 1 revolution at rest
-(--reverse-revs, auger revolutions; 2.2 NEMA 11 revolutions each). Never reverse while tilted: it adds dose.
-Then retract: the pin pulls the EC off the dock's magnets (v7: the module settles on its own latch's shelf), the door shuts,
-and the EC's shoes come down the guides' funnels onto their cone and vee. The latch closes by itself as the carriage leaves
-the station.
+Dose protocol (auger-leakage study; v10): with the module coupled at 4 deg after an index, retract the P16 to the dose tilt
+(30 deg by default), turn the auger (and tap), stop, hold 0.5 s at the dose tilt (the tail falls into the beaker), extend the
+P16 fully (back to 4 deg; the EC's shoe re-seats), then reverse the auger 1 revolution at rest (--reverse-revs, auger
+revolutions; 2.2 NEMA 11 revolutions each). Never reverse at the dose tilt: it adds dose. There is no undock or park: the next
+index takes the module out of the rail, its exit ramp sets the module back on its carriage, the door's spring shuts it and the
+latch closes behind it. (v4-v9: dock, tilt, dose, hold, tilt back to level, reverse, undock.)
+
+The P16 is rated 20 % duty: a full 4-70-4 deg cycle moves its rod 2 x 91.7 = 183 mm, 4.0 s at 46 mm/s, so leave about 16 s
+before the next (station --cycles does: p16_rest_s); a 4-30-4 dose cycle moves 85 mm, under 2 s.
 
     sudo pigpiod
     python3 chain_rig.py home
-    python3 chain_rig.py index 1                      # one module the way the machine runs
+    python3 chain_rig.py index 1                      # one module the way the machine runs (the NEMA 11 free while it moves)
+    python3 chain_rig.py --seek index 1               # v10: the pinion seeking at 0.25 rev/s instead (T6a)
     python3 chain_rig.py repeat --moves 100 --modules 1 --speed 50 --accel 250
     python3 chain_rig.py lap                          # 13 modules, log every index edge
     python3 chain_rig.py endurance --moves 2000
-    python3 chain_rig.py station --tilt 30            # dock, tilt, hold, back, undock (no auger); v7: --tilt 0-90
+    python3 chain_rig.py station --tilt 30            # 4 deg (coupled) up to 30, hold, back to 4 (no auger); v10: --tilt 4-65
+    python3 chain_rig.py station --tilt 70 --cycles 50   # T6c: 50 cycles, resting between them for the P16's duty cycle
     python3 chain_rig.py dose --tilt 30 --revs 2      # the full dose protocol, logs the balance
-    python3 chain_rig.py --sim dose --revs 1          # no hardware: simulated pins
+    python3 chain_rig.py dose-to 0.050 --tilt 30      # v5: dose by weight (T8)
+    python3 chain_rig.py --sim dose --revs 1          # no hardware: simulated pins, prints each step
 
-Every move is appended to a CSV (default runs/<date>.csv).
+Every move is appended to a CSV (default runs/<date>.csv). v10: chain moves also log the NEMA 11's mode (free, or seek and its
+rev/s) and, with --ask-rail, what the rail did (clean, clash or jam; TEST-PLAN T6a).
 """
 from __future__ import annotations
 
@@ -89,33 +113,32 @@ N_MODULES = 13
 MM_PER_REV = TEETH * PITCH_MM                      # 304.8
 RUN_DIRECTION = -1                                 # -1: bottom run toward -y
 
-# station linkage (v7: params.EC7_PIN, P16_7_BX; layout.P16_7_B, layout.p16_7_ext): the rod-end pin on the EC's tail (as
-# drawn x 78, z 54.9), the base pin on the P16 cross bar at world x 250, z 230.1
-ACT_RETRACTED, ACT_STROKE = 197.4, 150.0
-TILT_MAX = 90.0                                    # v7: the one P16 reaches 90 deg with 20 mm of its 150 to spare
-PARK_DROP = 10.0                                   # v7: the parked EC sits 10 mm below its docked position (v6: 28)
-# v7: the P16's extension (mm from fully retracted, its pin mid-slot) from layout.p16_7_ext, generated by
-#   python -c "import layout as L; print([(t, round(L.p16_7_ext(t, L.PARK_DROP7), 2)) for t in range(0, 91, 5)])"
-# for the tilt (EC docked), and L.p16_7_ext(0, rise) for the lift (rise 0 = parked on the guides' seats, 10 = docked).
-P16_TABLE = ((0, 8.25), (5, 10.59), (10, 13.89), (15, 18.10), (20, 23.12), (25, 28.86), (30, 35.24), (35, 42.15), (40, 49.49),
-             (45, 57.19), (50, 65.14), (55, 73.28), (60, 81.52), (65, 89.80), (70, 98.05), (75, 106.21), (80, 114.23), (85, 122.07),
-             (90, 129.68))
-LIFT_TABLE = ((0.0, 1.00), (2.0, 2.43), (4.0, 3.87), (6.0, 5.32), (8.0, 6.79), (10.0, 8.25))
-PARK_EXT = LIFT_TABLE[0][1]                        # 1.0 mm: parked, the pin mid-slot, the EC's shoes on the guides' cone and vee
-DOCK_EXT = P16_TABLE[0][1]                         # 8.25 mm: docked and level
-SLOT_EXT = 0.7                                     # the slot's 1 mm half-travel along the EC, seen along the P16 (cos 44.5 deg)
+# station linkage (v10: params.P16_10_PIN, P16_10_YW, P16_10_BX, TAU0; layout.P16_10_B, layout.p16_10_ext): the rod-end pin on
+# the EC's arm (Sam x 90, z -30), the base pin on a bracket on the front side plate at world x -18, y -34 (its z set so the P16
+# is fully extended at 4 deg)
+ACT_RETRACTED, ACT_STROKE = 147.4, 100.0           # P16-100: hole to hole fully retracted, and its stroke (v7-v9's P16-150: 197.4, 150)
+TILT_MIN = 4.0                                     # coupled: the rail's ramps lift every module this far about its hinge (params.TAU0)
+TILT_MAX = 65.0                                    # the clash check's limit, see README (clear at 4-65 deg; at 70 the EC's front meets the front chain)
+# v10: the P16's extension (mm from fully retracted) for a tilt, the module coupled, from layout.p16_10_ext. Fully extended
+# between doses (99.40 at 4 deg, 0.6 mm short of its own stop), it retracts to tilt. The curve bends past 40 deg: linear
+# interpolation between these points is within 0.15 mm of it to 40 deg and 0.5 mm (0.6 deg) at 65 (a pin turning about the
+# hinge, fitted to these points).
+P16_TABLE = ((4, 99.40), (10, 89.62), (15, 81.33), (20, 73.07), (30, 56.70), (40, 41.24), (50, 27.31), (60, 15.85), (65, 11.26), (70, 7.74))
+P16_HOME_EXT = P16_TABLE[0][1]                     # 99.40 mm: fully extended, between doses (module at 4 deg, shoe in its seat)
+P16_MM_S, P16_DUTY = 46.0, 0.20                    # the P16's speed (no load) and rated duty cycle (p16_rest_s)
 GEAR_RATIO = 44 / 20                               # NEMA 11 turns per auger turn
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
-SEEK_MM, SEEK_REV_S = 3.0, 0.25                    # docking seek: last 3 mm of the approach, pinion at 0.25 rev/s
+SEEK_REV_S = -0.25                                 # v10 --seek: the pinion's rev/s while the chain moves (Rig.nema11)
 DOSE_HOLD_S = 0.5                                  # at the dose tilt after the auger stops (the tail falls)
-REVERSE_REVS = 1.0                                 # auger revolutions backwards at rest, after the tilt back
+REVERSE_REVS = 1.0                                 # auger revolutions backwards at rest, after the P16 is back fully extended
 
 # BCM pin numbers (the interface board's screw terminals)
 PIN_STEP, PIN_DIR, PIN_ENA = 17, 27, 22
 PIN_INDEX, PIN_HOME, PIN_ALARM = 23, 24, 25
-PIN_LAC = 18                                       # v7: RC pulse to the one P16's LAC (v5/v6 also used 26 and 16 for their other LACs)
-PIN_AUG_STEP, PIN_AUG_DIR = 13, 21                 # DRV8825 for the NEMA 11 (STEP on a hardware-PWM pin for the docking seek)
+PIN_LAC = 18                                       # v7-v10: RC pulse to the one P16's LAC (v5/v6 also used 26 and 16 for their other LACs)
+PIN_AUG_STEP, PIN_AUG_DIR = 13, 21                 # DRV8825 for the NEMA 11 (STEP on a hardware-PWM pin for the seek)
+PIN_AUG_ENA = 20                                   # v10: DRV8825 EN, high = outputs off (the NEMA 11 free); header pin 38, beside DIR's 40
 PIN_TAP = 12                                       # DRV8871 IN1, tap solenoid
 PIN_HX_DT, PIN_HX_SCK = 5, 6
 
@@ -128,46 +151,57 @@ def _interp(table, x: float) -> float:
 
 
 def tilt_to_ext(tilt_deg: float) -> float:
-    """v7: the P16's extension (mm from fully retracted) for a hinge angle, the EC docked: P16_TABLE, interpolated (within
-    0.1 mm of layout.p16_7_ext). 0 deg: 8.25; 30: 35.2; 45: 57.2; 60: 81.5; 90: 129.7."""
-    if not 0.0 <= tilt_deg <= TILT_MAX:
-        raise SystemExit(f"v7 tilts 0-{TILT_MAX:.0f} deg")
+    """v10: the P16's extension (mm from fully retracted) for a hinge angle, the module coupled: P16_TABLE, interpolated.
+    4 deg (coupled, between doses): 99.4, fully extended; 30: 56.7; 50: 27.3; 70: 7.7."""
+    if not TILT_MIN <= tilt_deg <= TILT_MAX:
+        raise SystemExit(f"v10 tilts {TILT_MIN:g}-{TILT_MAX:g} deg ({TILT_MIN:g}: coupled, between doses)")
     return _interp(P16_TABLE, tilt_deg)
 
 
-def lift_to_ext(rise_mm: float) -> float:
-    """v7: the P16's extension for the EC's rise above its parked seats (0-PARK_DROP), at 0 deg: LIFT_TABLE, interpolated.
-    The P16 leans 44.5 deg, so 1 mm of rise takes about 0.73 mm of stroke."""
-    return _interp(LIFT_TABLE, max(0.0, min(PARK_DROP, rise_mm)))
+def p16_rest_s(tilt_deg: float) -> float:
+    """v10: the rest after a TILT_MIN -> tilt_deg -> TILT_MIN cycle that keeps the P16 within its rated duty: the rod's travel
+    at P16_MM_S, times (1 - P16_DUTY) / P16_DUTY. 4-70-4: 183 mm, 4.0 s moving, 16 s rest; 4-30-4: 85 mm, 1.9 s, 7.4 s."""
+    moving_s = 2 * (P16_HOME_EXT - tilt_to_ext(tilt_deg)) / P16_MM_S
+    return moving_s * (1 - P16_DUTY) / P16_DUTY
 
 
 @dataclass
 class Rig:
     ppr: int = 4000                                 # CL86T DIP setting (pulses/rev)
     sim: bool = False
+    seek_rev_s: float = 0.0                         # v10: 0 = the NEMA 11 free while the chain moves; else it seeks at this rev/s
     pos: int = 0                                    # commanded steps since home, positive = the way the machine runs
     module: int = 0                                 # carriage at the station, 0-based
     edges: list = field(default_factory=list)
     ext: float = 0.0                                # actuator extension, mm
+    n11_mode: str = "held"                          # v10: the NEMA 11's DRV8825: "held", "free" or "seek" (nema11())
 
     def __post_init__(self):
         if self.sim:
             self.pi = None
+            self.ext = P16_HOME_EXT                     # v10: fully extended, as the hardware starts below
+            self.say(f"start: P16 fully extended ({P16_HOME_EXT:.2f} mm), the module at the station coupled at {TILT_MIN:g} deg; "
+                     "NEMA 11 held")
             return
         import pigpio
         self.pi = pigpio.pi()
         if not self.pi.connected:
             raise SystemExit("pigpiod is not running (sudo pigpiod)")
-        for p in (PIN_STEP, PIN_DIR, PIN_ENA, PIN_AUG_STEP, PIN_AUG_DIR, PIN_TAP):
+        for p in (PIN_STEP, PIN_DIR, PIN_ENA, PIN_AUG_STEP, PIN_AUG_DIR, PIN_AUG_ENA, PIN_TAP):
             self.pi.set_mode(p, pigpio.OUTPUT)
-            self.pi.write(p, 0)
+            self.pi.write(p, 0)                         # v10: PIN_AUG_ENA low enables the DRV8825: the NEMA 11 held
         for p in (PIN_INDEX, PIN_HOME, PIN_ALARM):
             self.pi.set_mode(p, pigpio.INPUT)
             self.pi.set_pull_up_down(p, pigpio.PUD_UP)
         # the US5881 pulls low when a magnet's south pole is over it
         self.pi.callback(PIN_INDEX, pigpio.FALLING_EDGE, lambda g, l, t: self.edges.append(("index", self.pos, t)))
         self.pi.callback(PIN_HOME, pigpio.FALLING_EDGE, lambda g, l, t: self.edges.append(("home", self.pos, t)))
-        self.actuator(PARK_EXT)
+        self.release()                                  # v10: fully extended; its position is unknown at start, so this waits a full stroke
+
+    def say(self, msg: str):
+        """--sim: print each step, so a dry run shows the sequence the hardware would follow."""
+        if self.sim:
+            print(f"  sim: {msg}")
 
     # ---- units
     def steps_per_mm(self) -> float:
@@ -182,11 +216,13 @@ class Rig:
             self.pi.write(PIN_ENA, 0 if on else 1)      # ENA+ high (opto on) disables the CL86T
 
     def move_steps(self, n: int, speed_mm_s: float = 50.0, accel_mm_s2: float = 250.0):
-        """Trapezoidal move of n steps (sign: + = the way the machine runs) with pigpio waves."""
+        """Trapezoidal move of n steps (sign: + = the way the machine runs) with pigpio waves. v10: only with the P16 fully
+        extended, and with the NEMA 11 free (or seeking) for the move; go_module() and home() hold it again after."""
         if n == 0:
             return
-        if self.ext > 0.5:
-            raise SystemExit("refusing to move the chain: the station actuator is not retracted")
+        if abs(self.ext - P16_HOME_EXT) > 0.5:
+            raise SystemExit("refusing to move the chain: the P16 is not fully extended (the module at the station is tilted)")
+        self.nema11("seek" if self.seek_rev_s else "free")
         if self.pi is None:
             self.pos += n
             self._sim_edges(self.pos - n, self.pos)
@@ -227,7 +263,11 @@ class Rig:
                     self.edges.append(("home", s, time.time()))
 
     def go_module(self, k: int, **kw):
-        self.move_steps(self.module_steps(k) - self.pos, **kw)
+        n = self.module_steps(k) - self.pos
+        self.move_steps(n, **kw)
+        if n:
+            self.say(f"chain {n:+d} steps: module {self.module} -> {k % N_MODULES} at the station")
+        self.nema11("held")                          # v10: enabled again after the move, the arriving gear in mesh
         self.module = k % N_MODULES
 
     def alarm(self) -> bool:
@@ -236,6 +276,7 @@ class Rig:
     def home(self, speed_mm_s: float = 20.0):
         """Creep the way the machine runs until HOME fires (carriage 1's second magnet), then call that step count
         module 0."""
+        self.say("homing: creep the way the machine runs until HOME fires")
         self.edges.clear()
         limit = self.module_steps(N_MODULES + 1)
         moved = 0
@@ -245,14 +286,36 @@ class Rig:
         hits = [e for e in self.edges if e[0] == "home"]
         if not hits:
             raise SystemExit("HOME never fired: check the magnet on carriage 1 and the sensor wiring")
+        self.say(f"HOME fired {hits[0][1]} steps in: that is step 0")
         self.pos -= hits[0][1]                       # the edge becomes step 0
         self.module = 0
         self.go_module(0)                            # back onto the edge
         self.edges.clear()
 
     # ---- station
+    def nema11(self, mode: str):
+        """v10: the NEMA 11's DRV8825. "held": enabled (EN low), at rest and to turn the auger. "free": disabled (EN high, outputs
+        off) while the chain moves: the arriving gear slides into mesh with the pinion from the side, and a held pinion would make
+        it roll round and turn the auger about 50 deg per pass, while a free one turns out of its way. "seek" (--seek): enabled and
+        stepping at seek_rev_s on the STEP pin's hardware PWM, so the pinion's teeth find the gear's gaps (+ turns the auger toward
+        the outlet, - away from it, the default: the door opens as the module arrives). Enabling it again pulls the rotor to the
+        driver's step, within 3.6 deg of the pinion (1.6 of the auger)."""
+        if mode == self.n11_mode:
+            return
+        if self.pi:
+            if self.n11_mode == "seek":
+                self.pi.hardware_PWM(PIN_AUG_STEP, 0, 0)
+                self.pi.write(PIN_AUG_STEP, 0)          # a plain output again, for auger_revs' waves
+            self.pi.write(PIN_AUG_ENA, 1 if mode == "free" else 0)
+            if mode == "seek":
+                self.pi.write(PIN_AUG_DIR, 1 if self.seek_rev_s > 0 else 0)
+                self.pi.hardware_PWM(PIN_AUG_STEP, int(abs(self.seek_rev_s) * NEMA11_USTEPS), 500000)
+        self.say({"held": "NEMA 11 held (DRV8825 enabled)", "free": "NEMA 11 free (DRV8825 disabled, EN high)",
+                  "seek": f"NEMA 11 seeking at {self.seek_rev_s:+g} rev/s"}[mode])
+        self.n11_mode = mode
+
     def actuator(self, ext_mm: float, wait: bool = True):
-        """v7: the one P16-150's LAC (RC: 1.0-2.0 ms = 0-150 mm)."""
+        """v10: the one P16-100's LAC (RC: 1.0-2.0 ms = 0-100 mm)."""
         ext = max(0.0, min(ACT_STROKE, ext_mm))
         if self.pi:
             self.pi.set_servo_pulsewidth(PIN_LAC, 1000 + 1000 * ext / ACT_STROKE)
@@ -260,34 +323,27 @@ class Rig:
             time.sleep(abs(ext - self.ext) / 30.0 + 0.3)     # about 30 mm/s loaded (46 no-load)
         self.ext = ext
 
-    def dock(self, seek_rev_s: float = SEEK_REV_S):
-        """Lift to SEEK_MM short of the plate, then finish the last SEEK_MM while the pinion turns slowly so its teeth
-        find the gear's gaps (held still, it parked the gear on its tips from half the starting phases in the gear-mesh
-        study). The EC lifts the module off the tube rest as its balls seat; the module's weight holds the dock."""
-        if not self.sim and not getattr(self, "_current_noted", False):
-            print(f"NEMA 11 driver: DRV8825 current limit must be {AUGER_CURRENT_MA} mA "
-                  f"(Vref {AUGER_CURRENT_MA / 2000:.3f} V) before docking")
-            self._current_noted = True
-        self.actuator(lift_to_ext(PARK_DROP - SEEK_MM))   # v7: up the guides to 3 mm short of the plate
-        if self.pi:
-            self.pi.write(PIN_AUG_DIR, 1)
-            self.pi.hardware_PWM(PIN_AUG_STEP, int(seek_rev_s * NEMA11_USTEPS), 500000)
-        self.actuator(DOCK_EXT + SLOT_EXT)           # pin at the slot's top: seats the domes, lifts the door
-        if self.pi:
-            self.pi.hardware_PWM(PIN_AUG_STEP, 0, 0)
-        self.actuator(DOCK_EXT)                      # pin back to mid-slot: the magnets hold the dock
-
     def tilt(self, deg: float):
-        """v7: only with the EC docked: the same P16 extends past DOCK_EXT to turn the docked EC and module about the hinge."""
-        self.actuator(tilt_to_ext(deg))
+        """v10: retract the P16 to turn the coupled module, and the EC with it, up about the hinge to deg (TILT_MIN-TILT_MAX).
+        Only with a module coupled, i.e. with the chain stopped on an index."""
+        ext = tilt_to_ext(deg)
+        self.say(f"P16 to {ext:.2f} mm: {deg:g} deg")
+        self.actuator(ext)
 
-    def undock(self):
-        self.actuator(DOCK_EXT)                      # level, pin mid-slot, the module back on its latch's shelf
-        time.sleep(0.3)
-        self.actuator(PARK_EXT)                      # the pin pulls the EC off the dock's magnets; its shoes come down the funnels onto their seats
+    def release(self):
+        """v10: the station's home, between doses: the P16 fully extended (P16_HOME_EXT), so the module is back down at 4 deg
+        (still coupled, its gear in mesh) and the EC's guide shoe is in its funnel seat. The chain only moves from here."""
+        self.say(f"P16 to {P16_HOME_EXT:.2f} mm: fully extended, {TILT_MIN:g} deg, the EC's shoe in its seat")
+        self.actuator(P16_HOME_EXT)
 
     def auger_revs(self, revs: float, rpm: float = 30.0):
-        """Turn the auger (positive = toward the outlet) through the 20T:44T pinion."""
+        """Turn the auger (positive = toward the outlet) through the 20T:44T pinion. v10: with the DRV8825 enabled."""
+        if not self.sim and not getattr(self, "_current_noted", False):
+            print(f"NEMA 11 driver: DRV8825 current limit must be {AUGER_CURRENT_MA} mA "
+                  f"(Vref {AUGER_CURRENT_MA / 2000:.3f} V) before dosing")
+            self._current_noted = True
+        self.nema11("held")
+        self.say(f"auger {revs:+g} rev at {rpm:g} rpm")
         n = round(abs(revs) * GEAR_RATIO * NEMA11_USTEPS)
         if self.pi is None and revs > 0:
             self._sim_g = getattr(self, "_sim_g", 0.0) + 0.105 * revs     # --sim: salt's 105 mg per turn
@@ -300,6 +356,8 @@ class Rig:
             self._wave(PIN_AUG_STEP, [period] * min(4000, n - i))
 
     def tap(self, n: int = 1, ms: int = 10, hz: float = 2.0):
+        if n:
+            self.say(f"tap x{n}")
         for _ in range(n):
             if self.pi:
                 self.pi.write(PIN_TAP, 1)
@@ -310,13 +368,12 @@ class Rig:
 
     def dose_to(self, target_g: float, tilt: float, rpm: float = 30.0, step_revs: float = 0.25, slow_frac: float = 0.8,
                 max_revs: float = 40.0) -> tuple[float, float]:
-        """v5: dose by weight. Tare-free: reads the stable mass first, docks, tilts, and turns the auger in step_revs
-        increments (a quarter of that and half the speed past slow_frac of the target), polling the balance after each
-        (the reading is unstable while powder falls, so it takes it as it is); then holds, tilts back, reverses one turn
-        at rest and undocks, and returns (stable dose, auger revs). v7: the dose falls through the dosing lid's hole; keep the
-        side doors shut."""
+        """v5: dose by weight. Tare-free: reads the stable mass first, tilts, and turns the auger in step_revs increments (a
+        quarter of that and half the speed past slow_frac of the target), polling the balance after each (the reading is
+        unstable while powder falls, so it takes it as it is); then holds, goes back to 4 deg (release), reverses one turn at
+        rest, and returns (stable dose, auger revs). v10: start with a module coupled (after an index); the dose falls 18 mm
+        through the front deck's 16 mm hole into the beaker; keep the bay window's door shut."""
         g0 = self.grams_stable()
-        self.dock()
         self.tilt(tilt)
         dosed, revs = 0.0, 0.0
         while dosed < target_g and revs < max_revs:
@@ -328,10 +385,10 @@ class Rig:
             g = self.grams(stable_only=False)
             if g == g:
                 dosed = g - g0
+        self.say(f"hold {DOSE_HOLD_S:g} s at {tilt:g} deg")
         time.sleep(DOSE_HOLD_S)
-        self.tilt(0.0)
+        self.release()
         self.auger_revs(-REVERSE_REVS, rpm)
-        self.undock()
         return self.grams_stable() - g0, revs
 
     def grams_stable(self, tries: int = 40) -> float:
@@ -374,7 +431,8 @@ def _profile(n: int, v: float, a: float) -> list[int]:
 
 
 LOG_COLUMNS = ["run", "utc", "cmd", "module", "target_steps", "pos_steps", "move_s", "index_edge_steps", "alarm", "dial_mm",
-               "tilt", "revs", "rpm", "taps", "hold_s", "reverse_revs", "auger_current_ma", "dose_g", "p16_ext_mm"]
+               "tilt", "revs", "rpm", "taps", "hold_s", "reverse_revs", "auger_current_ma", "dose_g", "p16_ext_mm",
+               "nema11", "rail"]                 # v10: the NEMA 11's mode and the rail's result for chain moves (T6a)
 
 
 def log_row(path: Path, row: dict):
@@ -391,10 +449,16 @@ def log_row(path: Path, row: dict):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--sim", action="store_true", help="no hardware")
+    ap.add_argument("--sim", action="store_true", help="no hardware: simulated pins, prints each step")
     ap.add_argument("--ppr", type=int, default=4000)
     ap.add_argument("--log", type=Path, default=Path("runs") / time.strftime("%Y-%m-%d.csv"))
     ap.add_argument("--ask", action="store_true", help="prompt for a dial-indicator reading after each move")
+    ap.add_argument("--seek", action="store_true", help="v10: step the NEMA 11 slowly while the chain moves instead of leaving it "
+                    "free (the DRV8825 disabled), so the pinion's teeth find the arriving gear's gaps (TEST-PLAN T6a)")
+    ap.add_argument("--seek-rev-s", type=float, default=SEEK_REV_S, help="v10: the pinion's rev/s for --seek, either direction "
+                    "(+ turns the auger toward the outlet, - away from it)")
+    ap.add_argument("--ask-rail", action="store_true", help="v10: prompt for what the rail did after each chain move "
+                    "(clean, clash or jam; TEST-PLAN T6a)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("home")
     p = sub.add_parser("index")
@@ -408,29 +472,37 @@ def main():
         p.add_argument("--dwell", type=float, default=0.5, help="s between moves")
     sub.add_parser("lap")
     p = sub.add_parser("station")
-    p.add_argument("--tilt", type=float, default=30.0, help="hinge angle, deg, 0-90 (frame = bench, the frame is not pitched)")
+    p.add_argument("--tilt", type=float, default=30.0, help=f"hinge angle, deg, {TILT_MIN:g}-{TILT_MAX:g} ({TILT_MIN:g}: coupled, "
+                   "between doses; the frame is not pitched)")
     p.add_argument("--hold", type=float, default=2.0)
+    p.add_argument("--cycles", type=int, default=1, help="v10: repeat, resting between cycles to keep the P16 within its 20 %% "
+                   "duty (4-70-4 deg: about 16 s; TEST-PLAN T6c, T12)")
     p = sub.add_parser("dose-to", help="v5: dose a target mass onto the balance")
     p.add_argument("grams", type=float)
-    p.add_argument("--tilt", type=float, default=30.0)
+    p.add_argument("--tilt", type=float, default=30.0, help=f"dose tilt, deg, {TILT_MIN:g}-{TILT_MAX:g}")
     p.add_argument("--rpm", type=float, default=30.0)
     p = sub.add_parser("dose")
-    p.add_argument("--tilt", type=float, default=30.0, help="dose tilt, deg (20-40 doses best; at 450 mA the motor stalls before the dock "
-                   "opens at every tilt to 90, station sim)")
+    p.add_argument("--tilt", type=float, default=30.0, help=f"dose tilt, deg, {TILT_MIN:g}-{TILT_MAX:g} (20-40 doses best)")
     p.add_argument("--revs", type=float, default=2.0, help="auger revolutions forward")
     p.add_argument("--rpm", type=float, default=30.0, help="auger rpm")
     p.add_argument("--taps", type=int, default=0, help="solenoid taps after the auger stops")
     p.add_argument("--hold", type=float, default=DOSE_HOLD_S, help="s at the dose tilt after the auger stops (the tail falls)")
     p.add_argument("--reverse-revs", type=float, default=REVERSE_REVS,
-                   help="auger revolutions backwards after the return to level (never while tilted); 0 to skip")
+                   help=f"auger revolutions backwards once the P16 is back fully extended ({TILT_MIN:g} deg; never at the dose "
+                        "tilt); 0 to skip")
     a = ap.parse_args()
+    if a.cmd in ("station", "dose-to", "dose"):
+        tilt_to_ext(a.tilt)                             # v10: refuse a tilt outside 4-65 before touching the hardware
 
-    rig = Rig(ppr=a.ppr, sim=a.sim)
+    rig = Rig(ppr=a.ppr, sim=a.sim, seek_rev_s=a.seek_rev_s if a.seek else 0.0)
     rig.enable(True)
     run = time.strftime("%Y%m%dT%H%M%S")
+    n11 = f"seek {rig.seek_rev_s:+g}" if rig.seek_rev_s else "free"     # v10: the NEMA 11 during chain moves, logged (T6a)
 
     def record(cmd: str, k: int, t0: float, **extra):
         idx = [e[1] for e in rig.edges if e[0] == "index"]
+        if cmd in ("index", "repeat", "endurance", "lap"):     # v10 (T6a): the NEMA 11's mode, and what the rail did
+            extra.update(nema11=n11, rail=input("rail (clean, clash or jam): ") if a.ask_rail else "")
         row = dict(run=run, utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), cmd=cmd, module=k % N_MODULES,
                    target_steps=rig.module_steps(k), pos_steps=rig.pos, move_s=round(time.time() - t0, 3),
                    index_edge_steps=";".join(map(str, idx)), alarm=int(rig.alarm()),
@@ -439,57 +511,66 @@ def main():
         rig.edges.clear()
         print(row)
 
-    if a.cmd == "home":
-        rig.home()
-        print("homed; carriage 1 at the station")
-    elif a.cmd == "index":
-        t0 = time.time()
-        rig.go_module(rig.module + a.modules)
-        record("index", rig.module, t0)
-    elif a.cmd in ("repeat", "endurance"):
-        rig.home()
-        for i in range(a.moves):
-            k = a.modules if i % 2 == 0 else 0     # out and back: the station sees the same two carriages
+    try:
+        if a.cmd == "home":
+            rig.home()
+            print("homed; carriage 1 at the station")
+        elif a.cmd == "index":
             t0 = time.time()
-            rig.go_module(k, speed_mm_s=a.speed, accel_mm_s2=a.accel)
-            record(a.cmd, k, t0)
-            if rig.alarm():
-                raise SystemExit("driver alarm (position error): stopping")
-            time.sleep(a.dwell)
-    elif a.cmd == "lap":
-        rig.home()
-        for k in range(1, N_MODULES + 1):
+            rig.go_module(rig.module + a.modules)
+            record("index", rig.module, t0)
+        elif a.cmd in ("repeat", "endurance"):
+            rig.home()
+            for i in range(a.moves):
+                k = a.modules if i % 2 == 0 else 0     # out and back: the station sees the same two carriages
+                t0 = time.time()
+                rig.go_module(k, speed_mm_s=a.speed, accel_mm_s2=a.accel)
+                record(a.cmd, k, t0)
+                if rig.alarm():
+                    raise SystemExit("driver alarm (position error): stopping")
+                time.sleep(a.dwell)
+        elif a.cmd == "lap":
+            rig.home()
+            for k in range(1, N_MODULES + 1):
+                t0 = time.time()
+                rig.go_module(k)
+                record("lap", k, t0)
+        elif a.cmd == "station":
+            for i in range(a.cycles):
+                t0 = time.time()
+                rig.tilt(a.tilt)                        # v10: from 4 deg (coupled) up to the tilt
+                rig.say(f"hold {a.hold:g} s")
+                time.sleep(a.hold)
+                rig.release()                           # back to 4 deg, fully extended
+                record("station", rig.module, t0, tilt=a.tilt, hold_s=a.hold, p16_ext_mm=round(tilt_to_ext(a.tilt), 2))
+                if i + 1 < a.cycles:
+                    rest = p16_rest_s(a.tilt)
+                    print(f"P16 rest {rest:.1f} s ({P16_DUTY:.0%} duty), cycle {i + 1} of {a.cycles} done")
+                    time.sleep(rest)
+        elif a.cmd == "dose-to":
             t0 = time.time()
-            rig.go_module(k)
-            record("lap", k, t0)
-    elif a.cmd == "station":
-        t0 = time.time()
-        rig.dock()
-        rig.tilt(a.tilt)
-        time.sleep(a.hold)
-        rig.tilt(0.0)
-        rig.undock()
-        record("station", rig.module, t0, tilt=a.tilt, p16_ext_mm=round(tilt_to_ext(a.tilt), 2))
-    elif a.cmd == "dose-to":
-        t0 = time.time()
-        g, revs = rig.dose_to(a.grams, a.tilt, a.rpm)
-        record("dose-to", rig.module, t0, tilt=a.tilt, revs=round(revs, 3), rpm=a.rpm, reverse_revs=REVERSE_REVS,
-               auger_current_ma=AUGER_CURRENT_MA, dose_g=round(g, 4))
-    elif a.cmd == "dose":
-        t0 = time.time()
-        g0 = rig.grams()
-        rig.dock()
-        rig.tilt(a.tilt)
-        rig.auger_revs(a.revs, a.rpm)
-        rig.tap(a.taps)
-        time.sleep(a.hold)                          # tail into the vial before the tilt back
-        rig.tilt(0.0)
-        if a.reverse_revs:
-            rig.auger_revs(-abs(a.reverse_revs), a.rpm)   # level and at rest only: pulls powder back from the exit
-        rig.undock()
-        g1 = rig.grams()
-        record("dose", rig.module, t0, tilt=a.tilt, revs=a.revs, rpm=a.rpm, taps=a.taps, hold_s=a.hold, reverse_revs=a.reverse_revs,
-               auger_current_ma=AUGER_CURRENT_MA, dose_g=round(g1 - g0, 4))
+            g, revs = rig.dose_to(a.grams, a.tilt, a.rpm)
+            record("dose-to", rig.module, t0, tilt=a.tilt, revs=round(revs, 3), rpm=a.rpm, reverse_revs=REVERSE_REVS,
+                   auger_current_ma=AUGER_CURRENT_MA, dose_g=round(g, 4), p16_ext_mm=round(tilt_to_ext(a.tilt), 2))
+        elif a.cmd == "dose":
+            t0 = time.time()
+            g0 = rig.grams()
+            rig.tilt(a.tilt)                            # v10: from 4 deg, coupled by the last index
+            rig.auger_revs(a.revs, a.rpm)
+            rig.tap(a.taps)
+            rig.say(f"hold {a.hold:g} s at {a.tilt:g} deg")
+            time.sleep(a.hold)                          # the tail falls into the beaker before the P16 extends
+            rig.release()                               # fully extended: back to 4 deg, the EC's shoe in its seat
+            if a.reverse_revs:
+                rig.auger_revs(-abs(a.reverse_revs), a.rpm)   # at rest at 4 deg only: pulls powder back from the exit
+            g1 = rig.grams()
+            record("dose", rig.module, t0, tilt=a.tilt, revs=a.revs, rpm=a.rpm, taps=a.taps, hold_s=a.hold,
+                   reverse_revs=a.reverse_revs, auger_current_ma=AUGER_CURRENT_MA, dose_g=round(g1 - g0, 4),
+                   p16_ext_mm=round(tilt_to_ext(a.tilt), 2))
+    except BaseException:
+        # v10: on any error, stop a seek (pigpiod keeps a hardware PWM running after the script) and leave the NEMA 11 free
+        rig.nema11("free")
+        raise
     rig.enable(False)
 
 

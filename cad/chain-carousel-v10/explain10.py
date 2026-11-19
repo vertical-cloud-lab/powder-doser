@@ -130,7 +130,7 @@ CAM_SIDE_HI = ((95.0, SY, 520.0), (0.0, -1.0, 0.08), 760)       # ... with room 
 CAM_RAIL = ((75.0, SY + 4.0, 466.0), (-0.86, -0.30, 0.42), 250)  # the rail, the T and the gear, close, from the front, above
 CAM_DOOR = ((28.0, SY, 458.0), (-0.80, -0.42, 0.42), 175)       # the door ramp and the tab
 CAM_GEAR = ((84.0, SY, 460.0), (-0.97, -0.08, 0.22), 150)        # the gear meeting the pinion, from the front
-CAM_GUIDE = ((146.0, -34.0, 478.0), (-0.45, -0.85, 0.32), 150)   # the guide shoe in its seat
+CAM_GUIDE = ((146.0, -34.0, 476.0), (0.88, -0.38, 0.28), 140)     # the guide shoe in its seat, from behind and below the beam
 CAM_FRONT = ((-30.0, -60.0, 560.0), (-1.0, -0.55, 0.30), 760)    # the front side plate, the grommet, the P16's bracket
 CAM_DROP = ((36.0, SY, 428.0), (0.0, -1.0, 0.05), 210)            # the exit and the beaker, close
 

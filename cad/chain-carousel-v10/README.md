@@ -13,8 +13,9 @@ a weighing chamber), and so on [v7](../chain-carousel-v7/README.md), which stays
 
 Nothing is built. Every number here is a prediction from the CAD.
 
-**Onshape (public):** ONSHAPE_V10 (ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); every API call in
-[`onshape/api_calls.jsonl`](onshape/api_calls.jsonl)). It was imported from `step/chain_carousel_rig_v10.step` by
+**Onshape (public):** [Multi-doser chain carousel, test rig v10](https://cad.onshape.com/documents/99bd983c585992043f2eff96/w/7b5725dc5dfb7fe370fa0c71/e/56a319b93daf812d262f5eab)
+(ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); 11 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl):
+10 for the import, 1 to confirm it is public). It was imported from `step/chain_carousel_rig_v10.step` by
 [`onshape/onshape_build.py`](onshape/onshape_build.py). Earlier versions:
 [v9](https://cad.onshape.com/documents/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590),
 [v8](https://cad.onshape.com/documents/a093aef97b81fce9ce0f322f/w/7b029051ee0ec62ff198253f/e/7518535395874b79077ff86b),
@@ -110,7 +111,7 @@ weighing chamber are in every check.
 
 | Check | What moves | Result |
 |---|---|---|
-| Home ([`checks/home.json`](checks/home.json)) | Every pair of the 841 instances, the station module coupled at 4° | HOME_RESULT |
+| Home ([`checks/home.json`](checks/home.json)) | Every pair of the 841 instances, the station module coupled at 4° | **0** |
 | `--tilt10` ([`tilt_a.json`](checks/tilt_a.json), [`tilt_b.json`](checks/tilt_b.json)) | Module 1, the EC, the P16 (its body swings on its base pin, its rod slides) and the bundle on the EC, at 4, 20, 30, 40, 50, 60, 65, 70 and 75°, against everything else | **0 at 4-65°**; contacts at 70 and 75° (above) |
 | [`sweep_station.py`](sweep_station.py) ([`checks/sweep_station.json`](checks/sweep_station.json)) | Every carriage and module within 2.2 modules of the station, over one module of travel in 1-link steps (9 poses), each module lifted by the rail and its door opened by the ramp as it passes, against the EC, the P16, the guide, the beam, the cables, the balance, its block, the beaker and the weighing chamber | **0** |
 
@@ -179,7 +180,7 @@ up to $689.34.
 | [`build.py`](build.py) | STEP assembly and components, the printed parts' STLs (`ec10.stl`, `t_bracket.stl`, `door_guide10.stl`, `door_tab10.stl`, `p16_bracket10.stl`, `guide10.stl`, `mounting_plate_v10.stl`, `carriage.stl`), the DXFs |
 | [`bom.py`](bom.py) / [`BOM.md`](BOM.md) | The BoM |
 | [`TEST-PLAN.md`](TEST-PLAN.md) | v9's tests with the station's rewritten for v10 |
-| [`test/chain_rig.py`](test/chain_rig.py) | The Pi driver (v9's; its station table needs v10's P16 extensions, below) |
+| [`test/chain_rig.py`](test/chain_rig.py) | The Pi driver: one P16-100 (fully out between doses, `tilt_to_ext` from the table above), the NEMA 11 freed (or seeking with `--seek`) during every index, the DRV8825's EN on BCM 20 |
 
 To re-run:
 
