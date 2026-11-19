@@ -27,6 +27,17 @@ Bulk angles by version:
   bulk regime from the first attempt and the same for everything else").
   Functionally identical to 2026-11-18b (the first attempt's launch 2,
   with the no-flow step); only the version string differs.
+* 2026-11-19b: the same 60 -> 40 deg bulk on the new tube, now WITH taps
+  during the bulk (XZaitzeff, 2026-11-19 20:32 UTC: "Add taps into the
+  bulk session to shake up the salt like what was done in the summer.
+  Still try to do different angles.  Run the 30 experiments").  The
+  summer tap-while-rotating runs (2026-08-07 stop response, 2026-08-12/13
+  C6/C8) fired one 60 ms solenoid pulse every third poll loop while the
+  auger spun at 55 rpm: 3.2-3.5 taps/s measured, one every ~300 ms.  Here
+  the controller's own cadence taps do the same (taps_per_cycle > 0 in
+  velocity mode, the issue #164 code): one BULK_TAP_ON_MS pulse per
+  BULK_TAP_PERIOD_MS while the bulk auger spins, and only in the bulk.
+  Nothing else changed from 2026-11-19a.
 
 Runs ON the Pico via ``mpremote run`` (RAM only -- nothing is written to
 the Pico filesystem).  The controller is the Pico's own
@@ -56,7 +67,8 @@ apart from four hooks that change nothing about its decisions:
 Parameters that differ from the stock phase dicts (all per the request):
 
     bulk  angle 60 -> 40 deg stepped (50 -> 30 in c), 55 rpm,
-          continuous, no taps
+          continuous; no taps up to 2026-11-19a, from 2026-11-19b one
+          60 ms tap per 300 ms while the auger spins (summer cadence)
     fine  angle 30 deg, 25 rpm, continuous (2a), no taps, anticipation
           FINE_ANTICIPATION_G = 20 mg (the 25 rpm afterflow, ~10-45 mg, so it
           lands at the hand-off rather than past 1 g)
@@ -89,7 +101,7 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-19a"
+SCRIPT_VERSION = "2026-11-19b"
 POWDER_ID = "salt"
 
 N_TRIALS = 30
@@ -100,6 +112,10 @@ BULK_RPM = 55.0
 BULK_TILTS = (60.0, 55.0, 50.0, 45.0, 40.0)   # plate deg, stepped as it fills
 SCHED_FLOW_G = 0.002           # a bulk angle "flows" once it gains this ...
 SCHED_DWELL_S = 3.0            # ... and is left after this long without it
+# 2026-11-19b: taps during the bulk, at the summer tap-while-rotating
+# cadence (08-07 and 08-12/13: one 60 ms pulse per ~300 ms at 55 rpm)
+BULK_TAP_ON_MS = 60
+BULK_TAP_PERIOD_MS = 300       # pulse start to pulse start
 FINE_TILT = 30.0
 FINE_RPM = 25.0
 FINE_ANTICIPATION_G = 0.020
@@ -455,7 +471,10 @@ def build_phases():
     p1 = dict(m3.PHASE1_BULK)
     p1.update({"angle_deg": BULK_TILTS[0], "rotation_rpm": BULK_RPM,
                "continuous": 1, "poll_ms": POLL_MS, "anticipation_g": 0.0,
-               "taps_per_cycle": 0})
+               # cadence taps (velocity mode): one tap_on_ms pulse per
+               # tap_on_ms + tap_off_ms while the auger spins
+               "taps_per_cycle": 1, "tap_on_ms": BULK_TAP_ON_MS,
+               "tap_off_ms": BULK_TAP_PERIOD_MS - BULK_TAP_ON_MS})
     p2 = dict(m3.PHASE2_FINE)
     p2.update({"angle_deg": FINE_TILT, "rotation_rpm": FINE_RPM,
                "continuous": 1, "poll_ms": POLL_MS,
@@ -537,8 +556,10 @@ def main(hw=None):
     meta("balance_filter_sha16", file_sha("balance_filter.py"))
     meta("n_trials", N_TRIALS)
     meta("target_g", TARGET_G)
-    meta("bulk", "rpm {} tilts {} continuous no-taps anticipation 0".format(
-        BULK_RPM, "/".join("{:.0f}".format(a) for a in BULK_TILTS)))
+    meta("bulk", "rpm {} tilts {} continuous cadence-taps {} ms per {} ms "
+         "anticipation 0".format(
+             BULK_RPM, "/".join("{:.0f}".format(a) for a in BULK_TILTS),
+             BULK_TAP_ON_MS, BULK_TAP_PERIOD_MS))
     meta("fine", "tilt {} rpm {} continuous no-taps anticipation {}".format(
         FINE_TILT, FINE_RPM, FINE_ANTICIPATION_G))
     meta("tap", "stock PHASE3_TAP, turns at {} rpm".format(TAP_STAGE_RPM))

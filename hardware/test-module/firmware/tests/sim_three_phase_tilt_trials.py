@@ -108,7 +108,7 @@ class FakeTap:
     def tap(self, count=None, on_ms=None, off_ms=None):
         n = 3 if count is None else int(count)
         for _ in range(n):
-            advance((on_ms or 60) + (off_ms or 150))
+            advance((60 if on_ms is None else on_ms) + (150 if off_ms is None else off_ms))
             P.inflight += random.uniform(0.0, 0.004) * (1.0 + P.tilt / 30.0)
     def _off(self): pass
 
