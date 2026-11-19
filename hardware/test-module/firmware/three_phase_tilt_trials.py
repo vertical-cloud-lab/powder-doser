@@ -38,6 +38,20 @@ Bulk angles by version:
   velocity mode, the issue #164 code): one BULK_TAP_ON_MS pulse per
   BULK_TAP_PERIOD_MS while the bulk auger spins, and only in the bulk.
   Nothing else changed from 2026-11-19a.
+* 2026-11-19c: launch 1 of 19b (20:41 UTC) showed the bulk taps work --
+  both trials reached the bulk exit (0.755 and 0.759 g) where the
+  tap-free November bulk never got past 0.57 g -- but the tap-free fine
+  stage then stalled (30 deg, 25 rpm: +0.4 and +5.4 mg before the 7.5 s
+  stall rule), and two such trials ended the launch.  Two changes:
+  (1) the fine stage gets the same cadence taps as the bulk (one 60 ms
+  pulse per 300 ms while the auger spins; still 30 deg, 25 rpm);
+  (2) the two-failed-in-a-row stop now only counts a failed trial
+  (stalled / timeout / scale error / cycle budget) that delivered less
+  than LOW_DELIVERY_G -- its job is to catch an empty or blocked tube,
+  and a trial that got most of the way there shows the tube is feeding.
+  The session budget is set so the last trial ends inside the Actions
+  job's time limit.  Bulk, tap stage, thresholds and stall rules are
+  unchanged.
 
 Runs ON the Pico via ``mpremote run`` (RAM only -- nothing is written to
 the Pico filesystem).  The controller is the Pico's own
@@ -69,7 +83,8 @@ Parameters that differ from the stock phase dicts (all per the request):
     bulk  angle 60 -> 40 deg stepped (50 -> 30 in c), 55 rpm,
           continuous; no taps up to 2026-11-19a, from 2026-11-19b one
           60 ms tap per 300 ms while the auger spins (summer cadence)
-    fine  angle 30 deg, 25 rpm, continuous (2a), no taps, anticipation
+    fine  angle 30 deg, 25 rpm, continuous (2a), no taps up to
+          2026-11-19b, from 2026-11-19c the bulk's cadence taps, anticipation
           FINE_ANTICIPATION_G = 20 mg (the 25 rpm afterflow, ~10-45 mg, so it
           lands at the hand-off rather than past 1 g)
     tap   stock (0 deg, 1 tap + 15 deg per cycle, 1.5 s settle, 5 deg
@@ -101,7 +116,7 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-19b"
+SCRIPT_VERSION = "2026-11-19c"
 POWDER_ID = "salt"
 
 N_TRIALS = 30
@@ -116,6 +131,7 @@ SCHED_DWELL_S = 3.0            # ... and is left after this long without it
 # cadence (08-07 and 08-12/13: one 60 ms pulse per ~300 ms at 55 rpm)
 BULK_TAP_ON_MS = 60
 BULK_TAP_PERIOD_MS = 300       # pulse start to pulse start
+FINE_TAPS = True               # 2026-11-19c: same cadence in the fine stage
 FINE_TILT = 30.0
 FINE_RPM = 25.0
 FINE_ANTICIPATION_G = 0.020
@@ -135,7 +151,9 @@ CUP_NEXT_MARGIN_G = 1.6        # don't start a trial that could pass the cap
 CUP_HARD_G = 46.5              # any frame above this mid-trial -> abort
 BAL_MAX_G = 95.0               # displayed ceiling (balance range 102 g)
 MAX_FAILED_IN_A_ROW = 2        # stalled / scale-error / timeout ... in a row
-SESSION_BUDGET_S = 95 * 60     # don't start a trial after this
+LOW_DELIVERY_G = 0.5           # 19c: ... counted only if it delivered < this
+SESSION_BUDGET_S = 110 * 60    # don't start a trial after this (19c: 110,
+                               # so the last trial ends inside the job limit)
 
 
 # ---------------------------------------------------------------------------
@@ -478,7 +496,10 @@ def build_phases():
     p2 = dict(m3.PHASE2_FINE)
     p2.update({"angle_deg": FINE_TILT, "rotation_rpm": FINE_RPM,
                "continuous": 1, "poll_ms": POLL_MS,
-               "anticipation_g": FINE_ANTICIPATION_G, "taps_per_cycle": 0})
+               "anticipation_g": FINE_ANTICIPATION_G,
+               "taps_per_cycle": 1 if FINE_TAPS else 0,
+               "tap_on_ms": BULK_TAP_ON_MS,
+               "tap_off_ms": BULK_TAP_PERIOD_MS - BULK_TAP_ON_MS})
     p3 = dict(m3.PHASE3_TAP)
     p3.update({"rotation_rpm": TAP_STAGE_RPM})
     return [p1, p2, p3]
@@ -560,8 +581,12 @@ def main(hw=None):
          "anticipation 0".format(
              BULK_RPM, "/".join("{:.0f}".format(a) for a in BULK_TILTS),
              BULK_TAP_ON_MS, BULK_TAP_PERIOD_MS))
-    meta("fine", "tilt {} rpm {} continuous no-taps anticipation {}".format(
-        FINE_TILT, FINE_RPM, FINE_ANTICIPATION_G))
+    meta("fine", "tilt {} rpm {} continuous {} anticipation {}".format(
+        FINE_TILT, FINE_RPM,
+        ("cadence-taps {} ms per {} ms".format(BULK_TAP_ON_MS,
+                                               BULK_TAP_PERIOD_MS)
+         if FINE_TAPS else "no-taps"),
+        FINE_ANTICIPATION_G))
     meta("tap", "stock PHASE3_TAP, turns at {} rpm".format(TAP_STAGE_RPM))
     meta("thresholds", "/".join("{}".format(v) for v in m3.THRESHOLDS))
     meta("dose_timeout_s", m3.DOSE_TIMEOUT_S)
@@ -571,6 +596,8 @@ def main(hw=None):
     meta("postroll_s", POSTROLL_S)
     meta("cup_cap_g", CUP_CAP_G)
     meta("session_budget_s", SESSION_BUDGET_S)
+    meta("failed_in_a_row", "{} trials that end failed with < {} g".format(
+        MAX_FAILED_IN_A_ROW, LOW_DELIVERY_G))
     meta("tare", "none (baseline bracket per trial)")
 
     C.stepper = None
@@ -670,7 +697,8 @@ def main(hw=None):
             }
             results.append(rec)
             print("T," + json.dumps(rec))
-            if res.status in ("ok", "overshoot"):
+            if (res.status in ("ok", "overshoot")
+                    or res.dispensed_g >= LOW_DELIVERY_G):
                 failed_in_row = 0
             else:
                 failed_in_row += 1
