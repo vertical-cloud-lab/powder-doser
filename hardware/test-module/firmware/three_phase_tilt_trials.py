@@ -1,4 +1,5 @@
-"""30 x 1 g salt trials: three-phase dose with a stepped bulk tilt (PR #131).
+"""30 x 1 g salt (30 x 2 g AlSi10Mg from 19e) trials: three-phase dose with a
+stepped bulk tilt (PR #131).
 
 Requested by XZaitzeff on 2026-11-18 (PR #131): 30 trials of 1 g of salt.
 Bulk stage at 55 auger rpm with the plate stepping through five angles,
@@ -62,6 +63,23 @@ Bulk angles by version:
   stepped bulk, the fine stage at 30 deg and 25 rpm with the same taps,
   the stock tap stage, thresholds and stall rules, and the 19c
   failed-in-a-row rule.
+* 2026-11-19e: the same protocol on a new powder, AlSi10Mg, at 2 g a
+  trial (XZaitzeff, 2026-11-19 22:25 UTC: "Now there is alsi10mg powder
+  in the doser.  Run the same experiments as done for salt but for this
+  powder.  Aim for 2 g this time instead of 1.  Try for 30 trials").
+  Every stage setting is 2026-11-19d's (80 rpm stepped 60 -> 40 deg bulk
+  with cadence taps, 30 deg / 25 rpm fine with the same taps and 20 mg
+  anticipation, stock tap stage, stock thresholds and stall rules).
+  What scales with the 2 g target:
+  - the bulk's tilt bands are (TARGET_G - t1) / 5 = 0.35 g each (the
+    code always derived them from the target; 0.15 g at 1 g);
+  - the cup caps: 30 x 2 g is 60 g, so CUP_CAP_G 62.5 / CUP_HARD_G 64.0
+    with a 2.6 g start margin (45 / 46.5 / 1.6 for 30 x 1 g of salt);
+    the balance's own OL frame still stops the session, so a heavy
+    beaker that takes the pan past 102 g first ends it cleanly;
+  - the failed-in-a-row rule counts a failed trial only if it delivered
+    under LOW_DELIVERY_G = 1.0 g (half the target, as 0.5 g was);
+  - SESSION_BUDGET_S 100 min (110) so the analysis fits the job too.
 
 Runs ON the Pico via ``mpremote run`` (RAM only -- nothing is written to
 the Pico filesystem).  The controller is the Pico's own
@@ -126,11 +144,11 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-19d"
-POWDER_ID = "salt"
+SCRIPT_VERSION = "2026-11-19e"
+POWDER_ID = "alsi10mg"            # 2026-11-19e ("salt" up to 19d)
 
 N_TRIALS = 30
-TARGET_G = 1.0
+TARGET_G = 2.0                 # 2026-11-19e (1.0 up to 19d)
 
 # --- the request (XZaitzeff, PR #131, 2026-11-18 "1a, 2a, yes"; 2026-11-19 a-d)
 BULK_RPM = 80.0               # 2026-11-19d (55 up to 2026-11-19c)
@@ -156,14 +174,17 @@ PREROLL_S = 5.0                # logged before each trial's baseline
 POSTROLL_S = 8.0               # logged after the controller finishes
 
 # --- safety ----------------------------------------------------------------
-CUP_CAP_G = 45.0               # total into the cup this session
-CUP_NEXT_MARGIN_G = 1.6        # don't start a trial that could pass the cap
-CUP_HARD_G = 46.5              # any frame above this mid-trial -> abort
+CUP_CAP_G = 62.5               # total into the cup this session (19e: 30 x 2 g;
+                               # 45 for 30 x 1 g up to 19d)
+CUP_NEXT_MARGIN_G = 2.6        # don't start a trial that could pass the cap (1.6)
+CUP_HARD_G = 64.0              # any frame above this mid-trial -> abort (46.5)
 BAL_MAX_G = 95.0               # displayed ceiling (balance range 102 g)
 MAX_FAILED_IN_A_ROW = 2        # stalled / scale-error / timeout ... in a row
-LOW_DELIVERY_G = 0.5           # 19c: ... counted only if it delivered < this
-SESSION_BUDGET_S = 110 * 60    # don't start a trial after this (19c: 110,
-                               # so the last trial ends inside the job limit)
+LOW_DELIVERY_G = 1.0           # 19c: ... counted only if it delivered < this
+                               # (19e: half the 2 g target; 0.5 at 1 g)
+SESSION_BUDGET_S = 100 * 60    # don't start a trial after this (19c: 110,
+                               # so the last trial ends inside the job limit;
+                               # 19e: 100, to leave the analysis time too)
 
 
 # ---------------------------------------------------------------------------
