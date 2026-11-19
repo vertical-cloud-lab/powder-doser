@@ -273,3 +273,8 @@ python plot_alsi10mg_vs_salt.py
 
 `scripts/analyze_tilt_trials.py` now takes the powder and target for its figure titles and
 y-ranges from the log's metadata (it had salt and 1 g written in).
+
+MongoDB `powder_doser.dose_runs` has one document per trial (`doc_type: "three_phase_tilt_trial"`,
+20) and one for the launch (`doc_type: "three_phase_tilt_session"`), all with
+`session_id: "tilt30-2026-11-19T22:43:48"`, `powder_id: "alsi10mg"`, `script_version: "2026-11-19e"`,
+`bulk_rpm: 80`, `launch: "a1"` and `commit: "111dc94"`.
