@@ -21,6 +21,12 @@ Bulk angles by version:
   15:56 UTC: "do 50, 45, 40, 35, and 30 during the bulk stage.  Keep all
   the other settings the same.  Run the 30 trials").  Nothing else changed
   from 2026-11-18b.
+* 2026-11-19a: back to 60 -> 55 -> 50 -> 45 -> 40 deg on a NEW auger tube
+  (XZaitzeff, 2026-11-19 19:31 UTC: "we replaced the auger with a new
+  one.  So run the 30 experiments with the 60, 55, 50, 45, and 40 degree
+  bulk regime from the first attempt and the same for everything else").
+  Functionally identical to 2026-11-18b (the first attempt's launch 2,
+  with the no-flow step); only the version string differs.
 
 Runs ON the Pico via ``mpremote run`` (RAM only -- nothing is written to
 the Pico filesystem).  The controller is the Pico's own
@@ -49,7 +55,7 @@ apart from four hooks that change nothing about its decisions:
 
 Parameters that differ from the stock phase dicts (all per the request):
 
-    bulk  angle 50 -> 30 deg stepped (60 -> 40 in a/b), 55 rpm,
+    bulk  angle 60 -> 40 deg stepped (50 -> 30 in c), 55 rpm,
           continuous, no taps
     fine  angle 30 deg, 25 rpm, continuous (2a), no taps, anticipation
           FINE_ANTICIPATION_G = 20 mg (the 25 rpm afterflow, ~10-45 mg, so it
@@ -83,15 +89,15 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-18c"
+SCRIPT_VERSION = "2026-11-19a"
 POWDER_ID = "salt"
 
 N_TRIALS = 30
 TARGET_G = 1.0
 
-# --- the request (XZaitzeff, PR #131, 2026-11-18; "1a, 2a, yes"; angles c) -
+# --- the request (XZaitzeff, PR #131, 2026-11-18 "1a, 2a, yes"; 2026-11-19) -
 BULK_RPM = 55.0
-BULK_TILTS = (50.0, 45.0, 40.0, 35.0, 30.0)   # plate deg, stepped as it fills
+BULK_TILTS = (60.0, 55.0, 50.0, 45.0, 40.0)   # plate deg, stepped as it fills
 SCHED_FLOW_G = 0.002           # a bulk angle "flows" once it gains this ...
 SCHED_DWELL_S = 3.0            # ... and is left after this long without it
 FINE_TILT = 30.0
