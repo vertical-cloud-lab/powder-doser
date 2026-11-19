@@ -52,6 +52,16 @@ Bulk angles by version:
   The session budget is set so the last trial ends inside the Actions
   job's time limit.  Bulk, tap stage, thresholds and stall rules are
   unchanged.
+* 2026-11-19d: the OLD auger tube is back on (the one used on 11-18), and
+  the bulk auger runs at 80 rpm instead of 55 (XZaitzeff, 2026-11-19
+  21:36 UTC: "I put the auger from before back on the doser.  Do the 30
+  experiments with the tapping during the bulk session.  Increase the
+  rotate speed of the bulk session to 80 rpm").  Everything else is
+  2026-11-19c: the same bulk taps (one 60 ms pulse per 300 ms, so fewer
+  taps per auger revolution than at 55 rpm), the same 60 -> 40 deg
+  stepped bulk, the fine stage at 30 deg and 25 rpm with the same taps,
+  the stock tap stage, thresholds and stall rules, and the 19c
+  failed-in-a-row rule.
 
 Runs ON the Pico via ``mpremote run`` (RAM only -- nothing is written to
 the Pico filesystem).  The controller is the Pico's own
@@ -80,8 +90,8 @@ apart from four hooks that change nothing about its decisions:
 
 Parameters that differ from the stock phase dicts (all per the request):
 
-    bulk  angle 60 -> 40 deg stepped (50 -> 30 in c), 55 rpm,
-          continuous; no taps up to 2026-11-19a, from 2026-11-19b one
+    bulk  angle 60 -> 40 deg stepped (50 -> 30 in c), 55 rpm (80 rpm
+          from 2026-11-19d), continuous; no taps up to 2026-11-19a, from 2026-11-19b one
           60 ms tap per 300 ms while the auger spins (summer cadence)
     fine  angle 30 deg, 25 rpm, continuous (2a), no taps up to
           2026-11-19b, from 2026-11-19c the bulk's cadence taps, anticipation
@@ -116,14 +126,14 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-19c"
+SCRIPT_VERSION = "2026-11-19d"
 POWDER_ID = "salt"
 
 N_TRIALS = 30
 TARGET_G = 1.0
 
-# --- the request (XZaitzeff, PR #131, 2026-11-18 "1a, 2a, yes"; 2026-11-19) -
-BULK_RPM = 55.0
+# --- the request (XZaitzeff, PR #131, 2026-11-18 "1a, 2a, yes"; 2026-11-19 a-d)
+BULK_RPM = 80.0               # 2026-11-19d (55 up to 2026-11-19c)
 BULK_TILTS = (60.0, 55.0, 50.0, 45.0, 40.0)   # plate deg, stepped as it fills
 SCHED_FLOW_G = 0.002           # a bulk angle "flows" once it gains this ...
 SCHED_DWELL_S = 3.0            # ... and is left after this long without it
