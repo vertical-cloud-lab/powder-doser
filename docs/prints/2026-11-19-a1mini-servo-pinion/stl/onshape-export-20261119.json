@@ -1,0 +1,43 @@
+{
+ "document": "Servo Pinion",
+ "element": "Complete Servo Pinion",
+ "did": "35ecacf511109e3b823b3ed0",
+ "wid": "6070d7c538ec64e1c4815a96",
+ "eid": "ce683b15c3b969067abfe902",
+ "microversion_before_anon": "9639e023684ca369c23986d0",
+ "started_utc": "2026-11-19T22:09:23Z",
+ "stl": [
+  {
+   "file": "onshape: complete-servo-pinion-spur-gear-14-teeth.stl",
+   "part": "Complete Servo Pinion - Spur gear (14 teeth)",
+   "bytes": 205684,
+   "sha256": "7f63a6fd018c99ab272f9f12228e50e5178c36679be8bae7018741d6313bb4f2",
+   "triangles": 4112,
+   "watertight": true,
+   "volume_cm3": 2.886,
+   "extent_mm": [
+    20.45,
+    12.3,
+    20.78
+   ]
+  }
+ ],
+ "stl_grouping": "false",
+ "calls": [
+  {
+   "utc": "2026-11-19T22:09:23Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-19T22:09:24Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  }
+ ],
+ "counted_calls": 2,
+ "microversion_after_anon": "9639e023684ca369c23986d0",
+ "finished_utc": "2026-11-19T22:09:25Z"
+}
