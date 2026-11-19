@@ -1,0 +1,5 @@
+powder_id,step,tilt_deg,spin_s,revs,taps,m0_abs_g,m1_abs_g,gain_mg,mg_per_rev
+salt,prime0_taps,0.0,30.0,27.5,100,3.0946,3.1029,8.3,0.302
+salt,a45_auger,45.0,10.0,9.17,0,3.1029,3.1029,0.0,0.0
+salt,b45_taps,45.0,10.0,9.17,34,3.1029,3.1051,2.2,0.24
+salt,c45_auger,45.0,10.0,9.17,0,3.1051,3.1051,0.0,0.0
