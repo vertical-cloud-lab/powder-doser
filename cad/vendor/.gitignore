@@ -1,0 +1,5 @@
+# Vendor CAD, drawings, datasheets and page captures: fetched by fetch_*.py through the doser Pi.
+# Not committed: the vendors give no licence to redistribute them and this repo is public
+# (same rule as cad/full-assembly/components/mcmaster/). manifest_*.json pins each file by sha256.
+files/
+__pycache__/

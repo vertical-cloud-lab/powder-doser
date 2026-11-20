@@ -1,0 +1,24 @@
+[
+ {
+  "key": "sprocket_35BS32-5-8",
+  "kind": "screenshot",
+  "file": "files/martin/sprocket_35BS32-5-8.png",
+  "page": "https://www.tristate-bearing.com/martin-35bs32-5-8-mar35bs325-8",
+  "url": "https://www.tristate-bearing.com/martin-35bs32-5-8-mar35bs325-8",
+  "sha256": "8ca965da4208321f609f00a244c7f23db06c850716210202c9080df4f72a682a",
+  "bytes": 366710,
+  "retrieved": "2026-10-27",
+  "note": "Martin 35BS32 5/8 MAR35BS325/8 | Tri-State Bearing Company, Inc"
+ },
+ {
+  "key": "sprocket_35BS32-5-8",
+  "kind": "text",
+  "file": "files/martin/sprocket_35BS32-5-8.txt",
+  "page": "https://www.tristate-bearing.com/martin-35bs32-5-8-mar35bs325-8",
+  "url": "https://www.tristate-bearing.com/martin-35bs32-5-8-mar35bs325-8",
+  "sha256": "98cd8dac88e5860ff43e749bc3b5744c8c01e3986ae9bc757bab63027eae7cf1",
+  "bytes": 2975,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

@@ -1,0 +1,16 @@
+{
+ "config": "final",
+ "tilt": 0.0,
+ "phase": 0.3,
+ "seek_rps": 0.0,
+ "drag_Nm": 0.02,
+ "push_N": 15.0,
+ "seated": false,
+ "seated_after_s": null,
+ "final_centre_distance_mm": 34.13099465366115,
+ "final_rim_gaps_mm": [
+  0.24531058415519993,
+  1.5251060894565642
+ ],
+ "peak_actuator_N": 10.647027221240023
+}

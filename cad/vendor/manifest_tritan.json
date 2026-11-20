@@ -1,0 +1,24 @@
+[
+ {
+  "key": "sprocket_35BS15H-5-8_hvh",
+  "kind": "screenshot",
+  "file": "files/tritan/sprocket_35BS15H-5-8_hvh.png",
+  "page": "https://hvhindustrial.com/product/40338",
+  "url": "https://hvhindustrial.com/product/40338",
+  "sha256": "ccddbd1063ad658a49eadc0d8366dd7f91aa684df7672e805dea9e73a0b6bbfe",
+  "bytes": 481307,
+  "retrieved": "2026-10-27",
+  "note": "35BS15H X 5/8 | Type B Roller Chain Sprocket | TRITAN"
+ },
+ {
+  "key": "sprocket_35BS15H-5-8_hvh",
+  "kind": "text",
+  "file": "files/tritan/sprocket_35BS15H-5-8_hvh.txt",
+  "page": "https://hvhindustrial.com/product/40338",
+  "url": "https://hvhindustrial.com/product/40338",
+  "sha256": "3efa236884d7af190f164eed6f73061c3e734739d4e51d6e5cf71f81beea94a7",
+  "bytes": 3099,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

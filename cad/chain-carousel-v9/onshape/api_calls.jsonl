@@ -1,0 +1,13 @@
+{"run": "create-document-v9", "n": 1, "method": "GET", "path": "/companies", "status": 200, "utc": "2026-11-17T19:43:12Z"}
+{"run": "create-document-v9", "n": 2, "method": "POST", "path": "/documents", "status": 200, "utc": "2026-11-17T19:43:12Z"}
+{"run": "create-document-v9", "n": 3, "method": "POST", "path": "/blobelements/d/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a", "status": 200, "utc": "2026-11-17T19:43:16Z"}
+{"run": "create-document-v9", "n": 4, "method": "GET", "path": "/translations/6afcae54a228a30a81229b4c", "status": 200, "utc": "2026-11-17T19:44:46Z"}
+{"run": "create-document-v9", "n": 5, "method": "GET", "path": "/translations/6afcae54a228a30a81229b4c", "status": 200, "utc": "2026-11-17T19:45:46Z"}
+{"run": "create-document-v9", "n": 6, "method": "GET", "path": "/translations/6afcae54a228a30a81229b4c", "status": 200, "utc": "2026-11-17T19:46:46Z"}
+{"run": "create-document-v9", "n": 7, "method": "GET", "path": "/translations/6afcae54a228a30a81229b4c", "status": 200, "utc": "2026-11-17T19:47:46Z"}
+{"run": "create-document-v9", "n": 8, "method": "GET", "path": "/translations/6afcae54a228a30a81229b4c", "status": 200, "utc": "2026-11-17T19:48:46Z"}
+{"run": "create-document-v9", "n": 9, "method": "GET", "path": "/documents/d/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/elements", "status": 200, "utc": "2026-11-17T19:48:47Z"}
+{"run": "create-document-v9", "n": 10, "method": "GET", "path": "/assemblies/d/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590/shadedviews", "status": 200, "utc": "2026-11-17T19:48:48Z"}
+{"run": "create-document-v9", "n": 11, "method": "GET", "path": "/assemblies/d/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590/shadedviews", "status": 200, "utc": "2026-11-17T19:48:50Z"}
+{"run": "create-document-v9", "n": 12, "method": "POST", "path": "/documents/d/9aadc21a931d5337ff05de71/versions", "status": 200, "utc": "2026-11-17T19:48:51Z"}
+{"run": "confirm-public-v9", "n": 1, "method": "GET", "path": "/documents/9aadc21a931d5337ff05de71", "status": 200, "utc": "2026-11-17T19:59:02Z"}

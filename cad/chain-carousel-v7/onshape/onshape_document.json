@@ -1,0 +1,320 @@
+{
+ "documentId": "291664f38c67a4672a86f025",
+ "workspaceId": "e67d1b706aa4b873fa8c68e8",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "url": "https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8",
+ "translationId": "6af3a944ffbfb78be3fbdf25",
+ "importedElementIds": [
+  "fc4a38db056ee9fee5d67f68",
+  "e078b4b93b76a588f6e8ec93",
+  "87d66c2a7ac5e801ad37cf19",
+  "f83d22fda64caced24969af4",
+  "b61fe8fa3b1177a5f35143df",
+  "84ec4b3108fcd2d686fcd8fe",
+  "71669f9d2c8f9ab535e17a4f",
+  "d4363216b505017f9106e0b3",
+  "d6db7850abaa72e9e622a046",
+  "2ad89b41bd3ef96a2adb3206",
+  "2aa8470e1e32a149243298af",
+  "fccb4177f8623c9aec6e47cb",
+  "8c99baa205e3af2993e2e1a3",
+  "7f7492ec92b84372ad6aca10",
+  "2e07d232243fac6f623bf613",
+  "bdc7b4b51761ccfbc640e3a9",
+  "326b1c53fe220d7dfe7bde3b",
+  "054738c7e3b062f59c670726",
+  "3519a801426cdf6a0b4b704f",
+  "5293330354a69b2bc2720311",
+  "c6b42a31868ccbee54fef9ac",
+  "ae9d919d4215197a95393ea1",
+  "43d4d1e94b4c19e49ec1fb6b",
+  "b85138fc09f4d1087039ed5d",
+  "e728f2e3cc048a4d266ae82f",
+  "4802634f69ef3323004d7bf6"
+ ],
+ "elements": [
+  {
+   "id": "4802634f69ef3323004d7bf6",
+   "name": "Chain carousel test rig v7",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "e728f2e3cc048a4d266ae82f",
+   "name": "04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "b85138fc09f4d1087039ed5d",
+   "name": "06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "43d4d1e94b4c19e49ec1fb6b",
+   "name": "08 Station",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ae9d919d4215197a95393ea1",
+   "name": "09 Modules on the bench",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "c6b42a31868ccbee54fef9ac",
+   "name": "10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "5293330354a69b2bc2720311",
+   "name": "12 Enclosure",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "3519a801426cdf6a0b4b704f",
+   "name": "Bearing locknut 1-4-20 (nylon insert)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "054738c7e3b062f59c670726",
+   "name": "Jack screw locknut M5 (trapped, nylon insert)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "326b1c53fe220d7dfe7bde3b",
+   "name": "Actuonix P16-150-22-12-P (lift and tilt, pot feedback)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "bdc7b4b51761ccfbc640e3a9",
+   "name": "Actuonix P16-150 rod",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "2e07d232243fac6f623bf613",
+   "name": "M3 locknut (P16 base pin)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "7f7492ec92b84372ad6aca10",
+   "name": "Outlet door spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "8c99baa205e3af2993e2e1a3",
+   "name": "Outlet door housing (printed) 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "fccb4177f8623c9aec6e47cb",
+   "name": "Outlet door spring 2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "2aa8470e1e32a149243298af",
+   "name": "Latch spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "2ad89b41bd3ef96a2adb3206",
+   "name": "Tab locknut M3 (in the hook) 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d6db7850abaa72e9e622a046",
+   "name": "Latch spring 2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d4363216b505017f9106e0b3",
+   "name": "Balance draft cage glass (front, back)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "71669f9d2c8f9ab535e17a4f",
+   "name": "01 Base frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "84ec4b3108fcd2d686fcd8fe",
+   "name": "02 Posts, top frame, and the ladder",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "b61fe8fa3b1177a5f35143df",
+   "name": "03 Side plates onto the posts",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "f83d22fda64caced24969af4",
+   "name": "05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "87d66c2a7ac5e801ad37cf19",
+   "name": "07 Chains",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "e078b4b93b76a588f6e8ec93",
+   "name": "11 Electronics board",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "fc4a38db056ee9fee5d67f68",
+   "name": "chain_carousel_rig_v7 parts",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "65dbee1558b82acf2f1545a6",
+   "name": "Part Studio 1",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "7e3487a25ee28fa3fe035e6c",
+   "name": "Assembly 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "379e327faf9ced647ce5241b",
+   "name": "BOM : Assembly 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "2c1e5e5923bc5d607b2acc47",
+   "name": "chain_carousel_rig_v7.step",
+   "type": "BLOB"
+  },
+  {
+   "id": "73542a32eeac885836f55b92",
+   "name": "BOM : 03 Side plates onto the posts",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "ab83cf93c068150294caeca3",
+   "name": "BOM : 12 Enclosure",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "c5d6b12bd610e3f837895c1e",
+   "name": "BOM : 09 Modules on the bench",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "bbf1c4ebbbd10924eddca34c",
+   "name": "BOM : Actuonix P16-150 rod",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "ee0a3769f6b7ba7592f64b8e",
+   "name": "BOM : M3 locknut (P16 base pin)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "9ab77bacb2bb91373d1154cf",
+   "name": "BOM : Chain carousel test rig v7",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "26bbd4b00690a99d38c7bfdb",
+   "name": "BOM : 01 Base frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "104b102831bb90315345d6a7",
+   "name": "BOM : Actuonix P16-150-22-12-P (lift and tilt, pot feedback)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d2fe351585173345ea490256",
+   "name": "BOM : Balance draft cage glass (front, back)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "8385ba658cb202249cc2a5cd",
+   "name": "BOM : 02 Posts, top frame, and the ladder",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a99b3ee03a06524f8260dd2e",
+   "name": "BOM : Latch spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "11783c89d0b13f2f19750293",
+   "name": "BOM : Tab locknut M3 (in the hook) 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "66b8b70e1eba72b789da44b7",
+   "name": "BOM : Outlet door spring 2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e1e99afacdeafcda2e23eda3",
+   "name": "BOM : Latch spring 2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "fb7d51b03fae687f2b4c05d4",
+   "name": "BOM : 06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "f647dee35cb487c235e70c7b",
+   "name": "BOM : 10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "26b78c6d8fd23192f0c98c06",
+   "name": "BOM : 04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "0452b1d001ae8aa2c4332642",
+   "name": "BOM : Jack screw locknut M5 (trapped, nylon insert)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "4260bef791c88500aed081aa",
+   "name": "BOM : 08 Station",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "6b7f7969f69d5f5ac0beeab1",
+   "name": "BOM : 05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "f630ddd73170082397ae11f9",
+   "name": "BOM : Outlet door housing (printed) 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "fcdb5f0e1bc34341593d6a27",
+   "name": "BOM : Bearing locknut 1-4-20 (nylon insert)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "45dbe604b4f89148dca71a8a",
+   "name": "BOM : Outlet door spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "4e0e7c9181362e9c7aef9620",
+   "name": "BOM : 07 Chains",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "bed46ecc3fa7e9ef8471f985",
+   "name": "BOM : 11 Electronics board",
+   "type": "BILLOFMATERIALS"
+  }
+ ],
+ "assemblyElementId": "4802634f69ef3323004d7bf6",
+ "assemblyUrl": "https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8/e/4802634f69ef3323004d7bf6",
+ "version": {
+  "id": "b8f352899d1130a0a5879460",
+  "name": "v7 one P16, dock on posts"
+ },
+ "api_calls": 10
+}

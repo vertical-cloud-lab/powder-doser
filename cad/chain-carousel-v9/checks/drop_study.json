@@ -1,0 +1,73 @@
+{
+ "note": "Depth under the exit (mm) of the lowest point of every part inside the beaker's footprint (the 25 mL beaker's lip, radius 20, + 2 mm), over the whole cycle: parked, rising, docked, tilting 5-90 deg (tag 'cycle'), the station module at rest ('module'), and every module passing the station ('passing': the footprint swept along the travel). OCC booleans, drop_study.py --measure.",
+ "v7_cage_off": {
+  "beaker_centre_ahead_of_exit_mm": 0.0,
+  "R": 22.0,
+  "depth": {
+   "cycle:pinion": -78.3,
+   "cycle:kc6_magnet": -43.36,
+   "cycle:nema11": -23.3,
+   "passing:m2x8_shcs": -6.0,
+   "module:m2x8_shcs": -6.0,
+   "cycle:m2x8_shcs": -6.0,
+   "passing:door_spring": -5.0,
+   "module:door_spring": -5.0,
+   "module:clevis_pin": 2.5,
+   "cycle:clevis_pin": 2.5,
+   "passing:clevis_pin": 4.0,
+   "passing:eclip": 4.09,
+   "module:eclip": 4.09,
+   "cycle:eclip": 4.09,
+   "cycle:door_spring_open": 4.35,
+   "passing:sam_mounting_plate": 5.0,
+   "module:sam_mounting_plate": 5.0,
+   "cycle:sam_mounting_plate": 5.0,
+   "passing:door_housing": 11.6,
+   "module:door_housing": 11.6,
+   "cycle:door_housing": 11.94,
+   "passing:auger": 12.5,
+   "module:auger": 12.5,
+   "cycle:auger": 12.5,
+   "cycle:door_shutter": 21.0,
+   "passing:door_shutter": 22.0,
+   "module:door_shutter": 22.0,
+   "cycle:solenoid": 62.8,
+   "cycle:sam_electronics_carriage": 69.85
+  }
+ },
+ "v9": {
+  "beaker_centre_ahead_of_exit_mm": 7.0,
+  "R": 22.0,
+  "depth": {
+   "cycle:sam_electronics_carriage": 29.2,
+   "module:door_shutter": 22.0,
+   "passing:door_shutter": 22.0,
+   "cycle:door_shutter": 21.0,
+   "cycle:auger": 12.5,
+   "module:auger": 12.5,
+   "passing:auger": 12.5,
+   "cycle:door_housing": 11.94,
+   "module:door_housing": 11.6,
+   "passing:door_housing": 11.6,
+   "cycle:sam_mounting_plate": 5.0,
+   "module:sam_mounting_plate": 5.0,
+   "passing:sam_mounting_plate": 5.0,
+   "cycle:door_spring_open": 4.35,
+   "cycle:eclip": 4.09,
+   "module:eclip": 4.09,
+   "passing:eclip": 4.09,
+   "passing:clevis_pin": 4.0,
+   "cycle:clevis_pin": 2.5,
+   "module:clevis_pin": 2.5,
+   "module:door_spring": -5.0,
+   "passing:door_spring": -5.0,
+   "cycle:m2x8_shcs": -15.03,
+   "cycle:solenoid": -96.5
+  }
+ },
+ "p16_over_balance": {
+  "note": "lowest point of the P16's body over the balance's footprint (+2 mm), v9 layout, parked (its lowest pose): world z",
+  "z": 353.51,
+  "balance_back_x_world": 118.4
+ }
+}

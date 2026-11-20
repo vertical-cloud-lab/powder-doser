@@ -1,0 +1,10 @@
+{
+ "check": "guide_recheck",
+ "note": "v6, 2026-11-10: after the guides were notched under their seats and made 1.5 mm shallower, the lift P16-50s (body and rod), the guides, the shelves, the rungs, the end blocks, the base clevises and the bars against each other at three lift heights. These parts don't move while the module tilts, so this covers the tilt poses too (tilt_a/tilt_b ran before the fix and found nothing else).",
+ "poses": {
+  "ext 0": [],
+  "ext 14": [],
+  "ext 28": []
+ },
+ "clashes": 0
+}

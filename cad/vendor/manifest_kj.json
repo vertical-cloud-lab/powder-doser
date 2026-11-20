@@ -1,0 +1,24 @@
+[
+ {
+  "key": "magnet_D42-N52",
+  "kind": "screenshot",
+  "file": "files/kj/magnet_D42-N52.png",
+  "page": "https://www.kjmagnetics.com/d42-n52-neodymium-disc-magnet",
+  "url": "https://www.kjmagnetics.com/d42-n52-neodymium-disc-magnet",
+  "sha256": "6bd83b0ed27cb5b9213e13a69b22d9df9b957899a7314688cb3e8a72830f729e",
+  "bytes": 1024137,
+  "retrieved": "2026-10-27",
+  "note": "1/4 x 1/8 Inch Neodymium Rare Earth Disc Magnet N52 - d42-n52 | K&J Magnetics"
+ },
+ {
+  "key": "magnet_D42-N52",
+  "kind": "text",
+  "file": "files/kj/magnet_D42-N52.txt",
+  "page": "https://www.kjmagnetics.com/d42-n52-neodymium-disc-magnet",
+  "url": "https://www.kjmagnetics.com/d42-n52-neodymium-disc-magnet",
+  "sha256": "0754261f5b9e83d5066ef81cd0d6c7207489765b174b3109858425035197424d",
+  "bytes": 4790,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

@@ -1,0 +1,26 @@
+{
+ "t0": {
+  "tilt": 0.0,
+  "n_grains_inside": 931,
+  "corotation_mean": 0.6825319191818026,
+  "corotation_median": 0.6566724887713112
+ },
+ "t30": {
+  "tilt": 30.0,
+  "n_grains_inside": 889,
+  "corotation_mean": 0.6688950137451706,
+  "corotation_median": 0.9525349232739223
+ },
+ "t60": {
+  "tilt": 60.0,
+  "n_grains_inside": 955,
+  "corotation_mean": 0.9299892487141745,
+  "corotation_median": 0.9663746601121321
+ },
+ "t90": {
+  "tilt": 90.0,
+  "n_grains_inside": 1047,
+  "corotation_mean": 0.9837880407301528,
+  "corotation_median": 0.9845323534269976
+ }
+}

@@ -1,0 +1,261 @@
+{
+ "documentId": "ba4455c0f17bed3b77763e4a",
+ "workspaceId": "3f1d3875f8930d0ac9ba94b0",
+ "name": "Multi-doser paternoster carousel - 12 gondolas hang upright from twin #35 chains (#128)",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "step": "cad/paternoster/step/paternoster_carousel.step",
+ "stepBytes": 60128558,
+ "stepSha256": "0ea00e7b5ec52e982ea7feeae2e6ee390dc358414a912ab8a03f3942eed586b1",
+ "stepCommit": "7990802",
+ "stepRoot": "paternoster_carousel",
+ "url": "https://cad.onshape.com/documents/ba4455c0f17bed3b77763e4a/w/3f1d3875f8930d0ac9ba94b0",
+ "translationId": "6af3754c830999c232a535bf",
+ "importedElementIds": [
+  "0ea7980ac406c6b2b4c9b05e",
+  "4114c62bd13451e868d55ffa",
+  "8c08c2602608a2f53cffd230",
+  "3f878628017141b21cb24969",
+  "d3da80674d0b7cd426f8ef1d",
+  "a8b45bc312dd7f3d9f458454",
+  "99615347399db5888a63c1a8",
+  "1b57e6e84d8c4bd14145e411",
+  "08468c28838f468642e7ec00",
+  "7e9596c381e5f635f6f17a4c",
+  "9e7637c8b010979855498509",
+  "ca07754ec44dffb1a30822c9",
+  "8d334b20dce64d220b3d52c7",
+  "ab96624d00ad65b073a8c021",
+  "0ddb654a610ccfa953b9c3ef",
+  "8a7295dbe5ddcd2c6c68109a",
+  "7ced2aec789a000f73d8a2cb",
+  "0fcdd7075ae2ba2257fe2915",
+  "37616b926f47c6e456f61cd5",
+  "6b9996c7edfe35c66c55e27b"
+ ],
+ "elements": [
+  {
+   "id": "6b9996c7edfe35c66c55e27b",
+   "name": "paternoster_carousel",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "37616b926f47c6e456f61cd5",
+   "name": "06 Chains",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "0fcdd7075ae2ba2257fe2915",
+   "name": "07 Drive",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "7ced2aec789a000f73d8a2cb",
+   "name": "08 Gondolas",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "8a7295dbe5ddcd2c6c68109a",
+   "name": "09 Modules",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "0ddb654a610ccfa953b9c3ef",
+   "name": "10 Station",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ab96624d00ad65b073a8c021",
+   "name": "Front chain link 0",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "8d334b20dce64d220b3d52c7",
+   "name": "NEMA 34 34HS59-6004D-E1000 (StepperOnline STEP)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ca07754ec44dffb1a30822c9",
+   "name": "M5 x 16 thumb screw (hinge pin) 1-",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "9e7637c8b010979855498509",
+   "name": "M3 nylon-insert locknut 1f",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "7e9596c381e5f635f6f17a4c",
+   "name": "Actuonix P16-P 150 mm (feedback)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "08468c28838f468642e7ec00",
+   "name": "Actuonix rod",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "1b57e6e84d8c4bd14145e411",
+   "name": "Dock magnet bracket (printed)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "99615347399db5888a63c1a8",
+   "name": "01 Base frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "a8b45bc312dd7f3d9f458454",
+   "name": "02 Posts, top rails and cross rails",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d3da80674d0b7cd426f8ef1d",
+   "name": "03 Side plates and the bottom flange bearings",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "3f878628017141b21cb24969",
+   "name": "04 Bottom through shafts with their 32T sprockets (front keyed, back set after phasing)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "8c08c2602608a2f53cffd230",
+   "name": "05 Top idlers",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "4114c62bd13451e868d55ffa",
+   "name": "11 Dispense",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "0ea7980ac406c6b2b4c9b05e",
+   "name": "paternoster_carousel parts",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "b0881440338770e798514104",
+   "name": "Part Studio 1",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "4739b0aa1795b48901cb1b31",
+   "name": "Assembly 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "143db57ef8bb2d9dc65dce11",
+   "name": "BOM : Assembly 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "c7bb9382021996a68b3754de",
+   "name": "paternoster_carousel.step",
+   "type": "BLOB"
+  },
+  {
+   "id": "466ea3eca8d764b879044f4e",
+   "name": "BOM : 09 Modules",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "659d2ff26d6fe1b5fefa0b67",
+   "name": "BOM : M3 nylon-insert locknut 1f",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "ec7f24da9803a2410a546456",
+   "name": "BOM : 10 Station",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "edc5e6c98726e12178fc37bd",
+   "name": "BOM : 07 Drive",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "26912325eed58e2dc63d1d8b",
+   "name": "BOM : paternoster_carousel",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "202da475cbcb900867b2a785",
+   "name": "BOM : M5 x 16 thumb screw (hinge pin) 1-",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "89d3e04da1bb408ab3485151",
+   "name": "BOM : 11 Dispense",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "0069663b321f26aa91326391",
+   "name": "BOM : 02 Posts, top rails and cross rails",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "8300d6bb67d806d582dc65c5",
+   "name": "BOM : Dock magnet bracket (printed)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b58219fe10741aee148f5883",
+   "name": "BOM : 06 Chains",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "3081c113efc38bbc84c43f1e",
+   "name": "BOM : Actuonix rod",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "4036011901f48fb55a18486b",
+   "name": "BOM : 03 Side plates and the bottom flange bearings",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "92e17e963b0916dd8824ad0b",
+   "name": "BOM : 08 Gondolas",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "3fd9e932efc2e2c2b9fee38c",
+   "name": "BOM : Actuonix P16-P 150 mm (feedback)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d34543283d38fb8e7b29c6e2",
+   "name": "BOM : NEMA 34 34HS59-6004D-E1000 (StepperOnline STEP)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b2b0f4304e24d564e3e09b77",
+   "name": "BOM : 05 Top idlers",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "f89d17f042c912cdb9ea05ab",
+   "name": "BOM : Front chain link 0",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d4fdfd5f53121ccec28269bc",
+   "name": "BOM : 01 Base frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d4bea3785dcfae0b5d43a4c2",
+   "name": "BOM : 04 Bottom through shafts with their 32T sprockets (front keyed, back set after phasing)",
+   "type": "BILLOFMATERIALS"
+  }
+ ],
+ "assemblyElementId": "6b9996c7edfe35c66c55e27b",
+ "assemblyName": "paternoster_carousel",
+ "assemblyUrl": "https://cad.onshape.com/documents/ba4455c0f17bed3b77763e4a/w/3f1d3875f8930d0ac9ba94b0/e/6b9996c7edfe35c66c55e27b",
+ "version": {
+  "id": "31e504fc63bd116ea69ad3f7",
+  "name": "paternoster gondolas"
+ },
+ "api_calls": 8
+}
