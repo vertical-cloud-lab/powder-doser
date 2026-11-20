@@ -1,0 +1,155 @@
+{
+ "plate": "PR #170's mounting plate body without the gears, their arms (webs) and the floor's front wings (base.plate_trimmed), plus the two new holes; Ethan's Onshape plate matched PR #170's to a median of 0.38 mm",
+ "frame": "unit frame: hinge axis = X through the origin, +Y = behind the hinge, Z up, tilt 0; stepper mount on -X",
+ "new_holes": {
+  "dia": 3.4,
+  "through": "the 6 mm floor",
+  "for_": "M3 (2 x M3 x 10 socket head, nuts in the clevis block)",
+  "x": [
+   -11.0,
+   11.0
+  ],
+  "y_behind_hinge_axis": 95.0,
+  "centre_to_centre": 22.0,
+  "from_centre_line": 11.0,
+  "from_floor_rear_edge": 35.0,
+  "from_floor_side_edge": 23.0,
+  "from_floor_front_edge": 58.0,
+  "from_rear_bracket_holes": {
+   "along": 29.0,
+   "across": 13.0,
+   "direct": 31.78
+  },
+  "from_tap_bracket_rear_holes": {
+   "along": 36.67,
+   "across": 13.0
+  },
+  "from_stepper_wall_rear_face": 5.67,
+  "stepper_wall_inner_end_x": -13.9,
+  "in_pr170_step_frame": [
+   [
+    -95.0,
+    -29.25,
+    -30.8
+   ],
+   [
+    -95.0,
+    -29.25,
+    -52.8
+   ]
+  ],
+  "in_pr170_step_frame_note": "mounting-plate.step's own frame (the hinge axis is its Z axis), at the floor's top face"
+ },
+ "floor": {
+  "thickness": 6.0,
+  "top_below_hinge_axis": 29.25,
+  "underside_below_hinge_axis": 35.25,
+  "rear_edge_y": 130.0,
+  "front_edge_y": 37.0,
+  "side_edges_x": [
+   -34.0,
+   34.0
+  ],
+  "stepper_tab": {
+   "x_out_to": -54.1,
+   "y": [
+    77.33,
+    95.33
+   ]
+  }
+ },
+ "stepper_wall": {
+  "x": [
+   -50.1,
+   -13.9
+  ],
+  "y": [
+   83.33,
+   89.33
+  ]
+ },
+ "floor_holes": [
+  {
+   "x": -24.0,
+   "y": 42.33,
+   "dia": 3.4,
+   "from_rear_edge": 87.67,
+   "used_by": "#203's tap bracket"
+  },
+  {
+   "x": 24.0,
+   "y": 42.33,
+   "dia": 3.4,
+   "from_rear_edge": 87.67,
+   "used_by": "not used"
+  },
+  {
+   "x": -24.0,
+   "y": 58.33,
+   "dia": 3.4,
+   "from_rear_edge": 71.67,
+   "used_by": "#203's tap bracket"
+  },
+  {
+   "x": 24.0,
+   "y": 58.33,
+   "dia": 3.4,
+   "from_rear_edge": 71.67,
+   "used_by": "#203's tap bracket"
+  },
+  {
+   "x": -11.0,
+   "y": 95.0,
+   "dia": 3.4,
+   "from_rear_edge": 35.0,
+   "used_by": "new: clevis block"
+  },
+  {
+   "x": 11.0,
+   "y": 95.0,
+   "dia": 3.4,
+   "from_rear_edge": 35.0,
+   "used_by": "new: clevis block"
+  },
+  {
+   "x": -24.0,
+   "y": 124.0,
+   "dia": 3.4,
+   "from_rear_edge": 6.0,
+   "used_by": "rear Flexible Bracket"
+  },
+  {
+   "x": 24.0,
+   "y": 124.0,
+   "dia": 3.4,
+   "from_rear_edge": 6.0,
+   "used_by": "rear Flexible Bracket"
+  }
+ ],
+ "over_the_holes": {
+  "auger_tube_above_floor_top_on_hole_axis": 23.31,
+  "auger_tube_above_floor_top_over_a_5_5mm_head": 19.86,
+  "screws_to_nearest_parts_mm": {
+   "Auger": 15.02,
+   "Bracket (rear)": 20.25,
+   "Stepper pinion": 27.02,
+   "Stepper (NEMA 11)": 13.99,
+   "Tap bracket (#203)": 24.92
+  },
+  "screw_head_to_stepper_wall_mm": 3.62
+ },
+ "clevis_block": {
+  "pad": [
+   30.0,
+   24.0,
+   4.0
+  ],
+  "holes_centre_to_centre": 22.0,
+  "holes_from_pad_ends": 4.0,
+  "holes_from_pad_front_and_back": 12.0,
+  "pin_below_floor_underside": 9.75,
+  "pin_y_behind_hinge_axis": 95.0,
+  "pad_from_floor_side_edges": 19.0,
+  "pad_from_floor_rear_edge": 23.0
+ }
+}

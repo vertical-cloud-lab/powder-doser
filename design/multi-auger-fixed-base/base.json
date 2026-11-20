@@ -1,0 +1,263 @@
+{
+ "spacing_hinge_to_beaker_axis": 32,
+ "shelf_thickness": 6.0,
+ "lobe": {
+  "half_w": 50.0,
+  "y_wide": 50.0,
+  "half_w_end": 24.0,
+  "y_end": 142.0,
+  "root": 15.0,
+  "r": 10.0
+ },
+ "window_dia": 78.0,
+ "slot": {
+  "x": 17.0,
+  "y0": 33.0,
+  "y1": 112.0
+ },
+ "pad": {
+  "x": 14.5,
+  "y": [
+   119.0,
+   133.0
+  ],
+  "d": 4.5
+ },
+ "tower_x": [
+  28.9,
+  41.2
+ ],
+ "wing_cut": {
+  "x": 34.0,
+  "y_up_to": 70.0
+ },
+ "plate_trimmed": {
+  "x": [
+   -54.1,
+   34.0
+  ],
+  "y": [
+   -7.5,
+   130.0
+  ],
+  "z": [
+   -35.25,
+   18.1
+  ],
+  "width": 88.1,
+  "widest_at_y_behind_hinge": 83.3,
+  "volume_cm3": 59.6
+ },
+ "tower_profile": [
+  {
+   "kind": "line",
+   "start": [
+    10.0,
+    -37.25
+   ],
+   "end": [
+    0.0,
+    -9.0
+   ]
+  },
+  {
+   "kind": "circle",
+   "start": [
+    0.0,
+    -9.0
+   ],
+   "end": [
+    0.0,
+    9.0
+   ],
+   "radius": 9.0,
+   "centre": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "kind": "line",
+   "start": [
+    0.0,
+    9.0
+   ],
+   "end": [
+    12.93,
+    9.0
+   ]
+  },
+  {
+   "kind": "circle",
+   "start": [
+    12.93,
+    9.0
+   ],
+   "end": [
+    22.36,
+    2.34
+   ],
+   "radius": 10.0,
+   "centre": [
+    12.93,
+    -1.0
+   ]
+  },
+  {
+   "kind": "line",
+   "start": [
+    22.36,
+    2.34
+   ],
+   "end": [
+    36.37,
+    -37.25
+   ]
+  },
+  {
+   "kind": "line",
+   "start": [
+    36.37,
+    -37.25
+   ],
+   "end": [
+    10.0,
+    -37.25
+   ]
+  },
+  {
+   "kind": "circle",
+   "start": [
+    2.65,
+    0.0
+   ],
+   "end": [
+    2.65,
+    0.0
+   ],
+   "radius": 2.65,
+   "centre": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "export": {
+  "x": [
+   -160.25,
+   160.25
+  ],
+  "y": [
+   -106.24,
+   174.0
+  ],
+  "z": [
+   -0.01,
+   52.25
+  ],
+  "volume_cm3": 258.6
+ },
+ "fits_h2d_one_nozzle": {
+  "bed": [
+   325.0,
+   320.0
+  ],
+  "size": [
+   320.5,
+   280.2
+  ],
+  "fits": true
+ },
+ "checks": {
+  "one_module_to_base": {
+   "mm": 1.26,
+   "between": "A:Mounting plate / base",
+   "at_tilt": 0,
+   "by_tilt": {
+    "0": 1.26,
+    "5": 4.07,
+    "10": 6.34,
+    "15": 5.27,
+    "20": 4.46,
+    "25": 4.39,
+    "30": 4.98,
+    "35": 6.17,
+    "40": 7.87,
+    "45": 10.04,
+    "50": 12.62,
+    "55": 13.0,
+    "60": 13.0,
+    "65": 13.0,
+    "70": 13.0,
+    "75": 13.0,
+    "80": 13.0,
+    "85": 13.0,
+    "90": 13.0
+   }
+  },
+  "station_cases": {
+   "0,0,0": {
+    "mm": 1.26,
+    "between": "B:Mounting plate / base",
+    "modules_only_mm": 13.84,
+    "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
+   },
+   "30,30,30": {
+    "mm": 4.98,
+    "between": "B:P16 rod / base",
+    "modules_only_mm": 13.85,
+    "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
+   },
+   "45,45,45": {
+    "mm": 10.04,
+    "between": "C:P16 rod / base",
+    "modules_only_mm": 13.87,
+    "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
+   },
+   "60,60,60": {
+    "mm": 13.0,
+    "between": "A:P16 rod / base",
+    "modules_only_mm": 13.84,
+    "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
+   },
+   "90,90,90": {
+    "mm": 5.79,
+    "between": "B:Tap bracket (#203) / C:Tap bracket (#203)",
+    "modules_only_mm": 5.79,
+    "modules_only_between": "B:Tap bracket (#203) / C:Tap bracket (#203)"
+   },
+   "90,0,0": {
+    "mm": 1.26,
+    "between": "B:Mounting plate / base",
+    "modules_only_mm": 13.84,
+    "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
+   },
+   "60,0,0": {
+    "mm": 1.26,
+    "between": "B:Mounting plate / base",
+    "modules_only_mm": 13.84,
+    "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
+   },
+   "90,90,0": {
+    "mm": 1.26,
+    "between": "C:Mounting plate / base",
+    "modules_only_mm": 5.79,
+    "modules_only_between": "A:Tap bracket (#203) / B:Tap bracket (#203)"
+   },
+   "60,60,0": {
+    "mm": 1.26,
+    "between": "C:Mounting plate / base",
+    "modules_only_mm": 13.84,
+    "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
+   },
+   "30,60,0": {
+    "mm": 1.26,
+    "between": "C:Mounting plate / base",
+    "modules_only_mm": 13.84,
+    "modules_only_between": "B:Mounting plate (inboard) / C:Mounting plate (inboard)"
+   }
+  },
+  "knuckle_outer_face_x": 28.6,
+  "knuckle_to_tower_gap": 0.3
+ }
+}
