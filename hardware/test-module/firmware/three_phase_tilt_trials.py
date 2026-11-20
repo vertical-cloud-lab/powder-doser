@@ -1,6 +1,6 @@
 """30 x 1 g salt (30 x 2 g AlSi10Mg from 19e, calcium lactate from 20b; 30 x
-1.5 g barium chloride from 20c) trials: three-phase dose with a stepped bulk
-tilt (PR #131).
+1.5 g barium chloride from 20c, sodium sulfate from 20d) trials: three-phase
+dose with a stepped bulk tilt (PR #131).
 
 Requested by XZaitzeff on 2026-11-18 (PR #131): 30 trials of 1 g of salt.
 Bulk stage at 55 auger rpm with the plate stepping through five angles,
@@ -128,6 +128,14 @@ Bulk angles by version:
     about 43.1 g displayed.  30 x 1.5 g is 45 g, so the cap ends the
     launch cleanly after about 23 doses;
   - SESSION_BUDGET_S 75 min so the analysis fits the Actions job.
+* 2026-11-20d: 20c again on sodium sulfate (XZaitzeff, 2026-11-20 17:56
+  UTC: "Try again now that i replaced the BaCl auger with a sodium sulfate
+  auger").  Barium chloride never came out of its tube (about 113 auger
+  revolutions, under 3 mg).  The only change is POWDER_ID
+  "sodium-sulfate": the 1.5 g target, every stage setting, threshold,
+  stall rule, the bands (0.25 g), LOW_DELIVERY_G (0.75 g), the start
+  margin (2.1 g), the cup caps (same beaker, emptied: the balance read
+  0.0003 g, stable, at 18:01) and the 75 min budget are 20c's.
 
 Runs ON the Pico via ``mpremote run`` (RAM only -- nothing is written to
 the Pico filesystem).  The controller is the Pico's own
@@ -192,14 +200,15 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-20c"
-POWDER_ID = "barium-chloride"     # 2026-11-20c ("calcium-lactate" 20b, "alsi10mg"
-                                  # 19e/20a, "salt" up to 19d)
+SCRIPT_VERSION = "2026-11-20d"
+POWDER_ID = "sodium-sulfate"      # 2026-11-20d ("barium-chloride" 20c,
+                                  # "calcium-lactate" 20b, "alsi10mg" 19e/20a,
+                                  # "salt" up to 19d)
 
-FIRST_TRIAL = 1                # 20b/20c: a new powder (21 in 20a, the rest of 19e's 30)
+FIRST_TRIAL = 1                # 20b-20d: a new powder (21 in 20a, the rest of 19e's 30)
 N_TRIALS = 30                  # trials FIRST_TRIAL .. FIRST_TRIAL + N - 1 (10 in 20a)
 PRIME_EXTRA = 1                # 20a: extra trials if the first only primes
-TARGET_G = 1.5                 # 2026-11-20c (2.0 in 19e-20b, 1.0 up to 19d)
+TARGET_G = 1.5                 # 2026-11-20c/d (2.0 in 19e-20b, 1.0 up to 19d)
 
 # --- the request (XZaitzeff, PR #131, 2026-11-18 "1a, 2a, yes"; 2026-11-19 a-d)
 BULK_RPM = 80.0               # 2026-11-19d (55 up to 2026-11-19c)
@@ -239,7 +248,7 @@ MAX_FAILED_IN_A_ROW = 2        # stalled / scale-error / timeout ... in a row
 LOW_DELIVERY_G = 0.75          # 19c: ... counted only if it delivered < this
                                # (half the target: 0.75 at 1.5 g in 20c, 1.0
                                # at 2 g in 19e-20b, 0.5 at 1 g)
-SESSION_BUDGET_S = 75 * 60     # don't start a trial after this (20c: 75; 90 in
+SESSION_BUDGET_S = 75 * 60     # don't start a trial after this (20c/d: 75; 90 in
                                # 20b, 45 in 20a for 10-11 trials, 100 in 19e,
                                # 110 in 19c)
 
