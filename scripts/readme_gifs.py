@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Fetch the README's animations from the branches they were made on.
 
-Every GIF in ``docs/readme/gifs/`` (except the livestream clip, which
-``scripts/livestream_clip_gif.py`` makes) was first posted on an issue or PR and
+Every GIF in ``docs/readme/gifs/`` was first posted on an issue or PR and
 lives on that PR's branch, which is not merged.  This script downloads each one
 from the commit it was posted at, so the README keeps working after those
 branches are deleted, and shrinks the larger ones with gifsicle so the README

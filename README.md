@@ -83,13 +83,7 @@ A dose can be asked for in plain language in a GitHub comment. The agent passes 
 (b) The control loop: the balance is read after every step, and the controller acts on the mass still to go.<br>
 (c) One 1 g NaCl dose from the test campaign (12 Aug 2026), with its three phases shaded: bulk, fine and tap. A brace above the trace spans each phase, under the tube position in that phase (CAD renders of the current design at 45°, 22.5° and 0°); the fixed camera's stills before and after a 0.5 g salt dose (15 Sep 2026) are at either end. The green band is the ±5% acceptance limit.</sub>
 
-Here is the same controller on the real doser, filmed by the camera that streams the bench to YouTube. Asked for 1 g of salt, it delivered 1.0040 g in 90 s, on the first attempt:
-
-<p align="center"><img src="docs/readme/gifs/livestream_three_phase_dose.gif" alt="Animation: livestream of the doser over the balance during a three-phase 1 g salt dose; the balance display climbs from zero to 1.0040 g while labels name the bulk, fine and tap phases" width="320"></p>
-
-<sub><b>Livestream: a three-phase 1 g dose of table salt</b> (3 Sep 2026, 4× speed; [#148](https://github.com/vertical-cloud-lab/powder-doser/issues/148)). The camera faces the doser from the front, with the cup on the balance below it; the balance display is at the bottom. <b>Bulk</b>, at 45° with the auger turning at 55 rpm, took the cup from zero to about 0.6 g in 5 s. <b>Fine</b>, at 22.5°, turned the auger an eighth of a turn at a time until less than 50 mg was left (here its last step left 5 mg). <b>Tap</b>, at 0°, tapped twice per cycle until the dose was within 5 mg; the reading wobbles while the solenoid taps. In all, 3.08 auger turns and 16 taps. The settings are block G's, the closed-loop doses of the 13-powder campaign, with the same three tilts as Fig. 4c. From the broadcast <a href="https://youtu.be/xjtJNMo8DKw?t=15158">xjtJNMo8DKw</a>, made with <a href="scripts/livestream_clip_gif.py"><code>scripts/livestream_clip_gif.py</code></a>.</sub>
-
-The optimizer tunes these settings. Here is a dose with the settings it recommended for salt, replayed on the CAD with the mass that was logged:
+The optimizer tunes the controller's settings. Here is a dose with the settings it recommended for salt, replayed on the CAD with the mass that was logged:
 
 <p align="center"><img src="docs/readme/gifs/three_phase_dose.gif" alt="Animation: the CAD doser over a cup on a balance runs a bulk, trickle and tap phase while a plot of the powder in the cup rises to 0.5 g" width="85%"></p>
 
@@ -277,7 +271,7 @@ Where each GIF in this README came from is in [`docs/readme/gifs/README.md`](doc
 | [`docs/powder-excavator.md`](docs/powder-excavator.md) | The project's first concept, a pure-mechanical gantry trough, with its Edison Scientific review and figures (this README until Nov 2026) |
 | [`paper/`](paper/) | Digital Discovery LaTeX template (`latexmk -pdf main.tex`) and background literature notes; the draft itself is on [#97](https://github.com/vertical-cloud-lab/powder-doser/pull/97) |
 | [`docs/readme/`](docs/readme/) | The figures in this README, cropped from the paper's previews by [`scripts/readme_figures.py`](scripts/readme_figures.py) |
-| [`docs/readme/gifs/`](docs/readme/gifs/) | The animations in this README, fetched from the threads that made them by [`scripts/readme_gifs.py`](scripts/readme_gifs.py), and the livestream clip, made by [`scripts/livestream_clip_gif.py`](scripts/livestream_clip_gif.py); provenance in its [`README.md`](docs/readme/gifs/README.md) |
+| [`docs/readme/gifs/`](docs/readme/gifs/) | The animations in this README, fetched from the threads that made them by [`scripts/readme_gifs.py`](scripts/readme_gifs.py); provenance in its [`README.md`](docs/readme/gifs/README.md) |
 | [`docs/poster/`](docs/poster/) | The poster as a PDF |
 
 ## License
