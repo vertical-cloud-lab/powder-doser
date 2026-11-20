@@ -9,6 +9,7 @@ Weighing out dry powders is still mostly done by hand, and commercial dosing hea
   <a href="#talks-abstracts-and-the-paper"><b>TMS 2027 abstracts</b></a> ·
   <a href="#build-one"><b>CAD models</b></a> ·
   <a href="#videos"><b>Videos</b></a> ·
+  <a href="#more-animations"><b>Animations</b></a> ·
   <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/209"><b>Paper figures (#209)</b></a>
 </p>
 
@@ -32,6 +33,12 @@ One printed tube does two jobs: it is the powder reservoir and the dosing screw.
 (b) Exploded view of the current design, assembled in CAD from the team's parts ([#170](https://github.com/vertical-cloud-lab/powder-doser/issues/170)), with the 13 main parts numbered beside them as in the bill of materials (SI Fig. S4): the auger (19) and its screw-on cap (25); the tap collar (21), its solenoid (23) and the tap-collar base (15); the two brackets that hold the auger (20); the hinged mounting plate (9); the stepper motor (12) and its pinion (14), which turn the auger's 44-tooth gear; the two tilt servos (4) and their pinions (7); the baseplate (2); and the mounting board (1). Screws and nuts are numbered only in SI Fig. S4.<br>
 (c) Section through the tested auger and its screw-on cap, the team's Fusion 360 part: the flight fills only the outlet end, and the 44-tooth gear is on the outside of the tube.<br>
 (d) The fixed livestream camera's view of the cup after a 0.5 g NaCl dose (15 Sep 2026; 0.496 g delivered; [#116](https://github.com/vertical-cloud-lab/powder-doser/issues/116)).</sub>
+
+The three motions, close up on the same CAD assembly:
+
+<p align="center"><img src="docs/readme/gifs/doser_motion.gif" alt="Animation: close-ups of the CAD assembly as the servo pinions tilt the plate, the stepper pinion turns the gear on the auger tube, and the solenoid taps the tube" width="70%"></p>
+
+<sub><b>Animation: tilt, turn and tap.</b> Each servo's 14-tooth pinion drives a 28-tooth gear on the hinged plate, so 90° at the servo tilts the plate 45°. The stepper's 20-tooth pinion turns the 44-tooth gear on the auger tube, 2.2 turns of the motor per turn of the auger; the brackets and the tap collar stay put while the tube and its cap turn. The solenoid's plunger drops 7.6 mm through the hole in the tap collar and hits the tube, and a spring pulls it back. CAD of the current design from [#170](https://github.com/vertical-cloud-lab/powder-doser/pull/170).</sub>
 
 ## Engineers design, AI agents model
 
@@ -76,6 +83,18 @@ A dose can be asked for in plain language in a GitHub comment. The agent passes 
 (b) The control loop: the balance is read after every step, and the controller acts on the mass still to go.<br>
 (c) One 1 g NaCl dose from the test campaign (12 Aug 2026), with its three phases shaded: bulk, fine and tap. A brace above the trace spans each phase, under the tube position in that phase (CAD renders of the current design at 45°, 22.5° and 0°); the fixed camera's stills before and after a 0.5 g salt dose (15 Sep 2026) are at either end. The green band is the ±5% acceptance limit.</sub>
 
+Here is the same controller on the real doser, filmed by the camera that streams the bench to YouTube. Asked for 1 g of salt, it delivered 1.0040 g in 90 s, on the first attempt:
+
+<p align="center"><img src="docs/readme/gifs/livestream_three_phase_dose.gif" alt="Animation: livestream of the doser over the balance during a three-phase 1 g salt dose; the balance display climbs from zero to 1.0040 g while labels name the bulk, fine and tap phases" width="320"></p>
+
+<sub><b>Livestream: a three-phase 1 g dose of table salt</b> (3 Sep 2026, 4× speed; [#148](https://github.com/vertical-cloud-lab/powder-doser/issues/148)). The camera faces the doser from the front, with the cup on the balance below it; the balance display is at the bottom. <b>Bulk</b>, at 45° with the auger turning at 55 rpm, took the cup from zero to about 0.6 g in 5 s. <b>Fine</b>, at 22.5°, turned the auger an eighth of a turn at a time until less than 50 mg was left (here its last step left 5 mg). <b>Tap</b>, at 0°, tapped twice per cycle until the dose was within 5 mg; the reading wobbles while the solenoid taps. In all, 3.08 auger turns and 16 taps. The settings are block G's, the closed-loop doses of the 13-powder campaign, with the same three tilts as Fig. 4c. From the broadcast <a href="https://youtu.be/xjtJNMo8DKw?t=15158">xjtJNMo8DKw</a>, made with <a href="scripts/livestream_clip_gif.py"><code>scripts/livestream_clip_gif.py</code></a>.</sub>
+
+The optimizer tunes these settings. Here is a dose with the settings it recommended for salt, replayed on the CAD with the mass that was logged:
+
+<p align="center"><img src="docs/readme/gifs/three_phase_dose.gif" alt="Animation: the CAD doser over a cup on a balance runs a bulk, trickle and tap phase while a plot of the powder in the cup rises to 0.5 g" width="85%"></p>
+
+<sub><b>Animation: a three-phase dose replayed on the CAD.</b> A 0.5 g salt dose (<code>bo-005</code>) from the optimization campaign of <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/166">#166</a>, with the settings the optimizer recommended: <b>bulk</b> at 40° and 100 rpm with taps, until 300 mg is left; <b>trickle</b> at 10° with no taps, the auger speed set by the controller; then single <b>taps</b> at 15° until within 3 mg. The numbers in blue are the ones the optimizer sets, and the plot is the mass logged in the cup. The playback speed is in the bottom-left corner. From <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/175">#175</a>.</sub>
+
 ## Using the doser
 
 Each powder lives in its own auger, filled once, capped and stored loaded, so changing powder means swapping a tube rather than cleaning one.
@@ -90,6 +109,10 @@ Each powder lives in its own auger, filled once, capped and stored loaded, so ch
 ## Results: 13 powders
 
 We tested seven food-safe surrogates and six research powders, including gas-atomized AlSi10Mg and two grades of silicon. Open loop, under one fixed set of settings, the powders spanned more than an order of magnitude in mass per revolution, and the flow came in waves, one surge per revolution.
+
+<p align="center"><img src="docs/readme/gifs/thirteen_powders.gif" alt="Animation: a chart built up step by step, mass per auger turn for 13 powders on a log axis, then the mass delivered when each was asked for 1 g" width="90%"></p>
+
+<sub><b>Animation: one doser, 13 powders.</b> The same auger and the same settings for every powder, built up one group at a time: table salt, then the food-safe stand-ins, then the research powders. Ten powders moved, from 10 to 231 mg per auger turn (a 24-fold range), and seven of them were dosed to 1 g within ±5%. An earlier layout of Figs. 6a and 7, from <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/173">#173</a>.</sub>
 
 <p align="center"><img src="docs/readme/fig6_open_loop.png" alt="Fig. 6: mass per auger revolution and per solenoid tap for 13 powders, and mass against time under continuous rotation" width="100%"></p>
 
@@ -147,6 +170,12 @@ The current design, with every part numbered as in the bill of materials:
 <sub><b>Fig. S4 Every part of the doser.</b> Every part of the current design, screws and nuts included, numbered as in the bill of materials; Fig. 1b labels only the 13 main parts (bold here).<br>
 Exploded view assembled in CAD from the team's parts ([#170](https://github.com/vertical-cloud-lab/powder-doser/issues/170)), with each number beside its part, and the bill of materials with the quantity of each part and whether it is printed, purchased or a fastener.</sub>
 
+The same parts, put together in order:
+
+<p align="center"><img src="docs/readme/gifs/assembly.gif" alt="Animation: the doser assembled in CAD in 19 steps, from the mounting board up to the auger cap, with each step's parts highlighted in the bill of materials" width="100%"></p>
+
+<sub><b>Animation: assembling the doser.</b> The 19 steps, from the mounting board to the auger's cap, with the parts of each step highlighted in the bill of materials (numbered as in Fig. S4); at the end the plate tilts through its range. CAD of the current design from <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/170">#170</a>, which also has a slower <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/7f5b3b7/cad/full-assembly/renders/assembly_walkthrough.gif">walkthrough with written instructions for each step</a> (6.8 MB) and a <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/7f5b3b7/cad/full-assembly/renders/assembly_presentation_720p.mp4">720p video</a>.</sub>
+
 **CAD models (Onshape).** There is no public Onshape folder yet; these are the current documents, one per part, as listed by the team in [#193](https://github.com/vertical-cloud-lab/powder-doser/issues/193#issuecomment-6504703603), which also has the print settings.
 
 | Part | Onshape document |
@@ -185,6 +214,38 @@ Sam's Fusion 360 share links for the parts that ran in the tests (the auger, its
 - Multi-doser, the next step: [pitch](https://www.youtube.com/watch?v=IkjBxqa06u0), [3D-printed prototype](https://www.youtube.com/watch?v=liB6YNSN8-Q) and [V1 demo](https://youtu.be/BSgpeKZgoXU) ([#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128)).
 - Livestreams of the rig: [BYU VCL Hardware Streams](https://youtube.com/@byu-vcl-hardware-streams).
 
+## More animations
+
+<table>
+<tr>
+<td align="center" valign="bottom" width="50%"><img src="docs/readme/gifs/livestream_white_rice_flour.gif" alt="Animation: livestream of the earlier test rig with the auger tube pointing straight down into a cup on the balance, the reading rising as white rice flour comes out" width="200"></td>
+<td align="center" valign="bottom" width="50%"><img src="docs/readme/gifs/ai_recreation_motion.gif" alt="Animation: a code-CAD model of the doser with its servos above the plate, tilting, turning the auger and tapping" width="100%"></td>
+</tr>
+<tr>
+<td valign="top"><sub><b>White rice flour on the livestream</b> (4 Aug 2026, 4× speed; <a href="https://github.com/vertical-cloud-lab/powder-doser/issues/116">#116</a>). One of the open-loop measurements (protocol C), on the earlier rig: the auger turns with the tube at 90°, pointing straight down into the cup, and the balance display is at the bottom.</sub></td>
+<td valign="top"><sub><b>An AI agent's recreation of the doser in code.</b> Claude Code rebuilt the current design (<a href="https://github.com/vertical-cloud-lab/powder-doser/pull/170">#170</a>) as build123d models with text-to-cad, matching the team's printed parts, then moved the servos above the plate so that at 45° the outlet comes within 8.8 mm of a cup up to 58 mm across (73 mm as built). From <a href="https://github.com/vertical-cloud-lab/powder-doser/issues/172">#172</a> and <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/176">#176</a>.</sub></td>
+</tr>
+<tr>
+<td align="center" valign="bottom"><img src="docs/readme/gifs/dem_twin.gif" alt="Animation: a discrete-element simulation of salt grains in the cut-away auger, beside a plot of the simulated mass delivered against time" width="100%"></td>
+<td align="center" valign="bottom"><img src="docs/readme/gifs/multi_doser_v10.gif" alt="Animation: CAD of the chain-carousel multi-doser, where a station pulls an auger module up over the balance, tilts it and doses into a beaker" width="100%"></td>
+</tr>
+<tr>
+<td valign="top"><sub><b>A digital twin of the auger.</b> A discrete-element (DEM) simulation of the rig's auger with 29,000 real-size salt grains, at 27.5° tilt and 60 rpm for 1.5 turns; the near half of the auger is cut away and the grains are coloured by speed. The plot compares the simulated mass delivered with the rig's measured mean rate (dashed). From <a href="https://github.com/vertical-cloud-lab/powder-doser/issues/158">#158</a>.</sub></td>
+<td valign="top"><sub><b>Next: many powders.</b> The chain-carousel multi-doser, in CAD only (nothing is built yet). Two chains carry auger modules past one station, which pulls the next module up to the balance, tilts it, turns its auger and doses into the beaker, then lets it go. Version 10, from <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/185">#185</a> (<a href="https://github.com/vertical-cloud-lab/powder-doser/issues/128">#128</a>).</sub></td>
+</tr>
+</table>
+
+More animations are on the threads that made them:
+
+- Every version of the chain carousel, v2 to v10, each with feature clips: [#185](https://github.com/vertical-cloud-lab/powder-doser/pull/185).
+- Small runs of every physics method we found for powder flow (DEM, MPM, SPH, CFD-DEM and more): [#196](https://github.com/vertical-cloud-lab/powder-doser/pull/196).
+- 3D walkthroughs of the standard powder tests (Hall flow, tap density, angle of repose, sieving, shear cells): [#190](https://github.com/vertical-cloud-lab/powder-doser/pull/190).
+- The salt optimization campaign as slide builds (the dose, the math, the Pareto front): [#175](https://github.com/vertical-cloud-lab/powder-doser/pull/175).
+- A time-lapse and recordings of printing the doser's parts on the lab's printers: [#200](https://github.com/vertical-cloud-lab/powder-doser/pull/200).
+- The first concept, the powder excavator, and its tilt mechanism: [`docs/powder-excavator.md`](docs/powder-excavator.md).
+
+Where each GIF in this README came from is in [`docs/readme/gifs/README.md`](docs/readme/gifs/README.md).
+
 ## Talks, abstracts and the paper
 
 **Poster.** [*AI agents helped us design the best powder dispenser (maybe), but engineers still have job security*](docs/poster/powder-doser-poster.pdf) (PDF), Sam Charles, Will Mulberry, Luke Winters and Sterling Baird, 2026 Utah AI Convergence ([#101](https://github.com/vertical-cloud-lab/powder-doser/issues/101)).
@@ -212,6 +273,7 @@ Sam's Fusion 360 share links for the parts that ran in the tests (the auger, its
 | [`docs/powder-excavator.md`](docs/powder-excavator.md) | The project's first concept, a pure-mechanical gantry trough, with its Edison Scientific review and figures (this README until Nov 2026) |
 | [`paper/`](paper/) | Digital Discovery LaTeX template (`latexmk -pdf main.tex`) and background literature notes; the draft itself is on [#97](https://github.com/vertical-cloud-lab/powder-doser/pull/97) |
 | [`docs/readme/`](docs/readme/) | The figures in this README, cropped from the paper's previews by [`scripts/readme_figures.py`](scripts/readme_figures.py) |
+| [`docs/readme/gifs/`](docs/readme/gifs/) | The animations in this README, fetched from the threads that made them by [`scripts/readme_gifs.py`](scripts/readme_gifs.py), and the livestream clip, made by [`scripts/livestream_clip_gif.py`](scripts/livestream_clip_gif.py); provenance in its [`README.md`](docs/readme/gifs/README.md) |
 | [`docs/poster/`](docs/poster/) | The poster as a PDF |
 
 ## License
