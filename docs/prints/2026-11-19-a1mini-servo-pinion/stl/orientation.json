@@ -1,0 +1,15 @@
+{
+ "source": "Onshape Servo Pinion -> Complete Servo Pinion (eid ce683b15c3b969067abfe902), sourceMicroversion 9639e023684ca369c23986d0, exported 2026-11-19T22:09:24Z",
+ "source_stl_sha256": "7f63a6fd018c99ab272f9f12228e50e5178c36679be8bae7018741d6313bb4f2",
+ "rotation": "+90 deg about X (Onshape +Y -> +Z): spline-socket face on the bed, 6.0 mm counterbore up",
+ "translation": "centred on X/Y, lowered to z=0",
+ "extent_mm": [
+  20.45,
+  20.78,
+  12.3
+ ],
+ "bed_contact_mm2": 214.0,
+ "volume_cm3": 2.886,
+ "watertight": true,
+ "sha256": "1abad767fa8a1dfb8822c0e4fb026bdc3411e46cf75128a97102cddfcad22812"
+}

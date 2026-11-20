@@ -1,0 +1,356 @@
+{
+ "started_utc": "2026-11-13T04:05:26Z",
+ "api": "https://cad.onshape.com/api/v6",
+ "snapshot_fetched_utc": "2026-11-13T04:01:53Z",
+ "max_calls": 30,
+ "estimate": 14,
+ "elements": [
+  {
+   "entry": "Baseplate",
+   "element": "Base",
+   "type": "PARTSTUDIO",
+   "id": "9f7a9b5e682bc05529f15125",
+   "dir": "baseplate/base",
+   "snapshot_microversion": "2a508062f03fe6fb748aaf74",
+   "microversion_at_export": "2a508062f03fe6fb748aaf74",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "baseplate/base/stl/base-part-1.stl",
+     "part": "Base - Part 1",
+     "bytes": 540184,
+     "sha256": "e14f870709692b06834c01393cbb02ddafbf13e445d99c6fd379cb2af6b4d1e0",
+     "triangles": 10802,
+     "watertight": true,
+     "volume_cm3": 150.819,
+     "extent_mm": [
+      190.0,
+      190.0,
+      52.25
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 10802, watertight True, volume 150.82 cm3",
+    "extent mm: [190.0, 190.0, 52.25]",
+    "top: onshape 190.4 x 190.4 mm, stl 190.2 x 190.2 mm, IoU 0.9914, mismatched px 4376 (shift 1,1)",
+    "front: onshape 190.4 x 52.6 mm, stl 190.2 x 52.6 mm, IoU 0.9868, mismatched px 856 (shift 1,0)",
+    "right: onshape 190.4 x 52.6 mm, stl 190.2 x 52.6 mm, IoU 0.9772, mismatched px 1508 (shift 1,0)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Brackets (for auger)",
+   "element": "Bracket Recreation",
+   "type": "PARTSTUDIO",
+   "id": "59890746941ebde49fa31a66",
+   "dir": "brackets-for-auger/bracket-recreation",
+   "snapshot_microversion": "9d1029820bf215b586895082",
+   "microversion_at_export": "9d1029820bf215b586895082",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "brackets-for-auger/bracket-recreation/stl/bracket-recreation-part-1.stl",
+     "part": "Bracket Recreation - Part 1",
+     "bytes": 87484,
+     "sha256": "63be102031b66e1a05afab9c3d7cb1f57b8fe28a8461aa9c1f4a26411c2687d8",
+     "triangles": 1748,
+     "watertight": true,
+     "volume_cm3": 10.767,
+     "extent_mm": [
+      60.0,
+      12.0,
+      49.84
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 1748, watertight True, volume 10.77 cm3",
+    "extent mm: [60.0, 12.0, 49.84]",
+    "top: onshape 60.4 x 12.4 mm, stl 60.2 x 12.2 mm, IoU 0.9782, mismatched px 401 (shift 1,1)",
+    "front: onshape 60.4 x 50.2 mm, stl 60.2 x 50.2 mm, IoU 0.9721, mismatched px 675 (shift 1,0)",
+    "right: onshape 12.4 x 50.2 mm, stl 12.2 x 50.2 mm, IoU 0.9839, mismatched px 251 (shift 0,-3)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Brackets (for auger)",
+   "element": "Flexible+Bracket (original)",
+   "type": "PARTSTUDIO",
+   "id": "b87cd85502d7cabbcb749baf",
+   "dir": "brackets-for-auger/flexible-bracket-original",
+   "snapshot_microversion": "9d1029820bf215b586895082",
+   "microversion_at_export": "9d1029820bf215b586895082",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "brackets-for-auger/flexible-bracket-original/stl/flexible-bracket-original-body1.stl",
+     "part": "Flexible+Bracket (original) - Body1",
+     "bytes": 272884,
+     "sha256": "200e765ab3d9c75cebd08903d25e04ddf12d8294437cb068b821592a256c6f76",
+     "triangles": 5456,
+     "watertight": true,
+     "volume_cm3": 10.716,
+     "extent_mm": [
+      60.0,
+      49.84,
+      12.0
+     ]
+    },
+    {
+     "file": "brackets-for-auger/flexible-bracket-original/stl/flexible-bracket-original-surface-1.stl",
+     "part": "Flexible+Bracket (original) - Surface 1",
+     "bytes": 14584,
+     "sha256": "108a2a347bf802740c451fbbba6b8a8a90248b5ef1cc25ea3211a81693500f51",
+     "triangles": 290,
+     "watertight": false,
+     "volume_cm3": 0.0,
+     "extent_mm": [
+      60.0,
+      49.84,
+      0.0
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 5746, watertight False, volume 10.72 cm3",
+    "extent mm: [60.0, 49.84, 12.0]",
+    "top: onshape 60.4 x 50.2 mm, stl 60.2 x 50.2 mm, IoU 0.9751, mismatched px 602 (shift 1,0)",
+    "front: onshape 60.4 x 12.4 mm, stl 60.2 x 12.2 mm, IoU 0.9756, mismatched px 449 (shift 0,1)",
+    "right: onshape 50.2 x 12.4 mm, stl 50.2 x 12.2 mm, IoU 0.9801, mismatched px 310 (shift 0,0)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Stand bracket (back)",
+   "element": "Part Studio 1",
+   "type": "PARTSTUDIO",
+   "id": "ea82a43a82cf5f861b73a9e3",
+   "dir": "stand-bracket-back/part-studio-1",
+   "snapshot_microversion": "9dbe909f85a53744b81e49b2",
+   "microversion_at_export": "9dbe909f85a53744b81e49b2",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "stand-bracket-back/part-studio-1/stl/part-studio-1-part-1.stl",
+     "part": "Part Studio 1 - Part 1",
+     "bytes": 170184,
+     "sha256": "e961a66007dab0b40db84ed2f0f317124e6731f9c1547f1d08adcee724229174",
+     "triangles": 3402,
+     "watertight": true,
+     "volume_cm3": 92.653,
+     "extent_mm": [
+      72.0,
+      206.9,
+      25.0
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 3402, watertight True, volume 92.65 cm3",
+    "extent mm: [72.0, 206.9, 25.0]",
+    "top: onshape 72.4 x 207.2 mm, stl 72.2 x 207.2 mm, IoU 0.9866, mismatched px 3009 (shift 1,0)",
+    "front: onshape 72.4 x 25.4 mm, stl 72.2 x 25.2 mm, IoU 0.9852, mismatched px 590 (shift 1,1)",
+    "right: onshape 207.4 x 25.4 mm, stl 207.2 x 25.2 mm, IoU 0.9785, mismatched px 1209 (shift 1,1)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  },
+  {
+   "entry": "Stand bracket (sides)",
+   "element": "Left side",
+   "type": "PARTSTUDIO",
+   "id": "7c0d89ca7e487cdf4a761fd7",
+   "dir": "stand-bracket-sides/left-side",
+   "snapshot_microversion": "730cc50c1185626ebd909376",
+   "microversion_at_export": "730cc50c1185626ebd909376",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "stand-bracket-sides/left-side/stl/left-side-part-1.stl",
+     "part": "Left side - Part 1",
+     "bytes": 168984,
+     "sha256": "12cbf90a6745e274a12e6749701bc320abff53609ee2be7fe99f34ac6b51a39e",
+     "triangles": 3378,
+     "watertight": true,
+     "volume_cm3": 44.902,
+     "extent_mm": [
+      116.0,
+      74.3,
+      25.0
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 3378, watertight True, volume 44.90 cm3",
+    "extent mm: [116.0, 74.3, 25.0]",
+    "top: onshape 116.4 x 74.6 mm, stl 116.2 x 74.6 mm, IoU 0.9847, mismatched px 1574 (shift 1,0)",
+    "front: onshape 116.4 x 25.4 mm, stl 116.2 x 25.2 mm, IoU 0.9864, mismatched px 694 (shift 1,1)",
+    "right: onshape 74.6 x 25.4 mm, stl 74.6 x 25.2 mm, IoU 0.9806, mismatched px 422 (shift 1,0)",
+    "all silhouettes IoU >= 0.98: True"
+   ]
+  },
+  {
+   "entry": "Stand bracket (sides)",
+   "element": "Right side",
+   "type": "PARTSTUDIO",
+   "id": "cbbebd3d1064640d9bce4c7f",
+   "dir": "stand-bracket-sides/right-side",
+   "snapshot_microversion": "730cc50c1185626ebd909376",
+   "microversion_at_export": "730cc50c1185626ebd909376",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "stand-bracket-sides/right-side/stl/right-side-part-1.stl",
+     "part": "Right side - Part 1",
+     "bytes": 168784,
+     "sha256": "2d0e9a5c608e2e31ed93fbdb814321227d65c6802807503952ccbb92dca97e07",
+     "triangles": 3374,
+     "watertight": true,
+     "volume_cm3": 44.902,
+     "extent_mm": [
+      116.0,
+      74.3,
+      25.0
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 3374, watertight True, volume 44.90 cm3",
+    "extent mm: [116.0, 74.3, 25.0]",
+    "top: onshape 116.4 x 74.6 mm, stl 116.2 x 74.6 mm, IoU 0.9859, mismatched px 1459 (shift 1,0)",
+    "front: onshape 116.4 x 25.4 mm, stl 116.2 x 25.2 mm, IoU 0.9864, mismatched px 694 (shift 1,1)",
+    "right: onshape 74.6 x 25.4 mm, stl 74.6 x 25.2 mm, IoU 0.9806, mismatched px 421 (shift 0,1)",
+    "all silhouettes IoU >= 0.98: True"
+   ]
+  },
+  {
+   "entry": "Wood leg",
+   "element": "Part Studio 1",
+   "type": "PARTSTUDIO",
+   "id": "bbd4667923221cda37cd63e1",
+   "dir": "wood-leg/part-studio-1",
+   "snapshot_microversion": "a640cde65fe7736153d61873",
+   "microversion_at_export": "a640cde65fe7736153d61873",
+   "unchanged_since_snapshot": true,
+   "stl": [
+    {
+     "file": "wood-leg/part-studio-1/stl/part-studio-1-part-1.stl",
+     "part": "Part Studio 1 - Part 1",
+     "bytes": 241484,
+     "sha256": "f329682f6323ad387b0da2aac32c33dee1d7ae6b06486700d497fca23fda94fb",
+     "triangles": 4828,
+     "watertight": true,
+     "volume_cm3": 134.283,
+     "extent_mm": [
+      59.0,
+      9.5,
+      250.0
+     ]
+    }
+   ],
+   "stl_grouping": "false",
+   "check": [
+    "triangles 4828, watertight True, volume 134.28 cm3",
+    "extent mm: [59.0, 9.5, 250.0]",
+    "top: onshape 59.2 x 9.8 mm, stl 59.2 x 9.8 mm, IoU 0.9999, mismatched px 1 (shift -3,-3)",
+    "front: onshape 59.2 x 250.4 mm, stl 59.2 x 250.2 mm, IoU 0.9972, mismatched px 984 (shift 0,1)",
+    "right: onshape 9.8 x 250.4 mm, stl 9.8 x 250.2 mm, IoU 0.9788, mismatched px 1298 (shift 0,-3)",
+    "all silhouettes IoU >= 0.98: False"
+   ]
+  }
+ ],
+ "finished_utc": "2026-11-13T04:05:45Z",
+ "calls_counted": 14,
+ "calls": [
+  {
+   "utc": "2026-11-13T04:05:27Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:05:28Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:05:30Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:05:31Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:05:33Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:05:34Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:05:35Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:05:37Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:05:38Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:05:39Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:05:41Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:05:42Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  },
+  {
+   "utc": "2026-11-13T04:05:43Z",
+   "method": "GET",
+   "path": "/partstudios/d/{id}/w/{id}/e/{id}/stl",
+   "status": 307
+  },
+  {
+   "utc": "2026-11-13T04:05:45Z",
+   "method": "GET",
+   "path": "cad-usw2.onshape.com/modelexport",
+   "status": 200
+  }
+ ]
+}
