@@ -1,0 +1,781 @@
+# Fixed-base multi-auger doser: concepts (issue #204)
+
+Issue [#204](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+asks for 2–3 of the current dosing modules on one fixed base, so that 2–3
+powders can go into one beaker (or crucible) without anyone swapping
+augers. Two directions were proposed:
+
+- **Idea A:** put two of the existing modules nose-to-nose over the beaker,
+  and find a way round the big tilt gears at the front of the mounting plate.
+- **Idea B:** drop the servos and gears, and tilt each mounting plate with a
+  linear actuator pushing from underneath. It must fit 2 augers; 3 would be better.
+
+Every number below comes from the module's real CAD: the STEP files and
+placements of [PR #170](https://github.com/vertical-cloud-lab/powder-doser/pull/170)
+(the same parts as the Onshape documents listed in
+[#193](https://github.com/vertical-cloud-lab/powder-doser/issues/193)).
+[`concepts.py`](concepts.py) places 2–3 copies of the module, tilts them, and
+finds the closest spacing that keeps **2 mm between any two parts of
+different modules**. It checks triangulated meshes with
+[python-fcl](https://github.com/BerkeleyAutomation/python-fcl). The new parts
+(shared base, towers, servo posts, clevis bracket, actuator, beaker) are
+placeholders sized from the real parts. They are not ready to print.
+
+## Summary
+
+| | Augers | Spacing ¹ | Outlets apart at 0° / 45° / 90° ² | Beaker | What changes | Tilt drive |
+|---|---|---|---|---|---|---|
+| Current modules, each on its own baseplate | 2 | 93 mm | 70 / 77 / 93 mm | a 1 L beaker (Ø105 mm) to catch both at 90° | — | 2 servos each |
+| **A1** Servos turned end for end | 2 | **41 mm** | 17.8 / 24.6 / 41.0 mm | 100 mL (50 mL up to about 60°) | new shared base only | 2 servos each (as now) |
+| **A2** One gear and servo per module, on opposite flanks | 2 | **37 mm** | 13.8 / 20.6 / 37.0 mm | 100 mL (50 mL up to about 70°) | new base; each plate loses one gear | 1 servo each |
+| **B1** Gearless pair, actuator underneath | 2 | **37 mm** | 13.8 / 20.6 / 37.0 mm | 100 mL | new base; plate without gears; clevis bracket | 1 linear actuator each |
+| **B2** Gearless tri-star (3 at 120°) | **3** | **32 mm** ³ | Ø40.8 / Ø47.6 / Ø64.0 mm circle | 150 mL up to 60°, 250 mL for 90° | as B1, tapper rolled onto the flank | 1 linear actuator each |
+| **B2 + #203's tap bracket** (10 Nov) | **3** | **32 mm** ³ | Ø40.8 / Ø47.6 / Ø64.0 mm circle | as B2 | as B2; the tap bracket replaces the front bracket and the collar | 1 linear actuator each |
+| Three A1 modules at 120° | 3 | 66 mm ³ | Ø108 mm circle at 0° | none | | |
+
+¹ Hinge to hinge for the pairs; hinge to beaker axis for three modules.
+Clears every tilt up to 60° with all modules tilting together, and any one
+module at 90° with the others at 0°. B2 also clears all three at 90° together.
+² Pairs: outlet to outlet. Three modules: diameter of the circle through the outlets.
+³ Hinge to the beaker axis.
+
+**Short version**
+- **Two augers, soonest:** A1. Every printed part of the module stays as it
+  is. Only the base is new: it carries both modules' hinge towers, with the
+  servo posts behind the hinge instead of in front.
+- **Three augers:** only idea B fits a beaker. Three modules with servos and
+  gears need the hinges 66 mm from the beaker axis.
+- **For two modules, idea B brings the outlets only 4 mm closer than A1.**
+  Its real gains are elsewhere: no printed gears to strip and no servo horn
+  to loosen, a position readback from the actuator's potentiometer, and a
+  tilt that holds when the power is off.
+- **Whatever the layout, two facing modules can't both be at 90° at once.**
+  At 90° the solenoid on top of the tube swings about 65 mm forward into the
+  other module. A firmware interlock fixes this: only one module above 60°
+  at a time. For three modules, rolling the tap collar onto the flank fixes
+  it (B2). [#203](https://github.com/vertical-cloud-lab/powder-doser/issues/203)
+  (tapper off the auger) bears on this; see below.
+
+## Why two current modules don't fit nose-to-nose
+
+The hinge sits 11.6 mm behind the outlet, on the auger's axis. How far each
+part reaches **in front of the hinge**, measured on the CAD:
+
+| Part | 0° | 45° | 90° |
+|---|---|---|---|
+| Baseplate (front arms, legs) | 45.4 mm | 45.4 | 45.4 |
+| MG996R servos (under the hinge, case pointing forward) | 37.1 | 37.1 | 37.1 |
+| 28T tilt gears | 19.5 | 19.5 | 19.5 |
+| Auger tube end | 11.6 | 17.0 | 11.6 (peaks at 47°) |
+| Tap collar / solenoid (on top of the tube) | behind | 2.1 / 17.5 | **52.6 / 64.6** |
+| 44T auger gear | behind | behind | 23 (72 mm above the hinge) |
+
+So the gears aren't what collides first. With their own baseplates, two
+modules can't get their hinges closer than 93 mm, because the baseplates'
+front arms (under the servos) hit. With the baseplates gone, the **servos**
+hit next: each case reaches 37 mm in front of its hinge, on the same side
+as the facing module's servo. The 28T gears only come into play at 41 mm.
+
+![The problem](renders/p0_problem.png)
+
+## Idea A: two current modules nose-to-nose
+
+Both concepts share one new base: a flat plate (printed, HDPE or plywood)
+carrying the two pairs of hinge towers face to face. A Ø60 window between
+them lets the beaker rise to about 15 mm under the outlets. The baseplate's
+front arms and legs are gone.
+
+### A1. Turn each servo end for end so its case points back
+
+The MG996R's spline sits 17.4 mm from one end of the case (with its flange)
+and 37.1 mm from the other. On the current baseplate the long end points
+forward. Turn the servo round so the long end points back, and its forward
+reach drops from 37 to 17 mm. **The spline, pinion, gears and mounting plate
+don't move,** so the gear mesh and the tilt firmware stay as they are. Only
+the servo posts move, to behind the hinge on the new base.
+
+- **Spacing 41 mm,** set by the two modules' 28T gears, which sit in the same
+  planes (|x| = 41.8–54.1 mm). Outlets 17.8 mm apart at 0°, 24.6 at 45°, 41 at 90°.
+- **Self-check:** over 0–90° the turned servos come no closer than 1.6 mm to
+  anything that tilts. That gap is the spline boss to the 28T gear at 40°, the
+  same as today. The case itself sits behind the hinge at |x| ≥ 56.6 mm,
+  outside the plate (|x| ≤ 54.1 mm). The tightest pair on the whole module is
+  still tower to gear, 0.6 mm, as on today's baseplate.
+- **Cost:** one printed base. Every other part is a copy of today's module.
+
+![A1](renders/a1_concept.png)
+
+### A2. One gear and one servo per module, on opposite flanks
+
+Delete the −X gear (and its web) from each mounting plate, and the −X servo
+with it. Face to face, the two modules' remaining drives land on opposite
+sides of the base, so each gear and servo passes beside the other module's
+plain knuckle.
+
+- **Spacing 37 mm,** set by the tubes themselves: at about 47° each tube's
+  end reaches 17 mm in front of its hinge. Outlets 13.8 mm apart at 0°,
+  20.6 at 45°, 37 at 90°.
+- **Torque:** the repo's sizing
+  ([`hardware/vibration-motor-and-solenoid.md`](../../hardware/vibration-motor-and-solenoid.md#servo-driven-baseplate-tilt--alternative-to-the-linear-actuator))
+  puts one module at about 0.39 N·m about the hinge. Through the 14T:28T pair
+  that is 0.2 N·m (2 kg·cm) at one servo, against the MG996R's roughly 9–11
+  kg·cm stall. Adding 100–250 g of powder brings it to 2.5–3.3 kg·cm, so about
+  3× margin. The weak spot is the printed 14T pinion, which has stripped
+  before ([#65](https://github.com/vertical-cloud-lab/powder-doser/issues/65)):
+  one pinion now carries twice the tooth load. Print it in a tougher material,
+  or use a metal pinion.
+- **It only gains 4 mm over A1,** for a new mounting plate and a one-sided
+  drive. A1 is the better trade unless those 4 mm decide the beaker size.
+
+![A2](renders/a2_concept.png)
+
+### Considered and dropped
+
+- **Pinion behind the hinge, gear cut to a sector:** over 0–90° only a quarter
+  of each 28T gear ever meshes. With the pinion behind the hinge, that quarter
+  never comes in front of it. But the plate's gear web and floor wings (|x| up
+  to 54 mm, 16–49 mm behind the hinge) sweep through that pinion position by
+  45°. It needs a new mounting plate and gains nothing over A2.
+- **Servos above the hinge** (the PR #176 variant): it clears the space under
+  the outlet, but two modules facing each other still need the cases pointing
+  back. That makes it A1 with the servos higher up.
+- **Three servo modules at 120°:** with A1's turned servos, neighbouring
+  modules' servo cases meet unless the hinges sit 66 mm from the beaker axis
+  (outlet circle Ø108 mm at 0°). Idea A stops at two modules.
+
+## Idea B: no servos or gears, a linear actuator underneath
+
+Each mounting plate keeps its knuckles and pivots on the same hinge. The 28T
+gears, servo pinions and servos are gone. An actuator underneath pushes the
+plate's rear up. Without the gears and servos, a module is about 75 mm wide
+at the front (towers at |x| ≤ 37 mm) instead of 190 mm (the servo cases).
+That is what lets three modules close in on one beaker.
+
+### Mounting the actuator
+
+- **Rod-end clevis** on a small bracket under the plate floor, **95 mm behind
+  and 45 mm below the hinge**, on the centreline (between the front and rear
+  auger brackets).
+- **Base clevis** straight below it, under the shelf. The rod passes through a
+  slot in the shelf (y = 35–110 mm behind the hinge). With pins at both ends
+  the actuator swings at most about 8° over 0–90°.
+- **Stroke needed** (from closed, with 5 mm in hand at 0°):
+
+| Tilt | 0° | 30° | 45° | 60° | 90° |
+|---|---|---|---|---|---|
+| Rod out | 5.0 mm | 58.7 | 85.4 | 109.9 | 148.6 |
+
+- **Force:** about 0.4–0.65 N·m about the hinge (module plus powder) over
+  95 mm is 4–7 N. Every candidate below is far stronger.
+
+![Actuator mount](renders/b_actuator_mount.png)
+
+| Actuator | Stroke / closed | Range here | Control | Notes |
+|---|---|---|---|---|
+| Actuonix **P16-150-22-12-P** + LAC ([#202](https://github.com/vertical-cloud-lab/powder-doser/issues/202)'s pick) | 150 / 197 mm | 0–90° | LAC board (RC pulse, USB or analogue in), potentiometer feedback | $90 + $30 per module; holds 75 N with the power off |
+| Actuonix **L16-140-35-6-R** | 140 / 208 mm | 0–90° with the clevis at about 85 mm | RC servo: 1.0 ms = fully in, 2.0 ms = fully out, from the same PWM pin the MG996R uses | 6 V, no LAC needed; holds 31 N with the power off; the datasheet's pulse is 5 V, so check it on the Pico's 3.3 V or add a level shifter |
+| Actuonix L16-100-x-12-P / P16-100 | 100 / 147–168 mm | 0–about 54° | as above | if dosing stays at 20–40° (PR #185 v5 caps at 40°) |
+
+L16 numbers are from Actuonix's
+[L16 datasheet](https://cdn.robotshop.com/media/F/Fir/RB-Fir-111/pdf/ActuonixL16Datasheet.pdf):
+35:1 gearing, 32 mm/s, 50 N lifted, 31 N back-drive, 20% duty, IP-54. P16
+numbers are from #202's write-up.
+
+- **A hobby servo also works here.** An MG996R with a horn and a pushrod to
+  the same clevis is a 4-bar that can sweep the plate 0–90°. It costs $10
+  instead of $90–120 and keeps today's firmware. It loses the position
+  readback and the unpowered hold.
+
+### B1. Gearless pair
+
+- **Spacing 37 mm,** the same as A2 (the tubes are the limit). Outlets 13.8 /
+  20.6 / 37 mm apart at 0° / 45° / 90°.
+- **Actuators:** each hangs 113 mm from the beaker axis, outside the HR-100A's
+  Ø172 mm breeze-break housing. Each needs about 210 mm under the shelf. With
+  the shelf above the balance's 315 mm top, that leaves the actuator's lower
+  end above the balance's 80 mm-tall base.
+- **Self-check:** nothing on the module comes within 5 mm of the towers,
+  clevis bracket or actuator over 0–90°.
+
+![B1](renders/b1_concept.png)
+
+### B2. Gearless tri-star: three modules at 120°
+
+- **Hinges 32 mm from the beaker axis.** Neighbouring towers set this. Without
+  towers (a shared hinge frame) it would be 25 mm, where the plates' knuckles
+  meet.
+- **Outlets** lie on a Ø40.8 mm circle at 0°, Ø47.6 at 45° and Ø64 at 90°: a
+  150 mL beaker (about 57 mm inside) up to 60°, 250 mL for 90°.
+- **All three can be at 90° at once** if the tap collar is rolled 90° onto the
+  module's flank. With the collar on top, as now, 90° on all three needs 56.5 mm.
+- **Actuators** hang 127 mm out, again outside the balance's breeze break.
+
+![B2](renders/b2_concept.png)
+
+#### B2 with #203's tap bracket (added 10 Nov)
+
+[#203](https://github.com/vertical-cloud-lab/powder-doser/issues/203)'s first
+tap bracket ([Ethan's Onshape document](https://cad.onshape.com/documents/3db901b123bbee05f5c196f3/w/71800ea0548acad53e21d816/e/68af1a083e7d90e44c40f87c),
+part studio "Solenoid bracket", exported at workspace microversion `103ac09`)
+is the front C-clip and a solenoid tower as one part. Here it **replaces each
+module's front Flexible Bracket**. The tap collar, its base and the old
+solenoid are gone. The Adafruit 412 lies on the module's +X flank, and its
+plunger strikes the side of the tube at hinge height, 46 mm behind the hinge.
+
+- **Placement comes from Ethan's assembly, not by eye.**
+  [`tap_bracket.py`](tap_bracket.py) exports his "Assembly new solenoid
+  setup" (the whole doser with the bracket in place of the front Flexible
+  Bracket). It fits his mounting plate onto PR #170's (median gap 0.38 mm,
+  95th percentile 0.79 mm). The parts both assemblies share then line up too:
+  auger 0.51 mm, rear bracket 0.19, cap 0.51, stepper 0.23 (medians). The
+  bracket and its solenoid go into every module at the same place relative to
+  the plate ([`tap-bracket/`](tap-bracket/), [`registration.json`](tap-bracket/registration.json)).
+- **Hinges are still 32 mm from the beaker axis, as in B2.** The neighbouring
+  hinge towers set it at all ten tilt mixes swept: all three at 0, 30, 45, 60
+  or 90°, one at 60 or 90°, two at 60 or 90°, and 30/60/0.
+- **The brackets have room.** All three solenoids point the same way round,
+  so each faces the plain flank of the next module. A bracket or solenoid
+  comes no closer than 5.8 mm to another module. That happens when two
+  neighbours are both at 90°, bracket to bracket. In every other mix the gap
+  is 30 mm or more.
+- **All three can be at 90° at once,** as in B2 with the collar on the flank.
+- **Self-check:** each bracket stays at least 9.0 mm from its own module's
+  towers and actuator over 0–90°.
+- **Outlets** are where they were in B2: a Ø40.8 mm circle at 0° and Ø64 at
+  90°. The figure uses a 250 mL beaker (Ø70 mm), which holds the 90° circle.
+- **Strike gap:** in Ethan's assembly the plunger is drawn touching the tube
+  (its tip 0.8 mm inside the tube's surface), so the rest gap can't be read
+  from the model. #203 suggests about 3–4 mm.
+
+![B2 with the tap bracket](renders/b2_tap_bracket.png)
+
+![B2 with the tap bracket, all three at 90°](renders/b2_tap_bracket_90.png)
+
+#### Room under the tri-star (added 10 Nov)
+
+[Philip asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+how much clearance there is under the doser, whether the hinge towers set it,
+and whether a stand could change it. [`clearance.py`](clearance.py) measures it
+on the B2 + tap bracket model above ([`clearance.json`](clearance.json) has
+the numbers).
+
+- **The towers don't set it; a stand does.** The towers put the hinge
+  37.25 mm above the shelf top, so the outlets sit 25.7 mm (90°) to 37.25 mm
+  (0°) above it. The shelf has a window under the outlets, so the vessel
+  comes up through it from below.
+- **The tri-star needs a stand anyway.** Each P16 hangs 208 mm below the
+  shelf (its lower eye; the base pin is 204 mm down). With an 8 mm base
+  clevis under it, the shelf's underside has to be at least **217 mm** above
+  the bench. The outlets are then 249 mm (90°) to 260 mm (0°) up. A taller
+  stand adds room 1:1.
+- **Hang each actuator from the shelf** (the orange hangers in the figure),
+  not from the bench. Then the legs can be any length, and a lab jack under
+  the vessel does the fine adjustment.
+- **How wide a vessel can be:**
+  - **Up to 71 mm** (a 250 mL beaker is 70 mm): rises up between the hinge
+    towers, to 2 mm under the lowest the tubes ever get. That is 24 mm above
+    the shelf's underside, set by the tube's end lip at 45°.
+  - **71–188 mm:** stops under the shelf, 32 mm below the 90° outlets.
+    Below the shelf the actuators leave a 188 mm column (214 mm if no module
+    goes past 60°, because a P16 leans inward near 90°).
+  - **Wider:** has to stay below the actuators' lower ends, or fit between
+    two of them.
+- **Erlenmeyer necks can't catch three outlets.** The outlets lie on a
+  Ø40.8 (0°) to Ø64 mm (90°) circle. DURAN's necks are 34 mm (250 and
+  500 mL), 42 mm (1 L) and 50 mm (wide neck). Only the wide neck (about
+  46 mm inside) is wider than the circle, and only up to about 39° of tilt,
+  before allowing for each stream's own width. So plan on a funnel in the
+  neck. An 80 mm, 60° powder funnel stands 29–43 mm above the neck. Its
+  mouth is too wide for the window, so it sits under the shelf.
+
+Stand height (bench to the shelf's underside) for some vessels on a 100 mm
+stir plate (a placeholder; add or subtract the difference for yours, and
+take 100 mm off for a vessel on the bench):
+
+| Vessel | Where its top goes | Stand |
+|---|---|---|
+| 100 / 150 / 250 mL beaker (Ø50–70) | between the towers, rim 15 mm under the 90° outlets | 217 mm (the shortest), on a 64 / 54 / 39 mm riser |
+| 400 mL beaker (Ø80 × 110) | rim 2 mm under the shelf | 217 mm, on a 5 mm riser |
+| 600 mL beaker (Ø90 × 125) | rim 2 mm under the shelf | 227 mm |
+| 250 mL Erlenmeyer (Ø85 × 145, 34 mm neck) + funnel | funnel mouth 2 mm under the shelf | 290 mm |
+| 500 mL Erlenmeyer (Ø105 × 180, 34 mm neck) + funnel | as above | 325 mm |
+| 500 mL wide-neck Erlenmeyer (Ø105 × 175, 50 mm neck) + funnel | as above | 306 mm |
+| 1 L Erlenmeyer (Ø131 × 220, 42 mm neck) + funnel | as above | 358 mm |
+
+Erlenmeyer sizes are DURAN's catalogue dimensions (ISO 1773 narrow neck, ISO
+24450 wide neck); beakers are ISO 3819 low form. The stand legs, hangers,
+stir plate (150 × 150 × 100 mm), riser and funnel are placeholders.
+
+**The stir plate on the shortest stand** stands among the actuators' lower
+ends, which come within 99.6 mm of the axis there. So it has to fit in a
+199 mm circle, or between two actuators. The 150 × 150 mm placeholder clears
+them by 6.2 mm (a P16 at 90°). From a 319 mm stand up, the actuators end
+above a 100 mm stir plate, so its footprint no longer matters.
+
+![Room under the tri-star](renders/b2_clearance.png)
+
+To put the doser lower than 217 mm, the actuators would have to fold away:
+lie at an angle, or a shorter actuator on a shorter lever, which trades tilt
+range or resolution. That isn't modelled here. To weigh while dosing, the
+shelf has to clear the HR-100A's 315 mm top instead (see below).
+
+#### Parts breakdown and the actuator mount (added 12 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+for three things: the tri-star broken into its parts with a render of each,
+how the actuator connects to the mounting plate, and which parts are new and
+which come from the current doser unchanged.
+[`components.py`](components.py) uses the same model as above: B2 with #203's
+tap bracket, hinges 32 mm from the beaker axis. It renders every part on its
+own into [`renders/components/`](renders/components/) and writes
+[`parts.json`](parts.json). Nothing was modelled in Onshape.
+
+![The tri-star by where each part comes from](renders/parts_overview.png)
+
+| # | Part | In the station | Status | What it is, what changes |
+|---|---|---|---|---|
+| 1 | Auger (tube, flights, 44T gear) | 3 | reused as is | PR #170 `auger.step` |
+| 2 | Auger cap | 3 | reused as is | |
+| 3 | Rear Flexible Bracket | 3 | reused as is | |
+| 4 | NEMA 11 stepper (11HS18-0674S) | 3 | reused as is | bought |
+| 5 | 20T stepper pinion | 3 | reused as is | |
+| 6 | Adafruit 412 solenoid | 3 | reused as is | bought; held by #203's bracket instead of the tap collar |
+| 7 | Mounting plate, gearless | 3 | **modified** | PR #170's plate without its two 28T gears and their webs, plus two Ø3.4 holes for the clevis block. In PR #170's STEP file the gears and webs are already separate bodies |
+| 8 | Tap bracket (#203) | 3 | new, already drawn | Ethan's part (9 Nov), as drawn. It replaces the front Flexible Bracket, the tap collar and the collar's base |
+| 9 | Rod-end clevis block | 3 | **new** | printed; see below |
+| 10 | Hinge tower | 6 | **new** | like the baseplate's towers, but 8 mm wide (no gear outboard), with the M5 hinge screw on the hinge axis. Could be printed as part of the shelf |
+| 11 | Shelf | 1 | **new** | 6 mm, one piece under all three modules; Ø78 window for a 250 mL beaker; a 34 × 87 mm slot per module |
+| 12 | Actuator hanger | 3 | **new** | a strap from the shelf's underside down behind the P16, with a foot under its rear lug |
+| 13 | Stand leg | 3 | **new** | 217 mm, the shortest stand |
+| 14 | Actuonix P16-150-22-12-P | 3 | bought | plus an LAC board each |
+| 15 | P16 mounting bracket | 3 | bought | ships with the P16 (two per actuator; one is used) |
+| 16 | Screws and pins | a set per module | hardware | M4 × 20 + nyloc (not × 25: it clips the base's slot at 0°; see the clevis block section), 2 × M3 × 10 + nuts, the P16's #8-32 screw |
+
+Per module, six parts come over unchanged (counting the solenoid) and one is
+modified (the plate). One more is #203's bracket. The rest are the new base
+and the actuator with its two mounts.
+
+![Reused parts](renders/parts_reused.png)
+
+![New, modified and bought parts](renders/parts_new.png)
+
+No longer used: the baseplate, both MG996R servos and 14T servo pinions, the
+two 28T gears (cut off the plate), the front Flexible Bracket, the tap collar
+and the collar's base.
+
+![No longer used](renders/parts_removed.png)
+
+![One module, exploded](renders/parts_exploded.png)
+
+##### How the actuator connects to the mounting plate
+
+The P16's dimension drawing (Actuonix, Rev B) gives both ends. The rod end is
+a 6 mm tab and the rear end an 8 mm lug, each with a Ø4.25 hole (M4 or #8),
+197 mm apart when closed. Each P16 ships with two U-brackets (11.5 mm inside,
+holes 9.1 mm above the base) and #8-32 screws.
+
+- **Rod end to the mounting plate: a printed clevis block under the floor.**
+  - The block is a 30 × 24 × 4 mm pad with two 4 mm lugs, 6.5 mm apart. It
+    sits under the plate's floor on the centreline, between the tap bracket
+    and the rear bracket.
+  - Two M3 × 10 screws go down through two new Ø3.4 holes in the floor, 11 mm
+    either side of the centreline and 95 mm behind the hinge. Their nuts sit
+    in pockets in the pad. The floor is clear there on both sides: the screw
+    heads are at least 12.5 mm from the auger, stepper and brackets.
+  - An M4 × 20 screw and a nyloc nut pin the rod-end tab between the lugs.
+    The pin is 95 mm behind and 45 mm below the hinge (9.75 mm under the
+    floor), where it was before, so the stroke table above still holds.
+  - From 0 to 90° the rod end turns 82° relative to the plate: from straight
+    down to nearly along the floor, pointing forward. The lugs are rounded
+    (R7) round the pin. So the rod end's 9 mm hub, which starts 8.5 mm from
+    the pin, swings past them with at least 1.5 mm to spare.
+  - The plate itself only gains two holes. The block prints pad-down.
+  - At 0° the block reaches down through the shelf, so the shelf's slot grows
+    from 24 × 75 mm to 34 × 87 mm (33–120 mm behind the hinge). That leaves
+    2 mm either side of the pad.
+- **Rear lug to the shelf: the P16's own U-bracket, on a hanger.** One of the
+  two brackets that ship with each P16 is screwed to the hanger's foot. The
+  rear lug is pinned in it with the #8-32 screw that ships with the P16. The
+  hanger hangs from the shelf's underside, so the stand can be any height.
+- **The P16's housing faces outward.** It is 36 mm across in the plane of the
+  swing, with the axis 10.5 mm from one side. That narrow side faces the
+  beaker. Under the shelf the actuators then come no closer than 95 mm to the
+  beaker axis: a Ø190 mm column, about what the clearance section found with
+  the old outline (188 mm).
+- **Why not the P16's U-bracket on the plate too?** Its base would sit under
+  the floor, between its cheeks, 9.1 mm from the pin, with its screw's head or
+  nut inside the U. The rod-end tab would then clear that head by under a
+  millimetre (a button head) or hit it (a socket head). The printed block has
+  nothing between its lugs.
+
+![How the actuator connects](renders/actuator_connection.png)
+
+**Checks** over 0–90° in 2.5° steps ([`parts.json`](parts.json)):
+- the block, its screws, the pin and the rod stay at least 2.0 mm from the
+  shelf (the pad in its slot at 0°);
+- the rod end's hub and shaft stay at least 1.5 mm from the lugs (at 67.5°);
+- the actuator stays at least 4.35 mm from its hanger (the rear lug above the
+  foot).
+
+**Limits.**
+- The block, hanger, towers, shelf and legs are placeholders sized for these
+  renders, not drawn parts.
+- The P16 is drawn from its dimension drawing (housing, tube, rod-end tab and
+  rear lug), not from Actuonix's STEP file.
+- Everything else is as in the sections above.
+
+#### The gearless mounting plate against today's (added 13 Nov)
+
+Ethan asked whether the tri-star's mounting plate has the same dimensions as
+the current one, just without the gears. **Yes.** It is PR #170's plate body
+exactly as it is, the same part as #193's Onshape document (Ethan's #203
+assembly matched it to a median of 0.38 mm). In PR #170's STEP file the plate
+is five bodies: the plate, two 28T gears and two webs. The tri-star drops the
+gears and the webs and adds the clevis block's two holes. Nothing else on the
+plate changes. [`plate.py`](plate.py) measures it into [`plate.json`](plate.json).
+
+| | Today, with gears | Tri-star, gearless |
+|---|---|---|
+| Width, along the hinge | 108.2 mm | 108.2 mm |
+| Length, front to back | 149.5 mm | 137.5 mm |
+| Height | 54.7 mm | 53.35 mm |
+| Plastic | 93.7 cm³ | 64.8 cm³ (31% less) |
+
+- **The width stays** because the floor's front wings, which carried the
+  webs, are as wide as the gears (|x| up to 54.1 mm).
+- **The length and height drop only because the gear teeth stuck out:** 19.5
+  mm in front of the hinge, where the knuckles reach 7.5 mm, and 19.5 mm above
+  it, where the stepper wall reaches 18.1 mm.
+- **Unchanged:** the 6 mm floor; the knuckles (Ø15, 12.5 mm long, Ø5.7 bore);
+  the notches for the towers; the stepper wall with its Ø22 bore and four M3
+  holes; the six Ø3.4 floor holes.
+- **Floor holes in the tri-star** (x from the centreline, y behind the hinge):
+  - the rear bracket uses (±24, 124), as today;
+  - #203's tap bracket screws into the front bracket's two holes (±24, 58.33)
+    and one of the collar base's (−24, 42.33). Its holes line up with the
+    plate's;
+  - the collar base's other hole (+24, 42.33) is unused, under the bracket;
+  - the clevis block adds two at (±11, 95), 29 mm in front of the rear
+    bracket's holes.
+
+![The gearless plate against today's](renders/plate_compare.png)
+
+**Two things to decide before drawing it in Onshape:**
+1. **The floor wings now carry nothing.** They can stay, as drawn, or be
+   trimmed to the 68 mm floor. Trimmed, the plate is 88.1 mm wide overall (the
+   stepper tab sets that). Either way the tri-star spacing stays 32 mm,
+   because the towers set it.
+2. **Today each gear is also an outer cheek of the hinge.** The knuckle, the
+   tower and the gear all have a bore on the hinge axis (Ø5.7, Ø5.3, Ø5.7), so
+   each tower sits between two parts of the plate: 0.3 mm from the knuckle and
+   0.6 mm from the gear. Gearless, the knuckle alone holds the plate on each
+   side. The renders and clearance checks assume that, with 8.1 mm towers. To
+   keep the plate on both sides of each tower, a plain cheek could replace
+   each gear. That widens the module at the hinge, so the tri-star spacing
+   would need checking again.
+
+#### The base, with the hinge towers merged in (added 13 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+for detailed dimensions of the base, with the hinge towers made part of it.
+He has also cut the gears and their arms off the mounting plate, so the
+plate is now widest at the stepper mount. [`base.py`](base.py) models both.
+It writes the drawing below, [`base/base.step`](base/base.step) and
+[`base/base.stl`](base/base.stl), and [`base.json`](base.json). In the STEP
+and STL files the origin is on the beaker axis, with z = 0 on the base's
+underside. Nothing was modelled in Onshape.
+
+![The base, dimensioned](renders/base_drawing.png)
+
+![The base alone, and with the three modules](renders/base_iso.png)
+
+**The plate as Ethan has it now.** This is PR #170's plate body without the
+gears and webs. Its floor is trimmed to |x| ≤ 34 mm as far as 70 mm behind
+the hinge, which removes the front wings. The plate is then 88.1 mm wide:
+54.1 mm out on the stepper side and 34 mm on the other. It is still 137.5 mm
+long and 59.6 cm³. I modelled it from PR #170's STEP; it is not an export of
+Ethan's Onshape plate.
+
+**The base is one printed part** (mm; along a module's centre line the
+distances are measured from the beaker axis):
+
+| Feature | Dimensions |
+|---|---|
+| Overall | 320.5 × 280.2 × 52.25, inside the 325 × 320 a single H2D nozzle reaches |
+| Shelf | 6 thick, like today's baseplate. Top 37.25 below the hinge axes |
+| Lobes | 3, at 120°. Each is 100 wide (±50 about its centre line) out to 82 from the beaker axis, then tapers straight to 48 wide (±24) at 174 |
+| Outline corners | all 15 R10: 3 between lobes, 6 where the taper starts, 6 at the lobe ends |
+| Window | Ø78 on the beaker axis |
+| Hinge axes | 32 from the beaker axis; 37.25 above the shelf top (43.25 above the underside) |
+| Towers | 6, today's baseplate towers (cut from PR #170's `baseplate.step`): 12.3 wide. In each pair the inner faces are 57.8 apart (28.9 either side of the centre line) and the outer faces 82.4 apart |
+| Tower profile | in (y behind the hinge axis, z above it). Foot from y = 10 to 35. Front face straight from (10, −37.25) up to (0, −9), the bottom of an R9 nose round the hinge axis. Flat top at z = 9, 12.93 long, then R10. Rear face straight from (22.36, 2.34) down to (35, −33.38), then vertical to the shelf |
+| Hinge bore | Ø5.3 through each tower, on the hinge axis, as today (M5) |
+| Slot, each lobe | 34 wide, through, from 65 to 144 from the beaker axis (33 to 112 behind the hinge), for the clevis block and the actuator rod |
+| Hanger holes, each lobe | 4 × Ø4.5 through (M4), ±14.5 either side of the centre line, at 151 and 165 from the beaker axis |
+
+**What changed from the earlier placeholder base:**
+- **Towers:** the earlier ones were 8.1 mm blocks. These are today's real towers, 12.3 mm wide.
+- **Lobes:** they were 200 mm wide and reached 222 mm from the beaker axis.
+  Now they are 100 mm tapering to 48, and reach 174. That is what lets the
+  base fit one H2D nozzle.
+- **Slot:** it ends 112 mm behind the hinge instead of 120. The rod still
+  clears its end by 4.4 mm (at 25°).
+- **Legs:** the old placeholder legs stood 165–185 mm behind the hinge, which
+  is past the new lobes' ends. They can bolt to the hanger holes instead. Or
+  each hanger can carry on down to the bench: on the shortest stand (217 mm)
+  its foot is already at bench level.
+
+**Checks.** These are mesh clearances (fcl). One module was swept over 0–90°
+in 5° steps; all three were checked at the ten B2T tilt cases.
+- **Modules to each other:** 5.8 mm at the closest, tap bracket to tap
+  bracket with both at 90°, as before.
+- **Moving parts to the base:** 1.26 mm at 0°. That is the end of the plate
+  floor's notch, 37 mm behind the hinge, against the tower's foot. Today's
+  doser has the same gap, because it is the same plate and the same tower. It
+  is 4.1 mm by 5°.
+- **Everything else** clears the base by 4.4 mm or more. The closest is the
+  P16 rod at the slot's end, at 25°.
+- **Hinge:** the knuckles run 0.3 mm inside the towers, as today.
+- **Neighbouring towers meet** near their noses, so in one part they merge
+  into a block between modules.
+- **The M5 hinge screw still goes in from outside.** A Ø10 rod along each
+  hinge axis, standing in for the screw head and the hex key, clears the
+  next tower by 2.9 mm.
+
+**Choices before drawing it in Onshape:**
+1. **Tower width:** today's 12.3 mm, as drawn, or 8.1 mm. With 8.1 mm the
+   neighbouring towers stay apart, with a gap of about 3 mm between them.
+2. **The 1.26 mm at 0°:** for 2 mm, take about 0.8 mm off the back of the
+   tower's foot, or lengthen the plate's notch by as much.
+3. **Stiffness:** the shelf is 6 mm, like today's baseplate, but it is 320 mm
+   across. Ribs underneath, clear of the slots, would stiffen it.
+
+**Printing.**
+- **Orientation:** print it shelf-down.
+- **Overhangs:** the towers' faces lean 19.5° from vertical. The only real
+  overhang is the underside of each R9 nose, which today's baseplate has too.
+- **Bed:** at 320.5 mm, it leaves 4.5 mm of the H2D's 325 mm single-nozzle
+  width for a brim or skirt.
+
+#### Where the clevis block's holes go in the plate (added 17 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+where the two new holes for the clevis block go in the mounting plate.
+[`holes.py`](holes.py) measures them on the plate as he has it now (no
+gears, arms or front wings, as `base.py` models it), from features that can
+be picked in an Onshape sketch. It draws the figure below and writes
+[`holes.json`](holes.json). Nothing was modelled in Onshape.
+
+![Clevis block holes, dimensioned](renders/clevis_holes.png)
+
+**The two holes** (mm):
+
+| | |
+|---|---|
+| Size | Ø3.4 through the 6 mm floor, for M3 |
+| Across | 22 apart, 11 either side of the plate's centre line |
+| Along | 35 in front of the floor's rear edge, which puts them 95 behind the hinge axis |
+
+**Cross-checks:**
+- 23 from each side edge of the floor. On the stepper side that is the edge
+  behind the stepper tab.
+- 29 in front of the rear Flexible Bracket's holes and 13 inboard of them.
+- 36.67 behind the tap bracket's rear holes, and 13 inboard of them.
+- 5.67 behind the stepper wall's rear face. On the stepper side the hole's
+  edge is 3.97 from the wall, and the screw head 3.6.
+- The clevis pin sits right under the line of the holes, 9.75 below the
+  floor's underside. Keep the holes 95 behind the hinge; moving them moves
+  the pin and changes the stroke table.
+
+**Every floor hole** (x from the centre line, + away from the stepper; y
+behind the hinge axis):
+
+| Hole (x, y) | From the rear edge | Used by |
+|---|---|---|
+| ±24, 124 | 6 | rear Flexible Bracket |
+| **±11, 95 (new)** | **35** | **clevis block** |
+| ±24, 58.33 | 71.67 | #203's tap bracket |
+| −24, 42.33 | 87.67 | #203's tap bracket |
+| +24, 42.33 | 87.67 | not used |
+
+**Fitting the block.** The auger tube passes 19.9 mm above the floor's top
+over the screw heads (23.3 mm on the hole axes), so a hex key can't go
+straight down onto them once the auger is in. Screw the block on before the
+auger goes in, or turn the screws over, with the heads in the block and the
+nuts on top of the floor. The screws are at least 14 mm from the stepper and
+15 mm from the tube. The block's own holes match: 22 apart on its centre
+line, 4 from its ends.
+
+**Limits.** Measured on PR #170's plate (`mounting-plate.step` at `7f5b3b7`),
+trimmed as `base.py` does; Ethan's Onshape plate matched it to a median of
+0.38 mm. In that STEP file's own frame the hole centres on the floor's top
+face are (−95, −29.25, −30.8) and (−95, −29.25, −52.8). I haven't checked
+that frame against the Onshape part studio's.
+
+#### The clevis block's dimensions (added 17 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+for the clevis block's dimensions. [`clevis.py`](clevis.py) builds the block
+as a part on its own, from the same numbers `components.py` uses. It checks
+the fit again, exports the block, and draws the sheet below. It writes
+[`clevis.json`](clevis.json). Nothing was modelled in Onshape.
+
+![Clevis block, dimensioned](renders/clevis_block.png)
+
+**The block** (mm). Origin: the centre of the pad's top face, which sits
+against the floor's underside. x runs along the pin, y along the plate and z
+up:
+
+| Feature | Dimensions |
+|---|---|
+| Overall | 30 (x) × 24 (y) × 16.75 (z) |
+| Pad | 30 × 24 × 4. Its top face screws flat to the floor's underside |
+| Lugs | 2, each 4 thick (x) and 14 wide (y), centred on the pad. 6.5 apart (inner faces at ±3.25), 14.5 over both (outer faces at ±7.25). They hang 12.75 below the pad |
+| Lug ends | R7 about the pin axis, so the rod end's 9 mm hub can swing past |
+| Pin hole | Ø4.25 through both lugs (M4), on the centre line, 9.75 below the pad's top face (5.75 below its underside) |
+| Screw holes | 2 × Ø3.4 through the pad (M3), 22 apart (±11), on the pin's line (y = 0). They sit 4 from the pad's ends and 12 from its sides |
+| Nut pockets | 2 × hexagon, 5.8 across flats (6.70 across corners), 2.6 deep from the pad's underside, on the screw holes. The flats face the pad's ends. That leaves a 1.1 mm wall to the ends and 1.4 mm of pad between each nut and the floor |
+| Volume | 3.85 cm³, about 5 g of PLA if printed solid |
+
+**One change from the 12 Nov placeholder:** the nut pockets are hexagonal
+instead of round (Ø6.4). That stops a nut from turning while its screw is
+tightened from above. A socket head (Ø5.5) also fits the pocket, if you'd
+rather put the screws in from below. Otherwise the block is unchanged. With
+round pockets, `clevis.py`'s block is the same solid as `components.py`'s
+(the volume difference is 0).
+
+**Hardware, per block:**
+- 2 × M3 × 10 socket head cap screws, heads on the floor's top, and 2 × M3
+  hex nuts in the pockets. Each screw's end comes flush with the pad's
+  underside. An M3 × 12 also fits: it sticks 2 mm out beside the lugs.
+- 1 × M4 × 20 socket head cap screw as the pin (head on the plain-side lug),
+  and 1 × M4 nyloc nut. Tighten it snug, not tight, so the lugs don't pinch
+  the rod end. The screw ends 0.5 mm past the nyloc.
+- **Not M4 × 25.** The parts table above suggested it for more thread past
+  the nyloc. But at 0° the pin sits in the base's slot, and an M4 × 25 sticks
+  0.75 mm past the slot's 34 mm width. It would clip the slot's side (the
+  pin's top is 0.25 mm above the shelf's underside there). To use one, widen
+  the slot to 36 mm.
+
+**Checks over 0–90°** (module A, components.py's actuator geometry, every 2.5°):
+- **Rod end in the clevis.** It turns 81.7° in the clevis by 90°, toward the
+  hinge. Its hub and rod stay at least 1.5 mm from the lugs, closest at
+  67.5°. Its tab is 1.25 mm below the pad at 0°, and has 0.25 mm each side in
+  the 6.5 mm gap.
+- **Against the base** (`base.py`'s one-piece base, every 1° to 20°, then
+  every 5°). All of these are closest at 0°:
+  - the block: 2.0 mm, from the pad's ends to the slot's sides;
+  - the M3 screws: 4.5 mm; the nuts: 3.25 mm;
+  - the M4 × 20 pin: 4.25 mm; the nyloc: 4.75 mm.
+
+**Printing.** Print it lugs up, with the pad's top face on the bed. It needs
+no supports: the pockets open upward, and the only overhang is the top of the
+Ø4.25 hole.
+
+**Files** in [`clevis/`](clevis/):
+- `clevis_block.step`: the block in the frame above.
+- `clevis_block_print.stl`: the block flipped for printing.
+- `clevis_block_with_hardware.step`: the block with its screws, nuts, pin,
+  nyloc and the P16's rod end at 0°.
+
+You can import the STEP files into Onshape for reference without using API
+calls.
+
+**Limits.**
+- The rod end (6 mm tab, Ø9 hub 8.5–14.5 mm from the pin) is drawn from
+  Actuonix's P16 drawing, as in `components.py`, not from a real actuator.
+  Check that the tab slides into the 6.5 mm gap before printing three.
+- Printed holes often come out small. If the pin or screws bind, drill the
+  holes out to 4.3 and 3.4.
+
+### A cheaper variant: one actuator for all modules
+
+The #116 battery runs found **no flow at any tilt with the auger stopped**
+(block B, 0.0000 g after 15 s at 0°, 45° and 90°, every powder; see
+[#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128)).
+Flow is gated by the auger, not by the tilt. So the modules could share one
+tilt: one actuator lifts a yoke (pair) or spider (tri-star) that carries
+every plate's rear on a roller, and each auger doses in turn. The cost is
+per-powder tilt schedules. The 0° tap-trim phase, which #116 found to be the
+only sub-milligram actuator, would have to run for every module at once,
+between bulk doses. This was not modelled.
+
+## Things every concept has to handle
+
+- **Tapper at high tilt.** With the solenoid on top of the tube, two facing
+  modules both at 90° need 73 mm between hinges. Rolled onto the flank, they
+  need 54 mm, because the tap collars themselves meet. For the pairs, a
+  firmware interlock (one module above 60° at a time) keeps them at 37–41
+  mm. The tap-collar base's hard-stop bump sets today's 30° roll, so rolling
+  further needs a new base. A tapper fixed to the plate's flank, as #203 is
+  exploring, would do the same job.
+- **Beaker and balance.** The outlets have to sit about 15 mm over the rim. On
+  the HR-100A (198 × 253 mm, 315 mm tall, Ø76 top-door opening, numbers from
+  PR #185's model), that means:
+  - the shelf on a stand above the balance, not touching it;
+  - the beaker on a riser on the pan, up through the top door, as in PR #185's v5.
+  
+  The HR-100A's 102 g capacity covers a 100 mL beaker (about 50 g) plus a
+  printed riser and a few grams of powder. Check the tare before using a
+  150 mL beaker or a tall riser.
+- **The atomizer cup is too small for simultaneous dosing.** Its bore is about
+  12–16 mm (19.05 mm OD, byu-vcl PR 232). Every concept here puts the outlets
+  14–41 mm apart, so a cup needs:
+  - a funnel that stays with that cup, or
+  - one powder at a time, with the cup moved under each outlet.
+- **Facing outlets.** At 0° the two outlets point at each other 14–18 mm
+  apart, so a puff from one can reach the other's end face. Park idle modules
+  at 0°, and reverse a turn after each dose, as the carousel designs do.
+
+## Suggested next steps
+
+1. **A1 on the bench:** print the shared base with the towers and
+   rear-facing servo posts, move two existing modules onto it, and check the
+   41 mm spacing and the interlock.
+2. **In parallel, one B module:** a gearless mounting plate, a clevis bracket
+   and one P16-150 or L16-140-R. The test is whether the actuator's tilt is as
+   repeatable as the servo's, and whether it holds through tapping.
+3. Decide the beaker (and the riser) before committing the base. The outlet
+   circle above sets it.
+
+## Files
+
+| File | What it is |
+|---|---|
+| [`doserlib.py`](doserlib.py) | Loads PR #170's STEP files and `layout.py` at commit `7f5b3b7` (downloaded once to `~/.cache`). Builds a module with any drive variant, plus the placeholder base, towers, actuator and beaker. Mesh clearance (fcl), VTK renders |
+| [`concepts.py`](concepts.py) | The concepts, the spacing sweeps, the self-checks and the figures |
+| [`tap_bracket.py`](tap_bracket.py) | Exports #203's tap bracket and Ethan's assembly from Onshape (needs `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY`), fits it onto PR #170's frame, and writes `tap-bracket/` |
+| [`tap-bracket/`](tap-bracket/) | `tap-bracket-pr170.step`: the bracket and its solenoid (coil, yoke, plunger) in PR #170's frame at 0°, which `doserlib.py` reads. `solenoid-bracket-onshape.step`: the bracket alone, as Onshape exports it. `registration.json`: the fit and its checks |
+| [`results.json`](results.json) | Every swept spacing with the two parts that limit it, the self-checks, the actuator stroke table and the outlet spacings |
+| [`clearance.py`](clearance.py), [`clearance.json`](clearance.json) | The room under the tri-star: the lowest the doser gets over the beaker axis at every radius (0–90°), how far the actuators hang, and the stand each vessel needs; renders `b2_clearance.png` |
+| [`components.py`](components.py), [`parts.json`](parts.json) | The tri-star's parts: each one rendered alone ([`renders/components/`](renders/components/)), the reused/new/removed sheets, the exploded module, the status-coloured station, the actuator connection and its checks |
+| [`plate.py`](plate.py), [`plate.json`](plate.json) | The gearless mounting plate against today's: sizes, volumes, floor holes and what uses each, the hinge stack; renders `plate_compare.png` |
+| [`base.py`](base.py), [`base.json`](base.json) | The one-piece base with today's hinge towers, and the plate trimmed as Ethan has it: dimensions, clearance checks, `base_drawing.png` and `base_iso.png` |
+| [`base/`](base/) | `base.step` and `base.stl`: the base, origin on the beaker axis, z = 0 on its underside |
+| [`holes.py`](holes.py), [`holes.json`](holes.json) | Where the clevis block's two M3 holes go in the plate's floor, measured from its edges, holes, stepper wall and hinge axis; what sits over and under them; renders `clevis_holes.png` |
+| [`clevis.py`](clevis.py), [`clevis.json`](clevis.json) | The clevis block on its own: every dimension, hex nut pockets, the rod end's swing and the block, pin and screws against the base; renders `clevis_block.png` |
+| [`clevis/`](clevis/) | `clevis_block.step` (origin at the pad's top face), `clevis_block_print.stl` (flipped for printing), `clevis_block_with_hardware.step` |
+| [`renders/`](renders/) | The figures above |
+
+```bash
+pip install cadquery trimesh python-fcl rtree vtk pillow numpy matplotlib
+xvfb-run -a python concepts.py              # sweeps + figures, about 4 min on 4 cores
+xvfb-run -a python concepts.py --no-sweep   # figures only, from results.json
+xvfb-run -a python concepts.py --tap-bracket  # only B2 + #203's tap bracket (about 1 min)
+python tap_bracket.py                       # re-export the bracket from Onshape (needs the keys)
+xvfb-run -a python clearance.py             # room under the tri-star (about 20 s)
+xvfb-run -a python components.py            # parts breakdown and the actuator mount (about 20 s)
+xvfb-run -a python plate.py                 # the gearless plate against today's (about 10 s)
+xvfb-run -a python base.py                  # the one-piece base: STEP/STL, checks, drawing (about 20 s)
+xvfb-run -a python holes.py                 # where the clevis block's holes go in the plate (about 10 s)
+xvfb-run -a python clevis.py                # the clevis block: dimensions, checks, STEP/STL, drawing (about 1 min)
+```
+
+**Limits.**
+- The new parts are placeholders. Spacings that involve them (towers, servo
+  posts) are as good as those placeholders.
+- The brackets are the old split clamp from PR #170's CAD, not the rig's
+  C-clip, which isn't in any shared file.
+- Meshes are triangulated to 0.15 mm.
+- The gear mesh itself isn't re-checked here. PR #170 did that.
+- No powder was simulated.

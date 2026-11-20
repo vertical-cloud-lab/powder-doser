@@ -1,0 +1,263 @@
+{
+ "source": "PR #170 cad/full-assembly/components/fusion-step/mounting-plate.step @ 7f5b3b7",
+ "frame": "hinge axis = X through the origin; -Y = front (outlet), +Y = rear; Z up; tilt 0",
+ "bodies_in_step": {
+  "gear-X": {
+   "volume_mm3": 11634.0,
+   "x": [
+    -54.1,
+    -41.8
+   ],
+   "y": [
+    -19.47,
+    16.63
+   ],
+   "z": [
+    -19.47,
+    19.47
+   ],
+   "size_WxLxH": [
+    12.3,
+    36.1,
+    38.94
+   ]
+  },
+  "web-X": {
+   "volume_mm3": 2744.1,
+   "x": [
+    -54.1,
+    -41.8
+   ],
+   "y": [
+    3.67,
+    25.0
+   ],
+   "z": [
+    -29.25,
+    3.67
+   ],
+   "size_WxLxH": [
+    12.3,
+    21.33,
+    32.92
+   ]
+  },
+  "plate": {
+   "volume_mm3": 64912.7,
+   "x": [
+    -54.1,
+    54.1
+   ],
+   "y": [
+    -7.5,
+    130.0
+   ],
+   "z": [
+    -35.25,
+    18.1
+   ],
+   "size_WxLxH": [
+    108.2,
+    137.5,
+    53.35
+   ]
+  },
+  "gear+X": {
+   "volume_mm3": 11634.0,
+   "x": [
+    41.8,
+    54.1
+   ],
+   "y": [
+    -19.47,
+    16.63
+   ],
+   "z": [
+    -19.47,
+    19.47
+   ],
+   "size_WxLxH": [
+    12.3,
+    36.1,
+    38.94
+   ]
+  },
+  "web+X": {
+   "volume_mm3": 2744.1,
+   "x": [
+    41.8,
+    54.1
+   ],
+   "y": [
+    3.67,
+    25.0
+   ],
+   "z": [
+    -29.25,
+    3.67
+   ],
+   "size_WxLxH": [
+    12.3,
+    21.33,
+    32.92
+   ]
+  }
+ },
+ "current_plate_with_gears": {
+  "x": [
+   -54.1,
+   54.1
+  ],
+  "y": [
+   -19.47,
+   130.0
+  ],
+  "z": [
+   -35.25,
+   19.47
+  ],
+  "size_WxLxH": [
+   108.2,
+   149.47,
+   54.72
+  ]
+ },
+ "gearless_plate": {
+  "x": [
+   -54.1,
+   54.1
+  ],
+  "y": [
+   -7.5,
+   130.0
+  ],
+  "z": [
+   -35.25,
+   18.1
+  ],
+  "size_WxLxH": [
+   108.2,
+   137.5,
+   53.35
+  ]
+ },
+ "volume_mm3": {
+  "current": 93669.0,
+  "gearless": 64803.7,
+  "removed_pct": 30.8,
+  "taken_by_the_two_new_holes": 109.0,
+  "two_3.4mm_holes_through_6mm": 109.0
+ },
+ "floor_widths_x": {
+  "25 mm behind the hinge": [
+   -54.1,
+   54.1
+  ],
+  "45 mm behind the hinge": [
+   -45.35,
+   46.15
+  ],
+  "70 mm behind the hinge": [
+   -34.0,
+   34.0
+  ],
+  "86.33 mm behind the hinge": [
+   -54.1,
+   34.0
+  ],
+  "110 mm behind the hinge": [
+   -34.0,
+   34.0
+  ]
+ },
+ "floor_holes": [
+  {
+   "x": -24.0,
+   "y": 42.33,
+   "dia": 3.4,
+   "used_by": "#203's tap bracket"
+  },
+  {
+   "x": 24.0,
+   "y": 42.33,
+   "dia": 3.4,
+   "used_by": "not used (was the tap collar's base)"
+  },
+  {
+   "x": -24.0,
+   "y": 58.33,
+   "dia": 3.4,
+   "used_by": "#203's tap bracket"
+  },
+  {
+   "x": 24.0,
+   "y": 58.33,
+   "dia": 3.4,
+   "used_by": "#203's tap bracket"
+  },
+  {
+   "x": -11.0,
+   "y": 95.0,
+   "dia": 3.4,
+   "used_by": "new: clevis block, 2 x M3"
+  },
+  {
+   "x": 11.0,
+   "y": 95.0,
+   "dia": 3.4,
+   "used_by": "new: clevis block, 2 x M3"
+  },
+  {
+   "x": -24.0,
+   "y": 124.0,
+   "dia": 3.4,
+   "used_by": "rear Flexible Bracket (as today)"
+  },
+  {
+   "x": 24.0,
+   "y": 124.0,
+   "dia": 3.4,
+   "used_by": "rear Flexible Bracket (as today)"
+  }
+ ],
+ "tap_bracket_floor_holes": [
+  {
+   "x": -24.0,
+   "y": 42.32,
+   "dia": 3.4
+  },
+  {
+   "x": -24.0,
+   "y": 58.32,
+   "dia": 3.4
+  },
+  {
+   "x": 24.0,
+   "y": 58.33,
+   "dia": 3.4
+  }
+ ],
+ "hinge_stack_plus_x": {
+  "knuckle": [
+   16.08,
+   28.62
+  ],
+  "knuckle_od": 15.0,
+  "knuckle_bore": 5.7,
+  "tower_today": [
+   28.9,
+   41.2
+  ],
+  "tower_bore_today": 5.3,
+  "tower_tristar": [
+   28.9,
+   37.0
+  ],
+  "gear": [
+   41.8,
+   54.1
+  ],
+  "gear_bore": 5.7,
+  "gear_tip_dia": 38.94
+ }
+}
