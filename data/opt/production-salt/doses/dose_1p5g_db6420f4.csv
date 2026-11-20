@@ -1,0 +1,86 @@
+powder_id,target_g,trial_uuid8,t_s,phase,mass_g,kf_mass_g,kf_rate_gps,kf_sigma_g,ff_gpr,rate_setpoint_gps,pred_g,cutoff_g,tilt_deg_cmd,auger_rpm_cmd,tap_mode,source
+salt,1.5,db6420f4,5.61,bulk,0.00000,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,5.99,bulk,0.00000,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,6.28,bulk,0.00560,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,6.66,bulk,0.03940,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,7.05,bulk,0.09040,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,7.33,bulk,0.13180,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,7.72,bulk,0.18390,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,8.10,bulk,0.23450,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,8.48,bulk,0.28970,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,8.76,bulk,0.32670,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,9.15,bulk,0.38090,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,9.54,bulk,0.43260,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,9.82,bulk,0.46760,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,10.21,bulk,0.52370,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,10.58,bulk,0.57410,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,10.97,bulk,0.62960,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,11.25,bulk,0.67070,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,11.63,bulk,0.72210,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,12.02,bulk,0.77900,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,12.30,bulk,0.81460,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,12.69,bulk,0.86980,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,13.08,bulk,0.92800,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,13.45,bulk,0.97970,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,13.74,bulk,1.02540,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,14.12,bulk,1.08070,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,14.51,bulk,1.14120,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,14.88,bulk,1.19160,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,1.5,db6420f4,17.66,bulk_settled,1.30322,,,,,,,,40.0,0.0,none,telemetry
+salt,1.5,db6420f4,21.29,trickle,1.30310,1.30310,0.00000,0.01295,0.3500,0.05000,1.31605,1.46500,10.0,0.00,none,telemetry
+salt,1.5,db6420f4,21.58,trickle,1.30310,1.30310,0.04934,0.01181,0.3500,0.05000,1.35604,1.46500,10.0,14.68,none,telemetry
+salt,1.5,db6420f4,21.96,trickle,1.30310,1.32200,0.02215,0.01078,0.3500,0.05000,1.35124,1.46500,10.0,2.37,none,telemetry
+salt,1.5,db6420f4,22.25,trickle,1.30310,1.32505,0.04442,0.00949,0.3500,0.05000,1.37159,1.46500,10.0,10.45,none,telemetry
+salt,1.5,db6420f4,22.63,trickle,1.30310,1.33649,0.03301,0.00922,0.3500,0.05000,1.37323,1.46500,10.0,5.07,none,telemetry
+salt,1.5,db6420f4,23.02,trickle,1.30380,1.34176,0.04649,0.00913,0.3500,0.05000,1.38965,1.46500,10.0,8.70,none,telemetry
+salt,1.5,db6420f4,23.40,trickle,1.30430,1.35060,0.03528,0.00907,0.3500,0.05000,1.38909,1.46500,10.0,5.50,none,telemetry
+salt,1.5,db6420f4,23.78,trickle,1.30500,1.35338,0.04794,0.00909,0.3309,0.05000,1.40244,1.46500,10.0,8.97,none,telemetry
+salt,1.5,db6420f4,24.07,trickle,1.30570,1.35684,0.03838,0.00855,0.3134,0.05000,1.39740,1.46500,10.0,5.90,none,telemetry
+salt,1.5,db6420f4,24.45,trickle,1.31150,1.36115,0.04332,0.00879,0.2966,0.05000,1.40607,1.46500,10.0,8.69,none,telemetry
+salt,1.5,db6420f4,24.83,trickle,1.31640,1.36756,0.03922,0.00892,0.2813,0.05000,1.40919,1.46500,10.0,7.76,none,telemetry
+salt,1.5,db6420f4,25.12,trickle,1.31890,1.36904,0.04117,0.00844,0.2666,0.05000,1.41181,1.46500,10.0,9.28,none,telemetry
+salt,1.5,db6420f4,25.50,trickle,1.32380,1.37468,0.04023,0.00877,0.2529,0.05000,1.41699,1.46500,10.0,9.10,none,telemetry
+salt,1.5,db6420f4,25.88,trickle,1.32990,1.38023,0.04066,0.00892,0.2402,0.05000,1.42306,1.46500,10.0,9.78,none,telemetry
+salt,1.5,db6420f4,26.26,trickle,1.33380,1.38524,0.04013,0.00902,0.2283,0.04783,1.42772,1.46500,10.0,10.10,none,telemetry
+salt,1.5,db6420f4,26.65,trickle,1.33830,1.38979,0.03829,0.00913,0.2171,0.04510,1.43084,1.46500,10.0,10.05,none,telemetry
+salt,1.5,db6420f4,27.03,trickle,1.34490,1.39384,0.03673,0.00909,0.2067,0.04267,1.43355,1.46500,10.0,10.14,none,telemetry
+salt,1.5,db6420f4,27.41,trickle,1.35190,1.39829,0.03517,0.00910,0.1969,0.04000,1.43671,1.46500,10.0,10.19,none,telemetry
+salt,1.5,db6420f4,27.80,trickle,1.35620,1.40195,0.03339,0.00913,0.1878,0.03781,1.43892,1.46500,10.0,10.14,none,telemetry
+salt,1.5,db6420f4,28.08,trickle,1.36030,1.40299,0.03216,0.00857,0.1792,0.03719,1.43837,1.46500,10.0,10.24,none,telemetry
+salt,1.5,db6420f4,28.46,trickle,1.37470,1.41027,0.03151,0.00881,0.1714,0.03282,1.44536,1.46500,10.0,10.56,none,telemetry
+salt,1.5,db6420f4,28.85,trickle,1.38510,1.41864,0.02845,0.00897,0.1646,0.02780,1.45133,1.46500,10.0,9.69,none,telemetry
+salt,1.5,db6420f4,29.23,trickle,1.38860,1.42394,0.02577,0.00901,0.1585,0.02462,1.45444,1.46500,10.0,9.17,none,telemetry
+salt,1.5,db6420f4,29.52,trickle,1.39380,1.42643,0.02434,0.00850,0.1528,0.02313,1.45523,1.46500,10.0,9.00,none,telemetry
+salt,1.5,db6420f4,29.81,trickle,1.39990,1.42947,0.02318,0.00818,0.1475,0.02131,1.45697,1.46500,10.0,8.94,none,telemetry
+salt,1.5,db6420f4,30.18,trickle,1.40670,1.43449,0.02172,0.00857,0.1428,0.01829,1.46117,1.46500,10.0,8.71,none,telemetry
+salt,1.5,db6420f4,30.57,trickle,1.41440,1.43985,0.01987,0.00881,0.1385,0.01508,1.46522,1.46500,10.0,8.16,none,telemetry
+salt,1.5,db6420f4,32.97,trickle_end,1.43400,,,,,,,,10.0,0.0,none,telemetry
+salt,1.5,db6420f4,36.31,tap,1.44494,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,39.38,tap,1.45096,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,42.43,tap,1.45660,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,45.40,tap,1.46140,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,48.47,tap,1.46504,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,51.42,tap,1.46690,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,54.59,tap,1.47100,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,57.54,tap,1.47266,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,60.52,tap,1.47436,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,63.66,tap,1.47582,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,66.64,tap,1.47716,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,69.70,tap,1.47938,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,72.75,tap,1.48078,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,75.82,tap,1.48244,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,78.77,tap,1.48346,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,81.75,tap,1.48438,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,84.70,tap,1.48584,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,87.77,tap,1.48690,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,90.83,tap,1.48814,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,93.78,tap,1.48934,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,96.95,tap,1.49074,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,100.10,tap,1.49142,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,103.15,tap,1.49242,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,106.12,tap,1.49366,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,109.18,tap,1.49432,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,112.34,tap,1.49522,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,115.50,tap,1.49614,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,118.65,tap,1.49696,,,,,,,,15.0,0.0,single x1,telemetry
+salt,1.5,db6420f4,121.81,tap,1.49762,,,,,,,,15.0,0.0,single x1,telemetry

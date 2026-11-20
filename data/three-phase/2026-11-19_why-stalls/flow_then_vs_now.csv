@@ -1,0 +1,170 @@
+era,session,kind,plate_deg,auger_rpm,mg_per_rev,longest_no_2mg_gain_s,note
+summer,2026-07-31,"1 rev, auger only",0.0,30,74.6,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",10.0,30,89.3,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",20.0,30,138.4,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",30.0,30,188.2,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",40.0,30,168.1,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",50.0,30,219.5,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",60.0,30,180.9,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",70.0,30,99.5,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",70.0,30,187.7,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",60.0,30,46.1,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",50.0,30,85.5,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",40.0,30,162.2,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",30.0,30,117.8,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",20.0,30,34.0,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",10.0,30,46.8,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",0.0,30,47.3,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",0.0,30,62.3,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",10.0,30,81.5,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",20.0,30,123.1,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",30.0,30,79.4,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",40.0,30,168.9,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",50.0,30,106.1,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",60.0,30,123.3,,53 g salt in tube (weighed)
+summer,2026-07-31,"1 rev, auger only",70.0,30,48.7,,53 g salt in tube (weighed)
+summer,2026-08-12/13,B5 auger only,55.0,55.0,132.03,1.72,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,114.56,0.76,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,146.01,0.86,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,154.24,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,115.02,0.48,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,0.0,0.0,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,172.61,0.86,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,139.27,0.96,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,119.16,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,108.75,0.38,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,116.69,1.14,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,99.64,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,80.27,0.67,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,70.47,1.15,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,85.94,0.58,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,98.67,0.86,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,64.04,0.86,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,37.12,0.77,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,37.23,1.43,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,43.56,1.43,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,42.09,1.15,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,43.03,1.34,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,38.74,2.01,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,43.89,1.34,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,32.2,1.15,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,40.0,55.0,45.27,0.96,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,55.0,55.0,46.36,0.76,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C6 auger + taps,70.0,55.0,45.63,1.53,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,15.0,59.64,1.24,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,30.0,35.15,2.2,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,55.0,32.94,1.34,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,75.0,37.05,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,75.0,50.52,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,55.0,61.97,0.48,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,30.0,62.82,0.96,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,15.0,72.19,1.43,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,15.0,73.16,1.24,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,30.0,64.59,0.86,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,55.0,60.93,0.76,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C7 auger only,55.0,75.0,53.93,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C8 auger only,55.0,55.0,63.92,0.38,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C8 auger + taps,55.0,55.0,67.29,0.58,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C8 auger + taps,55.0,55.0,69.52,0.67,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C8 auger only,55.0,55.0,48.36,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C8 auger only,55.0,55.0,48.04,0.77,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C8 auger + taps,55.0,55.0,54.29,0.67,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C8 auger + taps,55.0,55.0,51.99,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,C8 auger only,55.0,55.0,47.89,0.66,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,B4 auger only,40.0,55.0,44.85,0.29,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,B4 auger only,55.0,55.0,47.09,0.67,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,B4 auger only,70.0,55.0,48.42,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,B4 auger only,70.0,55.0,48.73,0.67,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,B4 auger only,55.0,55.0,,0.0,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,B4 auger only,40.0,55.0,46.08,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,B5 auger only,55.0,55.0,46.93,0.57,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-12/13,B5 auger only,55.0,55.0,36.36,0.67,"71 g at session start (weighed), about 30-50 g by C7"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,,0.76,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,154.47,0.76,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,74.53,0.95,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,74.52,0.95,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,84.95,0.76,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,84.93,0.58,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,81.5,0.58,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,70.84,1.53,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,69.17,0.96,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,69.65,0.95,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,90.0,64.99,0.96,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,84.45,1.15,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,73.81,0.76,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,43.85,1.53,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,,0.95,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,71.1,0.38,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,81.44,0.39,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,72.11,0.58,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,72.3,0.38,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,69.11,0.96,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,81.03,0.58,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,,0.38,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,55.0,,0.39,"tube likely refilled, not weighed"
+summer,2026-08-17,"KF stop, auger only",55.0,90.0,67.06,0.57,"tube likely refilled, not weighed"
+november,2026-11-18 pm,"trial (old tube), whole bulk",,55,,8.13,trial_01_2026-11-18_160625Z.csv
+november,2026-11-18 pm,trial bulk at one angle (old tube),50.0,55,0.0,,trial_01_2026-11-18_160625Z.csv
+november,2026-11-18 pm,trial bulk at one angle (old tube),45.0,55,0.0,,trial_01_2026-11-18_160625Z.csv
+november,2026-11-18 pm,"trial (old tube), whole bulk",,55,,8.13,trial_02_2026-11-18_160654Z.csv
+november,2026-11-18 pm,trial bulk at one angle (old tube),50.0,55,-0.04,,trial_02_2026-11-18_160654Z.csv
+november,2026-11-18 pm,trial bulk at one angle (old tube),45.0,55,0.0,,trial_02_2026-11-18_160654Z.csv
+november,2026-11-18 pm,"trial (old tube), whole bulk",,55,,8.13,trial_01_2026-11-18_160947Z.csv
+november,2026-11-18 pm,trial bulk at one angle (old tube),50.0,55,-0.04,,trial_01_2026-11-18_160947Z.csv
+november,2026-11-18 pm,trial bulk at one angle (old tube),45.0,55,0.0,,trial_01_2026-11-18_160947Z.csv
+november,2026-11-18 pm,"trial (old tube), whole bulk",,55,,7.95,trial_02_2026-11-18_161016Z.csv
+november,2026-11-18 pm,trial bulk at one angle (old tube),50.0,55,0.0,,trial_02_2026-11-18_161016Z.csv
+november,2026-11-18 pm,trial bulk at one angle (old tube),45.0,55,0.0,,trial_02_2026-11-18_161016Z.csv
+november,2026-11-18 am,"trial (old tube), whole bulk",,55,,8.32,trial_01_2026-11-18_064519Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),60.0,55,-1.31,,trial_01_2026-11-18_064519Z.csv
+november,2026-11-18 am,"trial (old tube), whole bulk",,55,,5.83,trial_02_2026-11-18_064549Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),60.0,55,2.62,,trial_02_2026-11-18_064549Z.csv
+november,2026-11-18 am,"trial (old tube), whole bulk",,55,,8.23,trial_01_2026-11-18_065513Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),60.0,55,9.3,,trial_01_2026-11-18_065513Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),55.0,55,-0.5,,trial_01_2026-11-18_065513Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),50.0,55,27.34,,trial_01_2026-11-18_065513Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),45.0,55,10.06,,trial_01_2026-11-18_065513Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),40.0,55,-0.61,,trial_01_2026-11-18_065513Z.csv
+november,2026-11-18 am,"trial (old tube), whole bulk",,55,,8.89,trial_02_2026-11-18_065615Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),60.0,55,0.06,,trial_02_2026-11-18_065615Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),55.0,55,-1.14,,trial_02_2026-11-18_065615Z.csv
+november,2026-11-18 am,trial bulk at one angle (old tube),50.0,55,-0.33,,trial_02_2026-11-18_065615Z.csv
+november,2026-11-19,"trial (new tube), whole bulk",,55,,6.03,trial_01_2026-11-19_194721Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),60.0,55,98.29,,trial_01_2026-11-19_194721Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),55.0,55,2.11,,trial_01_2026-11-19_194721Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),50.0,55,0.07,,trial_01_2026-11-19_194721Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),45.0,55,0.06,,trial_01_2026-11-19_194721Z.csv
+november,2026-11-19,"trial (new tube), whole bulk",,55,,8.71,trial_02_2026-11-19_194756Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),60.0,55,0.46,,trial_02_2026-11-19_194756Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),55.0,55,0.0,,trial_02_2026-11-19_194756Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),50.0,55,0.0,,trial_02_2026-11-19_194756Z.csv
+november,2026-11-19,"trial (new tube), whole bulk",,55,,8.99,trial_01_2026-11-19_195354Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),60.0,55,0.36,,trial_01_2026-11-19_195354Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),55.0,55,0.04,,trial_01_2026-11-19_195354Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),50.0,55,2.95,,trial_01_2026-11-19_195354Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),45.0,55,0.0,,trial_01_2026-11-19_195354Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),40.0,55,0.0,,trial_01_2026-11-19_195354Z.csv
+november,2026-11-19,"trial (new tube), whole bulk",,55,,8.7,trial_02_2026-11-19_195448Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),60.0,55,0.0,,trial_02_2026-11-19_195448Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),55.0,55,0.07,,trial_02_2026-11-19_195448Z.csv
+november,2026-11-19,trial bulk at one angle (new tube),50.0,55,0.05,,trial_02_2026-11-19_195448Z.csv
+november,2026-11-18 am,probe 2.75 rev (old tube),55.0,55,15.27,,README
+november,2026-11-18 am,probe 2.75 rev (old tube),50.0,55,9.45,,README
+november,2026-11-18 am,probe 2.75 rev (old tube),45.0,55,21.82,,README
+november,2026-11-18 am,probe 2.75 rev (old tube),40.0,55,37.45,,README
+november,2026-11-18 am,probe 2.75 rev (old tube),35.0,55,33.82,,README
+november,2026-11-18 am,probe 2.75 rev (old tube),30.0,55,32.73,,README
+november,2026-11-18 am,probe 2.75 rev (old tube),60.0,55,40.73,,README
+november,2026-11-18 am,probe 2.75 rev (old tube),60.0,55,-4.0,,README
+november,2026-11-18 am,0 deg priming spin (old tube),0.0,55,14.77,,README
+november,2026-11-18 pm,probe 2.75 rev (old tube),30.0,55,3.35,,README
+november,2026-11-18 pm,0 deg priming spin (old tube),0.0,55,0.04,,README
+november,2026-11-19,probe 2.75 rev (new tube),55.0,55,5.45,,README
+november,2026-11-19,probe 2.75 rev (new tube),50.0,55,5.09,,README
+november,2026-11-19,probe 2.75 rev (new tube),45.0,55,1.45,,README
+november,2026-11-19,probe 2.75 rev (new tube),40.0,55,1.35,,README
+november,2026-11-19,probe 2.75 rev (new tube),35.0,55,4.44,,README
+november,2026-11-19,probe 2.75 rev (new tube),30.0,55,4.91,,README
+november,2026-11-19,probe 2.75 rev (new tube),60.0,55,0.69,,README
+november,2026-11-19,probe 2.75 rev (new tube),60.0,55,0.4,,README
+november,2026-11-19,0 deg priming spin (new tube),0.0,55,6.53,,README

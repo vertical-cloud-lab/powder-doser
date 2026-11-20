@@ -1,0 +1,49 @@
+powder_id,target_g,trial_uuid8,t_s,phase,mass_g,kf_mass_g,kf_rate_gps,kf_sigma_g,ff_gpr,rate_setpoint_gps,pred_g,cutoff_g,tilt_deg_cmd,auger_rpm_cmd,tap_mode,source
+salt,0.5,9046eb75,5.98,bulk,0.00000,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,0.5,9046eb75,6.36,bulk,0.00000,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,0.5,9046eb75,6.64,bulk,0.02780,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,0.5,9046eb75,7.03,bulk,0.08560,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,0.5,9046eb75,7.42,bulk,0.14380,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,0.5,9046eb75,7.79,bulk,0.20040,,,,,,,,40.0,100.0,cadence 60/440 ms,telemetry
+salt,0.5,9046eb75,10.77,bulk_settled,0.33568,,,,,,,,40.0,0.0,none,telemetry
+salt,0.5,9046eb75,14.30,trickle,0.33550,0.33550,0.00000,0.01352,0.3500,0.05000,0.34902,0.46500,10.0,0.00,none,telemetry
+salt,0.5,9046eb75,14.58,trickle,0.33550,0.33550,0.04769,0.01206,0.3500,0.05000,0.38732,0.46500,10.0,14.19,none,telemetry
+salt,0.5,9046eb75,14.96,trickle,0.33550,0.35367,0.02180,0.01098,0.3500,0.05000,0.38282,0.46500,10.0,2.35,none,telemetry
+salt,0.5,9046eb75,15.36,trickle,0.33550,0.35796,0.05097,0.01016,0.3500,0.05000,0.41062,0.46500,10.0,10.11,none,telemetry
+salt,0.5,9046eb75,15.73,trickle,0.33550,0.37094,0.02499,0.00951,0.3500,0.05000,0.40129,0.46500,10.0,2.77,none,telemetry
+salt,0.5,9046eb75,16.12,trickle,0.33620,0.37244,0.05281,0.00937,0.3500,0.05000,0.42584,0.46500,10.0,10.38,none,telemetry
+salt,0.5,9046eb75,16.50,trickle,0.34430,0.38644,0.02737,0.00917,0.3500,0.04711,0.41843,0.46500,10.0,3.29,none,telemetry
+salt,0.5,9046eb75,16.88,trickle,0.35490,0.39174,0.04977,0.00910,0.3327,0.04393,0.44234,0.46500,10.0,9.82,none,telemetry
+salt,0.5,9046eb75,17.17,trickle,0.37010,0.40508,0.03088,0.00855,0.3204,0.03593,0.43938,0.46500,10.0,3.16,none,telemetry
+salt,0.5,9046eb75,17.55,trickle,0.39260,0.41916,0.03209,0.00878,0.3109,0.02749,0.45469,0.46500,10.0,6.06,none,telemetry
+salt,0.5,9046eb75,17.93,trickle,0.40580,0.43329,0.02111,0.00896,0.3047,0.01902,0.45985,0.46500,10.0,3.44,none,telemetry
+salt,0.5,9046eb75,18.31,trickle,0.42570,0.44509,0.02054,0.00900,0.3005,0.01194,0.47121,0.46500,10.0,3.97,none,telemetry
+salt,0.5,9046eb75,20.89,trickle_end,0.43800,,,,,,,,10.0,0.0,none,telemetry
+salt,0.5,9046eb75,24.15,tap,0.44104,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,27.21,tap,0.44354,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,30.18,tap,0.44770,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,33.23,tap,0.44888,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,36.21,tap,0.45130,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,39.16,tap,0.45416,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,42.32,tap,0.45586,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,45.48,tap,0.45810,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,48.54,tap,0.45954,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,51.50,tap,0.46184,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,54.65,tap,0.46480,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,57.63,tap,0.46604,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,60.77,tap,0.46800,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,63.83,tap,0.47032,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,66.80,tap,0.47180,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,69.96,tap,0.47308,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,73.01,tap,0.47562,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,76.18,tap,0.47798,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,79.23,tap,0.47960,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,82.40,tap,0.48156,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,85.35,tap,0.48522,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,88.52,tap,0.48696,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,91.57,tap,0.48930,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,94.72,tap,0.49198,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,97.88,tap,0.49350,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,101.05,tap,0.49510,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,104.00,tap,0.49676,,,,,,,,15.0,0.0,single x1,telemetry
+salt,0.5,9046eb75,107.17,tap,0.49930,,,,,,,,15.0,0.0,single x1,telemetry

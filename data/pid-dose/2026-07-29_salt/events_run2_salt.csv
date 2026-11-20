@@ -1,0 +1,8 @@
+powder_id,run,t_ms,event
+salt,run2,20,preroll start (pre-zeroing absolute mass)
+salt,run2,10052,tare (Z) sent
+salt,run2,10665,tare settled at 0.0000 g
+salt,run2,10757,dose start: PID to 1.0000 g
+salt,run2,21852,overshoot guard tripped at 1.0033 g
+salt,run2,24430,postroll start
+salt,run2,35143,final stable weigh: 1.0012 g
