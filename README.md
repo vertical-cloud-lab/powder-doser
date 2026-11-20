@@ -106,13 +106,17 @@ Each powder lives in its own auger, filled once, capped and stored loaded, so ch
 (b) Fitting a filled auger to the doser, and (c) the doser ready over the cup, frames from the 30 Sep 2026 dose video: the powder falls through a paper funnel into an aluminium cup that stands in the glass beaker. The aluminium cup is part of the alloy workflow itself: the dose lands directly in the cup used for the next step in making the alloy, so the powder is never transferred.<br>
 (d) The eight augers of the food-safe set (seven powders), capped and labelled (17 Nov 2026), each with the mass one auger revolution delivered (\*at 22.5° tilt; Fig. 6a).</sub>
 
+<p align="center"><img src="docs/readme/gifs/loading_al4047.gif" alt="Animation: two camera views of the bench as an auger is filled with Al 4047 powder, fitted to the doser and checked over the balance" width="80%"></p>
+
+<sub><b>Animation: loading an auger with Al 4047</b> (30 Sep 2026; <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/166">#166</a>). Left, a phone camera on the bench; right, the bench livestream at the same moment. The auger is filled with Al 4047 at the back of the bench (×100), fitted to the doser (×12) and checked over the balance (×20). Claude then dosed 8.0010 g of it for an atomizer charge, in three passes after a firmware error and a clog; the full video is under <a href="#videos">Videos</a>. Cut from the slide video of <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/174">#174</a>.</sub>
+
 ## Results: 13 powders
 
 We tested seven food-safe surrogates and six research powders, including gas-atomized AlSi10Mg and two grades of silicon. Open loop, under one fixed set of settings, the powders spanned more than an order of magnitude in mass per revolution, and the flow came in waves, one surge per revolution.
 
 <p align="center"><img src="docs/readme/gifs/thirteen_powders.gif" alt="Animation: a chart built up step by step, mass per auger turn for 13 powders on a log axis, then the mass delivered when each was asked for 1 g" width="90%"></p>
 
-<sub><b>Animation: one doser, 13 powders.</b> The same auger and the same settings for every powder, built up one group at a time: table salt, then the food-safe stand-ins, then the research powders. Ten powders moved, from 10 to 231 mg per auger turn (a 24-fold range), and seven of them were dosed to 1 g within ±5%. An earlier layout of Figs. 6a and 7, from <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/173">#173</a>.</sub>
+<sub><b>Animation: one doser, 13 powders.</b> The same auger design and the same settings for every powder, built up one group at a time: table salt, then the food-safe stand-ins, then the research powders. Ten powders moved, from 10 to 231 mg per auger turn (a 24-fold range), and seven of them were dosed to 1 g within ±5%. An earlier layout of Figs. 6a and 7, from <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/173">#173</a>.</sub>
 
 <p align="center"><img src="docs/readme/fig6_open_loop.png" alt="Fig. 6: mass per auger revolution and per solenoid tap for 13 powders, and mass against time under continuous rotation" width="100%"></p>
 
@@ -174,7 +178,7 @@ The same parts, put together in order:
 
 <p align="center"><img src="docs/readme/gifs/assembly.gif" alt="Animation: the doser assembled in CAD in 19 steps, from the mounting board up to the auger cap, with each step's parts highlighted in the bill of materials" width="100%"></p>
 
-<sub><b>Animation: assembling the doser.</b> The 19 steps, from the mounting board to the auger's cap, with the parts of each step highlighted in the bill of materials (numbered as in Fig. S4); at the end the plate tilts through its range. CAD of the current design from <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/170">#170</a>, which also has a slower <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/7f5b3b7/cad/full-assembly/renders/assembly_walkthrough.gif">walkthrough with written instructions for each step</a> (6.8 MB) and a <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/7f5b3b7/cad/full-assembly/renders/assembly_presentation_720p.mp4">720p video</a>.</sub>
+<sub><b>Animation: assembling the doser.</b> The 19 steps, from the mounting board to the auger's cap, with the parts of each step highlighted in the bill of materials (numbered as in Fig. S4); at the end the plate tilts up to 45° and back. CAD of the current design from <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/170">#170</a>, which also has a slower <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/7f5b3b7/cad/full-assembly/renders/assembly_walkthrough.gif">walkthrough with written instructions for each step</a> (6.8 MB) and a <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/7f5b3b7/cad/full-assembly/renders/assembly_presentation_720p.mp4">720p video</a>.</sub>
 
 **CAD models (Onshape).** There is no public Onshape folder yet; these are the current documents, one per part, as listed by the team in [#193](https://github.com/vertical-cloud-lab/powder-doser/issues/193#issuecomment-6504703603), which also has the print settings.
 

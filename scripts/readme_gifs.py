@@ -6,7 +6,8 @@ Every GIF in ``docs/readme/gifs/`` (except the livestream clip, which
 lives on that PR's branch, which is not merged.  This script downloads each one
 from the commit it was posted at, so the README keeps working after those
 branches are deleted, and shrinks the larger ones with gifsicle so the README
-stays quick to load.
+stays quick to load.  One GIF is cut from an MP4 on a PR branch (CLIPS), which
+also needs ffmpeg.
 
     python3 scripts/readme_gifs.py [OUT_DIR]
 
@@ -46,6 +47,14 @@ GIFS = [
     ("multi_doser_v10.gif", "c72c5bc", "cad/chain-carousel-v10/renders/v10/overview_v10.gif", 800),
 ]
 
+# Clips cut from MP4s: (output name, commit, path, start s, end s, width, frames per second)
+CLIPS = [
+    # PR #174: loading an auger with Al 4047 and fitting it to the doser (30 Sep 2026); left, the
+    # phone camera on the bench; right, the bench livestream; the speed is in the bottom corners
+    ("loading_al4047.gif", "ed26df4",
+     "docs/videos/2026-09-30-al4047-claude-dose/al4047_claude_dose_slide.mp4", 0.0, 17.8, 560, 5),
+]
+
 
 def main() -> None:
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO / "docs/readme/gifs"
@@ -64,6 +73,21 @@ def main() -> None:
         before, after = raw.stat().st_size, (out / name).stat().st_size
         raw.unlink()
         print(f"{name:34s} {before / 1e6:5.2f} MB -> {after / 1e6:5.2f} MB  ({commit}:{path})")
+    for name, commit, path, start, end, width, fps in CLIPS:
+        raw = out / f".{name}.mp4"
+        with urllib.request.urlopen(f"{RAW}/{commit}/{path}") as r:
+            raw.write_bytes(r.read())
+        vf = f"trim={start}:{end},setpts=PTS-STARTPTS,hqdn3d=2:2:6:6,fps={fps},scale={width}:-2:flags=lanczos"
+        palette, gif = out / f".{name}.png", out / f".{name}.raw.gif"
+        ff = ["ffmpeg", "-v", "error", "-y", "-i", str(raw)]
+        subprocess.run(ff + ["-vf", f"{vf},palettegen=max_colors=128:stats_mode=diff", str(palette)], check=True)
+        subprocess.run(ff + ["-i", str(palette), "-lavfi",
+                             f"{vf}[v];[v][1:v]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle",
+                             str(gif)], check=True)
+        subprocess.run(["gifsicle", "-O3", "--lossy=80", str(gif), "-o", str(out / name)], check=True)
+        for f in (raw, palette, gif):
+            f.unlink()
+        print(f"{name:34s} {(out / name).stat().st_size / 1e6:5.2f} MB  ({commit}:{path}, {start}-{end} s)")
 
 
 if __name__ == "__main__":
