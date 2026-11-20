@@ -80,6 +80,21 @@ Bulk angles by version:
   - the failed-in-a-row rule counts a failed trial only if it delivered
     under LOW_DELIVERY_G = 1.0 g (half the target, as 0.5 g was);
   - SESSION_BUDGET_S 100 min (110) so the analysis fits the job too.
+* 2026-11-20a: the rest of 19e's 30 trials, after a refill (XZaitzeff,
+  2026-11-20 01:56 UTC: "I refilled the auger so continue to run the
+  experiments").  19e's launch ran trials 1-20 and stopped when the tube
+  ran dry.  This launch numbers its trials from FIRST_TRIAL = 21 and runs
+  N_TRIALS = 10 of them, to trial 30.  Every stage setting, threshold and
+  stall rule is 19e's.  What changed:
+  - if the launch's first trial ends failed under LOW_DELIVERY_G, it only
+    primed the refilled tube (as 19e's trial 1 did: 12 auger revs to reach
+    the outlet), so the launch runs one extra trial (to 31) and 10 trials
+    still get to dose;
+  - the cup caps count from this launch's start.  The beaker was not
+    emptied (the balance read 33.495 g, 19e's end), so CUP_CAP_G 24.0 /
+    CUP_HARD_G 25.5 keep the beaker under about 59 g in total, inside the
+    62.5 g that 19e's 30 x 2 g plan allowed;
+  - SESSION_BUDGET_S 45 min for 10-11 trials.
 
 Runs ON the Pico via ``mpremote run`` (RAM only -- nothing is written to
 the Pico filesystem).  The controller is the Pico's own
@@ -144,10 +159,12 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-19e"
+SCRIPT_VERSION = "2026-11-20a"
 POWDER_ID = "alsi10mg"            # 2026-11-19e ("salt" up to 19d)
 
-N_TRIALS = 30
+FIRST_TRIAL = 21               # 2026-11-20a: the rest of 19e's 30 (1 before)
+N_TRIALS = 10                  # trials FIRST_TRIAL .. FIRST_TRIAL + N - 1 (30)
+PRIME_EXTRA = 1                # 20a: extra trials if the first only primes
 TARGET_G = 2.0                 # 2026-11-19e (1.0 up to 19d)
 
 # --- the request (XZaitzeff, PR #131, 2026-11-18 "1a, 2a, yes"; 2026-11-19 a-d)
@@ -174,17 +191,18 @@ PREROLL_S = 5.0                # logged before each trial's baseline
 POSTROLL_S = 8.0               # logged after the controller finishes
 
 # --- safety ----------------------------------------------------------------
-CUP_CAP_G = 62.5               # total into the cup this session (19e: 30 x 2 g;
-                               # 45 for 30 x 1 g up to 19d)
+CUP_CAP_G = 24.0               # total into the cup this launch (20a: the beaker
+                               # already holds 19e's 33.5 g; 62.5 in 19e for
+                               # 30 x 2 g, 45 for 30 x 1 g up to 19d)
 CUP_NEXT_MARGIN_G = 2.6        # don't start a trial that could pass the cap (1.6)
-CUP_HARD_G = 64.0              # any frame above this mid-trial -> abort (46.5)
+CUP_HARD_G = 25.5              # any frame above this mid-trial -> abort
+                               # (64.0 in 19e, 46.5 up to 19d)
 BAL_MAX_G = 95.0               # displayed ceiling (balance range 102 g)
 MAX_FAILED_IN_A_ROW = 2        # stalled / scale-error / timeout ... in a row
 LOW_DELIVERY_G = 1.0           # 19c: ... counted only if it delivered < this
                                # (19e: half the 2 g target; 0.5 at 1 g)
-SESSION_BUDGET_S = 100 * 60    # don't start a trial after this (19c: 110,
-                               # so the last trial ends inside the job limit;
-                               # 19e: 100, to leave the analysis time too)
+SESSION_BUDGET_S = 45 * 60     # don't start a trial after this (20a: 45 for
+                               # 10-11 trials; 100 in 19e, 110 in 19c)
 
 
 # ---------------------------------------------------------------------------
@@ -607,6 +625,9 @@ def main(hw=None):
     meta("scale_sha16", file_sha("scale.py"))
     meta("balance_filter_sha16", file_sha("balance_filter.py"))
     meta("n_trials", N_TRIALS)
+    meta("first_trial", FIRST_TRIAL)
+    meta("prime_extra", "{} more trial(s) if trial {} fails with < {} g"
+         .format(PRIME_EXTRA, FIRST_TRIAL, LOW_DELIVERY_G))
     meta("target_g", TARGET_G)
     meta("bulk", "rpm {} tilts {} continuous cadence-taps {} ms per {} ms "
          "anticipation 0".format(
@@ -672,7 +693,10 @@ def main(hw=None):
             stop_reason = "balance silent at session start"
             raise HardCap(stop_reason)
         meta("abs0_g", "{:.4f}".format(C.abs0))
-        for trial in range(1, N_TRIALS + 1):
+        last_trial = FIRST_TRIAL + N_TRIALS - 1
+        trial = FIRST_TRIAL - 1
+        while trial < last_trial:
+            trial += 1
             elapsed = time.ticks_diff(time.ticks_ms(), session_t0) / 1000.0
             if elapsed > SESSION_BUDGET_S:
                 stop_reason = "session time budget ({:.0f} min)".format(
@@ -733,6 +757,13 @@ def main(hw=None):
                 failed_in_row = 0
             else:
                 failed_in_row += 1
+                if trial == FIRST_TRIAL and PRIME_EXTRA > 0:
+                    # 20a: the first trial after a refill only primed the
+                    # tube (19e's trial 1); give 10 trials a chance to dose
+                    last_trial += PRIME_EXTRA
+                    ev("trial {} only primed the tube ({:.4f} g): last "
+                       "trial is now {}".format(trial, res.dispensed_g,
+                                                last_trial))
             if C.abort:
                 stop_reason = C.abort
                 break
