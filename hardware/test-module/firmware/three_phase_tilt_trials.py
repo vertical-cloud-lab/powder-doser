@@ -1,5 +1,6 @@
-"""30 x 1 g salt (30 x 2 g AlSi10Mg from 19e, calcium lactate from 20b) trials:
-three-phase dose with a stepped bulk tilt (PR #131).
+"""30 x 1 g salt (30 x 2 g AlSi10Mg from 19e, calcium lactate from 20b; 30 x
+1.5 g barium chloride from 20c) trials: three-phase dose with a stepped bulk
+tilt (PR #131).
 
 Requested by XZaitzeff on 2026-11-18 (PR #131): 30 trials of 1 g of salt.
 Bulk stage at 55 auger rpm with the plate stepping through five angles,
@@ -110,6 +111,23 @@ Bulk angles by version:
     displayed (95 before) as a second stop under that OL point.  30 x 2 g
     can't fit in one beaker; the cap ends the launch cleanly first;
   - SESSION_BUDGET_S 90 min so the analysis fits the Actions job.
+* 2026-11-20c: the same protocol on barium chloride, at 1.5 g a trial
+  (XZaitzeff, 2026-11-20 17:26 UTC: "I replaced the powder in the auger
+  with barium chloride.  Run the same experiment as before except aim
+  for 1.5 g this time").  Every stage setting, threshold and stall rule
+  is 20b's (= 19e's).  What changed:
+  - POWDER_ID "barium-chloride", TARGET_G 1.5, trials from 1 again with
+    20a's extra trial if trial 1 only primes the freshly filled tube;
+  - what scales with the target, as 19e did for 2 g: the bulk's tilt
+    bands are (1.5 - 0.25) / 5 = 0.25 g each, LOW_DELIVERY_G is half the
+    target (0.75 g), and the start margin is the target + 0.6 g (2.1 g;
+    1.6 at 1 g, 2.6 at 2 g), so no trial starts past 35.9 g in the cup;
+  - the cup caps are 20b's (CUP_CAP_G 38.0, CUP_HARD_G 40.0, BAL_MAX_G
+    41.0 g displayed): the beaker was emptied (the balance read -0.032 g,
+    stable, at 17:31) and it is the same beaker, which goes over range at
+    about 43.1 g displayed.  30 x 1.5 g is 45 g, so the cap ends the
+    launch cleanly after about 23 doses;
+  - SESSION_BUDGET_S 75 min so the analysis fits the Actions job.
 
 Runs ON the Pico via ``mpremote run`` (RAM only -- nothing is written to
 the Pico filesystem).  The controller is the Pico's own
@@ -174,13 +192,14 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-20b"
-POWDER_ID = "calcium-lactate"     # 2026-11-20b ("alsi10mg" 19e/20a, "salt" up to 19d)
+SCRIPT_VERSION = "2026-11-20c"
+POWDER_ID = "barium-chloride"     # 2026-11-20c ("calcium-lactate" 20b, "alsi10mg"
+                                  # 19e/20a, "salt" up to 19d)
 
-FIRST_TRIAL = 1                # 20b: a new powder (21 in 20a, the rest of 19e's 30)
+FIRST_TRIAL = 1                # 20b/20c: a new powder (21 in 20a, the rest of 19e's 30)
 N_TRIALS = 30                  # trials FIRST_TRIAL .. FIRST_TRIAL + N - 1 (10 in 20a)
 PRIME_EXTRA = 1                # 20a: extra trials if the first only primes
-TARGET_G = 2.0                 # 2026-11-19e (1.0 up to 19d)
+TARGET_G = 1.5                 # 2026-11-20c (2.0 in 19e-20b, 1.0 up to 19d)
 
 # --- the request (XZaitzeff, PR #131, 2026-11-18 "1a, 2a, yes"; 2026-11-19 a-d)
 BULK_RPM = 80.0               # 2026-11-19d (55 up to 2026-11-19c)
@@ -210,16 +229,19 @@ CUP_CAP_G = 38.0               # total into the cup this launch (20b: the balanc
                                # goes OL at about 43.1 g displayed with this
                                # beaker; 24.0 in 20a on top of 33.5 g, 62.5 in
                                # 19e for 30 x 2 g, 45 for 30 x 1 g up to 19d)
-CUP_NEXT_MARGIN_G = 2.6        # don't start a trial that could pass the cap (1.6)
+CUP_NEXT_MARGIN_G = 2.1        # don't start a trial that could pass the cap
+                               # (target + 0.6 g: 2.6 at 2 g, 1.6 at 1 g)
 CUP_HARD_G = 40.0              # any frame above this mid-trial -> abort
                                # (25.5 in 20a, 64.0 in 19e, 46.5 up to 19d)
 BAL_MAX_G = 41.0               # displayed ceiling (20b: under the beaker's OL at
                                # about 43.1 g displayed; 95.0 up to 20a)
 MAX_FAILED_IN_A_ROW = 2        # stalled / scale-error / timeout ... in a row
-LOW_DELIVERY_G = 1.0           # 19c: ... counted only if it delivered < this
-                               # (19e: half the 2 g target; 0.5 at 1 g)
-SESSION_BUDGET_S = 90 * 60     # don't start a trial after this (20b: 90; 45 in
-                               # 20a for 10-11 trials, 100 in 19e, 110 in 19c)
+LOW_DELIVERY_G = 0.75          # 19c: ... counted only if it delivered < this
+                               # (half the target: 0.75 at 1.5 g in 20c, 1.0
+                               # at 2 g in 19e-20b, 0.5 at 1 g)
+SESSION_BUDGET_S = 75 * 60     # don't start a trial after this (20c: 75; 90 in
+                               # 20b, 45 in 20a for 10-11 trials, 100 in 19e,
+                               # 110 in 19c)
 
 
 # ---------------------------------------------------------------------------
