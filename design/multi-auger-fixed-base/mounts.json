@@ -1,0 +1,311 @@
+{
+ "torque_Nmm": 650.0,
+ "options": {
+  "M0": {
+   "title": "Today: a hanger per actuator",
+   "a": 95.0,
+   "act": "P16-150",
+   "lean": 0.0
+  },
+  "M1": {
+   "title": "Lower deck on three posts",
+   "a": 95.0,
+   "act": "P16-150",
+   "lean": 0.0,
+   "post_gap": 5.5
+  },
+  "M2": {
+   "title": "Shorter actuator, shorter lever",
+   "a": 48.0,
+   "act": "P16-100",
+   "lean": 0.0,
+   "post_gap": 10.0,
+   "slot_end": 70.0
+  },
+  "M3": {
+   "title": "Actuators leaning outward",
+   "a": 95.0,
+   "act": "P16-150",
+   "lean": 40.0
+  }
+ },
+ "kinematics": {
+  "M0": {
+   "rod_pin_mm": [
+    95.0,
+    -45.0
+   ],
+   "base_pin_mm": [
+    95.0,
+    -247.0
+   ],
+   "actuator": "P16-150",
+   "closed": 197.0,
+   "stroke": 150.0,
+   "rod_out": {
+    "0": 5.0,
+    "30": 58.7,
+    "45": 85.4,
+    "60": 109.9,
+    "90": 148.6
+   },
+   "spare_at_90": 1.4,
+   "monotonic": true,
+   "lever_mm_per_rad": [
+    58.6,
+    105.1
+   ],
+   "mm_per_deg": [
+    1.02,
+    1.83
+   ],
+   "max_force_N": 11.1,
+   "max_force_at_tilt": 90.0,
+   "actuator_lean_deg": [
+    -8.3,
+    2.4
+   ],
+   "base_pin_from_beaker_axis": 127.0,
+   "below_shelf_underside": 218.9
+  },
+  "M1": {
+   "rod_pin_mm": [
+    95.0,
+    -45.0
+   ],
+   "base_pin_mm": [
+    95.0,
+    -247.0
+   ],
+   "actuator": "P16-150",
+   "closed": 197.0,
+   "stroke": 150.0,
+   "rod_out": {
+    "0": 5.0,
+    "30": 58.7,
+    "45": 85.4,
+    "60": 109.9,
+    "90": 148.6
+   },
+   "spare_at_90": 1.4,
+   "monotonic": true,
+   "lever_mm_per_rad": [
+    58.6,
+    105.1
+   ],
+   "mm_per_deg": [
+    1.02,
+    1.83
+   ],
+   "max_force_N": 11.1,
+   "max_force_at_tilt": 90.0,
+   "actuator_lean_deg": [
+    -8.3,
+    2.4
+   ],
+   "base_pin_from_beaker_axis": 127.0,
+   "below_shelf_underside": 218.9
+  },
+  "M2": {
+   "rod_pin_mm": [
+    48.0,
+    -45.0
+   ],
+   "base_pin_mm": [
+    48.0,
+    -197.0
+   ],
+   "actuator": "P16-100",
+   "closed": 147.0,
+   "stroke": 100.0,
+   "rod_out": {
+    "0": 5.0,
+    "30": 35.7,
+    "45": 52.9,
+    "60": 69.6,
+    "90": 98.0
+   },
+   "spare_at_90": 2.0,
+   "monotonic": true,
+   "lever_mm_per_rad": [
+    45.8,
+    65.8
+   ],
+   "mm_per_deg": [
+    0.8,
+    1.15
+   ],
+   "max_force_N": 14.2,
+   "max_force_at_tilt": 90.0,
+   "actuator_lean_deg": [
+    -0.7,
+    5.2
+   ],
+   "base_pin_from_beaker_axis": 80.0,
+   "below_shelf_underside": 168.8
+  },
+  "M3": {
+   "rod_pin_mm": [
+    95.0,
+    -45.0
+   ],
+   "base_pin_mm": [
+    224.8,
+    -199.7
+   ],
+   "actuator": "P16-150",
+   "closed": 197.0,
+   "stroke": 150.0,
+   "rod_out": {
+    "0": 5.0,
+    "30": 43.4,
+    "45": 69.7,
+    "60": 97.1,
+    "90": 148.3
+   },
+   "spare_at_90": 1.7,
+   "monotonic": true,
+   "lever_mm_per_rad": [
+    44.5,
+    105.1
+   ],
+   "mm_per_deg": [
+    0.78,
+    1.83
+   ],
+   "max_force_N": 14.6,
+   "max_force_at_tilt": 0.0,
+   "actuator_lean_deg": [
+    -40.0,
+    -27.9
+   ],
+   "base_pin_from_beaker_axis": 256.8,
+   "below_shelf_underside": 171.6
+  }
+ },
+ "deck": {
+  "M1": {
+   "geometry": {
+    "top": -256.1,
+    "bottom": -262.1,
+    "ring": [
+     112.0,
+     140.0
+    ],
+    "post_y": [
+     126.0,
+     142.0
+    ],
+    "post_x": 10.0,
+    "post_len": 212.85,
+    "lobe_end": 142.0,
+    "lobe_from_axis": 174.0,
+    "bracket_from_axis": 127.0,
+    "bracket_hole": [
+     0.0,
+     95.0
+    ],
+    "post_screw": [
+     0.0,
+     134.0
+    ]
+   },
+   "size_mm": [
+    318.1,
+    314.0
+   ],
+   "fits_h2d": true,
+   "volume_cm3": 366.0,
+   "shelf_underside_to_bench": 218.85,
+   "checks": {
+    "module_to_deck_and_posts": {
+     "mm": 2.44,
+     "between": "A:P16 body / deck + posts",
+     "at_tilt": 25
+    },
+    "moving_parts_to_shelf": {
+     "mm": 2.0,
+     "between": "A:clevis block / shelf",
+     "at_tilt": 0
+    },
+    "p16_closest_to_beaker_axis_under_shelf": 95.0,
+    "column_dia_under_shelf": 190.0,
+    "p16_lowest_point": -251.75,
+    "stir_plate_150_on_bench_inside_deck": {
+     "mm": 5.69,
+     "rotation_deg": 0,
+     "fits": true
+    },
+    "block_on_plate": {
+     "closest": "Bracket (rear)",
+     "block": 12.53,
+     "screw_heads": 20.26
+    }
+   }
+  },
+  "M2": {
+   "geometry": {
+    "top": -206.1,
+    "bottom": -212.1,
+    "ring": [
+     65.0,
+     93.0
+    ],
+    "post_y": [
+     83.5,
+     99.5
+    ],
+    "post_x": 10.0,
+    "post_len": 162.85,
+    "lobe_end": 99.5,
+    "lobe_from_axis": 131.5,
+    "bracket_from_axis": 80.0,
+    "bracket_hole": [
+     0.0,
+     48.0
+    ],
+    "post_screw": [
+     0.0,
+     91.5
+    ]
+   },
+   "size_mm": [
+    244.4,
+    224.5
+   ],
+   "fits_h2d": true,
+   "volume_cm3": 272.5,
+   "shelf_underside_to_bench": 168.85,
+   "checks": {
+    "module_to_deck_and_posts": {
+     "mm": 3.27,
+     "between": "A:P16 body / deck + posts",
+     "at_tilt": 40
+    },
+    "moving_parts_to_shelf": {
+     "mm": 2.0,
+     "between": "A:clevis block / shelf",
+     "at_tilt": 0
+    },
+    "p16_closest_to_beaker_axis_under_shelf": 69.3,
+    "column_dia_under_shelf": 138.6,
+    "p16_lowest_point": -201.75,
+    "stir_plate_150_on_bench_inside_deck": {
+     "mm": 0.0,
+     "rotation_deg": 0,
+     "fits": false
+    },
+    "block_on_plate": {
+     "closest": "Tap bracket (#203)",
+     "block": 5.99,
+     "screw_heads": 0.0
+    }
+   }
+  }
+ },
+ "column_r": {
+  "M0": 95.0,
+  "M1": 95.0,
+  "M2": 69.3
+ }
+}
