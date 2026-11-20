@@ -1,4 +1,7 @@
-# 30 × 2 g AlSi10Mg trials on the salt protocol: 16 doses, then the tube ran dry (2026-11-19)
+# 30 × 2 g AlSi10Mg trials on the salt protocol: 16 doses, then the tube ran dry (2026-11-19); after a refill, 4 more, then the balance went over range (2026-11-20)
+
+Trials 1–20 ran on 2026-11-19 (below). After @XZaitzeff refilled the tube, trials 21–26 ran on
+2026-11-20: see [Trials 21–30 after the refill](#trials-2130-after-the-refill-2026-11-20).
 
 Asked by @XZaitzeff on [PR #131](https://github.com/vertical-cloud-lab/powder-doser/pull/131)
 at 22:25 UTC: "Now there is alsi10mg powder in the doser. Run the same experiments as done for
@@ -219,6 +222,10 @@ and stored dry.
 
 ## What would let the 30 trials finish
 
+*Written on 2026-11-19. The tube was refilled on 2026-11-20 but the beaker wasn't emptied, and
+point 2's "all 30 in one go" can't fit this beaker on the balance: it goes over range at about
+43.1 g on the display ([below](#the-balance-went-over-range-in-trial-26)).*
+
 Someone at the bench needs to:
 
 1. **Weigh the tube** before refilling. If this is the old tube, its empty mass is 56.716 g
@@ -278,3 +285,146 @@ MongoDB `powder_doser.dose_runs` has one document per trial (`doc_type: "three_p
 20) and one for the launch (`doc_type: "three_phase_tilt_session"`), all with
 `session_id: "tilt30-2026-11-19T22:43:48"`, `powder_id: "alsi10mg"`, `script_version: "2026-11-19e"`,
 `bulk_rpm: 80`, `launch: "a1"` and `commit: "111dc94"`.
+
+## Trials 21–30 after the refill (2026-11-20)
+
+Asked by @XZaitzeff on [PR #131](https://github.com/vertical-cloud-lab/powder-doser/pull/131)
+at 01:56 UTC: "I refilled the auger so continue to run the experiments."
+
+**Outcome:** trial 21 primed the refilled tube, and trials 22–25 each dosed 2 g. In trial 26 the
+balance went over its range (OL, display E), which stopped the run at 02:13. The beaker hadn't been
+emptied after trial 20, and with this beaker on the pan the 102 g balance tops out at about 43.1 g on
+its display. Trials 27–31 didn't run.
+
+- **Accuracy:** 2 of the 4 doses finished within ±1 mg (−0.6 and −0.1 mg). The other two went 1.6
+  and 11.6 mg over. Across both days, 11 of the 20 completed doses finished within ±1 mg.
+- **All four doses ended in the fine stage.** 34–48 mg landed after its halt (median 39 mg; 20 mg
+  in trials 2–17), so none of them reached the tap stage. The fine halts came at 1.958–1.968 g and the
+  doses ended at 1.9994–2.0116 g.
+- **Speed:** a dose took 26.5–39.0 s (median 27.9 s). The bulk delivered 1.75 g in 18 s, or 29 s in
+  trial 22, right after the priming trial. At the bulk halt the flow was 0.117–0.127 g/s, the fast
+  end of trials 2–17.
+- **Bulk afterflow:** 88–105 mg. Afterflow ÷ flow at the halt was 0.75–0.83 s (median 0.79 s;
+  0.86 s in trials 2–17).
+- **About 10 g went into the beaker** (balance 33.495 → 43.115 g at the last reading before OL), and
+  probably up to about 11 g, since powder was still falling as the display stalled. The beaker now
+  holds about 43–45 g of AlSi10Mg.
+
+![Final error per trial and afterflow at each halt, trials 1–26](afterflow_vs_anticipation_trials1-26.png)
+
+The same two panels as the first figure, for both days. The dashed line in panel A marks the refill.
+The figure comes from `python plot_afterflow_vs_anticipation.py launch1_2243Z launch2_0208Z
+--out=afterflow_vs_anticipation_trials1-26.png`.
+
+![Bench camera: before the launch, trial 26 at 55° and 40°, and after the stop](camera_launch2_0205Z_0212Z_0214Z.png)
+
+Bench camera, cropped to the tube, the beaker and the balance display. The overlay clock is lab time
+(UTC−7); the captions give UTC. Frames are the first of each 2 s livestream segment, fetched on the
+Zero with [`camat.py`](../2026-11-19_salt_tilt-schedule-old-auger-80rpm/camat.py) and decoded with
+`ffmpeg` on the runner.
+
+- **02:05:29, before the launch:** the tube is grey with powder again, and the balance reads 33.4950 g:
+  the beaker still holds trials 1–20.
+- **02:12:39, trial 26 at 55°:** a stream falls from the outlet while the display rises at about 0.1 g/s.
+- **02:12:51, trial 26 at 40°:** the stream still shows, but the display is gaining only 2–4 mg/s.
+- **02:14:39, after the stop:** the plate is at 0° and nothing is moving or touching the beaker. The
+  display reads **E**.
+
+### The balance went over range in trial 26
+
+- The bulk reached 1.54 g in 20 s (43.05 g on the display) at the usual rate, stepping on its bands
+  down to 40°.
+- From there the display gained only 2–4 mg/s for 15 s, to 43.1153 g, and the next frame was OL. The
+  script stopped the auger and the taps, put the plate at 0° and ended the launch at 02:13:03.
+- The camera still shows powder falling from the outlet at 02:12:51, 3 s into that stretch, as it did
+  at 02:12:39 when the display rose 0.1 g/s. No stream shows at 02:12:59. So the display most likely
+  under-read in its last stretch before E, and trial 26 put somewhere between 1.6 g and 2 g into the
+  beaker; the readings above about 43.05 g aren't to be trusted.
+- At 02:14 the balance still answered OL to every read, with the plate at 0° and nothing touching the
+  beaker. So the load on the pan is past the balance's 102 g range, and the beaker (with whatever else
+  was zeroed out on the pan on 2026-11-19) weighs about 57–59 g.
+- **With this beaker the balance takes about 43 g of powder, or about 20 two-gram doses, between
+  emptyings.** The 30 × 2 g in one beaker that 2026-11-19e planned for (its 62.5 g cup cap) could never
+  have fit. This launch's own cap, 24 g on top of the 33.5 g already in the beaker, wasn't reached;
+  the balance's OL frame ended the run cleanly, as the script intends.
+
+### What ran
+
+[`three_phase_tilt_trials.py`](../../../hardware/test-module/firmware/three_phase_tilt_trials.py)
+version `2026-11-20a` ([`e6f84ca`](https://github.com/vertical-cloud-lab/powder-doser/commit/e6f84ca)),
+on the Pico's own `main_three_phase.py` (sha256 prefix `6b2111e1b2447096`, unchanged). Every stage
+setting, threshold and stall rule is `2026-11-19e`'s. What changed:
+
+- The trials are numbered from 21, and the launch runs 10 of them, to trial 30.
+- If the first trial ends failed under 1 g, it only primed the refilled tube (as trial 1 did), and
+  the launch runs one more trial, so 10 trials still get to dose. Trial 21 did, so the launch was set
+  to end at trial 31.
+- The cup caps count from the launch's start: 24.0 g, or 25.5 g mid-trial. With the 33.5 g already in
+  the beaker that is about 59 g in total, under 19e's 62.5 g. A balance overload frame also ends the
+  run.
+- A 45 min budget.
+
+Checks before the launch:
+
+- The Zero was idle, the Pico port free, and the Pico's controller files matched their 11-18 hashes.
+- The balance read 33.4950 g, stable (the end of trial 20). The camera showed the refilled tube.
+- CPython dry runs of `2026-11-20a` on copies of the Pico's controller files
+  ([`tests/sim_three_phase_tilt_trials.py`](../../../hardware/test-module/firmware/tests/sim_three_phase_tilt_trials.py)):
+  two seeds ran trials 21–30 without errors; a tube that feeds nothing for its first 15 revolutions
+  made trial 21 a priming stall and the launch ran trials 22–31; a tube that never feeds stopped after
+  trials 21 and 22.
+- **Static-tilt pour probe** on the refilled tube ([`alsi_static_probe.py`](alsi_static_probe.py),
+  [log](launch2_0208Z/static_tilt_probe_launch2.log)): plate 0 → 30 → 40 → 50 → 60 → 0°, 4 s at each
+  angle, auger still, no taps. All 121 frames read 33.4950 g.
+
+| trial | start (UTC) | result | final | error | dose | bulk | fine | bulk afterflow | fine afterflow | taps | auger revs |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 21 | 02:08:49 | stalled in the bulk | 0.0022 g |  | 14.2 s | 11.2 s |  |  |  | 27 | 12.0 |
+| 22 | 02:09:19 | **ok** | 1.9994 g | −0.6 mg | 39.0 s | 28.9 s | 7.2 s | 97 mg | 41 mg | 89 | 35.0 |
+| 23 | 02:10:14 | overshoot | 2.0016 g | +1.6 mg | 26.9 s | 18.0 s | 5.8 s | 96 mg | 34 mg | 48 | 19.9 |
+| 24 | 02:10:56 | **ok** | 1.9999 g | −0.1 mg | 26.5 s | 17.9 s | 5.7 s | 105 mg | 37 mg | 49 | 19.9 |
+| 25 | 02:11:39 | overshoot | 2.0116 g | +11.6 mg | 28.8 s | 18.5 s | 7.2 s | 88 mg | 48 mg | 54 | 20.3 |
+| 26 | 02:12:23 | stopped: balance over range | at least 1.6 g |  |  | 31.8 s, stopped |  |  |  | 94 | about 40 |
+
+- The columns are as in the first table. No trial reached the tap stage.
+- **Trial 21** primed the tube as trial 1 did: the plate stepped 60 → 55 → 50° on the 3 s no-flow
+  step, and the stock 8 s stall rule ended it after 12 revolutions, with 1.3 mg.
+- **Trial 22** spent about 11 s at 60° before its first band step (the rest of the tube still filling),
+  then stepped on every band.
+- **Trial 26** has no final reading: the balance went over range in its bulk.
+
+### Timeline (UTC, 2026-11-20)
+
+| time | what | result |
+|---|---|---|
+| 01:56 | Request | |
+| 01:58–02:08 | Preflight, nothing moving | Zero idle, port free, Pico files unchanged, balance 33.4950 g stable, refilled tube on camera. Script `2026-11-20a` pushed (`e6f84ca`) after the dry runs. Rig notice posted on the Zero. |
+| 02:08:05 | Static-tilt pour probe | 33.4950 g in every frame at 0–60°. |
+| 02:08:43 | **Launch** ([`launch2_0208Z/`](launch2_0208Z/)) | Trial 21 primed the tube (launch extended to trial 31); trials 22–25 dosed, about 45 s per trial including the pre- and post-roll. |
+| 02:12:48 | Trial 26, plate 40° | The display slows to 2–4 mg/s at 43.05 g while powder still falls on camera. |
+| 02:13:03 | Balance over range | OL frame at 43.1153 g; the script stopped the auger, put the plate at 0° and exited. |
+| 02:14–02:16 | Rig restored | The balance still answers OL (display E). Pico soft-rebooted into its power-on `main.py` (`[rig] ready`, servo at 0.0°). The rig notice on the Zero was marked done, asking for the beaker to be emptied. |
+
+### What would let trials 27–31 run
+
+1. **Empty the beaker** (about 43–45 g of AlSi10Mg), and put it back on the pan. The balance should
+   then read about 0 g. Cap the powder and keep it dry: fine Al-alloy powder is a combustible dust
+   ([handling notes](../../../docs/candidate-powders.md#handling-and-storage)).
+2. **Comment `@claude`.** Trials 27–31 need about 10 g, which fits easily. The tube was still feeding
+   at 02:13, so the first of them shouldn't need priming. How much powder the refill put in the tube
+   wasn't posted; weighing the tube (56.716 g empty, if it's the old tube) would tell.
+
+### Files (`launch2_0208Z/`)
+
+- `trial_NN_<date>_<HHMMSS>Z.csv`, `trials_summary.csv`, `session_launch2.log` and the three
+  `scripts/analyze_tilt_trials.py` figures, laid out as in `launch1_2243Z/`.
+- `static_tilt_probe_launch2.log`: the pour probe on the refilled tube.
+- `run.sh`: the Zero-side launcher.
+- In this folder: `camera_launch2_0205Z_0212Z_0214Z.png` (the frames above) and
+  `afterflow_vs_anticipation_trials1-26.png`. `plot_afterflow_vs_anticipation.py` now takes several
+  launch folders and an `--out=` name; with no arguments it draws the first figure as before.
+
+MongoDB `powder_doser.dose_runs` has one document per trial (`doc_type: "three_phase_tilt_trial"`, 6)
+and one for the launch (`doc_type: "three_phase_tilt_session"`), all with
+`session_id: "tilt30-2026-11-20T02:08:49"`, `continues_session: "tilt30-2026-11-19T22:43:48"`,
+`powder_id: "alsi10mg"`, `script_version: "2026-11-20a"`, `launch: "a2"` and `commit: "a33df56"`.

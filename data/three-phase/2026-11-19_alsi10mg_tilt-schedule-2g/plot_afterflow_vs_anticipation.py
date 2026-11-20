@@ -16,7 +16,11 @@ Reads ``launch1_2243Z/trials_summary.csv`` (written by
   20 mg anticipation; the dotted line is afterflow = 1.07 s x flow, the
   2026-08-07 stop-response fit.
 
-usage: python plot_afterflow_vs_anticipation.py [launch dir]
+usage: python plot_afterflow_vs_anticipation.py [launch dir ...] [--out=NAME.png]
+
+With several launch folders (2026-11-20: launch1_2243Z launch2_0208Z, the
+trials before and after the refill) their trials are pooled, panel A marks
+where each later launch starts, and --out names the figure.
 """
 import csv
 import os
@@ -27,7 +31,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-LAUNCH = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "launch1_2243Z")
+ARGS = [a for a in sys.argv[1:] if not a.startswith("--out=")]
+OUT = ([a[len("--out="):] for a in sys.argv[1:] if a.startswith("--out=")]
+       or ["afterflow_vs_anticipation.png"])[0]
+LAUNCHES = ARGS or [os.path.join(HERE, "launch1_2243Z")]
 
 BULK = "#2a78d6"     # same stage colours as scripts/analyze_tilt_trials.py
 FINE = "#eb6834"
@@ -49,7 +56,14 @@ def fnum(v):
         return None
 
 
-ALL = list(csv.DictReader(open(os.path.join(LAUNCH, "trials_summary.csv"))))
+ALL = []
+STARTS = []          # first trial of each later launch (panel A marks it)
+for i, launch in enumerate(LAUNCHES):
+    part = list(csv.DictReader(open(os.path.join(launch,
+                                                 "trials_summary.csv"))))
+    if i and part:
+        STARTS.append(min(int(r["trial"]) for r in part))
+    ALL += part
 # Completed doses only (ok / overshoot); stalled or failed trials are listed
 # in the panel A note instead.
 rows = [r for r in ALL if r["status"] in ("ok", "overshoot")
@@ -85,14 +99,35 @@ ax1.set_axisbelow(True)
 n_ok = sum(1 for r in rows if abs(fnum(r["error_mg"])) <= 1.0)
 note = "grey band: the ±1 mg tolerance ({} of {} inside)".format(
     n_ok, len(rows))
+stopped = [r for r in stalled if r["status"] != "stalled"]
+stalled = [r for r in stalled if r["status"] == "stalled"]
+if STARTS:          # pooled launches: a shorter note
+    note += "\nnot shown: trial{} {} stalled".format(
+        "s" if len(stalled) > 1 else "",
+        ", ".join(r["trial"] for r in stalled))
+    if stopped:
+        note += "; {} stopped mid-dose".format(
+            ", ".join(r["trial"] for r in stopped))
+    stalled = stopped = []
 if stalled:
     note += "\nnot shown: trial{} {} stalled ({})".format(
         "s" if len(stalled) > 1 else "",
         ", ".join(r["trial"] for r in stalled),
         ", ".join("{:.3f} g".format(fnum(r["final_g"])) for r in stalled
                   if fnum(r["final_g"]) is not None))
+if stopped:
+    note += "\nand trial{} {}, stopped mid-dose ({})".format(
+        "s" if len(stopped) > 1 else "",
+        ", ".join(r["trial"] for r in stopped),
+        ", ".join(r["status"] for r in stopped))
+for x0 in STARTS:
+    ax1.axvline(x0 - 0.5, color=INK2, lw=1.0, ls=(0, (4, 3)), zorder=1)
+    ax1.text(x0 - 0.2, 0.80, "tube\nrefilled", transform=ax1.get_xaxis_transform(),
+             ha="left", va="top", color=INK2, fontsize=9)
 ax1.text(0.99, 0.03, note, transform=ax1.transAxes, ha="right", va="bottom",
-         color=INK2, fontsize=9)
+         color=INK2, fontsize=9, zorder=4,
+         bbox=(dict(facecolor=SURFACE, edgecolor="none", pad=1.5)
+               if STARTS else None))
 ax1.plot([], [], "o", ms=8, mec=INK, mew=1.4, mfc=INK, ls="none",
          label="reached the tap stage")
 ax1.plot([], [], "o", ms=8, mec=INK, mew=1.4, mfc=SURFACE, ls="none",
@@ -138,6 +173,6 @@ ax2.legend(loc="upper left", frameon=False, fontsize=9)
 ax2.set_title("B  Afterflow at each halt", loc="left", fontsize=11, color=INK)
 
 fig.tight_layout()
-out = os.path.join(HERE, "afterflow_vs_anticipation.png")
+out = os.path.join(HERE, OUT)
 fig.savefig(out, dpi=130)
 print("wrote", out)
