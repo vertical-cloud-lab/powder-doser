@@ -735,7 +735,7 @@ his own API key.
 - **API calls:** 39 in all on 20 Nov. That includes two key checks, three
   failed calls while getting the feature format right, and the two shaded
   views below. `python onshape_clevis.py --check-only --did ... --wid ... --eid ...`
-  re-runs only the checks (about 7 calls).
+  re-runs only the checks (about 5 calls).
 
 ![The clevis block as Onshape renders it](renders/clevis_block_onshape.png)
 
@@ -769,18 +769,20 @@ the torque (0.65 N·m) at every tilt, and the actuator's leverage is lowest at
     174 mm from the beaker axis (48 wide, R10 corners).
   - At 318 × 314 mm it fits on one H2D nozzle, like the base.
 - **Actuators:** each P16's own U-bracket screws to the deck's top.
-  - The screw is the P16's #8-32, through a Ø4.5 hole 127 mm from the beaker
-    axis, straight under the clevis pin.
+  - An M4 (or #8) screw goes through the bracket's base hole and a Ø4.5 hole
+    in the deck, 127 mm from the beaker axis, straight under the clevis pin.
+    A heat-set insert or a nut in a pocket underneath keeps the deck's
+    underside flat. (The #8-32 screws that ship with the P16 are its pins.)
   - A 1 mm pocket keys the bracket square, so it can't turn on its one screw.
 - **Posts:** three, 20 × 16 mm, at the lobe ends, where the hangers hang
   today (158–174 mm from the beaker axis, 5.5 mm behind the P16's housing).
   - **Length:** 212.85 mm, from the deck's top to the shelf's underside.
   - **Printing:** printed on the deck as one 219 mm tall print, or printed
-    separately and screwed on.
-  - **Fixing:** one M5 into each end (a heat-set insert), through a Ø5.5
-    hole in the shelf and in the deck.
-  - **Countersink the shelf's screw:** a cap head on top of the shelf would
-    hit the plate's rear end at 0°.
+    separately and screwed on with an M5 through the deck into a heat-set
+    insert in each post's foot.
+  - **Top:** an M5 countersunk screw down through a Ø5.5 hole in the shelf
+    into a heat-set insert in the post. Countersink it: a cap head on top of
+    the shelf would hit the plate's rear end at 0°.
 - **Standing it up:** the deck is the foot.
   - On the bench, the shelf's underside is 218.85 mm up, 2 mm more than with
     the hangers.
@@ -826,8 +828,8 @@ holes when closed and has 100 mm of stroke.
   - **The block's screws:** the clevis block moves under #203's tap bracket,
     whose base covers the floor's top from 37 to 67 mm behind the hinge. Its
     two M3 screws would have to go through the tap bracket's base as well
-    (M3 × 16, plus two new holes in the bracket), or into heat-set inserts
-    from below.
+    (longer screws, plus two new holes in the bracket), or into heat-set
+    inserts from below.
   - **The base:** its slots end 70 mm behind the hinge (instead of 112), so
     the posts land on solid shelf.
 - **Checks over 0–90°:** 3.3 mm to the deck and posts, 2.0 mm to the shelf.

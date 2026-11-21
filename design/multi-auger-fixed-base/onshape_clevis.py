@@ -393,8 +393,10 @@ def main():
         part_id=pid, features=tree, read_back=rb, compare_with_clevis_py=cmp_,
         api_calls_this_run=CALLS["n"], when_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         frame=J["frame"])
-    if a.check_only and old:
-        res["api_calls_build"] = old.get("api_calls_build", old.get("api_calls_this_run"))
+    if a.check_only and old:                        # keep the build's record
+        for k in ("api_calls_build", "api_calls_total_20_nov", "api_calls_note", "api_key_cannot"):
+            if k in old:
+                res[k] = old[k]
     else:
         res["api_calls_build"] = CALLS["n"]
     out_p.write_text(json.dumps(res, indent=1) + "\n")

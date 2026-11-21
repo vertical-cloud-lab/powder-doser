@@ -533,9 +533,9 @@ def deck_drawing(res, key="M1"):
     dim((0, 0), (0, yp), -85, f"{yp:.0f}", 90)
     dim((0, 0), (0, ye), -110, f"{ye:.0f}", 90)
     dim((-LOBE_HALF, ye), (LOBE_HALF, ye), 18, f"{2 * LOBE_HALF:.0f}")
-    ax.annotate("Ø4.5 hole (the P16's #8-32 or M4)\nin a 1 mm pocket that keys\nthe U-bracket square (blue)", xy=(7.5, yb),
+    ax.annotate("Ø4.5 hole for an M4 (or #8) screw,\nin a 1 mm pocket that keys\nthe U-bracket square (blue)", xy=(7.5, yb),
                 xytext=(-182, yb + 22), fontsize=9.5, arrowprops=dict(arrowstyle="-", lw=0.6, color=GREY))
-    ax.annotate(f"post {POST['w']:.0f} x {POST['d']:.0f} (red dashes),\nprinted on the deck; Ø5.5 hole\nfor an M5 into its top and foot",
+    ax.annotate(f"post {POST['w']:.0f} x {POST['d']:.0f} (red dashes), printed\non the deck or screwed on; Ø5.5 hole\nfor an M5 into a heat-set insert",
                 xy=(-g["post_x"], yp), xytext=(-182, yp + 8), fontsize=9.5, arrowprops=dict(arrowstyle="-", lw=0.6, color=GREY))
     ax.text(0, 4, "beaker axis", fontsize=9, ha="center", va="bottom", color=GREY)
     ex = res["deck"][key]["size_mm"]
