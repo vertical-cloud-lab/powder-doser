@@ -1110,6 +1110,7 @@ is taken as 95 g, a NEMA 11 as 110 g, a solenoid as 40 g, each auger holds
 | [`clevis/`](clevis/) | `clevis_block.step` (origin at the pad's top face), `clevis_block_print.stl` (flipped for printing), `clevis_block_with_hardware.step`; `onshape.json` (the Onshape document, its features and the checks) and `clevis_block_onshape.stl` (the part as Onshape exports it) |
 | [`onshape_clevis.py`](onshape_clevis.py) | Builds the clevis block in Onshape through the REST API (needs `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY`) and checks it against `clevis.py` |
 | [`mounts.py`](mounts.py), [`mounts.json`](mounts.json) | Ways to mount the actuators: today's hangers, a lower deck on three posts, a P16-100 on a shorter lever, leaning the actuators outward. Stroke, force, height, footprint; clearance checks for the decks; renders `mount_*.png` |
+| [`leg_room.py`](leg_room.py), [`leg_room.json`](leg_room.json) | Six layouts that make more room for the scale: legs splayed, P16s leaning out, a longer lever (P16-200), both, and a gearmotor on each hinge axis. Free diameter and front opening by depth, clearance checks over 0–90°, the HR-100A at every orientation; renders `legroom_*.png` |
 | [`mount-deck/`](mount-deck/) | `deck_M1.step` and `deck_M2.step`: the lower decks with their posts, origin on the beaker axis, hinge axes at z = 0 |
 | [`renders/`](renders/) | The figures above |
 
@@ -1128,6 +1129,7 @@ xvfb-run -a python holes.py                 # where the clevis block's holes go 
 xvfb-run -a python clevis.py                # the clevis block: dimensions, checks, STEP/STL, drawing (about 1 min)
 python onshape_clevis.py                    # build the clevis block in a new Onshape document (needs the keys; about 25 calls)
 xvfb-run -a python mounts.py                # actuator mount options: decks, checks, figures (about 1 min)
+xvfb-run -a python leg_room.py             # more room for the scale: six layouts, checks, figures (about 11 min)
 ```
 
 **Limits.**
@@ -1198,3 +1200,129 @@ around the balance. That, more than the height, is what limits it.
 - The fast sweep uses surface samples 1.5 mm apart. The reported configurations were re-checked with
   mesh distances.
 - `xvfb-run -a python scale_room.py` takes about 9 minutes.
+
+## More room for the scale: options that spread the legs and actuators apart (added 21 Nov)
+
+Ethan asked for options that make the space between the legs bigger, so that whatever legs we choose
+fit easily round the new scale. Its dimensions are still to come. [`leg_room.py`](leg_room.py) models
+six layouts, and [`leg_room.json`](leg_room.json) holds the numbers. Every layout is shown with the
+shelf 340 mm above the bench.
+
+**What sets the room today.**
+- Two things hang round the scale: the legs and the three P16s.
+- The P16s are the tighter of the two. Each hangs 213 mm below the shelf, 127 mm from the beaker axis.
+- As its module tilts, a P16's top swings inward. That leaves Ø190 mm between the three P16s just
+  under the shelf (Ø212 mm 100 mm lower), counting every tilt.
+- S2's posts are Ø336 mm apart.
+- **So moving only the legs gains nothing above the P16s' lower ends.**
+
+![Six ways to make room for the scale](renders/legroom_options.png)
+
+| | What changes | Free Ø ¹ (mm), 15 / 105 / 205 mm under the shelf | Front opening ² (mm), same depths | Hangs below the shelf | Feet within | HR-100A ³, lid off / on |
+|---|---|---|---|---|---|---|
+| **L0** Today (S2) | — | 190 / 212 / 232 | 163 / 178 / 191 | 213 mm | r 248 | +1.0 (0) / −4.2 (0) |
+| L0, tilts kept to 60° | firmware only | 235 / 236 / 244 | | 213 mm | r 248 | |
+| **L1** Legs splayed 15° | 3 splayed legs; the P16s on their own hangers | 190 / 212 / 232 | 163 / 178 / 191 | 213 mm | r 291 | +5.4 (9) / −4.2 (0) |
+| **L2** P16s leaning 25° out | clevis pin 91.5 mm behind the hinge (was 95); slots to 134.5 mm; posts on outrigger arms, r 247 | 245 / 326 / 421 | 210 / 276 / 354 | 195 mm | r 307 | +30.0 (72) / +13.9 (48) |
+| **L3** Longer lever | P16-200; pin 135 mm behind the hinge on a tail under the plate; slots to 151 mm (past the lobe end); posts at r 209 | 225 / 258 / 290 (up to 60°: 291 / 300 / 305) | 193 / 218 / 242 | 263 mm | r 270 | +19.2 (9) / +0.9 (0) |
+| **L4** Lever + lean | P16-200 leaning 25°, pin 120 mm behind the hinge; slots to 164.5 mm; posts at r 296 | 302 / 383 / 466 | 259 / 326 / 394 | 240 mm | r 356 | +50.3 (72) / +36.2 (72) |
+| **L5** Drive on the hinge axis | a gearmotor on each hinge axis; no P16s, clevis blocks or slots | 336 / 336 / 336 (the posts) | 281 / 281 / 281 | nothing | r 239 | +35.5 (21) / +32.2 (21) |
+| L5, posts moved out to r 247 | as L5, with L2's outrigger arms | 474 / 474 / 474 | 400 / 400 / 400 | nothing | r 307 | +51.6 (72) / +35.5 (72) |
+
+¹ The diameter of the largest circle about the beaker axis that clears the actuators at every tilt from
+0 to 90° and the legs, in 10 mm bands below the shelf's underside. Just under the shelf, the legs'
+8 mm arms set it: Ø288 in L3–L5.
+² The widest object, centred on the beaker axis, that clears everything in front of the axis at every
+tilt. This is what slides in from the front.
+³ `scale_room.py`'s HR-100A (A&D's drawing), as an example. It stands on the bench with its pan centre
+on the beaker axis, checked at every orientation in 5° steps. The first number is its closest approach
+at its best orientation. The bracket is how many of the 72 orientations clear by 2 mm.
+
+![Room under the shelf, by depth](renders/legroom_profiles.png)
+
+![Plan of each option](renders/legroom_plans.png)
+
+**L0 with tilts kept to 60°.**
+- The P16s lean inward most near 90°.
+- **Limited to 60° in firmware, the gap is Ø235 at every depth,** with no hardware change. Dosing so
+  far has used 20–40°.
+
+**L1, legs splayed.**
+- **Only the room below the P16s' feet grows,** because the P16s still set the room above them.
+- For the HR-100A that is enough to stop the display touching a leg (+1.0 → +5.4 mm), but the P16s
+  still hem in the breeze break.
+
+**L2, P16s leaning 25° outward.**
+- **Same parts:** the same P16-150 and clevis block. The pin moves 3.5 mm nearer the hinge, so
+  0–90° still fits the stroke (5–149 of 150 mm). The force is about 10 N, as now.
+- **The top of the room barely changes.** It is still set by the clevis block, which sits just under
+  the shelf at 0°.
+- **Lower down it opens up,** because the P16 bodies run outward: Ø326 at 100 mm and Ø421 at 200 mm.
+- **The feet move out to r 209, so the posts move out too:**
+  - The posts go out to r 247 on printed arms under the lobe ends.
+  - Each arm is a fork either side of the lengthened slot.
+  - Each P16's U-bracket sits on a tab from its post, square to the actuator at 45°. The actuator
+    leans 17–25° as the module tilts.
+- **Footprint:** 546 × 473 mm.
+
+**L3, longer lever.**
+- **The P16s move 40 mm further out:** the pin sits 135 mm behind the hinge, on a tail past the
+  floor's rear edge (130 mm). This needs P16-200s, which use 5–199 of their 200 mm.
+- **Parked, the gap is Ø325; up to 60°, Ø291.**
+- **At 90° it is only Ø225,** because at 90° the pin comes in to 77 mm from the beaker axis,
+  whatever the lever.
+- **Height:** the P16s hang 263 mm below the shelf, 50 mm more than now, so the stand can't go below
+  about 270 mm.
+
+**L4, lever and lean.**
+- **The most room of the P16 layouts:** Ø302, 383 and 466 at the three depths, at any tilt.
+- **The cost:** P16-200s, and feet out to r 356 (632 × 547 mm).
+
+**L5, a gearmotor on each hinge axis.**
+- **The idea:** take the P16s out from under the shelf altogether. Each module is driven from its
+  hinge axis by:
+  - an 8 mm shaft keyed into the +X knuckle, in place of the M5 hinge screw;
+  - a coupler 53 mm out from the module's centre line;
+  - a gearmotor with an encoder, drawn as a Ø37 × 85 mm placeholder, on a cradle.
+- **Where the motor sits:** above the shelf, in the gap to the next module, 82–163 mm from the
+  beaker axis. One of the three is in the front gap.
+- **The legs alone set the room:** Ø336 between S2's posts at every depth and tilt.
+  - On L2's outrigger arms (r 247), that grows to Ø474.
+  - The HR-100A then clears at every orientation: by at least 39 mm with the lid off, 22 mm with it on.
+- **Footprint:** with S2's posts, 427 × 370 mm, the smallest of the six.
+- **Checks, over 0–90°:**
+  - The drive stays 15.5 mm from the neighbouring module.
+  - It stays 7.5 mm from its own auger tube.
+  - The coupler stays 4.4 mm from the towers.
+  - Closer than 53 mm, the coupler would pass within 2 mm of the next module's tower nose.
+- **What the drive has to do:**
+  - Hold 0.65 N·m at the hinge, the upper torque estimate. So pick a gearmotor rated about 2 N·m or
+    more.
+  - Hold its tilt with the power off: use a worm gear, or a brake.
+  - Report its tilt, as the P16's potentiometer does today, for example with a magnet on the shaft
+    end and an absolute encoder.
+- **Printing:** with the motor pads printed in, the base grows to 344 × 324 mm, which is past one
+  H2D nozzle (325 × 320). So print the pads with the cradles and bolt them on.
+
+**Checks (all layouts).** The legs, arms, tabs, hangers and motors stay at least 4.25 mm from every
+moving part, with each module swept over 0–90° in 5° steps. The base stays at least 2.0 mm away. That
+2.0 mm is the clevis block in its slot at 0°, as before.
+
+**What to send for the new scale** (so the next step can fit it the way `scale_room.py` fitted the
+HR-100A):
+- width, depth and height;
+- where the pan's centre is, measured from the front edge and from one side;
+- the draft shield's footprint and height, and how its doors open;
+- where the display is;
+- whether its top or doors must open while the doser is in place.
+
+**Limits**
+- **Placeholders:** the legs, arms, tabs, tails, motors, cradles and pads.
+- **The P16-200's closed length** (247 mm) assumes stroke + 47 mm, like the P16-100 and P16-150.
+  Check it against Actuonix's drawing.
+- **L5's drive** is an envelope only. No motor was chosen, and the keyed knuckle wasn't drawn.
+- **Not analysed:** stiffness, and ringing under the tapper. The longer slots in L2–L4 leave thinner
+  strips at the lobe ends.
+- **The HR-100A is only an example;** the new scale will differ.
+- **Run time:** `xvfb-run -a python leg_room.py` takes about 11 minutes. `--figures-only` redraws the
+  charts from `leg_room.json`.
