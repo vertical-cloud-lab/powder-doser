@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: "If you use this hardware, software, or data, please cite it as below."
+type: software
+title: "powder-doser: design files, firmware, test data, design log, and AI interaction history for an open-source auger powder doser"
+version: 1.0.0
+# TODO: add the Zenodo version DOI once the v1.0.0 draft is reserved/published, e.g.
+# doi: 10.5281/zenodo.XXXXXXX
+date-released: 2026-11-09  # TODO: planned tag date; update to the actual v1.0.0 release date
+repository-code: "https://github.com/vertical-cloud-lab/powder-doser"
+# TODO: placeholder licence. MIT matches the current LICENSE file, but the hardware and
+# data licences are not chosen yet (paper/submission/SUBMISSION-DECISIONS.md, item 5).
+# Replace (or list several SPDX IDs, e.g. [MIT, CERN-OHL-S-2.0, CC-BY-4.0]) before release.
+license: MIT
+keywords:
+  - powder dosing
+  - open-source hardware
+  - self-driving laboratory
+  - laboratory automation
+  - 3D printing
+  - generative AI
+  - AI-assisted CAD
+  - auger
+  - gravimetric dosing
+  - alloy discovery
+# TODO: add ORCIDs (none are recorded in the repository).
+authors:
+  - given-names: Sam
+    family-names: Charles
+    affiliation: "Department of Mechanical Engineering, Brigham Young University"
+  - given-names: Will
+    family-names: Mulberry
+    affiliation: "Department of Mechanical Engineering, Brigham Young University"
+  - given-names: Luke
+    family-names: Winters
+    affiliation: "Department of Mechanical Engineering, Brigham Young University"
+  - given-names: Carl
+    family-names: Robison
+    affiliation: "Department of Mechanical Engineering, Brigham Young University"
+  - given-names: Gage
+    family-names: Erickson
+    affiliation: "Department of Mechanical Engineering, Brigham Young University"
+  - given-names: Sterling G.
+    family-names: Baird
+    affiliation: "Department of Mechanical Engineering, Brigham Young University; Acceleration Consortium, University of Toronto"

@@ -1,0 +1,56 @@
+Resolved from round 1
+
+- The Fig. 3a problem description is now corrected and matches the human review. The old wrong framing about the part not connecting to its mounting plate is gone. The current caption says panel (a) is bad because of “part-to-part interferences, incorrect tolerancing, no clearance for the solenoid and vibration motor it must carry, and a general lack of spatial reasoning—impossible to implement as drawn” in `caption_fig2_genai.md` and the compiled caption on `main.pdf` p. 5. That matches the human PR comment: “a) is bad because of interferences, incorrect tolerancing, no space for relevant components, and a general lack of spatial reasoning” in `pr97_comments.md` lines 38–45.
+
+- The caption now distinguishes the reviewed programmatic tap-collar image from the later Zoo redesign. Exact wording: “The same part after iterative review in the programmatic workflow; the production tap collar was subsequently redesigned in Zoo Design Studio (three iterations to a usable part)” in `caption_fig2_genai.md`. That resolves the specific round-1 need to acknowledge the Zoo redesign noted in `pr97_comments.md` lines 52–65 and resource notes lines 117–120.
+
+- The figure now does mention Zoo in panel (b), both in-panel and in the caption. Evidence: panel (b) title in `make_figures.py` lines 296–300 is `Tap collar after review iterations\n(final part redesigned in Zoo)`, and the compiled figure on `main.pdf` p. 5 shows the same title.
+
+- The top-row panel titles and the caption are internally aligned on the basic intended story for panels (a), (c), and (d): bad first tap collar, good part-by-part auger/pinion, bad whole-assembly attempt. Evidence: `make_figures.py` lines 291–309 and `caption_fig2_genai.md`.
+
+Not resolved from round 1
+
+- Panel (d) still does not visibly support its claim. The caption says panel (d) is “A whole-assembly generation attempt (single prompt): plausible at a glance, but with interferences and floating components that took longer to diagnose than the part-by-part route took to build” in `caption_fig2_genai.md`. But the supplied asset is still `assets/single_channel_module_iso.png`, wired in at `make_figures.py` lines 306–309, and the rendered panel on `fig2_genai.pdf` / `main.pdf` p. 5 is a sparse wireframe/isometric module where the alleged interferences and floating parts are not actually called out or made legible. This was a round-1 issue and it remains.
+
+- Panel (f) is still the odd-view mounting-plate render. `make_figures.py` lines 311–315 still use `plate_iter2_platforms_iso.png` for panel (f), while the surrounding sequence uses `plate_iter1_hole_top.png`, `plate_iter3_gap_top.png`, and `plate_iter4_final_top.png`. The filenames alone show the viewpoint mismatch, and the rendered figure confirms it: panel (f) is oblique/isometric while (e), (g), and (h) are front/top-style orthographic views. The round-1 request to replace panel (f) with a matching-view iteration render is not yet met.
+
+- Figure numbering metadata is still inconsistent. The bundle metadata still says this is “Figure 2” in `README.md` and in the header of `caption_fig2_genai.md` (“main.tex, Figure 2”), but the compiled manuscript clearly labels this panel set as `Fig. 3` on `main.pdf` p. 5. `main.pdf` p. 4 labels the design-specifics figure as `Fig. 2`, so the gen-AI outcomes figure is not Figure 2 in the compiled manuscript.
+
+- Panel (b) is still ambiguous about what image is being shown. The caption says panel (b) is “the same part after iterative review in the programmatic workflow,” while the in-panel title says “final part redesigned in Zoo” (`make_figures.py` lines 296–300). Those are not the same claim. The branch tree also points to a programmatic tap-collar source branch, `origin/copilot/design-tap-collar -> design/cad/tap-collar/{cad_model.py, render_views.py, renders/tap_collar_iso.png, renders/assembly_iso.png}`, while the supplied bundle does not include a Zoo-derived tap-collar render for panel (b). So the round-1 ambiguity is not fully resolved.
+
+- Panels (e–h) still lack explicit defect callouts/crops. In `make_figures.py` lines 317–321 each panel gets only `show(...)`, `panel_label(...)`, and a short title. There are no arrows, highlights, zooms, or annotations marking the hole, raised platforms, or gap. Round-1 asked for these; they are still absent in `fig2_genai.pdf`.
+
+- The “stale input files” root-cause claim is still unsupported within the figure package. The caption still ends: “The root cause was stale input files—a human-side error the agent silently designed around” in `caption_fig2_genai.md`. I do not see a cited provenance file in the bundle tying panels (e–h) to that exact diagnosis. The branch tree names likely relevant provenance paths such as `origin/copilot/design-mounting-plate`, `origin/copilot/design-mounting-plate-cadsmith`, `cad/mounting-plate-assembly/...`, and `design/cad/mounting-plate-assembly/cadsmith_runs/...`, but none of those files is actually supplied here for direct verification. So this round-1 issue is not resolved.
+
+Remaining concrete inconsistencies or unsupported claims fixable without new bench data
+
+- Body-text versus caption conflict for panels (e–h). The main text says: “the agent proposed the raised-bracket solution to a gear-clearance problem we had misdiagnosed, Fig. 3e–h” on `main.pdf` p. 4 (Section 2.3). The caption instead says the sequence reflects the agent “silently designed around” stale inputs caused by a “human-side error” in `caption_fig2_genai.md`. Those are different causal stories. One credits the agent with a useful design proposal; the other frames the sequence as compensation for bad upstream inputs. Pick one story and make body, caption, and panel titles agree.
+
+- Panel (b) title conflicts with panel (b) caption. In-panel: “Tap collar after review iterations (final part redesigned in Zoo)” from `make_figures.py` lines 296–300. Caption: “The same part after iterative review in the programmatic workflow; the production tap collar was subsequently redesigned in Zoo Design Studio...” in `caption_fig2_genai.md`. If the image is the programmatic reviewed collar, the title should say that. If the image is meant to be the Zoo-derived production collar, replace the asset. As supplied, it reads both ways.
+
+- The panel (d) subtitle likely still uses the wrong module label. The title is “Whole-assembly attempt (single prompt, v1 module)” in `make_figures.py` line 309. But the branch-tree source for `single_channel_module_iso.png` is `origin/copilot/modular-single-channel-powder-doser-design -> design/cad/single-channel-module/renders/single_channel_module_iso.png`, which aligns with the manuscript’s Section 2.2 description of the second-generation “self-contained single-channel module” on `main.pdf` p. 3, not an explicitly documented “v1 module.” This was already flagged in round 1 and remains a fixable labeling issue.
+
+- The figure still does not explicitly signpost HUMAN versus AI roles, despite a manuscript-wide request to do so. `pr97_comments.md` lines 22–37 ask for explicit signposting and state that no GUI CAD package was used, only programmatic CAD plus late exploratory Zoo Design Studio through Zookeeper. The current caption only says “AI-generated” in panel (a) and “human-side error” at the end. It does not give a clean division of labour for this figure, does not say no GUI CAD was used, and does not mention Zookeeper.
+
+- The figure package still has provenance drift between supplied files and manuscript context. `README.md` and the caption header still call this “Figure 2,” while `main.pdf` shows it as `Fig. 3`. That is a concrete, non-bench-data fix.
+
+- Panel (d) is still under-evidenced even at the asset level. The branch tree suggests the likely upstream source is `origin/copilot/modular-single-channel-powder-doser-design -> design/cad/single-channel-module/{cad_model.py, renders/single_channel_module_iso.png}`, but no branch-tree path or caption note explains where the specific “interferences and floating components” are in the shown view. Either annotate the current view or swap in a render that makes those defects visible.
+
+- The mounting-plate sequence is still visually uneven as a comparison figure. The branch tree names likely relevant paths for better-matched plate assets, including `origin/copilot/design-mounting-plate -> cad/mounting-plate/views/mounting_plate_top.png` and `origin/copilot/design-mounting-plate-cadsmith`, plus `cad/mounting-plate-assembly/views/...` and `design/cad/mounting-plate-assembly/cadsmith_runs/...`. I am not claiming contents beyond filenames, but these are the obvious branch-tree candidates to inspect for a matching-view replacement for panel (f) or for per-iteration provenance.
+
+Prioritized action list
+
+1. Fix the panel (e–h) story conflict between `main.pdf` Section 2.3 and `caption_fig2_genai.md`. Decide whether the sequence shows an AI-helpful raised-bracket insight or an AI workaround to stale human inputs, then align body, caption, and titles.
+2. Fix panel (b) so title and caption make the same claim. Either relabel it as the reviewed programmatic tap collar, or replace it with an actual Zoo-derived production-collar render. If Zoo stays in the text, mention the Zookeeper agent to match `pr97_comments.md` lines 63–65.
+3. Replace or annotate panel (d) so the claimed interferences/floating parts are visible. If keeping the current asset, rewrite the caption/title to match only what can actually be seen.
+4. Replace `plate_iter2_platforms_iso.png` in panel (f) with a matching-view iteration render, or re-render the whole (e–h) sequence from one viewpoint. Add visible callouts to the hole, raised-platform region, and gap.
+5. Reconcile figure numbering across `README.md`, `caption_fig2_genai.md`, and manuscript context: this is `Fig. 3` in the supplied `main.pdf`, not Fig. 2.
+6. Add one short caption clause stating the HUMAN/AI split for this figure and that no GUI CAD package was used; if Zoo is mentioned, note it was chat-driven through Zookeeper.
+7. Either cite the provenance for the “stale input files” diagnosis or soften that sentence to a directly supported observational claim.
+
+- Discretionary analytical decisions made during the analysis
+- Treated the compiled `main.pdf` as the authority for current figure numbering and manuscript-grounded interpretation when it conflicted with bundle-local labels in `README.md` and `caption_fig2_genai.md`.
+- Used the supplied figure PDF, caption, `make_figures.py`, `pr97_comments.md`, and the branch-tree listing as the admissible evidence base; named branch-tree files only as candidate provenance assets when they were not included in the local bundle.
+- Counted an issue as unresolved when the caption text was improved but the figure panel, panel title, or manuscript body still contradicted it.
+- Treated visibility as part of evidentiary support: if a panel claims interferences/floating parts but the supplied render does not make them legible, I marked that claim as still unsupported at figure level.
+- Limited attribution to HUMAN versus AI, per instruction, and did not name individuals.

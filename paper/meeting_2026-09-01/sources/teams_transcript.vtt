@@ -1,0 +1,5366 @@
+WEBVTT
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/15-0
+00:00:04.560 --> 00:00:08.720
+<v Sterling Baird>Mute your audio,
+but screen share probably, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/23-0
+00:00:27.280 --> 00:00:28.960
+<v Sterling Baird>This is pull request.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/25-0
+00:00:33.240 --> 00:00:34.960
+<v Sterling Baird>I recently...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/53-0
+00:00:36.800 --> 00:00:42.835
+<v Sterling Baird>Got it, please, and my camera going to be,
+ohh, you can you can take the camera off.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/53-1
+00:00:42.835 --> 00:00:48.089
+<v Sterling Baird>That's it's fun to see yourself.
+I know the latency, right? Yeah, I mean,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/53-2
+00:00:48.089 --> 00:00:52.065
+<v Sterling Baird>this is literally going up into into
+space, yeah, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/53-3
+00:00:52.065 --> 00:00:53.840
+<v Sterling Baird>that's a little wild too.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/58-0
+00:01:00.600 --> 00:01:02.800
+<v Sterling Baird>Yeah, we are sharing messages.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/80-0
+00:01:20.640 --> 00:01:24.341
+<v Sterling Baird>OK, yeah, so lots of jargon,
+lots of jargon,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/80-1
+00:01:24.341 --> 00:01:29.440
+<v Sterling Baird>and for the first first knowledge,
+and let's not encrypt our.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/93-0
+00:01:30.560 --> 00:01:34.267
+<v Sterling Baird>Yeah, public communication, exactly right,
+and we're trying to as open source as</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/93-1
+00:01:34.267 --> 00:01:35.640
+<v Sterling Baird>possible, and so, yeah, and...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/150-0
+00:01:36.800 --> 00:01:41.418
+<v Sterling Baird>Yeah, it becomes inaccessible. Yes, yeah,
+I think even I found that,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/150-1
+00:01:41.418 --> 00:01:45.836
+<v Sterling Baird>and what's the easy posters?
+What's the is that what it's called?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/150-2
+00:01:45.836 --> 00:01:50.121
+<v Sterling Baird>Better poster for me, yeah,
+and just in light of better poster,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/150-3
+00:01:50.121 --> 00:01:54.672
+<v Sterling Baird>it's not that the the people in this
+industry know know the jargon,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/150-4
+00:01:54.672 --> 00:01:56.480
+<v Sterling Baird>it's that we all kind of...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/195-0
+00:01:57.120 --> 00:02:01.239
+<v Sterling Baird>struggle through it every time,
+figure it out a lot of the time.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/195-1
+00:02:01.239 --> 00:02:05.485
+<v Sterling Baird>And I think it's not that we're all
+totally fluent in this jargon,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/195-2
+00:02:05.485 --> 00:02:08.337
+<v Sterling Baird>so that we all kind of try to figure it
+out.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/195-3
+00:02:08.337 --> 00:02:13.471
+<v Sterling Baird>And just the point that the simpler we
+make it isn't just for people who have no</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/195-4
+00:02:13.471 --> 00:02:16.640
+<v Sterling Baird>experience in this field,
+but also for people who</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/243-0
+00:02:16.720 --> 00:02:19.620
+<v Sterling Baird>Have a lot of experience in the field.
+It's also simpler for them,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/243-1
+00:02:19.620 --> 00:02:22.521
+<v Sterling Baird>so let's make it better for everybody.
+Yeah, and yeah, so I think,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/243-2
+00:02:22.521 --> 00:02:25.335
+<v Sterling Baird>and I think it's just like a ask through
+Claude again, like, OK,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/243-3
+00:02:25.335 --> 00:02:28.798
+<v Sterling Baird>remove the jargon and make this better.
+OK, that's a fine way to do that. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/243-4
+00:02:28.798 --> 00:02:31.396
+<v Sterling Baird>and I might like,
+and at some point go line by line through</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/243-5
+00:02:31.396 --> 00:02:33.690
+<v Sterling Baird>and stuff,
+but I think that's a fine Claude thing to</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/243-6
+00:02:33.690 --> 00:02:34.080
+<v Sterling Baird>do, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/251-0
+00:02:35.840 --> 00:02:38.823
+<v Sterling Baird>And then I have a couple of notes,
+so I can put that in the add,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/251-1
+00:02:38.823 --> 00:02:41.440
+<v Sterling Baird>just in a comment,
+you're gonna take these out, I think.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/258-0
+00:02:43.280 --> 00:02:47.603
+<v Sterling Baird>And Kelly,
+we were talking about the CAD stuff and</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/258-1
+00:02:47.603 --> 00:02:48.960
+<v Sterling Baird>going from then.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/285-0
+00:02:49.920 --> 00:02:53.208
+<v Sterling Baird>This can get us like 8% of the way. Yeah,
+pretty, pretty solid paper.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/285-1
+00:02:53.208 --> 00:02:57.107
+<v Sterling Baird>I think I can go line by line after that
+and then make it really good paper. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/285-2
+00:02:57.107 --> 00:02:59.080
+<v Sterling Baird>I think that's a good way to do it, and...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/320-0
+00:03:00.360 --> 00:03:04.444
+<v Sterling Baird>Also, just for this meeting, I said,
+we just kind of go through my notes and</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/320-1
+00:03:04.444 --> 00:03:08.846
+<v Sterling Baird>then right and hear what you think about
+it. Yeah, yeah, yeah, that's great. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/320-2
+00:03:08.846 --> 00:03:12.665
+<v Sterling Baird>go ahead. Yeah, so, yeah, jargon,
+and then I'll just go through line by</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/320-3
+00:03:12.665 --> 00:03:16.060
+<v Sterling Baird>line once it gets to a little bit of a
+better spot. Okay, okay,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/320-4
+00:03:16.060 --> 00:03:17.280
+<v Sterling Baird>and the rest of this...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/324-0
+00:03:19.280 --> 00:03:21.840
+<v Sterling Baird>Is about graphs and graphics, so.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/369-0
+00:03:23.320 --> 00:03:25.545
+<v Sterling Baird>If we go,
+so there's two places where we have</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/369-1
+00:03:25.545 --> 00:03:28.350
+<v Sterling Baird>graphics right now.
+There's the graphs we already have in</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/369-2
+00:03:28.350 --> 00:03:30.866
+<v Sterling Baird>here. So we're pretty okay,
+we can get better ones,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/369-3
+00:03:30.866 --> 00:03:34.252
+<v Sterling Baird>and then we're just kind of like, this,
+yeah, missing stuff. Or like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/369-4
+00:03:34.252 --> 00:03:37.831
+<v Sterling Baird>why do we have the timeline in it?
+We don't need that. Yeah, that's okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/369-5
+00:03:37.831 --> 00:03:40.830
+<v Sterling Baird>We can take that out.
+I think I had mentioned the timeline at</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/369-6
+00:03:40.830 --> 00:03:42.040
+<v Sterling Baird>one point, just from a...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/372-0
+00:03:44.480 --> 00:03:46.320
+<v Sterling Baird>Sort of a passing comment, like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/388-0
+00:03:51.120 --> 00:03:56.469
+<v Sterling Baird>What would probably be more useful is
+like number of things as a function of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/388-1
+00:03:56.469 --> 00:03:59.040
+<v Sterling Baird>time, not just, yeah, yeah, a random.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/390-0
+00:04:00.160 --> 00:04:01.440
+<v Sterling Baird>That went with a couple words.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/400-0
+00:04:03.200 --> 00:04:05.267
+<v Sterling Baird>Like,
+if we're if we're talking about the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/400-1
+00:04:05.267 --> 00:04:07.040
+<v Sterling Baird>generative CAD piece, maybe it's OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/425-0
+00:04:08.960 --> 00:04:13.097
+<v Sterling Baird>We can throw whatever we want into
+supplementary information. That's true.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/425-1
+00:04:13.097 --> 00:04:16.130
+<v Sterling Baird>That's one that I'd be totally fine,
+just gonna, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/425-2
+00:04:16.130 --> 00:04:19.440
+<v Sterling Baird>just throw in supplementary, not that one,
+but more like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/475-0
+00:04:21.280 --> 00:04:24.554
+<v Sterling Baird>Yeah, so Jen AI usage as a function of,
+yeah, of time.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/475-1
+00:04:24.554 --> 00:04:29.554
+<v Sterling Baird>I think it's cool that we have that data.
+I think we should use it. That's awesome.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/475-2
+00:04:29.554 --> 00:04:34.197
+<v Sterling Baird>I I run it for a couple projects, so yeah,
+alright, no, no, yeah, keep going,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/475-3
+00:04:34.197 --> 00:04:36.400
+<v Sterling Baird>keep going. That's cool, I like that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/510-0
+00:04:37.440 --> 00:04:41.891
+<v Sterling Baird>Usually, a few $1000 per project,
+if you were to charge an API rate for</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/510-1
+00:04:41.891 --> 00:04:44.983
+<v Sterling Baird>them, and yeah,
+and so some of these are helpful,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/510-2
+00:04:44.983 --> 00:04:48.260
+<v Sterling Baird>I just presently seeing what it has and
+saying, "OK,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/510-3
+00:04:48.260 --> 00:04:53.515
+<v Sterling Baird>what do I think could actually be helpful?
+What would be what would be supplementary</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/510-4
+00:04:53.515 --> 00:04:57.040
+<v Sterling Baird>and what, yeah, yeah, like this,
+like showing the the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/549-0
+00:04:58.160 --> 00:05:00.655
+<v Sterling Baird>Like, how it looks at forty-five degrees?
+Like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/549-1
+00:05:00.655 --> 00:05:04.398
+<v Sterling Baird>people know what forty-five degrees is.
+I know, yeah, that would be OK,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/549-2
+00:05:04.398 --> 00:05:08.453
+<v Sterling Baird>but I did think we might be helpful, like,
+put a coordinate frame on the jar,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/549-3
+00:05:08.453 --> 00:05:11.573
+<v Sterling Baird>something like that,
+so people know what axes we're talking</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/549-4
+00:05:11.573 --> 00:05:15.316
+<v Sterling Baird>about. OK, that's sort of sure,
+just like somebody seems to be combined</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/549-5
+00:05:15.316 --> 00:05:16.720
+<v Sterling Baird>and stuff, same thing here.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/562-0
+00:05:16.800 --> 00:05:21.825
+<v Sterling Baird>And like a cross-section is good,
+but like this isn't super helpful,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/562-1
+00:05:21.825 --> 00:05:26.050
+<v Sterling Baird>and that's an issue.
+Were we trying to talk about the tap</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/562-2
+00:05:26.050 --> 00:05:26.560
+<v Sterling Baird>caller?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/614-0
+00:05:27.600 --> 00:05:30.943
+<v Sterling Baird>Like the Janie I part of the top column,
+not sure, yeah, okay,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/614-1
+00:05:30.943 --> 00:05:34.606
+<v Sterling Baird>I need to go back to, yeah,
+I can figure it out more, and then here,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/614-2
+00:05:34.606 --> 00:05:38.002
+<v Sterling Baird>that was the one, yeah, yeah,
+that's where it's actually, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/614-3
+00:05:38.002 --> 00:05:42.195
+<v Sterling Baird>I need a couple of case studies, like,
+and they they walk you through this one</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/614-4
+00:05:42.195 --> 00:05:45.645
+<v Sterling Baird>of like, this is how we,
+this is just showcasing the kind of the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/614-5
+00:05:45.645 --> 00:05:49.042
+<v Sterling Baird>design problems, yeah,
+and that's helpful that we can keep some</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/614-6
+00:05:49.042 --> 00:05:49.520
+<v Sterling Baird>of those.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/623-0
+00:05:50.360 --> 00:05:56.640
+<v Sterling Baird>Yeah, and then this is fake data. OK,
+which is awesome, so...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/669-0
+00:05:58.760 --> 00:06:03.261
+<v Sterling Baird>Yeah, I guess we hadn't pinged it yet,
+saying put in real data, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/669-1
+00:06:03.261 --> 00:06:07.248
+<v Sterling Baird>so this is still from from back when,
+before we had it, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/669-2
+00:06:07.248 --> 00:06:12.457
+<v Sterling Baird>and then I asked it to make some graphs
+based on real data, so now we have, ohh,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/669-3
+00:06:12.457 --> 00:06:17.280
+<v Sterling Baird>so that's in, ohh, that is in the, OK,
+I just missed it, so, so we have...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/712-0
+00:06:17.640 --> 00:06:20.552
+<v Sterling Baird>Yeah, so resource,
+so we have graphics in two places.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/712-1
+00:06:20.552 --> 00:06:24.003
+<v Sterling Baird>We have the stuff that it put already put
+into the paper, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/712-2
+00:06:24.003 --> 00:06:28.317
+<v Sterling Baird>which is like mostly pictures and stuff
+that are legitimate, and then big data,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/712-3
+00:06:28.317 --> 00:06:30.959
+<v Sterling Baird>yeah,
+and I thought it did a good job like this,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/712-4
+00:06:30.959 --> 00:06:34.680
+<v Sterling Baird>'cause I asked it, I asked it to put, yes,
+yeah, I like the the the.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/721-0
+00:06:37.120 --> 00:06:41.040
+<v Sterling Baird>And then, and then these are the paper,
+the things that I brought up.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/740-0
+00:06:43.480 --> 00:06:46.507
+<v Sterling Baird>And this is most of what I want to talk
+about, I think,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/740-1
+00:06:46.507 --> 00:06:49.589
+<v Sterling Baird>making a kind of know what to do,
+editing the other one,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/740-2
+00:06:49.589 --> 00:06:52.400
+<v Sterling Baird>like the actual text,
+and those graphics and stuff.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/754-0
+00:06:54.320 --> 00:06:57.786
+<v Sterling Baird>Then,
+this is just the first pass of the graph,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/754-1
+00:06:57.786 --> 00:07:02.480
+<v Sterling Baird>yeah, and a couple of things, um,
+of working thoughts, Luke, um.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/813-0
+00:07:04.400 --> 00:07:08.344
+<v Sterling Baird>So, we let we talked about how, like,
+we the main way that we interface with</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/813-1
+00:07:08.344 --> 00:07:12.289
+<v Sterling Baird>the pattern is through Claude, right? Now,
+to me, it's like sometimes scary,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/813-2
+00:07:12.289 --> 00:07:15.414
+<v Sterling Baird>and I'm not sure about that.
+One thing I ran into with this,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/813-3
+00:07:15.414 --> 00:07:18.897
+<v Sterling Baird>the notice is I think it's been super
+handy to have just, you know,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/813-4
+00:07:18.897 --> 00:07:22.073
+<v Sterling Baird>say Claude run this and record this data
+and record the data,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/813-5
+00:07:22.073 --> 00:07:24.840
+<v Sterling Baird>even when I thought I was doing a good
+job of like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/870-0
+00:07:24.960 --> 00:07:27.742
+<v Sterling Baird>Following up and knowing what it was
+recording and stuff, I don't,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/870-1
+00:07:27.742 --> 00:07:30.317
+<v Sterling Baird>now that I'm trying to write a paper and
+thinking like, well,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/870-2
+00:07:30.317 --> 00:07:33.515
+<v Sterling Baird>what graphs would be helpful? I'm like,
+I don't even know what metrics we're</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/870-3
+00:07:33.515 --> 00:07:36.339
+<v Sterling Baird>using. What do we even collect? Yeah,
+what do we even do? So, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/870-4
+00:07:36.339 --> 00:07:39.454
+<v Sterling Baird>there's another interesting thing,
+like it's the same like diameter of the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/870-5
+00:07:39.454 --> 00:07:41.406
+<v Sterling Baird>auger problem, right?
+It's like I should have,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/870-6
+00:07:41.406 --> 00:07:44.480
+<v Sterling Baird>this should be second nature and I have
+no idea what we're talking about.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/883-0
+00:07:44.800 --> 00:07:48.592
+<v Sterling Baird>I think we even, at some point,
+I don't remember if it made it into a lot</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/883-1
+00:07:48.592 --> 00:07:51.360
+<v Sterling Baird>of the recent problems,
+at some point we were saying.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/917-0
+00:07:52.760 --> 00:07:55.474
+<v Sterling Baird>Like, okay,
+what data needs to be collected for the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/917-1
+00:07:55.474 --> 00:07:59.754
+<v Sterling Baird>placeholder figures that we, yes, yeah,
+yeah, noodle, like that we thought about,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/917-2
+00:07:59.754 --> 00:08:03.774
+<v Sterling Baird>yeah, what would actually go in there?
+That's what you need to do to get the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/917-3
+00:08:03.774 --> 00:08:06.592
+<v Sterling Baird>data for the,
+but at some point there may have been a</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/917-4
+00:08:06.592 --> 00:08:07.480
+<v Sterling Baird>disconnect, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/955-0
+00:08:09.200 --> 00:08:14.384
+<v Sterling Baird>It became collect the data,
+like make sure you're collecting the data</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/955-1
+00:08:14.384 --> 00:08:18.531
+<v Sterling Baird>for that paper,
+and that you're showing lots of this of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/955-2
+00:08:18.531 --> 00:08:24.233
+<v Sterling Baird>data getting added, yeah, in line,
+so we can spot check it as it goes, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/955-3
+00:08:24.233 --> 00:08:27.640
+<v Sterling Baird>so yeah, I think I can understand that,
+yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/996-0
+00:08:28.560 --> 00:08:31.318
+<v Sterling Baird>Just funny, I don't know. Wait,
+what data did we collect? Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/996-1
+00:08:31.318 --> 00:08:33.559
+<v Sterling Baird>when I was thinking, like,
+if we get to have, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/996-2
+00:08:33.559 --> 00:08:37.007
+<v Sterling Baird>just when I was coming up with, like,
+I got somebody to put this away and I was</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/996-3
+00:08:37.007 --> 00:08:40.412
+<v Sterling Baird>like, "Hey, just thinking from your head,
+what graphs would be helpful?" Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/996-4
+00:08:40.412 --> 00:08:43.256
+<v Sterling Baird>and it was hard to think of them,
+because I was like, "What even,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/996-5
+00:08:43.256 --> 00:08:46.359
+<v Sterling Baird>what are the metrics that we even,
+that would even be helpful with this</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/996-6
+00:08:46.359 --> 00:08:46.920
+<v Sterling Baird>stuff?" Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1039-0
+00:08:47.920 --> 00:08:50.759
+<v Sterling Baird>Yeah, so that said,
+some of these are really good,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1039-1
+00:08:50.759 --> 00:08:55.101
+<v Sterling Baird>some of these are really confusing,
+and there's a lot of jargon here as well,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1039-2
+00:08:55.101 --> 00:08:58.442
+<v Sterling Baird>and it's difficult, like feed factor,
+and it throws around,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1039-3
+00:08:58.442 --> 00:09:02.172
+<v Sterling Baird>and it's been using this dose rate, right?
+Like, that's our, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1039-4
+00:09:02.172 --> 00:09:06.960
+<v Sterling Baird>like dose rate is probably what we put in,
+right? Yeah, 'cause it's a powdered doser.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1065-0
+00:09:07.800 --> 00:09:12.671
+<v Sterling Baird>It is, it is, it's a bad one.
+I think it's a fair, yeah, and has,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1065-1
+00:09:12.671 --> 00:09:15.993
+<v Sterling Baird>you know what this is,
+where revolution RSD,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1065-2
+00:09:15.993 --> 00:09:21.676
+<v Sterling Baird>you know what that it stands for,
+root mean squared, root squared deviation.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1065-3
+00:09:21.676 --> 00:09:26.400
+<v Sterling Baird>OK, yeah, basically,
+it felt like it's saying a scatter, but...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1097-0
+00:09:28.400 --> 00:09:31.988
+<v Sterling Baird>Yeah,
+but it's just like this is not a good use,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1097-1
+00:09:31.988 --> 00:09:35.797
+<v Sterling Baird>that's not a good use, an arrow, yeah,
+and anyways,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1097-2
+00:09:35.797 --> 00:09:40.997
+<v Sterling Baird>so it's you use a lot of jargon and
+that's even to me who's been doing</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1097-3
+00:09:40.997 --> 00:09:44.000
+<v Sterling Baird>private, yeah, for a lot, so, yeah, so...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1142-0
+00:09:45.800 --> 00:09:50.929
+<v Sterling Baird>This was interesting too. It's like,
+I'm pretty sure it was saying nothing was</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1142-1
+00:09:50.929 --> 00:09:55.538
+<v Sterling Baird>dispensed. Yes, yeah, get it,
+but like that's not really a helpful way</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1142-2
+00:09:55.538 --> 00:09:58.980
+<v Sterling Baird>to say that, right? Like,
+don't put it on the graph,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1142-3
+00:09:58.980 --> 00:10:03.200
+<v Sterling Baird>then it has like, yeah,
+just make a note and or show it as like.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1180-0
+00:10:05.960 --> 00:10:12.207
+<v Sterling Baird>Hatched, like a hatched bar, like, yes,
+like, yeah, so strike through the text,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1180-1
+00:10:12.207 --> 00:10:16.268
+<v Sterling Baird>yes, yeah,
+these just seem to need a lot of work in</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1180-2
+00:10:16.268 --> 00:10:20.173
+<v Sterling Baird>order to be kind of readable, yeah,
+and so, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1180-3
+00:10:20.173 --> 00:10:25.640
+<v Sterling Baird>and this is at least the data,
+it is the data, it does have the data.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1191-0
+00:10:25.840 --> 00:10:30.613
+<v Sterling Baird>And then this is, so that's good. Okay,
+food safe versus, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1191-1
+00:10:30.613 --> 00:10:33.000
+<v Sterling Baird>the ones more research relevant.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1202-0
+00:10:36.560 --> 00:10:42.400
+<v Sterling Baird>10 milligrams per revolution of the auger
+when it's at 45 degrees.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1214-0
+00:10:44.960 --> 00:10:50.080
+<v Sterling Baird>Not considering the fill level,
+which I think we said was.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1274-0
+00:10:51.280 --> 00:10:56.232
+<v Sterling Baird>Like the fill level does affect,
+so probably not for a fixed fill level on</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1274-1
+00:10:56.232 --> 00:11:00.062
+<v Sterling Baird>this one. Yeah.
+But then we can go from 10 milligrams per</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1274-2
+00:11:00.062 --> 00:11:05.212
+<v Sterling Baird>revolution for sodium thalzonate all the
+way up to 230 that I actually didn't</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1274-3
+00:11:05.212 --> 00:11:09.901
+<v Sterling Baird>realize that the ALSI 10MG would be the
+highest flowing of everything.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1274-4
+00:11:09.901 --> 00:11:12.080
+<v Sterling Baird>But it's not that different from.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1280-0
+00:11:12.160 --> 00:11:16.320
+<v Sterling Baird>Zanthem found me. This is a watch, yeah,
+yeah. Ohh, wait.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1285-0
+00:11:17.400 --> 00:11:19.360
+<v Sterling Baird>Isn't this the absolute value of 146?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1291-0
+00:11:21.640 --> 00:11:24.080
+<v Sterling Baird>Yeah, 10100, so yeah, it's like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1298-0
+00:11:25.200 --> 00:11:28.285
+<v Sterling Baird>Yeah,
+but a lot of a lot of them are just</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1298-1
+00:11:28.285 --> 00:11:28.800
+<v Sterling Baird>within.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1309-0
+00:11:30.240 --> 00:11:34.560
+<v Sterling Baird>Some percentage of each other,
+except for these. Yeah, what was CMC like?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1313-0
+00:11:35.760 --> 00:11:37.360
+<v Sterling Baird>Was also kind of flowery or...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1331-0
+00:11:40.000 --> 00:11:45.265
+<v Sterling Baird>This one, I mean,
+let me look back over with Carl's videos.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1331-1
+00:11:45.265 --> 00:11:48.600
+<v Sterling Baird>I have the video of me, oh yeah, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1382-0
+00:11:51.200 --> 00:11:54.753
+<v Sterling Baird>Or rather, I have, I,
+I have some YouTube videos where I just</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1382-1
+00:11:54.753 --> 00:11:59.394
+<v Sterling Baird>had them in a cup, like a transparent,
+yeah, yeah, yeah, yeah, yeah, yeah, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1382-2
+00:11:59.394 --> 00:12:03.291
+<v Sterling Baird>that it felt like gave me a better,
+pretty tangible sentence, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1382-3
+00:12:03.291 --> 00:12:06.844
+<v Sterling Baird>of the pattern, yeah,
+it was helpful to like, you know, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1382-4
+00:12:06.844 --> 00:12:11.257
+<v Sterling Baird>pull it out on the spoons, like, on the,
+yeah, yeah, yeah, this one is like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1382-5
+00:12:11.257 --> 00:12:13.320
+<v Sterling Baird>is this tall, this one is this tall.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1386-0
+00:12:13.600 --> 00:12:17.120
+<v Sterling Baird>Yeah, that sounds, and so saying.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1417-0
+00:12:18.480 --> 00:12:23.669
+<v Sterling Baird>So, I guess I want to know which, which,
+we'll go through all these and I want to</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1417-1
+00:12:23.669 --> 00:12:26.897
+<v Sterling Baird>know which ones you think are helpful,
+and like I,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1417-2
+00:12:26.897 --> 00:12:31.517
+<v Sterling Baird>and then I can clean it up and make it
+more readable. Yeah, put them in,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1417-3
+00:12:31.517 --> 00:12:34.681
+<v Sterling Baird>or which ones you think about what we're
+missing.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1417-4
+00:12:34.681 --> 00:12:36.960
+<v Sterling Baird>I think this one A2 right here is...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1449-0
+00:12:39.440 --> 00:12:44.421
+<v Sterling Baird>has good information in it that we can
+display graphically.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1449-1
+00:12:44.421 --> 00:12:50.897
+<v Sterling Baird>I think the use of color to split the
+food safe surrogate versus the research</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1449-2
+00:12:50.897 --> 00:12:55.795
+<v Sterling Baird>relevant ones is good.
+We want to keep a visual separation</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1449-3
+00:12:55.795 --> 00:12:58.120
+<v Sterling Baird>between the different types.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1450-0
+00:12:58.720 --> 00:12:59.280
+<v Sterling Baird>And.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1467-0
+00:13:00.480 --> 00:13:05.507
+<v Sterling Baird>We shouldn't be plotting any data for the
+silicon, the brown rice,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1467-1
+00:13:05.507 --> 00:13:10.160
+<v Sterling Baird>the negative 325 mesh,
+the brown rice flour, the feed silica.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1468-0
+00:13:13.560 --> 00:13:13.840
+<v Sterling Baird>And.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1503-0
+00:13:17.120 --> 00:13:20.133
+<v Sterling Baird>Like,
+we can optionally keep it on the graph,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1503-1
+00:13:20.133 --> 00:13:24.130
+<v Sterling Baird>but just like a strike through,
+a strike through here. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1503-2
+00:13:24.130 --> 00:13:28.520
+<v Sterling Baird>I think just like a strike through of
+text would come across fine,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1503-3
+00:13:28.520 --> 00:13:33.696
+<v Sterling Baird>and then I think we really do need to
+clarify in the caption which thought was</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1503-4
+00:13:33.696 --> 00:13:36.120
+<v Sterling Baird>putting the caption as embedded text.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1533-0
+00:13:36.440 --> 00:13:41.791
+<v Sterling Baird>Every figure, yeah,
+no matter how many times it has to keep</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1533-1
+00:13:41.791 --> 00:13:47.945
+<v Sterling Baird>it out of the figure. I get it. I get it.
+Yeah, it's like, yeah, oh,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1533-2
+00:13:47.945 --> 00:13:55.080
+<v Sterling Baird>it's all in one file. Yeah, helpful,
+but not, yeah, yeah, having in there like.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1535-0
+00:13:55.520 --> 00:13:56.800
+<v Sterling Baird>Clarifications about.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1543-0
+00:14:00.800 --> 00:14:03.280
+<v Sterling Baird>other factors that affect things like the
+fill level.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1545-0
+00:14:07.440 --> 00:14:08.320
+<v Sterling Baird>The words.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1548-0
+00:14:09.120 --> 00:14:10.480
+<v Sterling Baird>Controlled for here.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1553-0
+00:14:15.000 --> 00:14:17.240
+<v Sterling Baird>But the raw data is available, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1560-0
+00:14:20.400 --> 00:14:24.520
+<v Sterling Baird>And that might be where the Claude team
+as well go through and grab.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1587-0
+00:14:26.240 --> 00:14:29.783
+<v Sterling Baird>these data points,
+what was the fill level when this was</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1587-1
+00:14:29.783 --> 00:14:33.015
+<v Sterling Baird>collected?
+I also don't know if repeats were run on</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1587-2
+00:14:33.015 --> 00:14:34.880
+<v Sterling Baird>this. It seems like maybe not.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1593-0
+00:14:35.840 --> 00:14:39.200
+<v Sterling Baird>It's not an identical repeat of 45 degree
+tilts.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1614-0
+00:14:40.320 --> 00:14:44.936
+<v Sterling Baird>Yeah, yeah, so maybe, maybe that's it.
+We can just try to get the data for what</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1614-1
+00:14:44.936 --> 00:14:47.360
+<v Sterling Baird>the fill levels were and see if there's...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1621-0
+00:14:51.520 --> 00:14:56.744
+<v Sterling Baird>We should address that somehow,
+and just be in the caption, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1621-1
+00:14:56.744 --> 00:14:59.040
+<v Sterling Baird>and it was at the full level.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1667-0
+00:15:00.560 --> 00:15:04.944
+<v Sterling Baird>I think it's going to be hard to measure.
+I didn't really control for that myself.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1667-1
+00:15:04.944 --> 00:15:07.584
+<v Sterling Baird>It was enough like up to pretty close to
+the top,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1667-2
+00:15:07.584 --> 00:15:11.387
+<v Sterling Baird>but it was like totally at the top.
+And some of them didn't have enough</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1667-3
+00:15:11.387 --> 00:15:13.923
+<v Sterling Baird>powder,
+so they're like kind of half like half.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1667-4
+00:15:13.923 --> 00:15:16.352
+<v Sterling Baird>Oh, yeah.
+So it kind of varies throughout it.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1667-5
+00:15:16.352 --> 00:15:19.680
+<v Sterling Baird>And yeah. That makes sense.
+So I should have done that, but...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1684-0
+00:15:20.880 --> 00:15:24.176
+<v Sterling Baird>Did we,
+did you weigh the ****** before and after?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1684-1
+00:15:24.176 --> 00:15:28.635
+<v Sterling Baird>No, okay, that was fine. No, I didn't,
+once I was done, it was like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1684-2
+00:15:28.635 --> 00:15:32.966
+<v Sterling Baird>that would be a good idea. Yeah, okay,
+that was a good idea. Okay,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1684-3
+00:15:32.966 --> 00:15:34.000
+<v Sterling Baird>and on that one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1691-0
+00:15:38.560 --> 00:15:42.320
+<v Sterling Baird>We'll see what it comes back with if it
+notices something.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1693-0
+00:15:45.360 --> 00:15:46.560
+<v Sterling Baird>Strange, but.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1697-0
+00:15:49.600 --> 00:15:51.760
+<v Sterling Baird>Nothing here really seems.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1699-0
+00:15:53.520 --> 00:15:54.240
+<v Sterling Baird>Concerning.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1743-0
+00:15:56.720 --> 00:15:59.932
+<v Sterling Baird>These ones were really hard to get things
+out of.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1743-1
+00:15:59.932 --> 00:16:03.402
+<v Sterling Baird>These ones all fall in kind of a similar
+range. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1743-2
+00:16:03.402 --> 00:16:07.450
+<v Sterling Baird>These ones were really difficult to get
+anything out of. Also,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1743-3
+00:16:07.450 --> 00:16:11.691
+<v Sterling Baird>this team silica is weird.
+Just don't touch it. Yeah, just don't.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1743-4
+00:16:11.691 --> 00:16:15.161
+<v Sterling Baird>Not gonna work.
+This one probably has something to do</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1743-5
+00:16:15.161 --> 00:16:16.960
+<v Sterling Baird>with it being really jagged.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1745-0
+00:16:17.280 --> 00:16:17.760
+<v Sterling Baird>Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1748-0
+00:16:18.920 --> 00:16:21.440
+<v Sterling Baird>Yeah, I bet, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1760-0
+00:16:23.280 --> 00:16:26.206
+<v Sterling Baird>Frankly,
+the ALSI 10MG probably flows so well in</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1760-1
+00:16:26.206 --> 00:16:27.520
+<v Sterling Baird>part because they are.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1800-0
+00:16:30.240 --> 00:16:35.567
+<v Sterling Baird>particles for laser powder fusion,
+which requires very high sphericity. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1800-1
+00:16:35.567 --> 00:16:39.050
+<v Sterling Baird>they're very spherical,
+uniform size distribution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1800-2
+00:16:39.050 --> 00:16:44.036
+<v Sterling Baird>So you have to use them in the metal 3D
+printing. So that in retrospect,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1800-3
+00:16:44.036 --> 00:16:48.476
+<v Sterling Baird>it's like, okay, yeah, that makes sense.
+I'm a little surprised.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1800-4
+00:16:48.476 --> 00:16:50.320
+<v Sterling Baird>I didn't think the silicon.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1803-0
+00:16:51.040 --> 00:16:51.920
+<v Sterling Baird>Generally looks.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1828-0
+00:16:52.960 --> 00:16:57.379
+<v Sterling Baird>Very spherical, but for whatever reason,
+I guess the silicon is fine, fine,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1828-1
+00:16:57.379 --> 00:17:02.031
+<v Sterling Baird>so we could we can make some comment,
+we could have some commentary about this.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1828-2
+00:17:02.031 --> 00:17:04.647
+<v Sterling Baird>Yeah,
+those are kind of the main things that</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1828-3
+00:17:04.647 --> 00:17:05.520
+<v Sterling Baird>jump out to me.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1829-0
+00:17:06.680 --> 00:17:06.960
+<v Sterling Baird>And.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1833-0
+00:17:09.320 --> 00:17:12.720
+<v Sterling Baird>Maybe keep on.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1836-0
+00:17:14.160 --> 00:17:15.200
+<v Sterling Baird>Yeah, this one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1853-0
+00:17:17.760 --> 00:17:21.695
+<v Sterling Baird>This one is, it looks,
+it looks helpful if I really look at it</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1853-1
+00:17:21.695 --> 00:17:24.943
+<v Sterling Baird>for, yeah,
+letting it do the better way to do this,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1853-2
+00:17:24.943 --> 00:17:26.880
+<v Sterling Baird>but, and it's kind of the same.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1893-0
+00:17:29.040 --> 00:17:32.193
+<v Sterling Baird>Oh, this is the lateral scatter,
+is that right? Or no? Not sure,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1893-1
+00:17:32.193 --> 00:17:35.832
+<v Sterling Baird>but I don't know how we would find that
+other than like with the camera or</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1893-2
+00:17:35.832 --> 00:17:39.519
+<v Sterling Baird>something. Like, that's what I'm like,
+I don't even know what we're talking</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1893-3
+00:17:39.519 --> 00:17:42.623
+<v Sterling Baird>about here. But I like, I like,
+I like having like really does,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1893-4
+00:17:42.623 --> 00:17:45.680
+<v Sterling Baird>like I like that distinction here.
+I like the way it's set up.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1896-0
+00:17:46.800 --> 00:17:50.640
+<v Sterling Baird>But, and revolution are still.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1940-0
+00:17:54.720 --> 00:17:57.874
+<v Sterling Baird>This percent block C,
+it keeps saying about these blocks.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1940-1
+00:17:57.874 --> 00:18:02.334
+<v Sterling Baird>I think you had a sense of what that was,
+yeah, as I never went back to the test.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1940-2
+00:18:02.334 --> 00:18:05.108
+<v Sterling Baird>That was the other thing I was realizing
+was like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1940-3
+00:18:05.108 --> 00:18:09.460
+<v Sterling Baird>"I'm not sure where all the blocks are,
+yeah, so it's just the test that I had,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1940-4
+00:18:09.460 --> 00:18:13.920
+<v Sterling Baird>so I had to like make it make it a test,
+like a script of a bunch of tests, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1966-0
+00:18:14.160 --> 00:18:18.148
+<v Sterling Baird>So, the block is a different test, yeah,
+and that, but I, I don't know, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1966-1
+00:18:18.148 --> 00:18:21.165
+<v Sterling Baird>obviously in my head,
+what each of them are, yeah, and so,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1966-2
+00:18:21.165 --> 00:18:23.773
+<v Sterling Baird>and yeah, I was gonna have actually,
+I wrote them,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1966-3
+00:18:23.773 --> 00:18:27.200
+<v Sterling Baird>but that would be a good table to have,
+like, yeah, exactly, so...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1973-0
+00:18:56.080 --> 00:18:59.520
+<v Sterling Baird>They're better, it's like test protocols,
+yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/1976-0
+00:19:13.960 --> 00:19:14.120
+<v Sterling Baird>Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2012-0
+00:19:16.640 --> 00:19:19.483
+<v Sterling Baird>Yeah, but sorry,
+maybe we come back to that,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2012-1
+00:19:19.483 --> 00:19:22.516
+<v Sterling Baird>and then I think I like the idea of this
+graph,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2012-2
+00:19:22.516 --> 00:19:26.940
+<v Sterling Baird>and he's trying to say I like the way
+that it says it visually, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2012-3
+00:19:26.940 --> 00:19:31.300
+<v Sterling Baird>and what the heck is the way, yeah, so,
+and we'll see, I don't know,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2012-4
+00:19:31.300 --> 00:19:32.880
+<v Sterling Baird>I'll mess with it, and...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2014-0
+00:19:35.040 --> 00:19:37.600
+<v Sterling Baird>Yeah, RSD might mean something else.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2059-0
+00:19:38.880 --> 00:19:42.274
+<v Sterling Baird>That's the thing too, right? Thank you,
+right, 'cause it's done so many,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2059-1
+00:19:42.274 --> 00:19:45.576
+<v Sterling Baird>like it produces so much content with
+every yesterday and stuff. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2059-2
+00:19:45.576 --> 00:19:48.691
+<v Sterling Baird>it's the it feels like, oh,
+we've been using this this terminology</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2059-3
+00:19:48.691 --> 00:19:50.923
+<v Sterling Baird>for the last like 3 weeks, and it's like,
+well,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2059-4
+00:19:50.923 --> 00:19:53.434
+<v Sterling Baird>I probably should have read it more
+closely, I guess,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2059-5
+00:19:53.434 --> 00:19:56.224
+<v Sterling Baird>but I don't know what you're talking
+about, and yeah, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2059-6
+00:19:56.224 --> 00:19:57.480
+<v Sterling Baird>we can go look at this one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2060-0
+00:20:00.000 --> 00:20:00.720
+<v Sterling Baird>And.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2100-0
+00:20:01.560 --> 00:20:05.822
+<v Sterling Baird>And then this one I like,
+I need to look again at the specific at</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2100-1
+00:20:05.822 --> 00:20:08.858
+<v Sterling Baird>the block or whatever,
+at what it was running,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2100-2
+00:20:08.858 --> 00:20:13.637
+<v Sterling Baird>but I like the idea of like we were
+shooting for, like this is the error.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2100-3
+00:20:13.637 --> 00:20:16.285
+<v Sterling Baird>Yeah,
+based on the same test for all the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2100-4
+00:20:16.285 --> 00:20:21.000
+<v Sterling Baird>encounters and that's it is somewhat of
+like a control problem now that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2109-0
+00:20:24.600 --> 00:20:28.280
+<v Sterling Baird>Right, problem, yeah,
+and we'll just point to like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2123-0
+00:20:29.640 --> 00:20:35.109
+<v Sterling Baird>We used a simple method in future work.
+We're going to do super cool calibration</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2123-1
+00:20:35.109 --> 00:20:35.920
+<v Sterling Baird>stuff. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2125-0
+00:20:40.680 --> 00:20:41.160
+<v Sterling Baird>Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2158-0
+00:20:52.960 --> 00:20:56.362
+<v Sterling Baird>And another thing like these, like these,
+these are all,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2158-1
+00:20:56.362 --> 00:21:00.302
+<v Sterling Baird>this is not any kind of range,
+so this should all just be aligned</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2158-2
+00:21:00.302 --> 00:21:04.062
+<v Sterling Baird>perfectly, right? Like,
+so that that's a specific type of plot</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2158-3
+00:21:04.062 --> 00:21:04.600
+<v Sterling Baird>that's...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2210-0
+00:21:06.440 --> 00:21:10.256
+<v Sterling Baird>It's jitter, like in matplotlib,
+like these plotting libraries,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2210-1
+00:21:10.256 --> 00:21:13.893
+<v Sterling Baird>it's called jitter.
+And that's useful when you have a lot of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2210-2
+00:21:13.893 --> 00:21:17.172
+<v Sterling Baird>data points and you want to show a
+distribution. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2210-3
+00:21:17.172 --> 00:21:21.763
+<v Sterling Baird>Without doing a violin plot that like,
+wipes things out and without having a</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2210-4
+00:21:21.763 --> 00:21:25.400
+<v Sterling Baird>bunch of overlapping points. I see.
+We do not need a jitter.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2215-0
+00:21:25.600 --> 00:21:29.160
+<v Sterling Baird>For 3 points, yeah, for three points,
+that makes sense, so...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2246-0
+00:21:30.440 --> 00:21:34.182
+<v Sterling Baird>Nice, but yeah, yeah,
+not sure what you're trying to do, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2246-1
+00:21:34.182 --> 00:21:39.113
+<v Sterling Baird>and then this one, and I also like, again,
+I'm not really sure what it's trying to</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2246-2
+00:21:39.113 --> 00:21:41.727
+<v Sterling Baird>say,
+and time determining the dose feeding,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2246-3
+00:21:41.727 --> 00:21:45.351
+<v Sterling Baird>and as far as I know,
+like it stopped the dose and then time</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2246-4
+00:21:45.351 --> 00:21:48.440
+<v Sterling Baird>for it to just stop dispensing anything,
+so like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2247-0
+00:21:50.520 --> 00:21:51.160
+<v Sterling Baird>Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2248-0
+00:21:52.200 --> 00:21:52.360
+<v Sterling Baird>And...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2254-0
+00:21:53.680 --> 00:21:55.880
+<v Sterling Baird>I, but they're not sure what the taps are.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2265-0
+00:22:01.080 --> 00:22:05.400
+<v Sterling Baird>Block G and the blocks seem really
+important because it's yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2289-0
+00:22:06.840 --> 00:22:10.621
+<v Sterling Baird>So, 3 doses of 1 gram per powder,
+each markers 1 dose,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2289-1
+00:22:10.621 --> 00:22:14.952
+<v Sterling Baird>gray rule spins the three, buggy,
+I think is the one actually.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2289-2
+00:22:14.952 --> 00:22:17.840
+<v Sterling Baird>I could just zoom in, open that one, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2294-0
+00:22:22.520 --> 00:22:25.400
+<v Sterling Baird>Annotations means solenoid taps.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2299-0
+00:22:27.560 --> 00:22:30.120
+<v Sterling Baird>So we can rice flour.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2323-0
+00:22:32.600 --> 00:22:35.651
+<v Sterling Baird>Like these ones, again,
+like they didn't do anything,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2323-1
+00:22:35.651 --> 00:22:38.701
+<v Sterling Baird>like it never, yeah,
+it's why are they on here? Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2323-2
+00:22:38.701 --> 00:22:42.600
+<v Sterling Baird>it's like technically there was measured
+data, but it's noise, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2328-0
+00:22:44.040 --> 00:22:46.354
+<v Sterling Baird>And,
+and displaying it this way isn't helpful,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2328-1
+00:22:46.354 --> 00:22:46.600
+<v Sterling Baird>yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2333-0
+00:22:47.720 --> 00:22:53.080
+<v Sterling Baird>And also, please don't mind up to me.
+Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2348-0
+00:22:54.680 --> 00:23:03.135
+<v Sterling Baird>Yeah, they like bad green though,
+green is OK, yellow is overshoot,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2348-1
+00:23:03.135 --> 00:23:05.000
+<v Sterling Baird>red is stalled.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2375-0
+00:23:09.320 --> 00:23:12.177
+<v Sterling Baird>So, I don't know,
+I like the idea of some of these, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2375-1
+00:23:12.177 --> 00:23:14.393
+<v Sterling Baird>I like the idea of, okay,
+when I stopped it,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2375-2
+00:23:14.393 --> 00:23:17.841
+<v Sterling Baird>how much time did it take to stop?
+And maybe that's a helpful metric,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2375-3
+00:23:17.841 --> 00:23:21.240
+<v Sterling Baird>but is that what it's talking about?
+I don't know, that's the thing.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2382-0
+00:23:23.680 --> 00:23:25.800
+<v Sterling Baird>Time to terminate the dose,
+they can do well.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2386-0
+00:23:27.520 --> 00:23:29.560
+<v Sterling Baird>This is just like how long it took to get
+there.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2430-0
+00:23:30.640 --> 00:23:35.047
+<v Sterling Baird>Like, we're trying to do 1 gram. I think,
+I think Block G is the one that took the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2430-1
+00:23:35.047 --> 00:23:38.021
+<v Sterling Baird>took the longest. I think it's yeah,
+3 doses of 1 gram,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2430-2
+00:23:38.021 --> 00:23:41.314
+<v Sterling Baird>so it's trying to get to 1 gram,
+so this is how long it took.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2430-3
+00:23:41.314 --> 00:23:45.722
+<v Sterling Baird>I I'm thinking this up a little bit too,
+so it took a long time to dose CMC, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2430-4
+00:23:45.722 --> 00:23:46.200
+<v Sterling Baird>and we...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2435-0
+00:23:47.080 --> 00:23:51.640
+<v Sterling Baird>Didn't get to, I guess, sir,
+I didn't get there.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2450-0
+00:23:52.800 --> 00:23:57.114
+<v Sterling Baird>So I guess that's another thing.
+We got the revolutions at the 45 degrees,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2450-1
+00:23:57.114 --> 00:23:58.840
+<v Sterling Baird>but also when we ran the same.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2463-0
+00:24:00.920 --> 00:24:03.831
+<v Sterling Baird>How accurate,
+so it's it's maybe maybe this is part of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2463-1
+00:24:03.831 --> 00:24:04.520
+<v Sterling Baird>it and we're.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2470-0
+00:24:06.120 --> 00:24:09.560
+<v Sterling Baird>Maybe there's a way we can represent.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2479-0
+00:24:10.440 --> 00:24:15.835
+<v Sterling Baird>either all in one or separately,
+this idea of here was the unique counter</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2479-1
+00:24:15.835 --> 00:24:16.200
+<v Sterling Baird>type.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2480-0
+00:24:17.640 --> 00:24:18.120
+<v Sterling Baird>Mm.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2484-0
+00:24:19.880 --> 00:24:21.320
+<v Sterling Baird>And it's food safe or...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2490-0
+00:24:22.760 --> 00:24:25.320
+<v Sterling Baird>Uh, like our research relevant one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2493-0
+00:24:28.760 --> 00:24:31.400
+<v Sterling Baird>Here are the ones that float fast.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2505-0
+00:24:33.880 --> 00:24:36.531
+<v Sterling Baird>Here are the ones we were able to get,
+like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2505-1
+00:24:36.531 --> 00:24:40.360
+<v Sterling Baird>here's the accuracy when we try to be
+accurate with this powder.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2507-0
+00:24:41.800 --> 00:24:42.520
+<v Sterling Baird>Under some.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2515-0
+00:24:43.640 --> 00:24:46.440
+<v Sterling Baird>Three-phase test procedure,
+whatever we ended up using for that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2517-0
+00:24:50.440 --> 00:24:50.760
+<v Sterling Baird>And...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2518-0
+00:24:52.360 --> 00:24:52.920
+<v Sterling Baird>Alright.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2530-0
+00:24:53.760 --> 00:24:56.534
+<v Sterling Baird>What's the other one we're just talking
+about? Like the time,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2530-1
+00:24:56.534 --> 00:24:58.280
+<v Sterling Baird>the total time it takes to get to that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2540-0
+00:24:59.520 --> 00:25:02.581
+<v Sterling Baird>Point,
+which is basically just the function of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2540-1
+00:25:02.581 --> 00:25:04.600
+<v Sterling Baird>the dose rate in a lot of ways.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2550-0
+00:25:08.760 --> 00:25:13.160
+<v Sterling Baird>And what didn't flow well and why didn't
+it flow well? It's kind of a...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2557-0
+00:25:14.840 --> 00:25:17.480
+<v Sterling Baird>We can, we have some SEM images of.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2565-0
+00:25:19.320 --> 00:25:22.920
+<v Sterling Baird>The powders, throw those in, keep it like,
+hey, and there's us.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2571-0
+00:25:25.480 --> 00:25:28.320
+<v Sterling Baird>Just some characterization data on some
+of this.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2580-0
+00:25:43.000 --> 00:25:48.760
+<v Sterling Baird>So many graphs that show all that stuff.
+Yeah, so either it depends a little bit.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2604-0
+00:25:50.760 --> 00:25:54.666
+<v Sterling Baird>I don't know how well we could try to
+show that all in one graph. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2604-1
+00:25:54.666 --> 00:25:59.169
+<v Sterling Baird>Or we try to do a panel or we just keep
+them separate graphs and I'd be okay with.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2604-2
+00:25:59.169 --> 00:26:00.200
+<v Sterling Baird>Part of it is that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2608-0
+00:26:01.560 --> 00:26:04.040
+<v Sterling Baird>In while we were talking and we're
+looking at.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2624-0
+00:26:05.320 --> 00:26:11.781
+<v Sterling Baird>This one and it was like CMC.
+Obviously took a while to get there and</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2624-1
+00:26:11.781 --> 00:26:13.720
+<v Sterling Baird>it stalled which I...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2637-0
+00:26:15.080 --> 00:26:20.314
+<v Sterling Baird>Assume means that there came a point
+where it stopped dispensing anything.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2637-1
+00:26:20.314 --> 00:26:21.640
+<v Sterling Baird>I'm not sure where.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2641-0
+00:26:23.160 --> 00:26:24.760
+<v Sterling Baird>Sure why it would do that. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2647-0
+00:26:25.720 --> 00:26:29.400
+<v Sterling Baird>And then the question becomes, well,
+what was the target?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2648-0
+00:26:30.720 --> 00:26:31.640
+<v Sterling Baird>And those.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2696-0
+00:26:33.800 --> 00:26:38.582
+<v Sterling Baird>And how close did it get there? Yeah,
+like, we're kind of missing, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2696-1
+00:26:38.582 --> 00:26:41.857
+<v Sterling Baird>that's this one is the, ohh, yeah, yeah,
+so that,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2696-2
+00:26:41.857 --> 00:26:46.639
+<v Sterling Baird>how do you like how close they got,
+so they even got close, not awesome,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2696-3
+00:26:46.639 --> 00:26:50.307
+<v Sterling Baird>and that, OK,
+so that's what the thing by stalls, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2696-4
+00:26:50.307 --> 00:26:52.600
+<v Sterling Baird>we did get, yeah, we got somewhere.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2737-0
+00:26:54.200 --> 00:26:57.785
+<v Sterling Baird>That's right, but then it's like,
+I don't know why I would why I would stop</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2737-1
+00:26:57.785 --> 00:26:59.860
+<v Sterling Baird>there.
+I think it's back to the field phase</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2737-2
+00:26:59.860 --> 00:27:03.162
+<v Sterling Baird>thing, like it can't go back to phases,
+like once it gets to the tab,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2737-3
+00:27:03.162 --> 00:27:05.710
+<v Sterling Baird>then it's just gonna keep tapping and,
+totally, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2737-4
+00:27:05.710 --> 00:27:09.578
+<v Sterling Baird>just have that little pocket in the front,
+yeah, it just keeps tapping, so, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2737-5
+00:27:09.578 --> 00:27:12.644
+<v Sterling Baird>why, like CMC here has,
+you're catching like they had 140, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2737-6
+00:27:12.644 --> 00:27:12.880
+<v Sterling Baird>yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2742-0
+00:27:13.040 --> 00:27:15.640
+<v Sterling Baird>150 tabs, yeah,
+and still didn't get there, so...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2765-0
+00:27:16.840 --> 00:27:21.368
+<v Sterling Baird>But again, that's the controls thing,
+right? Let's just have you, yeah, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2765-1
+00:27:21.368 --> 00:27:25.955
+<v Sterling Baird>and so I think it's still meaningful to
+have this heuristic test and data from</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2765-2
+00:27:25.955 --> 00:27:27.000
+<v Sterling Baird>that, just like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2793-0
+00:27:28.520 --> 00:27:32.720
+<v Sterling Baird>Yeah, if we take this heuristic,
+people want to know the performance of it.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2793-1
+00:27:32.720 --> 00:27:35.262
+<v Sterling Baird>Yeah.
+And so even though we're sectioning off</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2793-2
+00:27:35.262 --> 00:27:36.920
+<v Sterling Baird>more advanced things for Will.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2810-0
+00:27:39.480 --> 00:27:41.986
+<v Sterling Baird>People will read this paper and they want
+it like, so can you,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2810-1
+00:27:41.986 --> 00:27:44.294
+<v Sterling Baird>can you just have batteries?
+Can you just have batteries?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2810-2
+00:27:44.294 --> 00:27:47.040
+<v Sterling Baird>How fast can you do it? Yeah, yeah,
+can you be accurate? Like, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2840-0
+00:27:48.600 --> 00:27:52.389
+<v Sterling Baird>And it's helping for me to remind myself
+that it's not just,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2840-1
+00:27:52.389 --> 00:27:57.171
+<v Sterling Baird>we're looking for graphs that showcase
+the powder dose of the powers, right?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2840-2
+00:27:57.171 --> 00:28:00.774
+<v Sterling Baird>This is, yeah,
+we're not sure what CMC does or something,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2840-3
+00:28:00.774 --> 00:28:03.880
+<v Sterling Baird>yeah, they're trying to show the powder,
+so yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2877-0
+00:28:06.840 --> 00:28:10.495
+<v Sterling Baird>Yeah, sweet.
+I'm talking a little too much. Thank you.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2877-1
+00:28:10.495 --> 00:28:15.547
+<v Sterling Baird>I think this is the last one, yeah. Ohh,
+yeah, so then it's really helpful,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2877-2
+00:28:15.547 --> 00:28:18.870
+<v Sterling Baird>I think, and just it's cool to see how,
+like, OK,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2877-3
+00:28:18.870 --> 00:28:23.523
+<v Sterling Baird>so it's an auger and it's spinning and it
+falls out and it falls out,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2877-4
+00:28:23.523 --> 00:28:24.720
+<v Sterling Baird>so this is like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2887-0
+00:28:25.880 --> 00:28:28.157
+<v Sterling Baird>Yeah, yeah,
+I do like that as soon as burst,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2887-1
+00:28:28.157 --> 00:28:30.840
+<v Sterling Baird>and this is how you can see how the
+powder it's got.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2897-0
+00:28:32.000 --> 00:28:36.760
+<v Sterling Baird>Yeah, like that, and yeah,
+'cause every everyone is like a...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2919-0
+00:28:37.800 --> 00:28:40.581
+<v Sterling Baird>Never really, it's continuous, right?
+Yeah, stream,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2919-1
+00:28:40.581 --> 00:28:44.805
+<v Sterling Baird>even as continuous as we're trying to get,
+yeah, even with even with this one,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2919-2
+00:28:44.805 --> 00:28:47.640
+<v Sterling Baird>probably the most continuous, yeah, yeah,
+still not.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2925-0
+00:28:50.600 --> 00:28:52.600
+<v Sterling Baird>Yeah, I like that one. I like C2. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2927-0
+00:28:57.080 --> 00:28:57.960
+<v Sterling Baird>Apparently.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2939-0
+00:29:00.640 --> 00:29:05.510
+<v Sterling Baird>This is in the supplementary information.
+That seems like a pretty good one for the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2939-1
+00:29:05.510 --> 00:29:05.800
+<v Sterling Baird>name.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2943-0
+00:29:08.520 --> 00:29:09.480
+<v Sterling Baird>But here we've got...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2945-0
+00:29:12.360 --> 00:29:13.400
+<v Sterling Baird>Protocol A.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2950-0
+00:29:15.080 --> 00:29:19.080
+<v Sterling Baird>We'll stop using block protocol A.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2972-0
+00:29:20.680 --> 00:29:24.758
+<v Sterling Baird>Nothing was varied.
+It's a balanced baseline.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2972-1
+00:29:24.758 --> 00:29:30.520
+<v Sterling Baird>So we have the tilt at 45, we do 8 reads.
+And, okay, gotcha. So.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2977-0
+00:29:32.040 --> 00:29:34.520
+<v Sterling Baird>It's trying to get the noise floor.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2997-0
+00:29:37.160 --> 00:29:42.440
+<v Sterling Baird>The static hold, so 04590,
+hold for 15 seconds, but no actuation.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/2997-1
+00:29:42.440 --> 00:29:44.600
+<v Sterling Baird>So just looking at gravity.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3018-0
+00:29:46.120 --> 00:29:50.368
+<v Sterling Baird>Okay, eight trials for this,
+three trials for protocol B.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3018-1
+00:29:50.368 --> 00:29:54.471
+<v Sterling Baird>These are two,
+like if you're holding for 15 seconds at</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3018-2
+00:29:54.471 --> 00:29:57.913
+<v Sterling Baird>a time,
+but you're not like instancing between</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3018-3
+00:29:57.913 --> 00:29:58.280
+<v Sterling Baird>them.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3048-0
+00:30:00.040 --> 00:30:02.434
+<v Sterling Baird>Is that a call? Yeah,
+I think it's just like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3048-1
+00:30:02.434 --> 00:30:05.816
+<v Sterling Baird>if you just hold it there, yeah, I mean,
+you just hold it there,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3048-2
+00:30:05.816 --> 00:30:09.720
+<v Sterling Baird>but it says like it does three trials,
+yeah, or I guess 'cause it's 04590.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3053-0
+00:30:11.240 --> 00:30:13.720
+<v Sterling Baird>Oh, maybe. Yeah,
+I don't know if it's three trials.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3058-0
+00:30:15.160 --> 00:30:16.920
+<v Sterling Baird>It might be something where it's like it.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3096-0
+00:30:18.600 --> 00:30:22.854
+<v Sterling Baird>Goes back to its normal thing,
+and then it goes back up to forty-five,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3096-1
+00:30:22.854 --> 00:30:25.610
+<v Sterling Baird>and then, yeah, that's a good question,
+yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3096-2
+00:30:25.610 --> 00:30:30.344
+<v Sterling Baird>so to figure out what the best test
+server, hey, we run the test server, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3096-3
+00:30:30.344 --> 00:30:33.400
+<v Sterling Baird>rotation yield,
+so this is the zero forty-five 90.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3100-0
+00:30:35.000 --> 00:30:38.120
+<v Sterling Baird>6 revolutions, 30 RPM.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3110-0
+00:30:40.920 --> 00:30:45.400
+<v Sterling Baird>Yeah, just... Oh, okay.
+Revolution to revolution spread.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3117-0
+00:30:46.840 --> 00:30:50.200
+<v Sterling Baird>Beat factor and precision at each tilt,
+so from...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3142-0
+00:30:52.000 --> 00:30:55.879
+<v Sterling Baird>Like for the first revolution,
+this is how much mass was delivered.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3142-1
+00:30:55.879 --> 00:30:59.530
+<v Sterling Baird>For the second revolution,
+this is how much mass was delivered.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3142-2
+00:30:59.530 --> 00:31:02.040
+<v Sterling Baird>I think is where if you go up a little
+bit.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3149-0
+00:31:05.400 --> 00:31:07.640
+<v Sterling Baird>This one, I think that's this YX list.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3151-0
+00:31:09.480 --> 00:31:09.960
+<v Sterling Baird>Maybe.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3156-0
+00:31:11.640 --> 00:31:14.200
+<v Sterling Baird>Block scene? Yeah, so this is block.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3172-0
+00:31:15.360 --> 00:31:19.558
+<v Sterling Baird>But the revolution to revolution spread,
+that seems to be what it's trying to</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3172-1
+00:31:19.558 --> 00:31:21.280
+<v Sterling Baird>capture there, but that doesn't.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3203-0
+00:31:22.840 --> 00:31:28.009
+<v Sterling Baird>I guess how much the variance there is
+between. I'd rather just see error bars.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3203-1
+00:31:28.009 --> 00:31:31.498
+<v Sterling Baird>I'd rather just see error bars on that.
+Yeah. Or the,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3203-2
+00:31:31.498 --> 00:31:36.603
+<v Sterling Baird>actually the individual data points,
+maybe. Looks like 18 trials for this one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3203-3
+00:31:36.603 --> 00:31:39.640
+<v Sterling Baird>Again,
+we really need to figure out what that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3204-0
+00:31:40.920 --> 00:31:41.640
+<v Sterling Baird>Ohh.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3239-0
+00:31:44.040 --> 00:31:51.556
+<v Sterling Baird>What does a trial mean? Yeah, yeah,
+rephrase. Yeah, speed sweep, so 15 RPM,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3239-1
+00:31:51.556 --> 00:31:58.084
+<v Sterling Baird>45 RPM, 90 RPM, tilt at 45, 3 revolutions,
+streaming the balance,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3239-2
+00:31:58.084 --> 00:32:02.040
+<v Sterling Baird>so mass flow rate versus rotation speed.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3248-0
+00:32:02.520 --> 00:32:08.200
+<v Sterling Baird>Within revolution pulsation of the
+discharge from the streamed mass trace.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3250-0
+00:32:10.840 --> 00:32:11.720
+<v Sterling Baird>Pulsation.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3253-0
+00:32:12.920 --> 00:32:15.400
+<v Sterling Baird>the discharge problem.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3258-0
+00:32:18.840 --> 00:32:21.800
+<v Sterling Baird>Is that the pulse? Maybe we go down to...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3271-0
+00:32:23.080 --> 00:32:30.680
+<v Sterling Baird>On block D streaming balance polls during
+three revolutions at 15 RPM.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3277-0
+00:32:31.480 --> 00:32:36.600
+<v Sterling Baird>So, there's a 15 points, yeah,
+I guess it's just saying that...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3295-0
+00:32:38.440 --> 00:32:46.521
+<v Sterling Baird>It noticed kind of the pulsating user,
+as I don't know why I picked these for</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3295-1
+00:32:46.521 --> 00:32:51.080
+<v Sterling Baird>powder specifically, yeah, yeah,
+tap yield.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3303-0
+00:32:52.280 --> 00:32:56.360
+<v Sterling Baird>So till 0 and 45, 8 trials.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3305-0
+00:32:57.400 --> 00:32:58.120
+<v Sterling Baird>And then...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3336-0
+00:33:00.840 --> 00:33:06.436
+<v Sterling Baird>Doing A refeed,
+so I guess just like doing a revolution,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3336-1
+00:33:06.436 --> 00:33:13.505
+<v Sterling Baird>because tapping, yeah, removes that, yeah,
+yeah, okay, so 360 rotation,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3336-2
+00:33:13.505 --> 00:33:19.200
+<v Sterling Baird>one solenoid tap,
+and then a 60 millisecond tap, is that?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3338-0
+00:33:19.800 --> 00:33:21.640
+<v Sterling Baird>Wait, 60 milliseconds on.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3344-0
+00:33:24.200 --> 00:33:26.040
+<v Sterling Baird>I guess you send a signal to the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3388-0
+00:33:28.600 --> 00:33:31.402
+<v Sterling Baird>Yeah,
+I guess we just turn our current on in</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3388-1
+00:33:31.402 --> 00:33:36.634
+<v Sterling Baird>the solenoid for some time and then drop
+it so I guess it's a 60 millisecond pulse.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3388-2
+00:33:36.634 --> 00:33:41.741
+<v Sterling Baird>Okay, yeah, so it turns on, like it hits,
+and 60 seconds later, 60 seconds later.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3388-3
+00:33:41.741 --> 00:33:46.661
+<v Sterling Baird>I think so, yeah. Sure. I guess, yeah,
+that's one of those other things, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3388-4
+00:33:46.661 --> 00:33:47.160
+<v Sterling Baird>oh yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3397-0
+00:33:48.440 --> 00:33:56.760
+<v Sterling Baird>Yeah, I guess that again chose, yeah,
+so 60 millisecond pulses, just one tap.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3405-0
+00:34:00.680 --> 00:34:04.360
+<v Sterling Baird>Yeah, and that refeed locks separately,
+32 trials.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3411-0
+00:34:07.480 --> 00:34:11.160
+<v Sterling Baird>Obviously, nothing, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3416-0
+00:34:13.160 --> 00:34:14.440
+<v Sterling Baird>Yeah, I still want to get.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3422-0
+00:34:15.320 --> 00:34:18.840
+<v Sterling Baird>that back on at some point, but yeah,
+it's not. Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3448-0
+00:34:20.600 --> 00:34:25.487
+<v Sterling Baird>Priorities, we have, we have,
+we have priorities right now, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3448-1
+00:34:25.487 --> 00:34:30.820
+<v Sterling Baird>closed loop dose, 3 doses, 1 gram target,
+three phase controller, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3448-2
+00:34:30.820 --> 00:34:33.560
+<v Sterling Baird>and so mass dose error, time to dose.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3459-0
+00:34:35.080 --> 00:34:39.064
+<v Sterling Baird>The breakdown of bulk find and tap the
+controller,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3459-1
+00:34:39.064 --> 00:34:41.720
+<v Sterling Baird>and so that's where we go back up.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3470-0
+00:34:44.200 --> 00:34:51.320
+<v Sterling Baird>Here, 3 doses, and this says trials,
+3 doses, so maybe trials.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3480-0
+00:34:53.560 --> 00:34:58.200
+<v Sterling Baird>the generous interpretation of trials.
+Like it ran this procedure.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3485-0
+00:34:59.160 --> 00:35:01.560
+<v Sterling Baird>18 times per pattern. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3497-0
+00:35:04.640 --> 00:35:09.400
+<v Sterling Baird>Which in this case would have been,
+what is this, I guess, 32 revolutions?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3499-0
+00:35:10.480 --> 00:35:11.560
+<v Sterling Baird>But that seems like a lot.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3523-0
+00:35:13.000 --> 00:35:18.619
+<v Sterling Baird>But like for C,
+like it's 6 revolutions at 0.4590 each,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3523-1
+00:35:18.619 --> 00:35:24.440
+<v Sterling Baird>so that's 18. Oh, total. Yeah,
+I think that's what, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3525-0
+00:35:25.800 --> 00:35:26.760
+<v Sterling Baird>That sounds.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3526-0
+00:35:27.840 --> 00:35:28.280
+<v Sterling Baird>Right.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3543-0
+00:35:31.240 --> 00:35:37.357
+<v Sterling Baird>So, the less generous interpretation,
+yeah, yeah, yes, the lazy,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3543-1
+00:35:37.357 --> 00:35:40.840
+<v Sterling Baird>the lazy version of, yes, yeah, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3554-0
+00:35:44.160 --> 00:35:49.432
+<v Sterling Baird>Yeah, so from that information,
+do you think there's anything that we're</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3554-1
+00:35:49.432 --> 00:35:51.960
+<v Sterling Baird>really lacking? A predo front of...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3560-0
+00:35:55.560 --> 00:35:58.840
+<v Sterling Baird>Wait, hold up. Uh,
+it's not related for your friend.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3566-0
+00:35:59.920 --> 00:36:02.920
+<v Sterling Baird>so much, but just a scatter plot of...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3572-0
+00:36:05.320 --> 00:36:08.440
+<v Sterling Baird>Dose error versus time to dose or.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3577-0
+00:36:14.600 --> 00:36:16.280
+<v Sterling Baird>Or no, do we have that already? Is that?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3598-0
+00:36:18.200 --> 00:36:22.926
+<v Sterling Baird>You go up a little bit, is that this one?
+Ohh, no, that doesn't have time to dose,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3598-1
+00:36:22.926 --> 00:36:26.570
+<v Sterling Baird>so basically this plot,
+but with time to dose, same with these,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3598-2
+00:36:26.570 --> 00:36:27.880
+<v Sterling Baird>and so we would have...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3607-0
+00:36:29.720 --> 00:36:34.760
+<v Sterling Baird>not an access for the powders we would
+have.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3636-0
+00:36:37.400 --> 00:36:43.608
+<v Sterling Baird>Unique symbols, I guess, or yeah,
+like some way to different, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3636-1
+00:36:43.608 --> 00:36:49.908
+<v Sterling Baird>within the the chart itself,
+so this would be like dose error versus</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3636-2
+00:36:49.908 --> 00:36:54.200
+<v Sterling Baird>time to dose,
+and that would only pull from G.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3637-0
+00:36:55.160 --> 00:36:55.400
+<v Sterling Baird>Yep.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3642-0
+00:37:01.080 --> 00:37:03.480
+<v Sterling Baird>Yeah, OK, yes.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3655-0
+00:37:05.720 --> 00:37:09.424
+<v Sterling Baird>Move the table of move that table onto
+the main thing. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3655-1
+00:37:09.424 --> 00:37:10.760
+<v Sterling Baird>I think we could have.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3664-0
+00:37:19.000 --> 00:37:23.320
+<v Sterling Baird>Like we kind of want to capture the
+effect of each.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3666-0
+00:37:25.000 --> 00:37:26.280
+<v Sterling Baird>Isolated.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3682-0
+00:37:28.040 --> 00:37:31.386
+<v Sterling Baird>And so, we got we got tilt, speed,
+and tapping,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3682-1
+00:37:31.386 --> 00:37:35.640
+<v Sterling Baird>and isolate the effects of those two,
+or try to say, like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3683-0
+00:37:37.160 --> 00:37:37.560
+<v Sterling Baird>Oh.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3688-0
+00:37:45.240 --> 00:37:46.920
+<v Sterling Baird>Yeah, do we have something that's like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3703-0
+00:37:48.440 --> 00:37:53.364
+<v Sterling Baird>One tap for this powder typically gives
+this much. And here's the spread.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3703-1
+00:37:53.364 --> 00:37:55.960
+<v Sterling Baird>Do we already have something like that?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3717-0
+00:37:57.240 --> 00:38:03.501
+<v Sterling Baird>Ohh, what's all this? I don't know.
+Was that the supplementary drop-down,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3717-1
+00:38:03.501 --> 00:38:08.240
+<v Sterling Baird>or maybe I just I started typing and then
+it popped up?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3722-0
+00:38:13.160 --> 00:38:16.040
+<v Sterling Baird>Is it summarize the, yeah, it's been.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3724-0
+00:38:19.560 --> 00:38:19.960
+<v Sterling Baird>Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3742-0
+00:38:23.080 --> 00:38:26.681
+<v Sterling Baird>Oh yeah, that's right.
+We only did it for one mass.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3742-1
+00:38:26.681 --> 00:38:31.875
+<v Sterling Baird>I figured if we talked about that one,
+I'm doing it for a couple different</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3742-2
+00:38:31.875 --> 00:38:32.360
+<v Sterling Baird>target.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3744-0
+00:38:33.960 --> 00:38:34.760
+<v Sterling Baird>Basses.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3747-0
+00:38:37.720 --> 00:38:40.040
+<v Sterling Baird>Does that sound familiar? Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3751-0
+00:38:40.920 --> 00:38:42.280
+<v Sterling Baird>Like, they're trying to go to, like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3757-0
+00:38:43.200 --> 00:38:45.880
+<v Sterling Baird>It's like 20 milligrams, 1 gram, 5 grams.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3779-0
+00:38:47.160 --> 00:38:52.850
+<v Sterling Baird>It's like the target dose, but that might,
+that's more like Will's, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3779-1
+00:38:52.850 --> 00:38:57.080
+<v Sterling Baird>we may have just like sectioning that out,
+they, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3789-0
+00:38:58.040 --> 00:39:01.240
+<v Sterling Baird>When you can do the test,
+it just told called the mid test,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3789-1
+00:39:01.240 --> 00:39:03.320
+<v Sterling Baird>then seemed helpful, yeah, yeah, but...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3800-0
+00:39:19.800 --> 00:39:24.040
+<v Sterling Baird>No, you cannot compute the CV from n = 1.
+Thank you.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3803-0
+00:39:27.560 --> 00:39:28.840
+<v Sterling Baird>Well, condescending.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3813-0
+00:39:32.280 --> 00:39:36.840
+<v Sterling Baird>Like, it's often insulting. It's like,
+were you trying to insult my intelligence?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3815-0
+00:39:49.960 --> 00:39:50.680
+<v Sterling Baird>There's.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3817-0
+00:39:53.160 --> 00:39:53.960
+<v Sterling Baird>Where are you looking?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3818-0
+00:39:55.400 --> 00:39:56.280
+<v Sterling Baird>And.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3844-0
+00:40:19.480 --> 00:40:23.536
+<v Sterling Baird>Oh yeah, maybe just to know,
+like I think for the ones that didn't</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3844-1
+00:40:23.536 --> 00:40:27.834
+<v Sterling Baird>dispense, it's a question of, well,
+maybe we need to look at the auger</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3844-2
+00:40:27.834 --> 00:40:30.680
+<v Sterling Baird>geometry.
+Because if we had an empty cylinder.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3867-0
+00:40:32.360 --> 00:40:40.130
+<v Sterling Baird>We would expect some powder to flow if we
+tilt it at 90 degrees and spin it and tap</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3867-1
+00:40:40.130 --> 00:40:43.922
+<v Sterling Baird>it.
+So that one becomes more of a like a</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3867-2
+00:40:43.922 --> 00:40:45.680
+<v Sterling Baird>design thing. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3876-0
+00:41:07.480 --> 00:41:10.440
+<v Sterling Baird>Oh yeah,
+so I had had a follow-up at one point.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3881-0
+00:41:16.360 --> 00:41:19.800
+<v Sterling Baird>Oh, yeah, so this, for example.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3883-0
+00:41:22.000 --> 00:41:22.520
+<v Sterling Baird>We have a...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3888-0
+00:41:24.520 --> 00:41:26.840
+<v Sterling Baird>Yeah, milligrams per solenoid tap.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3894-0
+00:41:29.240 --> 00:41:31.720
+<v Sterling Baird>and the feed factor at 45.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3895-0
+00:41:34.920 --> 00:41:35.480
+<v Sterling Baird>And...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3899-0
+00:41:38.240 --> 00:41:39.960
+<v Sterling Baird>Which I guess is just saying, like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3902-0
+00:41:43.480 --> 00:41:44.600
+<v Sterling Baird>Things that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3915-0
+00:41:48.200 --> 00:41:55.705
+<v Sterling Baird>Feed at approximately the same rate with
+revolutions can have a dramatically</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3915-1
+00:41:55.705 --> 00:41:56.680
+<v Sterling Baird>different.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3925-0
+00:41:58.640 --> 00:42:03.261
+<v Sterling Baird>A tap response.
+I guess that's what we kind of get from,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3925-1
+00:42:03.261 --> 00:42:04.640
+<v Sterling Baird>yeah, from the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3950-0
+00:43:10.920 --> 00:43:14.786
+<v Sterling Baird>And then maybe going through some of
+these other figures for the first time at</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3950-1
+00:43:14.786 --> 00:43:15.080
+<v Sterling Baird>least.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3954-0
+00:43:18.200 --> 00:43:19.320
+<v Sterling Baird>Yeah, if I do a screen share.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3955-0
+00:43:26.640 --> 00:43:27.000
+<v Sterling Baird>Grant.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3960-0
+00:43:28.480 --> 00:43:30.840
+<v Sterling Baird>And you can look on here, just.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3969-0
+00:43:35.640 --> 00:43:38.520
+<v Sterling Baird>Summarize the totality of the data that's
+been collected.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3985-0
+00:43:40.920 --> 00:43:45.508
+<v Sterling Baird>Evaluating effects of different
+parameters on the semi-instantaneous dose</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/3985-1
+00:43:45.508 --> 00:43:48.360
+<v Sterling Baird>rate, do EDA,
+it's not to rate data analysis.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4000-0
+00:43:53.720 --> 00:43:56.122
+<v Sterling Baird>Oh,
+about 64 grams of powder moved through</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4000-1
+00:43:56.122 --> 00:44:00.200
+<v Sterling Baird>the auger in the characterization blocks,
+and another 22 grams of doses.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4001-0
+00:44:01.560 --> 00:44:01.960
+<v Sterling Baird>Everything.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4002-0
+00:44:10.600 --> 00:44:10.920
+<v Sterling Baird>The.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4005-0
+00:44:12.280 --> 00:44:13.960
+<v Sterling Baird>OK, 19 runs.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4016-0
+00:44:15.320 --> 00:44:19.687
+<v Sterling Baird>Fiction powders, 1200 measured trials.
+That's pretty good. That's cool.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4016-1
+00:44:19.687 --> 00:44:20.840
+<v Sterling Baird>That's pretty cool.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4034-0
+00:44:22.200 --> 00:44:28.625
+<v Sterling Baird>A little more than that for the streamed
+balance polls, like individual, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4034-1
+00:44:28.625 --> 00:44:31.960
+<v Sterling Baird>here's the balance. 36 closed loop doses.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4040-0
+00:44:40.680 --> 00:44:44.680
+<v Sterling Baird>Oh, pet my ego. So clean.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4063-0
+00:44:48.280 --> 00:44:53.042
+<v Sterling Baird>Your question of tell me where the data
+set is? Yeah, because it's like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4063-1
+00:44:53.042 --> 00:44:56.043
+<v Sterling Baird>or my point about,
+I guess it's referring to,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4063-2
+00:44:56.043 --> 00:44:59.240
+<v Sterling Baird>that doesn't involve complex optimization.
+Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4075-0
+00:45:00.280 --> 00:45:06.580
+<v Sterling Baird>Ohh, what do you know?
+This is not optimization. What? Yeah, uh,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4075-1
+00:45:06.580 --> 00:45:10.360
+<v Sterling Baird>right, so this is just giving me the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4076-0
+00:45:11.800 --> 00:45:12.280
+<v Sterling Baird>Dave.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4081-0
+00:45:14.200 --> 00:45:16.040
+<v Sterling Baird>Okay, yes, thank you. Thank you.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4085-0
+00:45:18.240 --> 00:45:19.720
+<v Sterling Baird>vibration matter.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4086-0
+00:45:25.720 --> 00:45:26.680
+<v Sterling Baird>Oh, AB.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4131-0
+00:45:28.920 --> 00:45:31.912
+<v Sterling Baird>Ohh,
+this is just showing how many trials were</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4131-1
+00:45:31.912 --> 00:45:34.778
+<v Sterling Baird>run,
+so it's basically saying we got all the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4131-2
+00:45:34.778 --> 00:45:39.553
+<v Sterling Baird>data, except for G doesn't have,
+we don't have G for salt, sodium sulfate,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4131-3
+00:45:39.553 --> 00:45:43.310
+<v Sterling Baird>the silicon, fume silica, barium chloride,
+or the ALSI 10.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4131-4
+00:45:43.310 --> 00:45:47.640
+<v Sterling Baird>I shouldn't remember who that was.
+I think it was because of the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4143-0
+00:45:47.800 --> 00:45:50.676
+<v Sterling Baird>And few moves causing a bunch of
+migrations and things,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4143-1
+00:45:50.676 --> 00:45:52.680
+<v Sterling Baird>and so just had to pause in that, so...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4158-0
+00:45:54.440 --> 00:45:58.186
+<v Sterling Baird>If we were to go back and collect some
+more data,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4158-1
+00:45:58.186 --> 00:46:03.356
+<v Sterling Baird>filling in these ones would be the only,
+like, a completeness, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4158-2
+00:46:03.356 --> 00:46:05.080
+<v Sterling Baird>step by the manuscript.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4159-0
+00:46:06.440 --> 00:46:06.480
+<v Sterling Baird>A...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4170-0
+00:46:14.480 --> 00:46:19.640
+<v Sterling Baird>What do you think about that? Like,
+you know, redoing this? Yeah, the the.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4208-0
+00:46:22.440 --> 00:46:26.505
+<v Sterling Baird>The three-phase dose, yeah,
+test for the other ones.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4208-1
+00:46:26.505 --> 00:46:32.565
+<v Sterling Baird>Does that seem like they could be over,
+I don't remember why it didn't happen,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4208-2
+00:46:32.565 --> 00:46:37.091
+<v Sterling Baird>but I can't imagine that I didn't do it,
+but well, I mean,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4208-3
+00:46:37.091 --> 00:46:42.000
+<v Sterling Baird>out of literally 1200 measured trials,
+sure, but I think you...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4217-0
+00:46:42.080 --> 00:46:44.389
+<v Sterling Baird>Like,
+we still just have the augers that are</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4217-1
+00:46:44.389 --> 00:46:47.315
+<v Sterling Baird>filled. I mean,
+is it easier to just clean up? Yeah, OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4217-2
+00:46:47.315 --> 00:46:47.880
+<v Sterling Baird>OK, gotcha.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4238-0
+00:46:49.560 --> 00:46:52.544
+<v Sterling Baird>Um,
+it's still in the few minutes and stuff,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4238-1
+00:46:52.544 --> 00:46:57.386
+<v Sterling Baird>so thank you for turning on the scale.
+Do you know why it turned on? No,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4238-2
+00:46:57.386 --> 00:47:02.360
+<v Sterling Baird>I'm gonna if it's turned off at no time
+today, not not great, yeah, and...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4249-0
+00:47:04.200 --> 00:47:06.667
+<v Sterling Baird>Yeah,
+and if like that would be fine if Claude</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4249-1
+00:47:06.667 --> 00:47:09.240
+<v Sterling Baird>could like send a ping and make it up,
+but yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4271-0
+00:47:13.680 --> 00:47:18.811
+<v Sterling Baird>Is it expected that the scale would turn
+off after some period of time?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4271-1
+00:47:18.811 --> 00:47:23.800
+<v Sterling Baird>Sam mentioned that there was no real
+indication as to why it was off.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4297-0
+00:47:33.560 --> 00:47:38.395
+<v Sterling Baird>Yes, I can rerun those. Yeah, those week.
+That's interesting too.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4297-1
+00:47:38.395 --> 00:47:40.520
+<v Sterling Baird>It's like how much was dosed?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4320-0
+00:47:42.720 --> 00:47:47.097
+<v Sterling Baird>Like in total 9 grams of the ALSI 10MG
+kind of stuff, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4320-1
+00:47:47.097 --> 00:47:52.350
+<v Sterling Baird>because these tests weren't at like a
+threshold of, yeah, dose as much,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4320-2
+00:47:52.350 --> 00:47:55.560
+<v Sterling Baird>just see how much gets dosed. OK,
+the rate.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4326-0
+00:48:02.360 --> 00:48:05.320
+<v Sterling Baird>Mean dose rate at the reference condition.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4330-0
+00:48:15.160 --> 00:48:16.760
+<v Sterling Baird>milligrams per second.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4332-0
+00:48:20.440 --> 00:48:21.720
+<v Sterling Baird>And is it saying?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4334-0
+00:48:24.280 --> 00:48:25.640
+<v Sterling Baird>That's so strange.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4353-0
+00:48:29.320 --> 00:48:34.250
+<v Sterling Baird>Dose rate spans 3 decades under one
+frozen parameter set block,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4353-1
+00:48:34.250 --> 00:48:37.640
+<v Sterling Baird>or under one frozen parameter set,
+block C.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4367-0
+00:48:39.080 --> 00:48:44.280
+<v Sterling Baird>30 RPM, tilt 45 degrees,
+mean of 6 single revolutions.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4369-0
+00:48:45.480 --> 00:48:46.440
+<v Sterling Baird>So I think it's saying...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4371-0
+00:48:48.360 --> 00:48:49.240
+<v Sterling Baird>Just right.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4377-0
+00:48:50.840 --> 00:48:52.840
+<v Sterling Baird>Ohh, no, I was just saying, for...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4393-0
+00:48:56.760 --> 00:49:01.996
+<v Sterling Baird>It's including this as one of the decades,
+one of the orders of magnitude,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4393-1
+00:49:01.996 --> 00:49:04.440
+<v Sterling Baird>but just that it can vary based on.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4398-0
+00:49:07.080 --> 00:49:09.640
+<v Sterling Baird>Okay, with revolutions specifically.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4400-0
+00:49:11.880 --> 00:49:12.440
+<v Sterling Baird>Tilt.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4409-0
+00:49:14.760 --> 00:49:20.120
+<v Sterling Baird>Zero 4590 mass per auger revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4413-0
+00:49:20.920 --> 00:49:23.400
+<v Sterling Baird>So yeah, this is saying.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4415-0
+00:49:24.840 --> 00:49:25.800
+<v Sterling Baird>In general.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4419-0
+00:49:26.920 --> 00:49:28.200
+<v Sterling Baird>90 degree tilt.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4437-0
+00:49:29.400 --> 00:49:34.756
+<v Sterling Baird>gives more dispensed mess.
+How much of the flow is gravity,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4437-1
+00:49:34.756 --> 00:49:39.220
+<v Sterling Baird>not the auger? Okay,
+that's actually interesting.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4437-2
+00:49:39.220 --> 00:49:40.560
+<v Sterling Baird>Gravity assist.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4440-0
+00:49:41.560 --> 00:49:43.640
+<v Sterling Baird>Wait, ohh, no, I guess it.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4447-0
+00:49:45.000 --> 00:49:48.040
+<v Sterling Baird>For some of these, if you put it at 90.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4482-0
+00:49:49.120 --> 00:49:53.296
+<v Sterling Baird>It wouldn't just start flowing. Yeah.
+And none of that,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4482-1
+00:49:53.296 --> 00:49:58.144
+<v Sterling Baird>that's something very close.
+It takes a long time to stop. Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4482-2
+00:49:58.144 --> 00:50:04.185
+<v Sterling Baird>But they do stop. Okay. So gravity assist,
+which really I think is just repeated</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4482-3
+00:50:04.185 --> 00:50:07.840
+<v Sterling Baird>this data,
+is that when you put sodium alginate.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4490-0
+00:50:09.880 --> 00:50:14.335
+<v Sterling Baird>At 90 degrees,
+it dispenses 15 times faster than when</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4490-1
+00:50:14.335 --> 00:50:15.160
+<v Sterling Baird>it's at 0.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4495-0
+00:50:17.320 --> 00:50:18.920
+<v Sterling Baird>This shouldn't even be on there.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4520-0
+00:50:20.040 --> 00:50:24.219
+<v Sterling Baird>Game Silica and CMC.
+Is there any Game Silica is 2.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4520-1
+00:50:24.219 --> 00:50:30.086
+<v Sterling Baird>2 times faster than it came out?
+Because I think it was probably because</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4520-2
+00:50:30.086 --> 00:50:36.435
+<v Sterling Baird>it was measuring the noise floor on scale
+and happened to be greater than one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4520-3
+00:50:36.435 --> 00:50:37.480
+<v Sterling Baird>I don't know.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4521-0
+00:50:39.000 --> 00:50:39.560
+<v Sterling Baird>Uh...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4525-0
+00:50:42.000 --> 00:50:44.440
+<v Sterling Baird>The one was tilt.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4549-0
+00:50:46.840 --> 00:50:51.788
+<v Sterling Baird>I'm just looking at Silicon 325,
+and there's nothing in 045,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4549-1
+00:50:51.788 --> 00:50:57.710
+<v Sterling Baird>but it's saying I got something.
+It conveys a little bit degrees. Sorry,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4549-2
+00:50:57.710 --> 00:50:58.440
+<v Sterling Baird>go ahead.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4556-0
+00:50:59.520 --> 00:51:03.400
+<v Sterling Baird>That was one of the ones,
+so that's this one here, and...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4563-0
+00:51:13.640 --> 00:51:16.840
+<v Sterling Baird>This one right here. Oh, for taps. Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4565-0
+00:51:18.920 --> 00:51:20.120
+<v Sterling Baird>Okay, apps.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4590-0
+00:51:28.920 --> 00:51:34.944
+<v Sterling Baird>Okay, so it sounds like the silicon, yeah,
+I mean that's kind of an interesting,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4590-1
+00:51:34.944 --> 00:51:39.704
+<v Sterling Baird>yeah, things like, hey,
+we couldn't get any of this out when it</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4590-2
+00:51:39.704 --> 00:51:43.200
+<v Sterling Baird>was, unless we tilted it,
+so that's kind of...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4594-0
+00:51:44.640 --> 00:51:47.320
+<v Sterling Baird>I guess kind of the flip side of things
+is...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4595-0
+00:51:48.680 --> 00:51:49.080
+<v Sterling Baird>Ohh.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4616-0
+00:51:52.760 --> 00:51:57.202
+<v Sterling Baird>Is there something that wouldn't work at
+90 degrees that would work at a, right?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4616-1
+00:51:57.202 --> 00:52:01.151
+<v Sterling Baird>Is that, yeah, makes sense, like,
+that's a story, yeah, that's a story,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4616-2
+00:52:01.151 --> 00:52:01.480
+<v Sterling Baird>right?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4628-0
+00:52:31.960 --> 00:52:36.600
+<v Sterling Baird>It's saying the ones that need gravity
+are cohesive ones.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4637-0
+00:52:41.720 --> 00:52:44.005
+<v Sterling Baird>Oh, okay.
+I'm seeing that a little bit here.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4637-1
+00:52:44.005 --> 00:52:44.920
+<v Sterling Baird>So for at least...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4641-0
+00:52:46.520 --> 00:52:48.200
+<v Sterling Baird>or white rice flour.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4646-0
+00:52:49.480 --> 00:52:51.240
+<v Sterling Baird>Keeping in mind this is log scale.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4648-0
+00:52:52.320 --> 00:52:53.160
+<v Sterling Baird>you're getting.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4649-0
+00:52:57.720 --> 00:52:58.520
+<v Sterling Baird>Or?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4654-0
+00:53:02.520 --> 00:53:03.960
+<v Sterling Baird>Yeah. Does it? Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4673-0
+00:53:06.160 --> 00:53:09.519
+<v Sterling Baird>It has a bigger effect in terms of
+relative percent, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4673-1
+00:53:09.519 --> 00:53:12.138
+<v Sterling Baird>than it does on these ones,
+though magnitude.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4673-2
+00:53:12.138 --> 00:53:13.960
+<v Sterling Baird>I'm sure these ones are still...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4676-0
+00:53:14.840 --> 00:53:16.280
+<v Sterling Baird>More, absolutely. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4690-0
+00:53:22.200 --> 00:53:27.440
+<v Sterling Baird>Hey, speed. Oh. Wow, the most,
+the very most.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4690-1
+00:53:27.440 --> 00:53:32.680
+<v Sterling Baird>I thought there was another one that said.
+..</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4691-0
+00:53:35.400 --> 00:53:35.880
+<v Sterling Baird>Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4694-0
+00:53:38.680 --> 00:53:40.920
+<v Sterling Baird>Maybe it was something different, nice,
+yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4696-0
+00:53:46.920 --> 00:53:47.640
+<v Sterling Baird>OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4703-0
+00:53:49.600 --> 00:53:52.280
+<v Sterling Baird>Six times the speed buys about three
+times the rate.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4723-0
+00:53:54.520 --> 00:53:59.099
+<v Sterling Baird>Ohh, it it did do different speeds, right?
+I guess so, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4723-1
+00:53:59.099 --> 00:54:04.280
+<v Sterling Baird>but it did the 1535 and 90 that's right
+for RPM, yeah, so dose rate.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4756-0
+00:54:06.600 --> 00:54:10.702
+<v Sterling Baird>Ohh, very interesting. Yeah,
+spinning it faster. You know,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4756-1
+00:54:10.702 --> 00:54:16.125
+<v Sterling Baird>the most interesting thing about the data
+is that you, if you spin it faster,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4756-2
+00:54:16.125 --> 00:54:20.783
+<v Sterling Baird>that's not looking so good,
+but that's the most interesting thing.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4756-3
+00:54:20.783 --> 00:54:22.800
+<v Sterling Baird>Yeah, it's not awesome. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4758-0
+00:54:26.800 --> 00:54:27.240
+<v Sterling Baird>There we go.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4767-0
+00:54:30.280 --> 00:54:34.920
+<v Sterling Baird>I feel like that's a subtle dig. Yeah, no.
+Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4768-0
+00:54:39.320 --> 00:54:39.720
+<v Sterling Baird>The.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4772-0
+00:54:43.560 --> 00:54:45.400
+<v Sterling Baird>It will change your...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4807-0
+00:54:46.680 --> 00:54:52.242
+<v Sterling Baird>If you think of Claude as a cynical robot
+that's kind of like sarcastic and salty</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4807-1
+00:54:52.242 --> 00:54:57.329
+<v Sterling Baird>towards you and very lazy, like, oh, okay,
+human, I don't want to do that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4807-2
+00:54:57.329 --> 00:55:02.620
+<v Sterling Baird>It totally changes how you read things,
+or at least it did for me a year ago.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4807-3
+00:55:02.620 --> 00:55:04.520
+<v Sterling Baird>It's like, oh, I'm so sorry.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4858-0
+00:55:07.880 --> 00:55:11.431
+<v Sterling Baird>Yeah, I slaved for hours on this thing.
+It's like, you ran for 20 minutes.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4858-1
+00:55:11.431 --> 00:55:14.840
+<v Sterling Baird>What do you mean? That's funny.
+Everything about it's probably good for</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4858-2
+00:55:14.840 --> 00:55:18.107
+<v Sterling Baird>my like communication skills that I've
+been trying to be like, okay,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4858-3
+00:55:18.107 --> 00:55:21.042
+<v Sterling Baird>so I need to tell it exactly like,
+say it really, yeah, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4858-4
+00:55:21.042 --> 00:55:24.262
+<v Sterling Baird>exactly what I do, like it,
+like if I just communicate with people,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4858-5
+00:55:24.262 --> 00:55:26.440
+<v Sterling Baird>it'll probably be good for me to just
+like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4866-0
+00:55:26.680 --> 00:55:29.862
+<v Sterling Baird>Think, okay, how do I, like,
+there is no way to misunderstand what I'm</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4866-1
+00:55:29.862 --> 00:55:33.000
+<v Sterling Baird>saying here, you gotta be really clear.
+Yeah, I think it's something.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4872-0
+00:55:36.440 --> 00:55:39.080
+<v Sterling Baird>Okay, flights filled by time.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4876-0
+00:55:41.800 --> 00:55:43.640
+<v Sterling Baird>Mass per revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4881-0
+00:55:46.360 --> 00:55:48.440
+<v Sterling Baird>relative to 15 RPM.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4883-0
+00:55:50.360 --> 00:55:51.080
+<v Sterling Baird>Is that...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4885-0
+00:55:53.000 --> 00:55:54.440
+<v Sterling Baird>These ones.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4886-0
+00:55:59.000 --> 00:55:59.640
+<v Sterling Baird>Hill.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4892-0
+00:56:01.560 --> 00:56:03.800
+<v Sterling Baird>So, when it said 15, they all like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4902-0
+00:56:04.880 --> 00:56:11.720
+<v Sterling Baird>And when the 45 is how much different
+they dispense versus 15.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4941-0
+00:56:13.800 --> 00:56:18.655
+<v Sterling Baird>Mm-hmm, that's in the bottom one,
+so I didn't know, but wait, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4941-1
+00:56:18.655 --> 00:56:24.509
+<v Sterling Baird>is it saying these ones dispensed less?
+Yeah, I think so, at higher speeds, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4941-2
+00:56:24.509 --> 00:56:30.150
+<v Sterling Baird>ohh, by time, not by turn, okay, okay,
+so do it, so, ohh, ohh, meaning it was,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4941-3
+00:56:30.150 --> 00:56:33.720
+<v Sterling Baird>it was,
+because it's per resolution seconds, not.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4959-0
+00:56:35.000 --> 00:56:37.415
+<v Sterling Baird>So, like,
+you're dispensing less mass per</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4959-1
+00:56:37.415 --> 00:56:41.900
+<v Sterling Baird>revolution for these ones at 90 RPM,
+but you're doing more revolutions in the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4959-2
+00:56:41.900 --> 00:56:44.200
+<v Sterling Baird>same amount of time, so you're doing OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4977-0
+00:56:46.440 --> 00:56:51.039
+<v Sterling Baird>Six times the number of revolutions,
+but each revolution is only getting,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4977-1
+00:56:51.039 --> 00:56:53.960
+<v Sterling Baird>you know, 50% of what the other ones were.
+OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4986-0
+00:56:55.640 --> 00:57:01.400
+<v Sterling Baird>Sure, sure. Yeah.
+And then it's calling that as regimes.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/4998-0
+00:57:02.600 --> 00:57:09.160
+<v Sterling Baird>And it's choosing to say we have fill
+limited versus mobilization limited.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5000-0
+00:57:10.920 --> 00:57:12.840
+<v Sterling Baird>Okay, okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5024-0
+00:57:14.120 --> 00:57:17.332
+<v Sterling Baird>Fill limited, mobilization limited.
+So I guess it's,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5024-1
+00:57:17.332 --> 00:57:21.029
+<v Sterling Baird>so the blue ones are saying,
+I think those are fill limited.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5024-2
+00:57:21.029 --> 00:57:26.120
+<v Sterling Baird>So like everything below is fill limited,
+everything above is mobilization limited.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5061-0
+00:57:28.160 --> 00:57:31.380
+<v Sterling Baird>So if it's below,
+it just doesn't have time to bounce</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5061-1
+00:57:31.380 --> 00:57:36.209
+<v Sterling Baird>around and get to the front. Like you're..
+. Oh, like the auger's moving faster,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5061-2
+00:57:36.209 --> 00:57:40.861
+<v Sterling Baird>but it's not kind of reaching it yet.
+Yeah, like you don't have enough, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5061-3
+00:57:40.861 --> 00:57:44.200
+<v Sterling Baird>you don't have enough friction or gravity.
+It didn't...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5065-0
+00:57:44.440 --> 00:57:45.080
+<v Sterling Baird>It didn't.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5067-0
+00:57:46.680 --> 00:57:47.960
+<v Sterling Baird>I'm not sure what the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5069-0
+00:57:49.960 --> 00:57:51.400
+<v Sterling Baird>Tilt was for this.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5071-0
+00:57:53.880 --> 00:57:54.360
+<v Sterling Baird>I understand.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5078-0
+00:57:56.560 --> 00:57:59.000
+<v Sterling Baird>R for A English voice.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5081-0
+00:58:00.280 --> 00:58:01.560
+<v Sterling Baird>Yeah, that seems.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5092-0
+00:58:03.880 --> 00:58:08.958
+<v Sterling Baird>I guess it doesn't matter either way in
+terms of, yeah, that,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5092-1
+00:58:08.958 --> 00:58:10.760
+<v Sterling Baird>but I guess some fill.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5118-0
+00:58:11.680 --> 00:58:15.180
+<v Sterling Baird>Versus motivation,
+I guess that does tell you something</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5118-1
+00:58:15.180 --> 00:58:19.680
+<v Sterling Baird>about, yeah, the powders like visually,
+like what's happening in, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5118-2
+00:58:19.680 --> 00:58:23.367
+<v Sterling Baird>inside of that, yeah,
+like it's just going so fast that it</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5118-3
+00:58:23.367 --> 00:58:24.680
+<v Sterling Baird>can't, yeah, keep up.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5121-0
+00:58:28.360 --> 00:58:29.080
+<v Sterling Baird>K.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5147-0
+00:58:42.920 --> 00:58:48.453
+<v Sterling Baird>Faster rotation mobilizes powder rather
+than starving, but so I, okay,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5147-1
+00:58:48.453 --> 00:58:54.219
+<v Sterling Baird>maybe where because it's cohesive,
+you have these bigger chunks and globs</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5147-2
+00:58:54.219 --> 00:58:57.960
+<v Sterling Baird>that get rattled the rattles and through,
+yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5149-0
+00:59:00.960 --> 00:59:01.960
+<v Sterling Baird>Uh, let me see.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5201-0
+00:59:04.120 --> 00:59:08.230
+<v Sterling Baird>And some of those could probably factor
+into Will's work with the optimization.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5201-1
+00:59:08.230 --> 00:59:10.851
+<v Sterling Baird>Like, oh,
+maybe we have ways of describing powders</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5201-2
+00:59:10.851 --> 00:59:14.755
+<v Sterling Baird>that can help us learn more about the
+characteristics of the powders. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5201-3
+00:59:14.755 --> 00:59:18.712
+<v Sterling Baird>because I see what that was before I was
+asking if there was like a Reynolds</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5201-4
+00:59:18.712 --> 00:59:22.360
+<v Sterling Baird>number for, yeah, for powders and said no,
+so that's not great for us.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5212-0
+00:59:23.480 --> 00:59:28.251
+<v Sterling Baird>And it's, and yeah, I don't like this,
+this is the current tradition that we can</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5212-1
+00:59:28.251 --> 00:59:28.840
+<v Sterling Baird>use, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5220-0
+00:59:30.520 --> 00:59:34.680
+<v Sterling Baird>the fact that you could change the speed
+of the auger.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5234-0
+00:59:36.280 --> 00:59:40.627
+<v Sterling Baird>And maybe be able to tell whether or not
+it's a cohesive powder. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5234-1
+00:59:40.627 --> 00:59:42.280
+<v Sterling Baird>like that's kind of a cool.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5242-0
+00:59:43.640 --> 00:59:45.640
+<v Sterling Baird>I think so we could probably make note of
+that in the paper.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5270-0
+00:59:46.840 --> 00:59:51.640
+<v Sterling Baird>Going into future work,
+like this data can also tell us things</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5270-1
+00:59:51.640 --> 00:59:56.668
+<v Sterling Baird>about the powder. For example,
+we notice the difference in, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5270-2
+00:59:56.668 --> 00:59:59.640
+<v Sterling Baird>we're by changing the revolution speed.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5277-0
+01:00:00.760 --> 01:00:04.280
+<v Sterling Baird>We're able to distinguish between
+cohesive and non-cohesive powders.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5280-0
+01:00:06.280 --> 01:00:07.160
+<v Sterling Baird>Yeah, I...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5286-0
+01:00:08.600 --> 01:00:11.400
+<v Sterling Baird>That could be kind of a good feature work,
+yeah, call out.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5293-0
+01:00:23.400 --> 01:00:26.280
+<v Sterling Baird>Depletion control. OK,
+this is this is good.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5313-0
+01:00:28.680 --> 01:00:32.255
+<v Sterling Baird>So block C,
+6 consecutive revolutions at fixed</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5313-1
+01:00:32.255 --> 01:00:36.440
+<v Sterling Baird>conditions,
+mass declines by median 1% per revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5320-0
+01:00:37.400 --> 01:00:41.960
+<v Sterling Baird>So, in this 30 to 50% decline.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5326-0
+01:00:43.320 --> 01:00:46.920
+<v Sterling Baird>Or actually, wait,
+basically this is the fill level.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5329-0
+01:00:48.760 --> 01:00:49.760
+<v Sterling Baird>Like it was looking at.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5355-0
+01:00:50.960 --> 01:00:56.834
+<v Sterling Baird>The effect of fill level, yeah, over time,
+it's like, not entirely fill level, maybe,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5355-1
+01:00:56.834 --> 01:01:00.864
+<v Sterling Baird>but probably mostly fill level,
+as a scheme jumping, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5355-2
+01:01:00.864 --> 01:01:04.280
+<v Sterling Baird>semi-instantaneous rate,
+one slug per revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5365-0
+01:01:05.800 --> 01:01:12.360
+<v Sterling Baird>The delivers one slug. One slug.
+I think it's just like that. Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5400-0
+01:01:14.120 --> 01:01:20.139
+<v Sterling Baird>Yeah, sure, sure.
+Block D streamed balance poles tilt 45</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5400-1
+01:01:20.139 --> 01:01:27.636
+<v Sterling Baird>degrees, top row is 15 RPM,
+and top row dotted lines mark revolutions,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5400-2
+01:01:27.636 --> 01:01:32.600
+<v Sterling Baird>dotted lines. Oh, okay,
+so let me correct you.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5404-0
+01:01:33.880 --> 01:01:36.920
+<v Sterling Baird>So,
+Revolution One took about four seconds.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5410-0
+01:01:39.160 --> 01:01:40.760
+<v Sterling Baird>OK, so it's about four seconds per.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5416-0
+01:01:42.040 --> 01:01:44.360
+<v Sterling Baird>Revolution 15 RPM.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5418-0
+01:01:46.120 --> 01:01:47.640
+<v Sterling Baird>Uh, 15 * 4.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5419-0
+01:01:50.760 --> 01:01:50.800
+<v Sterling Baird>Uhh...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5467-0
+01:01:52.640 --> 01:01:59.179
+<v Sterling Baird>And then what's going on down here?
+Discharge locks to the revolution,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5467-1
+01:01:59.179 --> 01:02:05.719
+<v Sterling Baird>median autocorrelation peak at 4 seconds,
+pulsation is real at 15 RPM,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5467-2
+01:02:05.719 --> 01:02:12.166
+<v Sterling Baird>but 45 and 90 RPM are under sampled.
+So these are just the same ones,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5467-3
+01:02:12.166 --> 01:02:13.640
+<v Sterling Baird>cumulative mass.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5476-0
+01:02:14.120 --> 01:02:19.160
+<v Sterling Baird>I think it's good that it shows the, yeah,
+that's nice that it shows the revolution</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5476-1
+01:02:19.160 --> 01:02:19.640
+<v Sterling Baird>and the.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5491-0
+01:02:21.480 --> 01:02:24.555
+<v Sterling Baird>So you could just show the revolution,
+but maybe it's kind of useful,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5491-1
+01:02:24.555 --> 01:02:26.840
+<v Sterling Baird>but then I'm okay with that.
+It's kind of like a...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5496-0
+01:02:27.920 --> 01:02:30.840
+<v Sterling Baird>Visualization aid, so you can clearly see.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5502-0
+01:02:33.040 --> 01:02:35.560
+<v Sterling Baird>each of these. Now what, here's something.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5504-0
+01:02:43.560 --> 01:02:44.520
+<v Sterling Baird>NACL.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5515-0
+01:02:45.560 --> 01:02:51.720
+<v Sterling Baird>Not much until we hit,
+maybe I'm reading into it too much, but...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5523-0
+01:02:53.240 --> 01:02:58.200
+<v Sterling Baird>Not much accumulating until we've already
+done a full revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5544-0
+01:03:00.520 --> 01:03:06.725
+<v Sterling Baird>Yeah, it's like leading edge versus, yeah,
+trailing edge a little bit. It's like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5544-1
+01:03:06.725 --> 01:03:10.585
+<v Sterling Baird>for this one, OK,
+same thing here for Xanthem Gum,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5544-2
+01:03:10.585 --> 01:03:11.720
+<v Sterling Baird>which that one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5570-0
+01:03:12.560 --> 01:03:16.210
+<v Sterling Baird>I thought flows so well, so smoothly,
+like, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5570-1
+01:03:16.210 --> 01:03:21.393
+<v Sterling Baird>before the first revolution is even
+complete, we have something, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5570-2
+01:03:21.393 --> 01:03:25.408
+<v Sterling Baird>that's like,
+is it just where it happened to be? Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5570-3
+01:03:25.408 --> 01:03:27.160
+<v Sterling Baird>that's what I was, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5596-0
+01:03:29.480 --> 01:03:33.126
+<v Sterling Baird>You can't guarantee they'll start at the
+exact same place, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5596-1
+01:03:33.126 --> 01:03:37.558
+<v Sterling Baird>with the exact distribution of patterns
+based on the previous dosing runs that</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5596-2
+01:03:37.558 --> 01:03:38.680
+<v Sterling Baird>you ran, so that is.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5608-0
+01:03:39.800 --> 01:03:44.360
+<v Sterling Baird>Get tricky with how do you reset an
+experiment? Yeah, what's a reset?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5618-0
+01:03:45.960 --> 01:03:49.945
+<v Sterling Baird>But also when you're actually dosing,
+you're not going to reset every time.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5618-1
+01:03:49.945 --> 01:03:50.680
+<v Sterling Baird>So how do you?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5626-0
+01:03:53.240 --> 01:03:56.949
+<v Sterling Baird>Consider where you, where, yeah,
+like the current state of the of the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5626-1
+01:03:56.949 --> 01:03:57.320
+<v Sterling Baird>system.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5632-0
+01:04:00.240 --> 01:04:02.280
+<v Sterling Baird>Discharge locks to the revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5644-0
+01:04:03.800 --> 01:04:08.200
+<v Sterling Baird>Autocorrelation of the semi-instantaneous
+rate, and I think that's just...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5654-0
+01:04:09.400 --> 01:04:16.453
+<v Sterling Baird>Pointing out what we talked about here of
+the time period, I think it's cyclical,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5654-1
+01:04:16.453 --> 01:04:17.400
+<v Sterling Baird>OK, with...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5658-0
+01:04:18.520 --> 01:04:20.360
+<v Sterling Baird>So, I guess, like, right here, like...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5677-0
+01:04:21.800 --> 01:04:26.038
+<v Sterling Baird>There's a repeating pattern within each
+of these that corresponds to that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5677-1
+01:04:26.038 --> 01:04:27.960
+<v Sterling Baird>I wonder if part of that is the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5684-0
+01:04:29.000 --> 01:04:33.200
+<v Sterling Baird>timing, like if we ran it at one RPM.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5716-0
+01:04:34.200 --> 01:04:38.407
+<v Sterling Baird>And I guess maybe this, yeah,
+buttons out because the powder is kind of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5716-1
+01:04:38.407 --> 01:04:41.738
+<v Sterling Baird>settling. Like,
+I wonder how much of this is kind of the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5716-2
+01:04:41.738 --> 01:04:45.128
+<v Sterling Baird>powder bouncing. Yeah,
+I wonder if we get like a stronger</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5716-3
+01:04:45.128 --> 01:04:48.926
+<v Sterling Baird>reverberation better,
+that would help with this too. Yeah, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5716-4
+01:04:48.926 --> 01:04:50.680
+<v Sterling Baird>It was going constantly there.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5723-0
+01:04:54.360 --> 01:04:59.240
+<v Sterling Baird>pulsation at 15 RPM, crest factor.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5731-0
+01:05:01.080 --> 01:05:04.680
+<v Sterling Baird>95th percent rate over the mean rate.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5733-0
+01:05:08.200 --> 01:05:09.400
+<v Sterling Baird>15.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5735-0
+01:05:13.320 --> 01:05:13.960
+<v Sterling Baird>Chris.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5736-0
+01:05:14.920 --> 01:05:15.240
+<v Sterling Baird>Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5739-0
+01:05:16.200 --> 01:05:18.200
+<v Sterling Baird>Crest Factor.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5749-0
+01:05:19.480 --> 01:05:23.720
+<v Sterling Baird>95th percent instantaneous rate divided
+by the mean.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5752-0
+01:05:26.040 --> 01:05:26.920
+<v Sterling Baird>That percentile.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5755-0
+01:05:28.120 --> 01:05:29.480
+<v Sterling Baird>I need this percent.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5757-0
+01:05:31.080 --> 01:05:32.360
+<v Sterling Baird>Instantaneous.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5765-0
+01:05:38.360 --> 01:05:41.222
+<v Sterling Baird>Uh, yeah,
+it's trying to do some fancy signal</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5765-1
+01:05:41.222 --> 01:05:42.280
+<v Sterling Baird>processing, okay?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5769-0
+01:05:45.160 --> 01:05:47.400
+<v Sterling Baird>Crest vector, OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5781-0
+01:05:50.040 --> 01:05:54.440
+<v Sterling Baird>The ratio of a waveform's peak amplitude
+to its root mean square value.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5790-0
+01:05:55.400 --> 01:05:57.640
+<v Sterling Baird>showing how extreme or spiky the peaks
+are.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5793-0
+01:06:02.680 --> 01:06:03.800
+<v Sterling Baird>OK, Spike.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5799-0
+01:06:06.520 --> 01:06:09.640
+<v Sterling Baird>All right, so some measure, like,
+I'll speculators.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5809-0
+01:06:10.800 --> 01:06:15.080
+<v Sterling Baird>I don't think we really hear about that.
+Every knob on one axis, okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5810-0
+01:06:16.680 --> 01:06:16.760
+<v Sterling Baird>Uhh...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5824-0
+01:06:20.360 --> 01:06:25.497
+<v Sterling Baird>Maybe this goes to say,
+let's not put everything on one axis.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5824-1
+01:06:25.497 --> 01:06:29.640
+<v Sterling Baird>Yeah. Maybe that is.
+Or at least not in this way.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5831-0
+01:06:32.680 --> 01:06:37.320
+<v Sterling Baird>He's like, I get it what it's saying,
+what it's saying. One revolution at zero.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5841-0
+01:06:39.800 --> 01:06:43.080
+<v Sterling Baird>One revolution at 45,
+one revolution at 90.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5842-0
+01:06:45.320 --> 01:06:46.280
+<v Sterling Baird>One.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5849-0
+01:06:48.040 --> 01:06:52.440
+<v Sterling Baird>Where the, yeah, like, yeah,
+like it's missing, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5850-0
+01:06:53.640 --> 01:06:54.120
+<v Sterling Baird>Ling got.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5854-0
+01:06:57.920 --> 01:07:00.200
+<v Sterling Baird>That's confusing, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5861-0
+01:07:03.160 --> 01:07:05.000
+<v Sterling Baird>So I kind of get it, but also it's...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5870-0
+01:07:12.760 --> 01:07:16.680
+<v Sterling Baird>I think I'm pretty confident on let's not.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5877-0
+01:07:17.960 --> 01:07:21.440
+<v Sterling Baird>Have this kind of totality graph with.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5912-0
+01:07:23.080 --> 01:07:27.006
+<v Sterling Baird>Powder type as a major axis,
+like we're not talking about the powder</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5912-1
+01:07:27.006 --> 01:07:29.567
+<v Sterling Baird>type,
+like we're gonna talk about the powder</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5912-2
+01:07:29.567 --> 01:07:32.298
+<v Sterling Baird>doser, the powder doser, and I like that,
+yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5912-3
+01:07:32.298 --> 01:07:36.680
+<v Sterling Baird>I agree that something can be combined,
+so if you go to the hospital, but...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5926-0
+01:07:40.200 --> 01:07:45.069
+<v Sterling Baird>Nothing flows on its own.
+15 second static hold with no actuation</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5926-1
+01:07:45.069 --> 01:07:46.840
+<v Sterling Baird>produced no mass change.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5928-0
+01:07:47.960 --> 01:07:49.400
+<v Sterling Baird>One exception.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5930-0
+01:07:50.840 --> 01:07:51.960
+<v Sterling Baird>Silicon.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5933-0
+01:07:56.320 --> 01:07:57.240
+<v Sterling Baird>Would you agree with that?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5946-0
+01:07:59.120 --> 01:08:04.603
+<v Sterling Baird>Across every powder and every tilt,
+a 15-second static hold with no actuation.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5946-1
+01:08:04.603 --> 01:08:06.200
+<v Sterling Baird>Produce no mass change.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5960-0
+01:08:07.080 --> 01:08:10.169
+<v Sterling Baird>Does it mean that it cleared its own runs
+in this? Ohh, OK,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5960-1
+01:08:10.169 --> 01:08:11.920
+<v Sterling Baird>just like it's not a button, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5963-0
+01:08:13.400 --> 01:08:14.760
+<v Sterling Baird>Yeah, OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5967-0
+01:08:22.200 --> 01:08:23.160
+<v Sterling Baird>Clean shut off.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/5971-0
+01:08:26.520 --> 01:08:28.680
+<v Sterling Baird>One to 12% of a revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6012-0
+01:08:34.280 --> 01:08:39.338
+<v Sterling Baird>I guess one thing we didn't do,
+if we really wanted to get into the fine</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6012-1
+01:08:39.338 --> 01:08:44.396
+<v Sterling Baird>details of here, is if we had a pause,
+what happens if we pause it here?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6012-2
+01:08:44.396 --> 01:08:49.593
+<v Sterling Baird>So one revolution, pause and go again,
+or like pause it half a revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6012-3
+01:08:49.593 --> 01:08:51.880
+<v Sterling Baird>That would kind of resolve the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6045-0
+01:08:53.200 --> 01:08:58.478
+<v Sterling Baird>Like, what's happening, yeah, yeah,
+what's happening inside the auger, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6045-1
+01:08:58.478 --> 01:09:03.277
+<v Sterling Baird>yeah, transparent augers, yeah,
+that we got a bunch would be awesome,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6045-2
+01:09:03.277 --> 01:09:08.829
+<v Sterling Baird>yeah, technically we do the resin prints,
+yeah, they have some very transparent,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6045-3
+01:09:08.829 --> 01:09:12.120
+<v Sterling Baird>yeah, ones,
+chat about you need to cure inside.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6071-0
+01:09:13.320 --> 01:09:20.466
+<v Sterling Baird>Yeah, that's right. Yeah, that would be,
+then it's tacky. Yeah, those are so tacky.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6071-1
+01:09:20.466 --> 01:09:24.720
+<v Sterling Baird>It is with, yeah,
+probably for most things. Okay,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6071-2
+01:09:24.720 --> 01:09:29.400
+<v Sterling Baird>nothing flows on its own.
+The tap is a fine increment.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6097-0
+01:09:32.520 --> 01:09:38.116
+<v Sterling Baird>A firmware defect, the EDA turned up.
+Tune, yeah, turned up. Is this okay?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6097-1
+01:09:38.116 --> 01:09:42.443
+<v Sterling Baird>Are you okay going through? Yeah,
+this still? Okay. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6097-2
+01:09:42.443 --> 01:09:46.920
+<v Sterling Baird>Block D over rotates by a factor that
+stepped mid-campaign.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6103-0
+01:09:49.400 --> 01:09:51.960
+<v Sterling Baird>Actual commanded rotation.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6105-0
+01:09:55.640 --> 01:09:56.120
+<v Sterling Baird>From.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6113-0
+01:09:59.560 --> 01:10:03.960
+<v Sterling Baird>Interesting. It's saying on August 13th.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6116-0
+01:10:05.640 --> 01:10:07.160
+<v Sterling Baird>to August 19th.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6117-0
+01:10:09.160 --> 01:10:09.800
+<v Sterling Baird>It.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6120-0
+01:10:12.440 --> 01:10:15.160
+<v Sterling Baird>Rotated more.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6122-0
+01:10:16.840 --> 01:10:18.120
+<v Sterling Baird>Than it used to.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6124-0
+01:10:19.480 --> 01:10:20.760
+<v Sterling Baird>For the same.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6138-0
+01:10:23.400 --> 01:10:28.756
+<v Sterling Baird>Oh my, when it commands one, oh,
+it commanded 3 revolutions,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6138-1
+01:10:28.756 --> 01:10:30.600
+<v Sterling Baird>and the actual was...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6144-0
+01:10:33.000 --> 01:10:36.280
+<v Sterling Baird>A little bit more than that prior to that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6154-0
+01:10:38.680 --> 01:10:42.234
+<v Sterling Baird>But then, at some point,
+it started really overdoing the the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6154-1
+01:10:42.234 --> 01:10:43.400
+<v Sterling Baird>revolution rotation.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6176-0
+01:10:48.000 --> 01:10:53.471
+<v Sterling Baird>The week of August 13th,
+somewhere between August 13th and August</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6176-1
+01:10:53.471 --> 01:10:57.615
+<v Sterling Baird>19th, 20th.
+You're saying that's like a factor of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6176-2
+01:10:57.615 --> 01:11:00.600
+<v Sterling Baird>like the funeral or something? Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6180-0
+01:11:04.240 --> 01:11:07.160
+<v Sterling Baird>There's gonna be a loose thing I don't
+know.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6183-0
+01:11:09.800 --> 01:11:11.000
+<v Sterling Baird>Let's do this.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6186-0
+01:11:39.160 --> 01:11:39.560
+<v Sterling Baird>True.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6193-0
+01:12:09.560 --> 01:12:10.760
+<v Sterling Baird>Maybe I'll put this.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6197-0
+01:12:14.560 --> 01:12:15.440
+<v Sterling Baird>Where is this from?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6198-0
+01:12:18.960 --> 01:12:19.480
+<v Sterling Baird>Speirs.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6220-0
+01:12:49.200 --> 01:12:51.909
+<v Sterling Baird>I don't know how long we've been live
+streaming for.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6220-1
+01:12:51.909 --> 01:12:54.977
+<v Sterling Baird>I forget when we set up the, like,
+start to have the, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6220-2
+01:12:54.977 --> 01:12:56.920
+<v Sterling Baird>the powder does for live stream stuff.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6229-0
+01:13:01.960 --> 01:13:05.000
+<v Sterling Baird>You know,
+you need to know where she started.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6233-0
+01:13:06.200 --> 01:13:08.040
+<v Sterling Baird>Then I think I'll put this one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6234-0
+01:13:10.520 --> 01:13:10.560
+<v Sterling Baird>Uhh...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6245-0
+01:14:01.960 --> 01:14:02.520
+<v Sterling Baird>What?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6246-0
+01:14:13.160 --> 01:14:13.960
+<v Sterling Baird>And.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6249-0
+01:14:31.240 --> 01:14:31.800
+<v Sterling Baird>OK, this one.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6255-0
+01:14:33.520 --> 01:14:36.440
+<v Sterling Baird>Okay,
+and then it's saying when I corrected it.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6257-0
+01:14:38.920 --> 01:14:39.720
+<v Sterling Baird>Then...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6267-0
+01:14:41.800 --> 01:14:44.511
+<v Sterling Baird>Makes more sense.
+It makes more sense for milligrams per</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6267-1
+01:14:44.511 --> 01:14:45.320
+<v Sterling Baird>revolution. Okay.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6305-0
+01:14:49.800 --> 01:14:55.552
+<v Sterling Baird>One thing I had to keep forgetting to
+change this: it thinks that the stepping</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6305-1
+01:14:55.552 --> 01:15:00.139
+<v Sterling Baird>motor and the auger gear are the same
+ratio, and specifically,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6305-2
+01:15:00.139 --> 01:15:05.382
+<v Sterling Baird>there have been a couple of times they
+ask you, like, what's the ratio?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6305-3
+01:15:05.382 --> 01:15:08.440
+<v Sterling Baird>And it's like one to one. It's really not.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6327-0
+01:15:09.400 --> 01:15:12.616
+<v Sterling Baird>So I need to just let that,
+let her know that and I can update the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6327-1
+01:15:12.616 --> 01:15:14.920
+<v Sterling Baird>data. Okay. Oh, gotcha.
+That'll affect all the,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6327-2
+01:15:14.920 --> 01:15:18.808
+<v Sterling Baird>everything that says revolution. Right.
+When I put command in three revolutions,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6327-3
+01:15:18.808 --> 01:15:19.960
+<v Sterling Baird>that was one revolution.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6349-0
+01:15:21.040 --> 01:15:23.462
+<v Sterling Baird>Ohh, well, OK, maybe I don't know, yeah,
+like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6349-1
+01:15:23.462 --> 01:15:27.378
+<v Sterling Baird>and it could be inconsistent with where
+sometimes it's accounting for that,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6349-2
+01:15:27.378 --> 01:15:30.779
+<v Sterling Baird>and other times it's, yeah,
+so you need to let it know that it's,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6349-3
+01:15:30.779 --> 01:15:32.840
+<v Sterling Baird>yeah, there is a difference there, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6363-0
+01:15:39.320 --> 01:15:45.361
+<v Sterling Baird>There were no change in parts, right?
+I don't think there were any like parts</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6363-1
+01:15:45.361 --> 01:15:46.600
+<v Sterling Baird>swap outs, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6364-0
+01:15:48.200 --> 01:15:48.920
+<v Sterling Baird>Mhm.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6368-0
+01:15:50.840 --> 01:15:51.560
+<v Sterling Baird>Yeah, sure.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6382-0
+01:15:55.360 --> 01:15:59.160
+<v Sterling Baird>Which parameter explains the rate at our
+identity? OK,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6382-1
+01:15:59.160 --> 01:16:01.440
+<v Sterling Baird>so this is kind of going for a...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6404-0
+01:16:03.320 --> 01:16:09.329
+<v Sterling Baird>A little bit of a feature importance. Yes,
+sure. Powder affects it a lot.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6404-1
+01:16:09.329 --> 01:16:14.120
+<v Sterling Baird>Tilt angle has a high effect.
+Powder and tilt interaction.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6410-0
+01:16:15.320 --> 01:16:18.760
+<v Sterling Baird>Not as much as what I'm saying.
+What does that mean as opposed to like?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6428-0
+01:16:20.520 --> 01:16:24.811
+<v Sterling Baird>I think it's saying which knob
+specifically is doing this and what's the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6428-1
+01:16:24.811 --> 01:16:28.280
+<v Sterling Baird>interaction. Yeah, so yeah,
+I wouldn't have split that up.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6436-0
+01:16:29.400 --> 01:16:33.640
+<v Sterling Baird>So it'll show sometimes things like this,
+it'll show both.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6447-0
+01:16:34.720 --> 01:16:38.219
+<v Sterling Baird>Split up just individually,
+and then also show cross-correlations</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6447-1
+01:16:38.219 --> 01:16:39.280
+<v Sterling Baird>with, yeah, exactly.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6448-0
+01:16:45.040 --> 01:16:45.400
+<v Sterling Baird>Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6478-0
+01:16:46.920 --> 01:16:53.491
+<v Sterling Baird>Nested decomposition of log 10 milligrams
+per revolution over all resolvable block</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6478-1
+01:16:53.491 --> 01:17:00.063
+<v Sterling Baird>C revolutions, saying that I think, yeah,
+I know kind of no powder identity there,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6478-2
+01:17:00.063 --> 01:17:02.280
+<v Sterling Baird>so kind of all I care about.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6496-0
+01:17:03.720 --> 01:17:07.393
+<v Sterling Baird>The rest, um,
+and I care more about like the tilt</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6496-1
+01:17:07.393 --> 01:17:13.124
+<v Sterling Baird>interaction with the other ones. Yeah,
+I think was covered some other places,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6496-2
+01:17:13.124 --> 01:17:14.520
+<v Sterling Baird>yeah, a little bit.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6506-0
+01:17:18.600 --> 01:17:23.480
+<v Sterling Baird>This is a reasonable, yeah,
+like randomize the order, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6508-0
+01:17:30.320 --> 01:17:32.800
+<v Sterling Baird>All faster book.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6514-0
+01:17:53.720 --> 01:17:55.640
+<v Sterling Baird>I was hoping for something a little more.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6516-0
+01:17:57.720 --> 01:17:58.680
+<v Sterling Baird>Far bit of them.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6518-0
+01:18:00.760 --> 01:18:01.320
+<v Sterling Baird>Yes.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6519-0
+01:18:04.680 --> 01:18:04.840
+<v Sterling Baird>Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6532-0
+01:18:21.440 --> 01:18:25.960
+<v Sterling Baird>If you were to go back and collect some
+more data, going back to...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6545-0
+01:18:26.920 --> 01:18:33.754
+<v Sterling Baird>This,
+if we had an H and an I that was like 100</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6545-1
+01:18:33.754 --> 01:18:35.320
+<v Sterling Baird>milligrams.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6549-0
+01:18:36.680 --> 01:18:37.880
+<v Sterling Baird>I don't know, you do like.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6582-0
+01:18:42.600 --> 01:18:45.266
+<v Sterling Baird>Yeah, like 50 milligrams, 200 milligrams,
+1 gram.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6582-1
+01:18:45.266 --> 01:18:49.586
+<v Sterling Baird>I don't know if we want to go up to like
+the 5 grams because we're going to have</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6582-2
+01:18:49.586 --> 01:18:52.040
+<v Sterling Baird>to be rebuilding it. It'll be a lot.
+I think.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6582-3
+01:18:52.040 --> 01:18:56.200
+<v Sterling Baird>I don't even know if we have 5 grams to
+send this. I know, yeah, exactly. So.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6601-0
+01:18:57.960 --> 01:19:02.748
+<v Sterling Baird>Which, yeah, if we're going to redo,
+or not redo,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6601-1
+01:19:02.748 --> 01:19:07.537
+<v Sterling Baird>but do you know which ones are pretty
+limited on?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6601-2
+01:19:07.537 --> 01:19:11.560
+<v Sterling Baird>This one of them is a really small bottle.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6606-0
+01:19:12.440 --> 01:19:14.840
+<v Sterling Baird>Do you know which one, which one?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6628-0
+01:19:15.880 --> 01:19:19.651
+<v Sterling Baird>It's not the fume silica,
+it's the sorry sulfate,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6628-1
+01:19:19.651 --> 01:19:24.101
+<v Sterling Baird>the this is silicon,
+I think it's silicon 102 and ohh, OK,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6628-2
+01:19:24.101 --> 01:19:26.440
+<v Sterling Baird>yeah, I gotcha, yeah, yeah, so.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6629-0
+01:19:27.960 --> 01:19:28.440
+<v Sterling Baird>Best.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6636-0
+01:19:32.280 --> 01:19:34.280
+<v Sterling Baird>Yeah, if we added an H and an I.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6639-0
+01:19:36.480 --> 01:19:37.560
+<v Sterling Baird>Where H is.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6640-0
+01:19:40.120 --> 01:19:40.680
+<v Sterling Baird>Oh.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6644-0
+01:19:44.320 --> 01:19:46.600
+<v Sterling Baird>5200 and 1000.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6655-0
+01:19:47.560 --> 01:19:50.938
+<v Sterling Baird>feels kind of okay for capturing
+different ranges.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6655-1
+01:19:50.938 --> 01:19:53.720
+<v Sterling Baird>It doesn't capture the University of Utah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6664-0
+01:19:55.560 --> 01:19:59.640
+<v Sterling Baird>Range quite as well,
+but it's I just don't know.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6666-0
+01:20:00.760 --> 01:20:02.120
+<v Sterling Baird>If we're going to...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6709-0
+01:20:09.800 --> 01:20:12.262
+<v Sterling Baird>Like,
+and it's in the fume hood for a lot of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6709-1
+01:20:12.262 --> 01:20:14.724
+<v Sterling Baird>these,
+and there's maybe like a 50 milligram</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6709-2
+01:20:14.724 --> 01:20:18.609
+<v Sterling Baird>noise threshold on some of it,
+so in some sense it's a little safer to</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6709-3
+01:20:18.609 --> 01:20:21.783
+<v Sterling Baird>go with a little higher,
+given the fume hood stuff. What,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6709-4
+01:20:21.783 --> 01:20:25.395
+<v Sterling Baird>what do they need to be?
+What point do they need to be dispensing</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6709-5
+01:20:25.395 --> 01:20:29.280
+<v Sterling Baird>it? Do you? Ohh, I think it's, yeah,
+I'm trying to remember, it was...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6719-0
+01:20:32.280 --> 01:20:37.560
+<v Sterling Baird>So they can be smaller than that? Yeah,
+like on the like 1 milligram.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6720-0
+01:20:41.200 --> 01:20:41.960
+<v Sterling Baird>I think it's...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6722-0
+01:20:44.440 --> 01:20:45.720
+<v Sterling Baird>Ohh.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6751-0
+01:20:47.440 --> 01:20:54.870
+<v Sterling Baird>Can the current system reliably deliver 0.
+1 to 10 milligrams of the powder to a</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6751-1
+01:20:54.870 --> 01:20:59.365
+<v Sterling Baird>small reaction vial or 96 well played? No.
+Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6751-2
+01:20:59.365 --> 01:21:02.760
+<v Sterling Baird>And I think we could probe that more.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6786-0
+01:21:04.040 --> 01:21:08.280
+<v Sterling Baird>So, first off,
+I think we want more of Will stuff in</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6786-1
+01:21:08.280 --> 01:21:11.960
+<v Sterling Baird>place,
+where before we spend a whole bunch of</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6786-2
+01:21:11.960 --> 01:21:15.800
+<v Sterling Baird>time, yeah, yeah, I want that,
+and then second,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6786-3
+01:21:15.800 --> 01:21:21.320
+<v Sterling Baird>I think we would want really good
+vibration isolation, yeah, for it,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6786-4
+01:21:21.320 --> 01:21:23.720
+<v Sterling Baird>and third, probably new auger.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6796-0
+01:21:24.000 --> 01:21:26.177
+<v Sterling Baird>Like dimensions, yeah, the dimensions,
+yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6796-1
+01:21:26.177 --> 01:21:29.903
+<v Sterling Baird>'cause I think it'll be too hard to do
+when you change the dimensions, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6796-2
+01:21:29.903 --> 01:21:30.920
+<v Sterling Baird>yeah, yeah, you know.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6802-0
+01:21:33.880 --> 01:21:36.920
+<v Sterling Baird>Yeah. And the error. Yes.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6804-0
+01:21:38.600 --> 01:21:40.040
+<v Sterling Baird>So, I think...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6811-0
+01:21:41.160 --> 01:21:43.360
+<v Sterling Baird>I think 50 milligrams is already kind of
+a...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6847-0
+01:21:45.880 --> 01:21:51.229
+<v Sterling Baird>No, like, for the noise, or like, like,
+we're only gonna be able to say so much</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6847-1
+01:21:51.229 --> 01:21:56.378
+<v Sterling Baird>about the, yeah, yeah, the noise.
+At some point, did you introduce that? Or,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6847-2
+01:21:56.378 --> 01:22:00.256
+<v Sterling Baird>I guess, like,
+it might be worth trying to differentiate,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6847-3
+01:22:00.256 --> 01:22:03.800
+<v Sterling Baird>and this could just be in supplementary
+information.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6863-0
+01:22:04.400 --> 01:22:09.234
+<v Sterling Baird>when it was in the fume hood,
+when it was in the lab,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6863-1
+01:22:09.234 --> 01:22:13.800
+<v Sterling Baird>like our lab space,
+and when the box went over it.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6889-0
+01:22:18.480 --> 01:22:24.038
+<v Sterling Baird>Which we might be able to get from,
+I mean, Claude, I think we probably, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6889-1
+01:22:24.038 --> 01:22:29.034
+<v Sterling Baird>do that from the live streams.
+The box was only a few second. Ohh, OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6889-2
+01:22:29.034 --> 01:22:32.200
+<v Sterling Baird>OK, that's easy on that one, and I think..
+.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6914-0
+01:22:34.840 --> 01:22:38.362
+<v Sterling Baird>All of the food safe powders were in the
+lab, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6914-1
+01:22:38.362 --> 01:22:42.630
+<v Sterling Baird>and all of the non-food safe were in the
+feedback, yeah, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6914-2
+01:22:42.630 --> 01:22:47.440
+<v Sterling Baird>I'll let it know that for sure.
+I think it does know, but yeah, but...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6915-0
+01:22:49.240 --> 01:22:49.560
+<v Sterling Baird>Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6918-0
+01:22:56.840 --> 01:22:58.120
+<v Sterling Baird>Spring back some memories.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6947-0
+01:23:03.880 --> 01:23:08.551
+<v Sterling Baird>Which did you see made the new design?
+I watched the video, yeah, I like it,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6947-1
+01:23:08.551 --> 01:23:12.070
+<v Sterling Baird>I like it a lot, yeah, yeah,
+it's still got a ways to go,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6947-2
+01:23:12.070 --> 01:23:15.468
+<v Sterling Baird>but it's something, yeah,
+I really like that, you know,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6947-3
+01:23:15.468 --> 01:23:18.320
+<v Sterling Baird>and it brought, I brought the idea too,
+and...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6952-0
+01:23:20.520 --> 01:23:24.120
+<v Sterling Baird>Maybe useful to have a weighing station
+as well.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6995-0
+01:23:25.480 --> 01:23:29.014
+<v Sterling Baird>And you could come in,
+we could weigh it somehow with like a,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6995-1
+01:23:29.014 --> 01:23:32.377
+<v Sterling Baird>I don't know, like right now it like a...
+Oh, I see. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6995-2
+01:23:32.377 --> 01:23:37.166
+<v Sterling Baird>There's something like they could push it
+up and then they check the weight of that</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6995-3
+01:23:37.166 --> 01:23:41.498
+<v Sterling Baird>and then it can dispense and then go back
+and check the weight again. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/6995-4
+01:23:41.498 --> 01:23:44.520
+<v Sterling Baird>But I guess you just put a load cell on
+the... Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7020-0
+01:23:45.040 --> 01:23:48.847
+<v Sterling Baird>On the end of it, probably, yeah,
+and it is like attached to the engines,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7020-1
+01:23:48.847 --> 01:23:52.706
+<v Sterling Baird>like that's something that, like,
+it's not like it's the full weight of it</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7020-2
+01:23:52.706 --> 01:23:56.360
+<v Sterling Baird>is, oh yeah, you'd have to correct for it,
+yeah, but the raw data, OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7061-0
+01:24:00.040 --> 01:24:04.379
+<v Sterling Baird>You can put a current measurement, yeah,
+yeah, like there's some ways to get it.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7061-1
+01:24:04.379 --> 01:24:07.165
+<v Sterling Baird>I think,
+I think a load cell would probably be the,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7061-2
+01:24:07.165 --> 01:24:11.504
+<v Sterling Baird>yeah, most straightforward, but I'm like,
+no, I just want to measure the signal,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7061-3
+01:24:11.504 --> 01:24:15.201
+<v Sterling Baird>like I don't want to have to redesign,
+yeah, like a load cell, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7061-4
+01:24:15.201 --> 01:24:17.880
+<v Sterling Baird>but that one might not be too bad,
+maybe too bad.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7065-0
+01:24:18.840 --> 01:24:21.880
+<v Sterling Baird>I like that idea. Yes, it's cool. Yeah,
+see the answers in here.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7072-0
+01:24:46.960 --> 01:24:49.960
+<v Sterling Baird>Yeah, so...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7110-0
+01:24:51.720 --> 01:24:57.144
+<v Sterling Baird>This is a lot of graphs. Yeah.
+Do you want to cut this down a bit? Like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7110-1
+01:24:57.144 --> 01:25:02.569
+<v Sterling Baird>I'll run some more tests and stuff.
+I'm a little anxious to get this out</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7110-2
+01:25:02.569 --> 01:25:08.068
+<v Sterling Baird>there. Yeah, I'm with you. The,
+especially like ideally if you can get it</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7110-3
+01:25:08.068 --> 01:25:10.000
+<v Sterling Baird>back with revisions. Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7114-0
+01:25:10.760 --> 01:25:13.240
+<v Sterling Baird>More like November would be awesome, yeah,
+and...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7124-0
+01:25:14.680 --> 01:25:20.260
+<v Sterling Baird>I think I can do these tests this week.
+Yeah, hopefully, not tomorrow at Thursday,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7124-1
+01:25:20.260 --> 01:25:21.000
+<v Sterling Baird>and then...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7126-0
+01:25:23.560 --> 01:25:24.200
+<v Sterling Baird>Yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7168-0
+01:25:26.760 --> 01:25:30.193
+<v Sterling Baird>So, I guess, do you wanna,
+are there any of these that you're like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7168-1
+01:25:30.193 --> 01:25:32.868
+<v Sterling Baird>put this in,
+or should we run the test and then meet</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7168-2
+01:25:32.868 --> 01:25:35.443
+<v Sterling Baird>again and talk? Ohh, right, right,
+the extra test.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7168-3
+01:25:35.443 --> 01:25:37.967
+<v Sterling Baird>I think we should try to get it mostly
+finalized,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7168-4
+01:25:37.967 --> 01:25:41.400
+<v Sterling Baird>where all we're doing is just adding,
+like filling in some of that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7182-0
+01:25:43.840 --> 01:25:49.357
+<v Sterling Baird>What do you think about the 50 and the 50
+milligrams and the 200 milligrams?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7182-1
+01:25:49.357 --> 01:25:50.360
+<v Sterling Baird>We could wait.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7202-0
+01:25:51.360 --> 01:25:57.053
+<v Sterling Baird>Like one, we could just say,
+maybe the reviewers come back with that</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7202-1
+01:25:57.053 --> 01:26:03.160
+<v Sterling Baird>as a request and we say, okay, done. Yeah.
+If it's a couple months, then.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7213-0
+01:26:04.840 --> 01:26:09.718
+<v Sterling Baird>We'll have to factor in the the powder
+will have been sitting for, well,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7213-1
+01:26:09.718 --> 01:26:10.320
+<v Sterling Baird>actually.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7250-0
+01:26:11.320 --> 01:26:14.334
+<v Sterling Baird>We could submit it,
+we could run those tests because we care</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7250-1
+01:26:14.334 --> 01:26:17.546
+<v Sterling Baird>about it and it'll, yeah,
+affect things for Will as well to have</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7250-2
+01:26:17.546 --> 01:26:19.769
+<v Sterling Baird>that as a baseline,
+like one way or another,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7250-3
+01:26:19.769 --> 01:26:23.969
+<v Sterling Baird>I think we will collect that, yeah, data.
+This is if we do it before or after, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7250-4
+01:26:23.969 --> 01:26:25.600
+<v Sterling Baird>submit the paper, yeah, so I'm...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7251-0
+01:26:27.480 --> 01:26:27.960
+<v Sterling Baird>It could.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7279-0
+01:26:29.160 --> 01:26:32.173
+<v Sterling Baird>We're also going to put the preprint out
+there. So yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7279-1
+01:26:32.173 --> 01:26:36.560
+<v Sterling Baird>and I think that would be a strength for
+the preprint as people are looking at the</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7279-2
+01:26:36.560 --> 01:26:38.040
+<v Sterling Baird>preprint. Yeah, to say like.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7337-0
+01:26:39.960 --> 01:26:42.907
+<v Sterling Baird>It's a natural question they want to be
+asking.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7337-1
+01:26:42.907 --> 01:26:48.125
+<v Sterling Baird>You can kind of infer it based on all the
+other parameters that are done. It's like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7337-2
+01:26:48.125 --> 01:26:52.300
+<v Sterling Baird>back to that question. Well,
+if I want 50 milligrams, can I get it?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7337-3
+01:26:52.300 --> 01:26:56.352
+<v Sterling Baird>And how long does it take?
+And how accurately did it get to that?</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7337-4
+01:26:56.352 --> 01:26:58.440
+<v Sterling Baird>I'll run it on Thursday. Yeah, OK.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7376-0
+01:26:58.720 --> 01:27:02.412
+<v Sterling Baird>And, like, this in downtime, too,
+so I can, okay, listen,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7376-1
+01:27:02.412 --> 01:27:06.867
+<v Sterling Baird>so then you gave me this list of, like,
+we need graphs to show, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7376-2
+01:27:06.867 --> 01:27:11.769
+<v Sterling Baird>unique powder type and the one, like,
+which ones load best and how accurate,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7376-3
+01:27:11.769 --> 01:27:16.416
+<v Sterling Baird>and maybe the time to get to do this
+point, how accurately you did that,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7376-4
+01:27:16.416 --> 01:27:17.880
+<v Sterling Baird>and that kind of thing.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7378-0
+01:27:18.280 --> 01:27:20.520
+<v Sterling Baird>And enjoying for like.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7403-0
+01:27:21.360 --> 01:27:24.344
+<v Sterling Baird>What's the best way to get the graphs
+into the paper? Should we have,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7403-1
+01:27:24.344 --> 01:27:27.669
+<v Sterling Baird>should we like make this list of graphs
+that we want to graph that shows this</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7403-2
+01:27:27.669 --> 01:27:30.440
+<v Sterling Baird>versus this, this versus this,
+this versus this, or should we...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7452-0
+01:27:31.520 --> 01:27:35.039
+<v Sterling Baird>Like, I'm a little overwhelmed with, like,
+we have a lot of graphs here, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7452-1
+01:27:35.039 --> 01:27:38.203
+<v Sterling Baird>and requiring a lot of changes,
+so I'm wondering if I should just say,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7452-2
+01:27:38.203 --> 01:27:41.411
+<v Sterling Baird>like, make a list of, like, we want these,
+yeah, 8 figures, give, like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7452-3
+01:27:41.411 --> 01:27:44.663
+<v Sterling Baird>look at the data and give me these eight
+figures or something like that.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7452-4
+01:27:44.663 --> 01:27:48.005
+<v Sterling Baird>I'll take the transcription recording,
+I'll have it try to summarize that,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7452-5
+01:27:48.005 --> 01:27:51.480
+<v Sterling Baird>if you could also send that to me, yeah,
+so I can include that in the prompt.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7455-0
+01:27:51.720 --> 01:27:53.960
+<v Sterling Baird>Yeah, so then we'll review the...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7484-0
+01:27:55.200 --> 01:27:58.980
+<v Sterling Baird>The finalized the prompt that comes from
+our prompt, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7484-1
+01:27:58.980 --> 01:28:03.337
+<v Sterling Baird>so you have it right in the prompt to do
+graphs, more graphs, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7484-2
+01:28:03.337 --> 01:28:06.925
+<v Sterling Baird>we'll take the transcript,
+we'll take your notes, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7484-3
+01:28:06.925 --> 01:28:09.360
+<v Sterling Baird>we'll have Claude merge that into a...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7527-0
+01:28:11.000 --> 01:28:13.572
+<v Sterling Baird>cohesive set of things.
+We'll double check it.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7527-1
+01:28:13.572 --> 01:28:18.170
+<v Sterling Baird>I think then we'll just let it run. Yeah.
+I'll send this to you and then we'll have</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7527-2
+01:28:18.170 --> 01:28:22.713
+<v Sterling Baird>it do that once I've run these new tests
+so that it can include that data as well.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7527-3
+01:28:22.713 --> 01:28:25.341
+<v Sterling Baird>We can do that now.
+Like we'll do all this now,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7527-4
+01:28:25.341 --> 01:28:28.515
+<v Sterling Baird>but then when the new data comes in,
+we'll just say, hey,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7527-5
+01:28:28.515 --> 01:28:29.720
+<v Sterling Baird>here's this new today.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7528-0
+01:28:30.880 --> 01:28:31.360
+<v Sterling Baird>Sweet.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7533-0
+01:28:33.600 --> 01:28:36.320
+<v Sterling Baird>And then after that, I think...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7537-0
+01:28:38.720 --> 01:28:40.320
+<v Sterling Baird>It might make sense for...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7548-0
+01:28:41.520 --> 01:28:46.080
+<v Sterling Baird>you to do a similar process and maybe
+with Will and Luke involved too of...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7569-0
+01:28:49.480 --> 01:28:53.318
+<v Sterling Baird>If you're open to it,
+what I talked about with the tensegrity</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7569-1
+01:28:53.318 --> 01:28:58.333
+<v Sterling Baird>project of screen record, start to finish,
+just through it, tear it apart, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7569-2
+01:28:58.333 --> 01:28:59.200
+<v Sterling Baird>tear it apart.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7571-0
+01:29:00.400 --> 01:29:02.320
+<v Sterling Baird>Collect that from everybody.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7615-0
+01:29:03.600 --> 01:29:08.616
+<v Sterling Baird>Update it, do a couple iterations,
+and I think that sometimes it's not until</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7615-1
+01:29:08.616 --> 01:29:13.697
+<v Sterling Baird>the 3rd iteration that you get like some
+good, yeah, you've probably noticed,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7615-2
+01:29:13.697 --> 01:29:17.867
+<v Sterling Baird>sometimes it, yeah, yeah,
+when you get it just the right amount</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7615-3
+01:29:17.867 --> 01:29:23.144
+<v Sterling Baird>after a couple passes, it can be, yeah,
+at least I think it would be good enough</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7615-4
+01:29:23.144 --> 01:29:23.600
+<v Sterling Baird>to say.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7647-0
+01:29:24.320 --> 01:29:27.702
+<v Sterling Baird>Okay, thank you. Yeah,
+we're just gonna bring this into Overleaf.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7647-1
+01:29:27.702 --> 01:29:32.008
+<v Sterling Baird>We'll make any final edits, and then yeah,
+here's the PDF, then we'll submit. Yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7647-2
+01:29:32.008 --> 01:29:35.237
+<v Sterling Baird>that sounds good to me,
+so that I feel like I have a good plan</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7647-3
+01:29:35.237 --> 01:29:39.440
+<v Sterling Baird>for how we're gonna get the graphs and
+how we're gonna get the paper. Okay, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7653-0
+01:29:41.200 --> 01:29:44.880
+<v Sterling Baird>Sounds good. That's good.
+And I just really got to say, you...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7704-0
+01:29:46.960 --> 01:29:50.124
+<v Sterling Baird>You ran 1200 experiments.
+That's pretty cool. That's amazing.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7704-1
+01:29:50.124 --> 01:29:52.675
+<v Sterling Baird>That's pretty cool.
+And most of it was automated,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7704-2
+01:29:52.675 --> 01:29:56.860
+<v Sterling Baird>like I ran in these batches of like, yeah,
+like we ran like 13 patterns, I think.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7704-3
+01:29:56.860 --> 01:29:59.564
+<v Sterling Baird>Yeah. And out of those,
+like each of those, I guess,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7704-4
+01:29:59.564 --> 01:30:02.881
+<v Sterling Baird>was about 100 trials. Yeah. So, and I,
+yeah. That's really cool.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7704-5
+01:30:02.881 --> 01:30:05.280
+<v Sterling Baird>That's pretty cool. Like, yeah.
+Regardless of.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7735-0
+01:30:07.160 --> 01:30:10.958
+<v Sterling Baird>Like the life of the projects, yeah,
+compared to that, too, yeah, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7735-1
+01:30:10.958 --> 01:30:14.968
+<v Sterling Baird>like if you were spending all of your
+time just collecting that data, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7735-2
+01:30:14.968 --> 01:30:19.241
+<v Sterling Baird>you still probably wouldn't be, yeah,
+you might not be able to get to the, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7735-3
+01:30:19.241 --> 01:30:20.560
+<v Sterling Baird>like the full 1200, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7774-0
+01:30:21.920 --> 01:30:27.257
+<v Sterling Baird>Maybe, but there's a lot, right?
+There's a lot, yeah, and I think you, I,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7774-1
+01:30:27.257 --> 01:30:32.377
+<v Sterling Baird>I feel pretty common saying,
+I don't think you would enjoy the work as</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7774-2
+01:30:32.377 --> 01:30:36.488
+<v Sterling Baird>much as if you were,
+if all you did in the lab was like,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7774-3
+01:30:36.488 --> 01:30:40.960
+<v Sterling Baird>it doesn't care, like,
+let me dose this in another way, yeah.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7799-0
+01:30:41.840 --> 01:30:47.397
+<v Sterling Baird>How fast can I do this? Yeah,
+it'll be okay. Awesome.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7799-1
+01:30:47.397 --> 01:30:52.646
+<v Sterling Baird>Thanks for taking this. Yeah, 2 hours.
+Yeah, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7799-2
+01:30:52.646 --> 01:31:00.262
+<v Sterling Baird>that's what for the semester now.
+I think I can do about 10 hours a week.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7799-3
+01:31:00.262 --> 01:31:00.880
+<v Sterling Baird>Great.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7805-0
+01:31:01.120 --> 01:31:05.200
+<v Sterling Baird>And the, yeah, and give me a heads up if..
+.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7806-0
+01:31:06.640 --> 01:31:06.880
+<v Sterling Baird>Um...</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7832-0
+01:31:09.240 --> 01:31:14.257
+<v Sterling Baird>Yeah, how things are going,
+like if that still seems manageable, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7832-1
+01:31:14.257 --> 01:31:18.284
+<v Sterling Baird>yeah, for you, yeah,
+some weeks I know it will be, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7832-2
+01:31:18.284 --> 01:31:22.595
+<v Sterling Baird>fluctuate, yeah, yeah,
+and trying to get this out as soon as</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7832-3
+01:31:22.595 --> 01:31:25.280
+<v Sterling Baird>possible, and then, yeah, that's good.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7848-0
+01:31:27.600 --> 01:31:31.416
+<v Sterling Baird>And, and for this semester,
+trying to get the multi-doser after this</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7848-1
+01:31:31.416 --> 01:31:34.514
+<v Sterling Baird>is out, yeah,
+getting multi-doser up and running, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7848-2
+01:31:34.514 --> 01:31:34.680
+<v Sterling Baird>so.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7881-0
+01:31:35.640 --> 01:31:39.851
+<v Sterling Baird>Which looks like it's really,
+I think the concept is really there.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7881-1
+01:31:39.851 --> 01:31:43.434
+<v Sterling Baird>You already have the prototype with the,
+yeah, the unit.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7881-2
+01:31:43.434 --> 01:31:48.085
+<v Sterling Baird>I think there's a couple of, yeah,
+couple of units to work out, but yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7881-3
+01:31:48.085 --> 01:31:49.280
+<v Sterling Baird>awesome. Thank you.</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7897-0
+01:31:50.520 --> 01:31:55.000
+<v Sterling Baird>Yeah, and I'll send this list to you.
+Did you send that now-ish? Yes,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7897-1
+01:31:55.000 --> 01:31:59.416
+<v Sterling Baird>'cause we'll probably do that right after.
+Just, yeah, let me, yeah,</v>
+
+d7374406-89a2-4cbe-94ce-ff48c1e1eb51/7897-2
+01:31:59.416 --> 01:32:01.080
+<v Sterling Baird>I'll just do it right now.</v>

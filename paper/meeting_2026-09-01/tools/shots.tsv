@@ -1,0 +1,128 @@
+01	100	jargon-opening	
+02	140	jargon-simpler-for-everybody	
+03	225	fig1-timeline-remove	220,225,231
+04	270	genai-usage-over-time-to-si	
+05	305	fig1c-coordinate-frame	298,305,312
+06	325	fig4-cross-section-tapcollar	318,325,332
+07	352	fig3-fake-data	346,352,358
+08	380	table1-planned-powders	
+09	535	a2-jargon-feed-factor	528,535,542
+10	575	rsd-not-understood	
+11	596	censored-dont-plot	590,596,602
+12	618	hatched-strikethrough	
+13	660	a2-range-10-to-230	654,660,666
+14	755	a2-good-information	
+15	772	a2-color-split-keep	
+16	786	a2-drop-nonflowing	780,786,792
+17	812	caption-not-embedded-text	806,812,818
+18	845	caption-uncontrolled-factors	
+19	878	fill-level-and-repeats	
+20	922	fill-level-varied-weigh	
+21	972	fumed-silica-jagged-si	
+22	997	alsi10mg-spherical-lpbf	
+23	1045	f1-operating-map	1038,1045,1052
+24	1072	f1-rsd-block-c-jargon	
+25	1098	blocks-need-a-table	
+26	1137	rename-to-test-protocols	1133,1137,1141
+27	1178	rsd-ambiguous-term	
+28	1220	e1-error-control-problem	1213,1220,1227
+29	1238	e1-simple-method-future-work	
+30	1262	jitter-should-be-aligned	1256,1262,1268
+31	1288	no-jitter-for-three-points	
+32	1312	e2-unclear-message	
+33	1350	e2-block-g-taps	1344,1350,1356
+34	1368	e2-why-are-nonflowers-here	1362,1368,1374
+35	1412	e2-legend-ok-overshoot-stalled	
+36	1424	time-to-terminate-ambiguous	1418,1424,1430
+37	1462	cmc-took-longest	
+38	1482	the-four-things-to-show	1476,1482,1488
+39	1522	sem-images-characterization	
+40	1572	cmc-stalled-why	
+41	1602	what-was-target-how-close	
+42	1636	three-phase-cannot-go-back	
+43	1652	cmc-150-taps-no-target	
+44	1676	readers-want-performance	
+45	1692	showcase-doser-not-powders	1686,1692,1698
+46	1730	c2-slug-per-revolution	1724,1730,1736
+47	1744	c2-not-continuous	
+48	1752	c2-keep-it	
+49	1772	protocol-a-baseline	
+50	1832	protocol-b-three-trials	
+51	1882	protocol-c-error-bars	1876,1882,1888
+52	1906	what-does-a-trial-mean	
+53	1942	protocol-d-pulsation	
+54	1992	protocol-e-tap-60ms	
+55	2042	protocol-f-never-ran	
+56	2072	protocol-g-closed-loop	
+57	2122	trials-definition-ambiguity	
+58	2162	new-dose-error-vs-time	2156,2162,2168
+59	2202	dose-error-vs-time-from-g	2196,2202,2208
+60	2226	move-protocol-table-to-main	
+61	2248	isolate-tilt-speed-tapping	
+62	2278	tap-quantum-per-powder	
+63	2316	only-one-target-mass	
+64	2332	target-masses-20mg-1g-5g	
+65	2366	tone-cv-from-n1	2360,2366,2372
+66	2432	nonflow-is-auger-geometry	2426,2432,2438
+67	2482	d1-tap-vs-feed-factor	2476,2482,2488
+68	2516	same-feed-different-tap	
+69	2612	eda-screenshare-starts	
+70	2658	19-runs-1200-trials	
+71	2732	r1-coverage-table	2726,2732,2738
+72	2752	missing-block-g-six-powders	2746,2752,2758
+73	2788	rerun-three-phase-others	
+74	2822	scale-turned-off-ping	
+75	2858	will-rerun-this-week	
+76	2902	r2-rate-ladder-3-decades	2896,2902,2908
+77	2962	r3-tilt-gravity-assist	2956,2962,2968
+78	3002	sodium-alginate-15x	
+79	3036	fumed-silica-noise-artifact	3030,3036,3042
+80	3062	si325-nothing-at-0-45	
+81	3096	tilt-story-flip-side	
+82	3162	cohesive-need-gravity-logscale	
+83	3232	r4-speed-sublinear	3226,3232,3238
+84	3332	flights-fill-by-time	
+85	3402	six-x-revs-half-mass	
+86	3422	fill-vs-mobilization-limited	3416,3422,3428
+87	3532	cohesive-globs-rattled	
+88	3572	speed-sweep-diagnoses-cohesion	3566,3572,3578
+89	3602	future-work-powder-fingerprint	
+90	3636	depletion-is-fill-level	
+91	3682	r5-one-slug-per-rev	3676,3682,3688
+92	3742	autocorrelation-4s	
+93	3772	revolution-markers-useful	
+94	3782	leading-vs-trailing-edge	3776,3782,3788
+95	3822	how-do-you-reset-an-experiment	
+96	3912	crest-factor-explained	
+97	3956	crest-factor-cut-it	
+98	3992	r6-not-everything-one-axis	3986,3992,3998
+99	4042	powder-type-not-major-axis	4036,4042,4048
+100	4076	nothing-flows-on-its-own	
+101	4112	clean-shutoff-tap-increment	
+102	4128	pause-mid-rev-transparent-auger	
+103	4162	r7-firmware-defect	4156,4162,4168
+104	4222	over-rotation-stepped	
+105	4492	corrected-mg-per-rev	
+106	4506	gear-ratio-not-1-to-1	4500,4506,4512
+107	4528	affects-everything-per-rev	
+108	4562	no-parts-swapped	
+109	4592	r8-variance-decomposition	4586,4592,4598
+110	4632	wouldnt-split-main-vs-interaction	
+111	4712	new-protocols-h-and-i	4706,4712,4718
+112	4752	powder-limited-si-110-200	
+113	4788	mass-ladder-50-200-1000	4782,4788,4794
+114	4822	fume-hood-50mg-noise	
+115	4852	uofu-0p1-to-10mg	4846,4852,4858
+116	4866	issue-117-uofu-requirements	4862,4866,4872
+117	4882	not-yet-needs-will-isolation-auger	
+118	4952	annotate-fume-hood-vs-lab	4946,4952,4958
+119	4992	foodsafe-lab-nonfoodsafe-hood	
+120	5032	multidoser-weighing-station	
+121	5072	load-cell-on-arm	
+122	5102	too-many-graphs-cut-down	5096,5102,5108
+123	5148	november-target	
+124	5182	run-tests-thursday	
+125	5252	preprint-strength	
+126	5282	give-me-eight-figures	5276,5282,5288
+127	5312	merge-transcript-notes-prompt	
+128	5342	overleaf-finalize-submit	
