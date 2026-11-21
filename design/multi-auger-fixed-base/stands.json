@@ -1,0 +1,712 @@
+{
+ "spacing": 32,
+ "s_min": 217.0,
+ "S1": {
+  "name": "printed tripod, fixed 217 mm",
+  "height_mm": 217.0,
+  "vessel": "250 mL beaker on a 100 mm stir plate + 39 mm riser",
+  "height": 217.0,
+  "half": 12.0,
+  "inner": [
+   128.0,
+   140.0
+  ],
+  "splay_deg": 15.0,
+  "strut": 14.0,
+  "tie": 10.0,
+  "clearance_to_moving_parts": {
+   "mm": 4.35,
+   "between": "A:P16 body / S1 leg A",
+   "at_tilt": 75
+  },
+  "floor_above_bench_mm": 0.0,
+  "front_gate_mm": {
+   "parked_0deg": {
+    "lowest_100mm": 191.8,
+    "lowest_100mm_set_by": "P16 body",
+    "up_to_shelf": 191.8,
+    "up_to_shelf_set_by": "P16 body",
+    "column_dia": 233.0,
+    "column_set_by": "P16 body"
+   },
+   "any_tilt": {
+    "lowest_100mm": 173.2,
+    "lowest_100mm_set_by": "P16 body",
+    "up_to_shelf": 158.2,
+    "up_to_shelf_set_by": "P16 body",
+    "column_dia": 186.4,
+    "column_set_by": "P16 rod"
+   }
+  },
+  "column_r_mm": 93.2,
+  "stability": {
+   "case": "90,0,0",
+   "mass_kg": 1.78,
+   "cg_height_mm": 214.2,
+   "cg_offset_mm": [
+    0.0,
+    -15.9
+   ],
+   "margin_mm": 112.8,
+   "tip_angle_deg": 27.8,
+   "push_at_shelf_N": 8.8,
+   "feet_polygon": [
+    [
+     -12.0,
+     236.5
+    ],
+    [
+     -210.8,
+     -107.9
+    ],
+    [
+     -198.8,
+     -128.7
+    ],
+    [
+     198.8,
+     -128.7
+    ],
+    [
+     210.8,
+     -107.9
+    ],
+    [
+     12.0,
+     236.5
+    ]
+   ]
+  },
+  "footprint_mm": [
+   422.0,
+   365.0
+  ],
+  "overall_height_mm": {
+   "at_0": 284,
+   "at_90": 501
+  },
+  "printed": {
+   "S1 leg": {
+    "qty": 3,
+    "size_mm": [
+     217,
+     118,
+     40
+    ],
+    "volume_cm3": 150.6,
+    "grams_each_est": 112,
+    "fits_h2d": true
+   }
+  },
+  "vessel_clearance": {
+   "mm": 9.68,
+   "between": "beaker 250 mL / A:Auger",
+   "at_tilt": 50
+  }
+ },
+ "S2": {
+  "name": "telescoping tripod, 217-359 mm",
+  "height_mm": 326.0,
+  "vessel": "500 mL Erlenmeyer + 80 mm funnel on a 100 mm stir plate",
+  "sleeve": [
+   34.0,
+   [
+    128.0,
+    164.0
+   ]
+  ],
+  "bore": 20.6,
+  "post": 20.0,
+  "post_y": [
+   136.0,
+   156.0
+  ],
+  "foot_h": 6.0,
+  "foot": {
+   "half": 15.0,
+   "y": [
+    136.0,
+    215.0
+   ]
+  },
+  "pitch": 10.0,
+  "min_overlap": 60.0,
+  "sleeve_bot": -252.25,
+  "post_len": 204.0,
+  "range": [
+   217.0,
+   359.0
+  ],
+  "clearance_to_moving_parts": {
+   "mm": 4.35,
+   "between": "A:P16 body / S2 sleeve A",
+   "at_tilt": 75
+  },
+  "floor_above_bench_mm": 0.0,
+  "front_gate_mm": {
+   "parked_0deg": {
+    "lowest_100mm": 276.0,
+    "lowest_100mm_set_by": "S2 foot",
+    "up_to_shelf": 191.8,
+    "up_to_shelf_set_by": "P16 body",
+    "column_dia": 233.0,
+    "column_set_by": "P16 body"
+   },
+   "any_tilt": {
+    "lowest_100mm": 276.0,
+    "lowest_100mm_set_by": "S2 foot",
+    "up_to_shelf": 158.2,
+    "up_to_shelf_set_by": "P16 body",
+    "column_dia": 186.4,
+    "column_set_by": "P16 rod"
+   }
+  },
+  "column_r_mm": 93.2,
+  "stability": {
+   "case": "90,0,0",
+   "mass_kg": 2.06,
+   "cg_height_mm": 298.7,
+   "cg_offset_mm": [
+    0.0,
+    -13.7
+   ],
+   "margin_mm": 122.8,
+   "tip_angle_deg": 22.3,
+   "push_at_shelf_N": 7.5,
+   "feet_polygon": [
+    [
+     -15.0,
+     247.0
+    ],
+    [
+     -221.4,
+     -110.5
+    ],
+    [
+     -206.4,
+     -136.5
+    ],
+    [
+     206.4,
+     -136.5
+    ],
+    [
+     221.4,
+     -110.5
+    ],
+    [
+     15.0,
+     247.0
+    ]
+   ]
+  },
+  "footprint_mm": [
+   443.0,
+   383.0
+  ],
+  "overall_height_mm": {
+   "at_0": 393,
+   "at_90": 610
+  },
+  "printed": {
+   "S2 sleeve": {
+    "qty": 3,
+    "size_mm": [
+     217,
+     77,
+     40
+    ],
+    "volume_cm3": 179.1,
+    "grams_each_est": 133,
+    "fits_h2d": true
+   },
+   "S2 foot": {
+    "qty": 3,
+    "size_mm": [
+     79,
+     30,
+     6
+    ],
+    "volume_cm3": 14.2,
+    "grams_each_est": 11,
+    "fits_h2d": true
+   }
+  },
+  "vessel_clearance": {
+   "mm": 17.87,
+   "between": "funnel / A:Mounting plate",
+   "at_tilt": 0
+  },
+  "range_mm": [
+   217.0,
+   359.0
+  ]
+ },
+ "S3": {
+  "name": "table on a board + lab jack, 372 mm",
+  "height_mm": 372.0,
+  "vessel": "250 mL beaker on a 100 mm stir plate on a lab jack set to 182 mm",
+  "jack_height": 181.7,
+  "height": 372.0,
+  "board": {
+   "x": [
+    -195.0,
+    195.0
+   ],
+   "y": [
+    -160.0,
+    210.0
+   ],
+   "t": 12.0
+  },
+  "post_y": [
+   128.0,
+   148.0
+  ],
+  "jack": {
+   "w": 150.0,
+   "plate": 6.0
+  },
+  "clearance_to_moving_parts": {
+   "mm": 4.35,
+   "between": "A:P16 body / S3 collar A",
+   "at_tilt": 75
+  },
+  "floor_above_bench_mm": 12.0,
+  "front_gate_mm": {
+   "parked_0deg": {
+    "lowest_100mm": 267.1,
+    "lowest_100mm_set_by": "S3 post",
+    "up_to_shelf": 191.8,
+    "up_to_shelf_set_by": "P16 body",
+    "column_dia": 233.0,
+    "column_set_by": "P16 body"
+   },
+   "any_tilt": {
+    "lowest_100mm": 267.1,
+    "lowest_100mm_set_by": "S3 post",
+    "up_to_shelf": 158.2,
+    "up_to_shelf_set_by": "P16 body",
+    "column_dia": 186.4,
+    "column_set_by": "P16 rod"
+   }
+  },
+  "column_r_mm": 93.2,
+  "stability": {
+   "case": "90,0,0",
+   "mass_kg": 7.22,
+   "cg_height_mm": 185.9,
+   "cg_offset_mm": [
+    0.0,
+    1.8
+   ],
+   "margin_mm": 161.8,
+   "tip_angle_deg": 41.0,
+   "push_at_shelf_N": 30.3,
+   "feet_polygon": [
+    [
+     195.0,
+     -145.0
+    ],
+    [
+     195.0,
+     195.0
+    ],
+    [
+     194.8,
+     197.1
+    ],
+    [
+     194.4,
+     199.2
+    ],
+    [
+     193.6,
+     201.2
+    ],
+    [
+     192.6,
+     203.1
+    ],
+    [
+     191.3,
+     204.8
+    ],
+    [
+     189.8,
+     206.3
+    ],
+    [
+     188.1,
+     207.6
+    ],
+    [
+     186.2,
+     208.6
+    ],
+    [
+     184.2,
+     209.4
+    ],
+    [
+     182.1,
+     209.8
+    ],
+    [
+     180.0,
+     210.0
+    ],
+    [
+     -180.0,
+     210.0
+    ],
+    [
+     -182.1,
+     209.8
+    ],
+    [
+     -184.2,
+     209.4
+    ],
+    [
+     -186.2,
+     208.6
+    ],
+    [
+     -188.1,
+     207.6
+    ],
+    [
+     -189.8,
+     206.3
+    ],
+    [
+     -191.3,
+     204.8
+    ],
+    [
+     -192.6,
+     203.1
+    ],
+    [
+     -193.6,
+     201.2
+    ],
+    [
+     -194.4,
+     199.2
+    ],
+    [
+     -194.8,
+     197.1
+    ],
+    [
+     -195.0,
+     195.0
+    ],
+    [
+     -195.0,
+     -145.0
+    ],
+    [
+     -194.8,
+     -147.1
+    ],
+    [
+     -194.4,
+     -149.2
+    ],
+    [
+     -193.6,
+     -151.2
+    ],
+    [
+     -192.6,
+     -153.1
+    ],
+    [
+     -191.3,
+     -154.8
+    ],
+    [
+     -189.8,
+     -156.3
+    ],
+    [
+     -188.1,
+     -157.6
+    ],
+    [
+     -186.2,
+     -158.6
+    ],
+    [
+     -184.2,
+     -159.4
+    ],
+    [
+     -182.1,
+     -159.8
+    ],
+    [
+     -180.0,
+     -160.0
+    ],
+    [
+     180.0,
+     -160.0
+    ],
+    [
+     182.1,
+     -159.8
+    ],
+    [
+     184.2,
+     -159.4
+    ],
+    [
+     186.2,
+     -158.6
+    ],
+    [
+     188.1,
+     -157.6
+    ],
+    [
+     189.8,
+     -156.3
+    ],
+    [
+     191.3,
+     -154.8
+    ],
+    [
+     192.6,
+     -153.1
+    ],
+    [
+     193.6,
+     -151.2
+    ],
+    [
+     194.4,
+     -149.2
+    ],
+    [
+     194.8,
+     -147.1
+    ]
+   ]
+  },
+  "footprint_mm": [
+   390.0,
+   370.0
+  ],
+  "overall_height_mm": {
+   "at_0": 439,
+   "at_90": 656
+  },
+  "printed": {
+   "S3 post cap": {
+    "qty": 3,
+    "size_mm": [
+     42,
+     40,
+     26
+    ],
+    "volume_cm3": 17.0,
+    "grams_each_est": 13,
+    "fits_h2d": true
+   },
+   "S3 collar": {
+    "qty": 3,
+    "size_mm": [
+     65,
+     28,
+     16
+    ],
+    "volume_cm3": 9.4,
+    "grams_each_est": 7,
+    "fits_h2d": true
+   },
+   "S3 gusset": {
+    "qty": 3,
+    "size_mm": [
+     45,
+     45,
+     20
+    ],
+    "volume_cm3": 20.4,
+    "grams_each_est": 15,
+    "fits_h2d": true
+   }
+  },
+  "vessel_clearance": {
+   "mm": 9.68,
+   "between": "beaker 250 mL / A:Auger",
+   "at_tilt": 50
+  },
+  "jack_for_each_vessel_mm": {
+   "100 mL beaker (50 x 70 mm)": 206.7,
+   "150 mL beaker (60 x 80 mm)": 196.7,
+   "250 mL beaker (70 x 95 mm)": 181.7,
+   "400 mL beaker (80 x 110 mm)": 148.0,
+   "600 mL beaker (90 x 125 mm)": 133.0,
+   "250 mL Erlenmeyer (85 x 145 mm, neck 34) + 80 mm funnel": 69.7,
+   "500 mL Erlenmeyer (105 x 180 mm, neck 34) + 80 mm funnel": 34.7,
+   "1 L Erlenmeyer (131 x 220 mm, neck 42) + 80 mm funnel": 1.6,
+   "500 mL wide neck Erlenmeyer (105 x 175 mm, neck 50) + 80 mm funnel": 53.6
+  }
+ },
+ "S4": {
+  "name": "retort stand or hood lattice",
+  "height_mm": 250.0,
+  "vessel": "250 mL beaker on a stir plate + 57 mm riser, on the retort stand's base",
+  "rod_r": 6.35,
+  "rod_at": [
+   150.0,
+   140.0
+  ],
+  "rod_len": 650.0,
+  "base": [
+   280.0,
+   180.0,
+   15.0
+  ],
+  "base_behind": 35.0,
+  "arm_t": 10.0,
+  "sleeve": [
+   15.0,
+   70.0
+  ],
+  "lobe_pts": [
+   [
+    -30.0,
+    70.0
+   ],
+   [
+    30.0,
+    70.0
+   ]
+  ],
+  "strut_r": 9.0,
+  "base_mass": 3000.0,
+  "clearance_to_moving_parts": {
+   "mm": 4.35,
+   "between": "A:P16 body / S4 hanger A",
+   "at_tilt": 75
+  },
+  "floor_above_bench_mm": 15.0,
+  "front_gate_mm": {
+   "parked_0deg": {
+    "lowest_100mm": 191.8,
+    "lowest_100mm_set_by": "P16 body",
+    "up_to_shelf": 147.7,
+    "up_to_shelf_set_by": "S4 arm",
+    "column_dia": 193.4,
+    "column_set_by": "S4 arm"
+   },
+   "any_tilt": {
+    "lowest_100mm": 174.4,
+    "lowest_100mm_set_by": "P16 body",
+    "up_to_shelf": 147.7,
+    "up_to_shelf_set_by": "S4 arm",
+    "column_dia": 186.4,
+    "column_set_by": "P16 rod"
+   }
+  },
+  "column_r_mm": 93.2,
+  "stability": {
+   "case": "90,0,0",
+   "mass_kg": 7.31,
+   "cg_height_mm": 110.2,
+   "cg_offset_mm": [
+    -24.0,
+    10.0
+   ],
+   "margin_mm": 86.6,
+   "tip_angle_deg": 38.2,
+   "push_at_shelf_N": 24.3,
+   "feet_polygon": [
+    [
+     -196.6,
+     9.6
+    ],
+    [
+     45.9,
+     -130.4
+    ],
+    [
+     135.9,
+     25.4
+    ],
+    [
+     -106.6,
+     165.4
+    ]
+   ]
+  },
+  "footprint_mm": [
+   332.0,
+   296.0
+  ],
+  "overall_height_mm": {
+   "at_0": 317,
+   "at_90": 534
+  },
+  "printed": {
+   "S4 arm": {
+    "qty": 1,
+    "size_mm": [
+     145,
+     115,
+     70
+    ],
+    "volume_cm3": 81.3,
+    "grams_each_est": 60,
+    "fits_h2d": true
+   },
+   "S4 hanger": {
+    "qty": 3,
+    "size_mm": [
+     217,
+     53,
+     40
+    ],
+    "volume_cm3": 71.0,
+    "grams_each_est": 53,
+    "fits_h2d": true
+   }
+  },
+  "vessel_clearance": {
+   "mm": 9.68,
+   "between": "beaker 250 mL / A:Auger",
+   "at_tilt": 50
+  }
+ },
+ "doser_reach_mm": 272.7,
+ "doser_top_above_hinge_mm": 240.4,
+ "S2_over_HR100A": {
+  "height_mm": 320.0,
+  "riser_mm": 180.2,
+  "gap_shelf_to_balance_top_mm": 5.0,
+  "overlap_post_in_sleeve_mm": 99.0,
+  "stand_to_balance": 10.0,
+  "moving_parts_to_balance": {
+   "mm": 8.07,
+   "between": "A:P16 rod / HR-100A",
+   "at_tilt": 90
+  },
+  "moving_parts_to_stand": {
+   "mm": 4.35,
+   "between": "A:P16 body / S2 sleeve A",
+   "at_tilt": 75
+  },
+  "actuators_to_balance_0deg": 27.15,
+  "beaker_and_riser": {
+   "mm": 10.5,
+   "between": "beaker 100 mL / A:Auger",
+   "at_tilt": 30
+  }
+ }
+}

@@ -700,6 +700,162 @@ per-powder tilt schedules. The 0° tap-trim phase, which #116 found to be the
 only sub-milligram actuator, would have to run for every module at once,
 between bulk doses. This was not modelled.
 
+### Stand options for the tri-star (added 21 Nov)
+
+[Ethan asked](https://github.com/vertical-cloud-lab/powder-doser/issues/204)
+for options for a stand. [`stands.py`](stands.py) models four on the same
+model as the sections above: B2 with #203's tap bracket, the one-piece base
+and the trimmed plate. It checks each one and writes [`stands.json`](stands.json)
+and the figures below. Every stand part is a placeholder, and so are the stir
+plate, lab jack and retort stand. Nothing was modelled in Onshape.
+
+**What every stand has to do**
+- **Height.** The actuators hang 208 mm below the shelf, so its underside has
+  to be at least 217 mm above the bench. Vessels on a 100 mm stir plate need
+  217–358 mm (the table in "Room under the tri-star"). Weighing on the
+  HR-100A needs 317 mm or more.
+- **Stay under the shelf where the modules sweep.** Above the shelf the
+  modules reach 273 mm from the beaker axis at 0°, and 240 mm above the hinge
+  at 90°. Every concept meets the base from below, through the four hanger
+  holes at each lobe end. S4's rod is the one exception: it stands in the gap
+  between two modules, where nothing sweeps.
+- **Hold the actuators.** They still hang from the shelf, as in
+  `components.py`, so the stand only holds the shelf. The P16's geometry and
+  stroke table don't change with the stand's height. In S1–S3, the stand part
+  behind each P16 also carries its U-bracket, so it replaces the hanger. It
+  sits where the hanger did, 7.5 mm behind the P16's housing.
+- **Leave the front gap open.** With modules at 90° (back), 210° and 330°, the
+  gap between the two front modules faces the user. No stand member crosses it.
+
+![The four stands](renders/stands_overview.png)
+
+| | S1 Printed tripod | S2 Telescoping tripod | S3 Table on a board + lab jack | S4 Retort stand clamp |
+|---|---|---|---|---|
+| Shelf underside above the bench | 217 mm, fixed | 217–359 mm, in 10 mm steps | 372 mm, fixed (cut the posts for your tallest vessel) | 250 mm as drawn; anywhere on the rod |
+| What moves to suit a vessel | a riser or lab jack | the doser | the vessel, on a lab jack | the doser |
+| Printed | 3 A-frame legs, 217 × 118 × 40 mm, about 110 g each | 3 sleeves (about 130 g each), 3 feet | 3 post caps, 3 collars, 3 gussets (about 35 g per post) | 1 arm (about 60 g), 3 hangers (about 55 g each) |
+| Bought | M4 screws | 3 × 204 mm of 20 × 20 × 1.5 aluminium tube, 3 M5 pins | 3 × 342 mm of 2020 extrusion, a 12 mm board (390 × 370), a lab jack | a retort stand (Ø12.7 rod), or use the hood's lattice |
+| Feet on the bench | 422 × 365 mm | 443 × 383 mm | 390 × 370 mm (the board) | 280 × 180 mm (the stand's base) |
+| Height at 90° (bench to the auger caps) | 501 mm | 501–643 mm | 656 mm | 534 mm + the rod |
+| Sideways push at the shelf that tips it ¹ | **8.8 N** (1.8 kg in all) | **7.5 N** at 326 mm (2.1 kg) | 30 N (7.2 kg, with the stir plate and jack on the board) | 24 N (7.3 kg, with a 3 kg base and the stir plate on it) |
+| Over the HR-100A | no (too low) | **yes, at 320 mm** | not as drawn; cut the posts to 320 mm | yes, with the rod beside the balance |
+| Best for | the first build: print it now | one stand for every vessel and the balance | dosing height that never changes | fume hoods; uses what the lab has |
+
+¹ Estimated: the centre of mass at the worst tilt mix (one module at 90°)
+against the edge of the feet, with printed parts at 60% of solid PLA. A P16
+is taken as 95 g, a NEMA 11 as 110 g, a solenoid as 40 g, each auger holds
+50 g of powder, and the stir plate weighs 2 kg and the lab jack 1.5 kg.
+
+**Checks, all four** (each module swept over 0–90° in 5° steps; the stands are fixed):
+- **Moving parts:** every stand part stays at least 4.35 mm from everything
+  that moves. That is the P16's housing to the upright behind it at 75°, the
+  same gap today's hanger has.
+- **Glassware:** the vessels drawn stay at least 9.7 mm from the doser. The
+  closest is the 250 mL beaker to an auger at 50°.
+- **Front gap:** park the modules at 0°, and a 192 mm square (a 150 mm stir
+  plate, say) slides in from the front at any height under the shelf in
+  S1–S3. The two front P16s set that, not the stands. At high tilt the P16s
+  lean in, and near the shelf the gap is 158 mm. Near the bench S2 and S3
+  leave 267–276 mm, once the actuators are higher up. S4's arm leaves
+  148 mm near the shelf for a square object, but round vessels have the
+  same Ø186 mm column as the others.
+
+![Where each stand meets the bench](renders/stands_plan.png)
+
+**S1. Printed tripod, fixed at 217 mm** ([render](renders/stand_s1.png)).
+- **The leg:** each one is a printed triangle in its module's plane. It has a
+  flange through the lobe end's four M4 holes and an upright behind the P16.
+  A strut splays 15° outward, and a tie runs along the bench. The tie's front
+  end is the tab under the P16's U-bracket. Each leg prints flat
+  (217 × 118 × 40 mm).
+- **For:** the fewest parts, and it can be printed now. The splayed struts
+  make each leg stiff in its own plane.
+- **Against:** the height is fixed at the minimum. Beakers rise on a riser
+  or lab jack (the 250 mL beaker needs 39 mm on a 100 mm stir plate), and
+  Erlenmeyers with a funnel don't fit.
+
+**S2. Telescoping tripod, 217–359 mm** ([render](renders/stand_s2.png)).
+- **The leg:** a printed sleeve under each lobe end, with the same flange and
+  U-bracket tab as S1. Inside it slides a 20 × 20 mm aluminium tube on a
+  printed long-toed foot. An M5 pin through the sleeve and a hole in the
+  tube every 10 mm sets the height. At 359 mm, 60 mm of tube is still in the
+  sleeve. Count holes to set all three legs the same.
+- **For:** one stand covers every vessel in the clearance table, and the
+  HR-100A. The P16s ride up with the shelf, so nothing else changes.
+- **Against:** it's the tippiest. It is light (2.1 kg) and its centre of mass
+  is high, so a push of about 7.5 N at the shelf tips it.
+
+**S3. Table on a board, with a lab jack** ([render](renders/stand_s3.png)).
+- **The frame:** three 2020 posts, each with a printed cap on the lobe end's
+  four holes and a gusset at its foot, on a 12 mm board (HDPE or plywood). A
+  printed collar on each post (T-nuts) holds the U-bracket. The doser stays
+  372 mm up. A lab jack on the board brings each vessel to the outlets.
+- **For:** the outlets never move, which keeps calibration simple. The board
+  carries the stir plate and jack, so the whole station moves as one piece
+  and is the hardest to tip.
+- **Jack heights** with the doser at 372 mm (each vessel on a 100 mm stir plate):
+
+  | Vessel | Jack |
+  |---|---|
+  | 100 / 150 / 250 mL beaker | 207 / 197 / 182 mm |
+  | 400 / 600 mL beaker | 148 / 133 mm |
+  | 250 mL / 500 mL wide-neck / 500 mL Erlenmeyer + funnel | 70 / 54 / 35 mm |
+  | 1 L Erlenmeyer + funnel | none: the stir plate goes straight on the board |
+
+  Check that your jack covers 35–207 mm, or cut the posts shorter if you
+  never use the 1 L flask.
+
+**S4. Retort stand or hood lattice clamp** ([render](renders/stand_s4.png)).
+- **The clamp:** a printed V-shaped arm under the two lobes either side of
+  the back-left gap. As drawn, each of those lobes needs one new M4 hole,
+  30 mm from its centre line and 70 mm behind the hinge; two per lobe would
+  stop the struts pivoting. The arm ends in a 70 mm sleeve
+  that clamps a standard Ø12.7 mm rod, 140 mm from the beaker axis. The P16s
+  hang from S1-style hangers.
+- **For:** it uses the lab's support stands, or the fume hood's lattice
+  (then nothing stands on the bench). The height is continuous.
+- **Against:** the whole doser hangs on one clamp, about 140 mm out. It is
+  the least stiff under tapping, and it relies on the clamp's grip. The
+  stand's base has to reach under the doser's centre of mass: a 280 mm base
+  with the rod 35 mm from its end does, with 87 mm to spare.
+
+**Dosing onto the HR-100A: S2 set to 320 mm** ([render](renders/stand_s2bal.png)).
+- **Clear of the balance:** the shelf is 5 mm above the balance's 315 mm top.
+  The closest the stand comes to the balance is 10 mm, the back post and foot
+  to its back edge. Nothing on the stand or doser touches it.
+- **Moving parts:** they stay at least 8.1 mm from the balance (a P16 rod
+  beside its lid, at 90°). The actuators are 27 mm away at 0°. 99 mm of each
+  post stays in its sleeve.
+- **Beaker:** the 100 mL beaker sits on a 180 mm, Ø60 riser on the pan. That
+  is narrow enough to go in through the Ø76 top door. The balance's 102 g
+  capacity still limits the beaker, the riser and the powder together (see
+  "Things every concept has to handle").
+- **Vibration:** the tapper shakes the stand, and the stand sits on the same
+  bench as the balance. Feet on rubber or Sorbothane pads, or a separate
+  bench for the balance, keep that out of the reading.
+
+![S2 over the HR-100A](renders/stand_s2bal.png)
+
+**Choices before drawing one in Onshape**
+1. **Which one.**
+   - S2, if one stand should cover every vessel and the balance.
+   - S1, for a quick first build that only needs M4 screws, if 217 mm is enough for now.
+   - S3, if the outlets should never move and the lab has a jack.
+   - S4, for a fume hood with a lattice.
+2. **Tipping.** S1 and S2 weigh about 2 kg and tip with a push of about 8 N
+   at the shelf. A snagged cable could do that. Screw their feet to the bench
+   or a board, or weigh them down: 1 kg on each foot nearly triples the push
+   it takes.
+3. **A shared actuator deck** (the parallel run is looking at one) would hang
+   from the shelf the same way. The stands then only lose their U-bracket tabs.
+
+**Limits.**
+- Every stand part is a placeholder: sized for these checks, not drawn.
+- The masses and tip-over pushes are estimates. Stiffness and ringing under
+  the tapper weren't analysed.
+- The lab jack, stir plate (150 × 150 × 100 mm) and retort stand are generic.
+  The HR-100A is PR #185's model.
+
 ## Things every concept has to handle
 
 - **Tapper at high tilt.** With the solenoid on top of the tube, two facing
@@ -748,6 +904,7 @@ between bulk doses. This was not modelled.
 | [`tap-bracket/`](tap-bracket/) | `tap-bracket-pr170.step`: the bracket and its solenoid (coil, yoke, plunger) in PR #170's frame at 0°, which `doserlib.py` reads. `solenoid-bracket-onshape.step`: the bracket alone, as Onshape exports it. `registration.json`: the fit and its checks |
 | [`results.json`](results.json) | Every swept spacing with the two parts that limit it, the self-checks, the actuator stroke table and the outlet spacings |
 | [`clearance.py`](clearance.py), [`clearance.json`](clearance.json) | The room under the tri-star: the lowest the doser gets over the beaker axis at every radius (0–90°), how far the actuators hang, and the stand each vessel needs; renders `b2_clearance.png` |
+| [`stands.py`](stands.py), [`stands.json`](stands.json) | Four stand options (printed tripod, telescoping tripod, table on a board + lab jack, retort stand): clearance to the moving parts and the glassware over 0–90°, the front gap, the feet and the centre of mass, S2 over the HR-100A; renders `stand_*.png`, `stands_overview.png`, `stands_plan.png` |
 | [`components.py`](components.py), [`parts.json`](parts.json) | The tri-star's parts: each one rendered alone ([`renders/components/`](renders/components/)), the reused/new/removed sheets, the exploded module, the status-coloured station, the actuator connection and its checks |
 | [`plate.py`](plate.py), [`plate.json`](plate.json) | The gearless mounting plate against today's: sizes, volumes, floor holes and what uses each, the hinge stack; renders `plate_compare.png` |
 | [`base.py`](base.py), [`base.json`](base.json) | The one-piece base with today's hinge towers, and the plate trimmed as Ethan has it: dimensions, clearance checks, `base_drawing.png` and `base_iso.png` |
@@ -758,12 +915,13 @@ between bulk doses. This was not modelled.
 | [`renders/`](renders/) | The figures above |
 
 ```bash
-pip install cadquery trimesh python-fcl rtree vtk pillow numpy matplotlib
+pip install cadquery trimesh python-fcl rtree vtk pillow numpy matplotlib scipy
 xvfb-run -a python concepts.py              # sweeps + figures, about 4 min on 4 cores
 xvfb-run -a python concepts.py --no-sweep   # figures only, from results.json
 xvfb-run -a python concepts.py --tap-bracket  # only B2 + #203's tap bracket (about 1 min)
 python tap_bracket.py                       # re-export the bracket from Onshape (needs the keys)
 xvfb-run -a python clearance.py             # room under the tri-star (about 20 s)
+xvfb-run -a python stands.py                # four stand options: checks, stands.json, figures (about 3 min)
 xvfb-run -a python components.py            # parts breakdown and the actuator mount (about 20 s)
 xvfb-run -a python plate.py                 # the gearless plate against today's (about 10 s)
 xvfb-run -a python base.py                  # the one-piece base: STEP/STL, checks, drawing (about 20 s)
