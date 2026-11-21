@@ -19,7 +19,8 @@ legs and doses down through its top.
    the configurations reported are then re-checked with mesh-to-mesh distances (python-fcl).
 
     pip install cadquery trimesh python-fcl rtree vtk pillow numpy matplotlib scipy
-    xvfb-run -a python scale_room.py      # about 3 min; writes scale_room.json and renders/scale_*.png
+    xvfb-run -a python scale_room.py      # about 9 min; writes scale_room.json and renders/scale_*.png
+    python scale_room.py --figures-only   # redraws renders/scale_room.png from scale_room.json
 
 Frames: the station frame of doserlib.py (beaker axis = Z, hinge axes at z = 0, modules at bearings 90
 (back), 210 and 330 deg, the front gap facing -Y).  The balance frame: origin at the pan centre on the
@@ -185,11 +186,11 @@ def hanging_parts(tilts_abc):
     return out
 
 
-def moving_samples():
+def moving_samples(tilts=TILTS):
     """(points, module index, tilt) for every hanging part of every module, tilts 0..90 in 5 deg steps."""
     P, mod, til = [], [], []
     for i, u in enumerate("ABC"):
-        for t in TILTS:
+        for t in tilts:
             tl = [0, 0, 0]
             tl[i] = t
             for p in hanging_parts(tl):
@@ -379,27 +380,30 @@ def figure_room(res, fn):
     ax2.set_xlim(-310, 310)
     ax2.set_ylim(-320, 310)
     ax2.axis("off")
-    ax2.set_title(f"Plan: HR-100A {'with' if fit['lid'] else 'without'} its lid, rear column to {phi:.0f}° "
-                  f"(blue: actuators at 0°, red: at 90°, teal: stand)", fontsize=10.5, loc="left")
+    ax2.set_title(f"Plan: HR-100A {'with' if fit['lid'] else 'without'} its lid, rear column to {phi:.0f}°\n"
+                  f"blue: actuators at 0°, red: at 90°, teal: stand", fontsize=10.5, loc="left")
     # clearance vs orientation
-    ax3 = fig.add_axes([0.75, 0.12, 0.23, 0.76])
+    ax3 = fig.add_axes([0.755, 0.13, 0.225, 0.74])
     for lid, ls in ((True, "-"), (False, "--")):
         rows = res["sweep"][f"{int(S)}_{'lid' if lid else 'nolid'}"]
         ph = [r["phi"] for r in rows]
-        ax3.plot(ph, [min(r["moving_0_90"], r["stand"]) for r in rows], ls, color="#c0392b",
-                 label=f"{'lid on' if lid else 'lid off'}: modules 0-90°")
-        ax3.plot(ph, [min(r["moving_parked"], r["stand"]) for r in rows], ls, color="#5b8bd9",
-                 label=f"{'lid on' if lid else 'lid off'}: modules parked at 0°")
+        ax3.plot(ph, [r["moving_0_90"] for r in rows], ls, color="#c0392b", lw=1.6,
+                 label=f"actuators, any tilt 0-90°, lid {'on' if lid else 'off'}")
+        ax3.plot(ph, [r["moving_parked"] for r in rows], ls, color="#5b8bd9", lw=1.6,
+                 label=f"actuators, all at 0°, lid {'on' if lid else 'off'}")
+    rows = res["sweep"][f"{int(S)}_nolid"]
+    ax3.plot([r["phi"] for r in rows], [r["stand"] for r in rows], "-", color="#16a085", lw=2.0, label="stand (legs, feet)")
     ax3.axhline(GAP, color="k", lw=0.8)
-    ax3.text(2, GAP + 0.6, "2 mm target", fontsize=9)
-    for g in (150, 270, 30):
+    ax3.text(2, GAP + 0.8, "2 mm target", fontsize=9)
+    for g in (30, 150, 270):
         ax3.axvline(g, color="#999", lw=0.6, ls=":")
+        ax3.text(g, 18.5, "gap", ha="center", fontsize=8.5, color="#666")
     ax3.set_xlim(0, 355)
-    ax3.set_ylim(-40, 40)
-    ax3.set_xlabel("bearing of the HR-100A's rear column (°); gaps between modules at 30, 150, 270")
-    ax3.set_ylabel("closest approach to the doser or stand (mm)")
-    ax3.set_title(f"Turning the HR-100A under S2 at {S:.0f} mm", loc="left", fontsize=11, fontweight="bold")
-    ax3.legend(fontsize=8.5, loc="lower left")
+    ax3.set_ylim(-30, 20)
+    ax3.set_xlabel("bearing of the rear column (°)")
+    ax3.set_ylabel("closest approach (mm); below 0 = they collide")
+    ax3.set_title(f"Turning the HR-100A, S2 at {S:.0f} mm", loc="left", fontsize=11, fontweight="bold")
+    ax3.legend(fontsize=8, loc="lower left")
     ax3.grid(alpha=0.3)
     fig.savefig(fn)
     plt.close(fig)
@@ -430,6 +434,12 @@ def render_fit(res, fn):
 def main():
     import sys
     OUT.mkdir(exist_ok=True)
+    if "--figures-only" in sys.argv:                       # redraw scale_room.png from scale_room.json
+        res = json.loads((HERE / "scale_room.json").read_text())
+        res["_mv"] = moving_samples(tilts=(0, 90))
+        figure_room(res, OUT / "scale_room.png")
+        print("  -> scale_room.png", flush=True)
+        return
     res = dict(HR100A=dict(source="A&D HR-A/HR-AZ manual, sections 21-22 (page 74, drawn at 1:5)",
                            **{k: v for k, v in HR.items()}, rear_column_plan=SPINE, display_wedge_xz=WEDGE))
     print("sampling the hanging parts ...", flush=True)
