@@ -846,8 +846,14 @@ is taken as 95 g, a NEMA 11 as 110 g, a solenoid as 40 g, each auger holds
    at the shelf. A snagged cable could do that. Screw their feet to the bench
    or a board, or weigh them down: 1 kg on each foot nearly triples the push
    it takes.
-3. **A shared actuator deck** (the parallel run is looking at one) would hang
-   from the shelf the same way. The stands then only lose their U-bracket tabs.
+3. **With the M1 deck** from the parallel run (branch
+   `claude/issue-204-20261120-2331`: one printed ring on three posts carries
+   all three P16s), the deck is already a 219 mm stand on the bench. Its
+   posts sit at the lobe ends, where S1–S3 put their legs. For more height,
+   S2's telescoping legs, or S3's board and jack, would go under the deck
+   instead of under the shelf. S4's rod would have to move outside the
+   ring, which reaches 140 mm from the axis. None of this is checked
+   together yet.
 
 **Limits.**
 - Every stand part is a placeholder: sized for these checks, not drawn.
