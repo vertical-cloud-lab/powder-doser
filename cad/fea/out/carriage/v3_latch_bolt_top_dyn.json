@@ -1,0 +1,41 @@
+{
+ "module": "carriage",
+ "case": "v3_latch_bolt_top_dyn",
+ "design": "chain-carousel-v3",
+ "part": "latch bolt (printed)",
+ "load_case": "keeper pushes the bolt's lap with 2.9 N",
+ "loads": {},
+ "nodes": 9887,
+ "elements": 5668,
+ "mesh_mm": 0.8,
+ "wall_s": 2.2,
+ "parts": [
+  {
+   "part": "latch bolt",
+   "material": "PETG (printed, along the layers)",
+   "umax_mm": 0.00727,
+   "vm_max_MPa": 1.298,
+   "vm_max_at": [
+    105.4,
+    -17.3,
+    -9.6
+   ],
+   "vm_excl_MPa": 0.785,
+   "vm_excl_at": [
+    105.5,
+    -23.0,
+    -12.6
+   ],
+   "allow_MPa": 34.0,
+   "sf": 43.31
+  }
+ ],
+ "key_disp": {
+  "bolt tip dz (mm)": 0.00722,
+  "hand: 6 F a / (b h^2) at the mouth (MPa)": 0.83248,
+  "mouth reaction (N)": -3.17726
+ },
+ "notes": "",
+ "mass_kg": 0.0007,
+ "png": "out/carriage/v3_latch_bolt_top_dyn.png"
+}

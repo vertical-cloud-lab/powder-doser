@@ -1,0 +1,68 @@
+{
+ "module": "station",
+ "case": "ec_v3_lift_gear_t30_gearlimit",
+ "design": "chain-carousel-v3",
+ "part": "electronics carriage (printed PETG)",
+ "load_case": "lift_gear at 30 deg, mesh load 0.123 x the NEMA 11 stall (the seated limit)",
+ "loads": {
+  "P16_N": 4.59,
+  "contact_normal_N": {
+   "A": 4.51,
+   "B": 1.28,
+   "C": 10.43
+  },
+  "A_lateral_N": 2.67,
+  "pin_reaction_N": [
+   2.67,
+   -0.0,
+   3.61
+  ],
+  "pin_reaction_moment_Nmm": [
+   1.1,
+   -16.0,
+   -1.3
+  ],
+  "statics_P16_vector_N": [
+   2.74,
+   0.0,
+   3.69
+  ],
+  "gear_scale": 0.123,
+  "seated": true
+ },
+ "nodes": 112048,
+ "elements": 61691,
+ "mesh_mm": 2.2,
+ "wall_s": 37.8,
+ "parts": [
+  {
+   "part": "EC",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 0.16836,
+   "vm_max_MPa": 2.045,
+   "vm_max_at": [
+    28.6,
+    15.5,
+    -29.9
+   ],
+   "vm_excl_MPa": 2.045,
+   "vm_excl_at": [
+    28.6,
+    15.5,
+    -29.9
+   ],
+   "allow_MPa": 23.0,
+   "sf": 11.25
+  }
+ ],
+ "key_disp": {
+  "cone A |u|": 0.0802,
+  "vee B |u|": 0.05982,
+  "flat C |u|": 0.15121,
+  "motor face |u|": 0.04888,
+  "centre-distance change at the mesh (mm, + opens)": 0.0739
+ },
+ "notes": "v3 EC as drawn has its electromagnet cup and ball C's boss as a separate solid; two bridge ribs added for this run; EC weight smeared over the printed body (mesh COM [49.6, 0.0, -45.1] vs statics [54.0, 0.0, -36.0])",
+ "mass_kg": 0.0417,
+ "png": "out/station/ec_v3_lift_gear_t30_gearlimit.png"
+}

@@ -1,0 +1,42 @@
+{
+ "module": "thermal",
+ "case": "ec_v3_n11_em_air26",
+ "design": "v3",
+ "T_air": 25.5,
+ "P_nema11_W": 1.517,
+ "P_electromagnet_W": 0.926,
+ "nema11_max": 42.8,
+ "electromagnet_max": 65.6,
+ "petg_max": 65.5,
+ "petg_next_to": {
+  "NEMA 11": 42.5,
+  "electromagnet": 65.5
+ },
+ "iterations": [
+  {
+   "P11": 1.569,
+   "Pem": 0.965,
+   "n11_max": 42.9
+  },
+  {
+   "P11": 1.517,
+   "Pem": 0.916,
+   "n11_max": 42.8
+  },
+  {
+   "P11": 1.517,
+   "Pem": 0.929,
+   "n11_max": 42.8
+  },
+  {
+   "P11": 1.517,
+   "Pem": 0.926,
+   "n11_max": 42.8
+  }
+ ],
+ "nodes": 64783,
+ "wall_s": 11.5,
+ "electromagnet_current_frac": 0.848,
+ "electromagnet_pull_frac": 0.719,
+ "png": "out/thermal/ec_v3_n11_em_air26.png"
+}

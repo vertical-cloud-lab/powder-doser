@@ -1,0 +1,167 @@
+{
+ "module": "frame",
+ "case": "paternoster_pads_lean_y",
+ "design": "paternoster",
+ "part": "frame + NEMA 34",
+ "load_case": "lean_y",
+ "loads": {
+  "push": "100 N on the +y top rail's middle, toward -y"
+ },
+ "nodes": 139939,
+ "elements": 70639,
+ "mesh_mm": 12.0,
+ "wall_s": 28.7,
+ "parts": [
+  {
+   "part": "side_plate_front",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.26629,
+   "vm_max_MPa": 9.846,
+   "vm_max_at": [
+    -39.4,
+    133.1,
+    381.0
+   ],
+   "vm_excl_MPa": 2.353,
+   "vm_excl_at": [
+    -39.4,
+    -125.6,
+    389.5
+   ],
+   "allow_MPa": 241.0,
+   "sf": 102.42
+  },
+  {
+   "part": "side_plate_back",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.2828,
+   "vm_max_MPa": 8.35,
+   "vm_max_at": [
+    364.4,
+    -134.7,
+    384.6
+   ],
+   "vm_excl_MPa": 5.996,
+   "vm_excl_at": [
+    364.4,
+    125.2,
+    488.6
+   ],
+   "allow_MPa": 241.0,
+   "sf": 40.2
+  },
+  {
+   "part": "motor plate",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.28009,
+   "vm_max_MPa": 6.248,
+   "vm_max_at": [
+    446.8,
+    123.2,
+    385.0
+   ],
+   "vm_excl_MPa": 6.248,
+   "vm_excl_at": [
+    446.8,
+    123.2,
+    385.0
+   ],
+   "allow_MPa": 241.0,
+   "sf": 38.57
+  },
+  {
+   "part": "standoff 1",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.269,
+   "vm_max_MPa": 7.969,
+   "vm_max_at": [
+    445.1,
+    68.2,
+    384.9
+   ],
+   "vm_excl_MPa": 7.969,
+   "vm_excl_at": [
+    445.1,
+    68.2,
+    384.9
+   ],
+   "allow_MPa": 241.0,
+   "sf": 30.24
+  },
+  {
+   "part": "standoff 2",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.27858,
+   "vm_max_MPa": 8.979,
+   "vm_max_at": [
+    366.0,
+    68.2,
+    488.9
+   ],
+   "vm_excl_MPa": 8.979,
+   "vm_excl_at": [
+    366.0,
+    68.2,
+    488.9
+   ],
+   "allow_MPa": 241.0,
+   "sf": 26.84
+  },
+  {
+   "part": "standoff 3",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.26862,
+   "vm_max_MPa": 8.537,
+   "vm_max_at": [
+    445.3,
+    124.1,
+    384.9
+   ],
+   "vm_excl_MPa": 8.537,
+   "vm_excl_at": [
+    445.3,
+    124.1,
+    384.9
+   ],
+   "allow_MPa": 241.0,
+   "sf": 28.23
+  },
+  {
+   "part": "standoff 4",
+   "material": "6061-T6 plate",
+   "umax_mm": 0.27855,
+   "vm_max_MPa": 9.069,
+   "vm_max_at": [
+    366.0,
+    124.2,
+    488.9
+   ],
+   "vm_excl_MPa": 9.069,
+   "vm_excl_at": [
+    366.0,
+    124.2,
+    488.9
+   ],
+   "allow_MPa": 241.0,
+   "sf": 26.57
+  }
+ ],
+ "key_disp": {
+  "motor COM dz": -0.10423,
+  "motor encoder end dz": -0.1406,
+  "motor shaft tip dz": -0.05293,
+  "motor shaft tip dy": -0.26069,
+  "motor face centre dx": 0.03466,
+  "motor axis tilt (mrad, vertical plane)": 0.42558,
+  "coupling parallel offset (mm)": 0.03795
+ },
+ "notes": "plate-to-post joint: pads",
+ "mass_kg": 23.8152,
+ "feet_reaction_N": [
+  -2.161293e-08,
+  100.0,
+  238.6701
+ ],
+ "total_mass_kg": 23.815,
+ "png": "out/frame/paternoster_pads_lean_y.png"
+}

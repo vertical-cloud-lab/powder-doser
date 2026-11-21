@@ -1,0 +1,51 @@
+{
+ "module": "station",
+ "case": "cradle_v3_parked",
+ "design": "chain-carousel-v3",
+ "part": "guide cradle (printed PETG)",
+ "load_case": "parked",
+ "loads": {
+  "cone_N": 0.78,
+  "vee_N": 0.78,
+  "flat_N": 1.67,
+  "post_reaction_N": [
+   0.01,
+   -0.0,
+   3.23
+  ]
+ },
+ "nodes": 98612,
+ "elements": 57976,
+ "mesh_mm": 2.2,
+ "wall_s": 46.8,
+ "parts": [
+  {
+   "part": "cradle",
+   "material": "PETG (printed, short-term)",
+   "umax_mm": 0.1332,
+   "vm_max_MPa": 1.637,
+   "vm_max_at": [
+    48.0,
+    -18.7,
+    -65.4
+   ],
+   "vm_excl_MPa": 1.637,
+   "vm_excl_at": [
+    48.0,
+    -18.7,
+    -65.4
+   ],
+   "allow_MPa": 23.0,
+   "sf": 14.05
+  }
+ ],
+ "key_disp": {
+  "cone seat dz (mm, toward the floor -)": -0.08053,
+  "vee seat dz": -0.00397,
+  "flat seat dz": -0.04317,
+  "worst seat dz": -0.08053
+ },
+ "notes": "arm pad bonded to the post's top (an M6 into its centre bore); ball loads from the parked EC + P16",
+ "mass_kg": 0.0377,
+ "png": "out/station/cradle_v3_parked.png"
+}
