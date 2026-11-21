@@ -1,0 +1,35 @@
+{
+ "candidate": "baseplate_servos_above_onshape.step",
+ "reference": "baseplate_servos_above.step",
+ "reference_dz_mm": 0.0,
+ "candidate_volume_mm3": 137660.976,
+ "reference_volume_mm3": 137661.002,
+ "volume_diff_pct": -2e-05,
+ "candidate_bbox_mm": [
+  [
+   -95.0,
+   27.3,
+   -0.0
+  ],
+  [
+   95.0,
+   170.0,
+   75.66
+  ]
+ ],
+ "reference_bbox_mm": [
+  [
+   -95.0,
+   27.3,
+   0.0
+  ],
+  [
+   95.0,
+   170.0,
+   75.66
+  ]
+ ],
+ "candidate_solids": 1,
+ "reference_solids": 1,
+ "iou": 1.0
+}
