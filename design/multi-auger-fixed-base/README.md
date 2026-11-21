@@ -688,6 +688,194 @@ calls.
 - Printed holes often come out small. If the pin or screws bind, drill the
   holes out to 4.3 and 3.4.
 
+#### The clevis block in Onshape (added 20 Nov)
+
+Ethan asked for the clevis block in Onshape, built through the REST API with
+his own API key.
+
+- **Document:** [Clevis block - tri-star actuator mount (powder-doser #204)](https://cad.onshape.com/documents/a38fe824c59c30b2f2c7acad/w/c7bd1cb3ff8f94c39a996741/e/7ee76209682949b2733e966c),
+  tab *Clevis block*. It belongs to the account the key belongs to (Ethan's)
+  and stays private until he shares it.
+- **Built from features, so every size can be edited.**
+  [`onshape_clevis.py`](onshape_clevis.py) reads `clevis.json` and adds
+  twelve features:
+
+| # | Feature | What it does |
+|---|---|---|
+| 1 | Sketch *Pad sketch* (Top plane) | 30 × 24 rectangle, both sides dimensioned |
+| 2 | Extrude *Pad* | 4 mm down, new part |
+| 3 | Sketch *Lug profile* (Right plane) | 14 wide, from the pad's underside down 5.75 to the pin axis, then R7 round it |
+| 4 | Extrude *Lugs* | that profile, symmetric, 14.5 (both lugs and the gap) |
+| 5 | Extrude *Lug gap* | the same profile, symmetric, 6.5, remove |
+| 6 | Sketch *Pin hole sketch* (Right plane) | Ø4.25, 9.75 below the top face |
+| 7 | Extrude *Pin hole* | symmetric, 40, remove |
+| 8 | Sketch *Screw holes sketch* (Top plane) | 2 × Ø3.4, 22 apart |
+| 9 | Extrude *Screw holes* | 10 mm down, remove |
+| 10 | Plane *Pad underside* | the Top plane, 4 mm down |
+| 11 | Sketch *Nut pockets sketch* (Pad underside) | 2 hexagons, 5.8 across flats, flats facing the pad's ends |
+| 12 | Extrude *Nut pockets* | 2.6 mm up into the pad, remove |
+
+- **Frame:** the same as `clevis.json` and `clevis/clevis_block.step`. The
+  origin is at the centre of the pad's top face, the face that sits against
+  the floor. x runs along the pin, y along the plate, z up, so the block hangs
+  below the Top plane. Flip it pad-down to print it.
+- **Checked against `clevis.py`:**
+  - Onshape reports a volume of 3.8493 cm³ and a 30 × 24 × 16.75 mm box,
+    the same as `clevis.py`.
+  - Onshape's STL export ([`clevis/clevis_block_onshape.stl`](clevis/clevis_block_onshape.stl))
+    differs from `clevis.py`'s block by 0.235 mm³ in all, which is
+    triangulation.
+- **Not done in Onshape:**
+  - The sketches are dimensioned but not tied to the origin, so they can be
+    dragged. A midpoint or coincident constraint to the origin locks each one.
+  - The hexagons have no dimensions.
+  - No material is set.
+  - The new document still has an empty *Part Studio 1* tab. The key can
+    create but not delete tabs (HTTP 403), so delete it by hand.
+- **API calls:** 39 in all on 20 Nov. That includes two key checks, three
+  failed calls while getting the feature format right, and the two shaded
+  views below. `python onshape_clevis.py --check-only --did ... --wid ... --eid ...`
+  re-runs only the checks (about 7 calls).
+
+![The clevis block as Onshape renders it](renders/clevis_block_onshape.png)
+
+#### Other ways to mount the actuators (added 20 Nov)
+
+Ethan asked for more options for the actuator mount, for example a second
+deck that all three actuators mount to.
+[`mounts.py`](mounts.py) compares four, each to scale in side view:
+
+![Four ways to hold the P16s](renders/mount_options.png)
+
+| | M0: today's hangers | **M1: lower deck** | M2: P16-100, short lever | M3: leaning 40° out |
+|---|---|---|---|---|
+| What holds each actuator's foot | its own strap from the shelf | one printed ring on three posts | the same deck, smaller | its own foot or leg |
+| Actuator | P16-150 | P16-150 | P16-100 | P16-150 |
+| Clevis pin behind the hinge | 95 mm | 95 mm | 48 mm | 95 mm |
+| Shelf underside to bench | 217 mm | 219 mm | **169 mm** | 170 mm |
+| Actuator foot from the beaker axis | 127 mm | 127 mm | 80 mm | 257 mm |
+| Free column under the shelf | Ø190 | Ø190 | Ø139 | wider (the actuators lean away) |
+| Stroke used (of the actuator's) | 5–149 of 150 | 5–149 of 150 | 5–98 of 100 | 5–148 of 150 |
+| Most force, at 0.65 N·m | 11 N | 11 N | 14 N | 15 N |
+| 150 × 150 mm stir plate on the bench | fits | fits, inside the deck | doesn't fit | fits |
+
+The force row is conservative: it applies the README's upper estimate of
+the torque (0.65 N·m) at every tilt, and the actuator's leverage is lowest at
+90° (M0–M2) or 0° (M3).
+
+**M1. A lower deck that carries all three actuators**
+- **Deck:** one printed ring, 6 mm thick.
+  - It is Ø280 outside with a Ø224 opening, plus a lobe at each module out to
+    174 mm from the beaker axis (48 wide, R10 corners).
+  - At 318 × 314 mm it fits on one H2D nozzle, like the base.
+- **Actuators:** each P16's own U-bracket screws to the deck's top.
+  - The screw is the P16's #8-32, through a Ø4.5 hole 127 mm from the beaker
+    axis, straight under the clevis pin.
+  - A 1 mm pocket keys the bracket square, so it can't turn on its one screw.
+- **Posts:** three, 20 × 16 mm, at the lobe ends, where the hangers hang
+  today (158–174 mm from the beaker axis, 5.5 mm behind the P16's housing).
+  - **Length:** 212.85 mm, from the deck's top to the shelf's underside.
+  - **Printing:** printed on the deck as one 219 mm tall print, or printed
+    separately and screwed on.
+  - **Fixing:** one M5 into each end (a heat-set insert), through a Ø5.5
+    hole in the shelf and in the deck.
+  - **Countersink the shelf's screw:** a cap head on top of the shelf would
+    hit the plate's rear end at 0°.
+- **Standing it up:** the deck is the foot.
+  - On the bench, the shelf's underside is 218.85 mm up, 2 mm more than with
+    the hangers.
+  - For taller vessels, put legs or a lab jack under the deck. For example, a
+    1 L Erlenmeyer with a funnel (`clearance.py`'s 358 mm) needs 139 mm of
+    legs.
+- **Why it's better than the hangers:**
+  - **Stiffer:** each hanger carries its U-bracket 33 mm in front of its
+    strap, so every push bends the strap. With the deck, the push goes
+    straight down into the bench, or up the posts.
+  - **Aligned:** all three U-brackets sit in one plane, located by holes in
+    one part.
+  - **It replaces the legs as well.**
+- **Assembly:** brackets onto the deck, then the P16s onto the brackets. Then
+  lower the base onto the posts with the rods up through the slots, screw it
+  down, and pin each rod end in its clevis block.
+- **Checks over 0–90°:**
+  - **Deck and posts:** the closest a moving part comes is 2.44 mm, a P16's
+    housing to its post at 25°, when the actuator leans 2.4° outward.
+  - **Shelf:** the clevis block clears it by 2.0 mm, as before.
+  - **Room under the shelf:** the free column stays Ø190 mm, and a 150 × 150
+    mm stir plate stands on the bench inside the deck with 5.7 mm to spare.
+- **File:** [`mount-deck/deck_M1.step`](mount-deck/deck_M1.step), the deck
+  with its posts. The origin is on the beaker axis, with the hinge axes at
+  z = 0.
+
+![M1 station](renders/mount_M1.png)
+
+![M1 deck, dimensioned](renders/mount_deck_drawing.png)
+
+**M2. A shorter actuator on a shorter lever.** The P16-100 is 147 mm between
+holes when closed and has 100 mm of stroke.
+- **Geometry:** the clevis pin moves to 48 mm behind the hinge (from 95),
+  still 45 mm below it. Then 0–90° uses 5–98 mm of stroke, with 2 mm to spare.
+- **Gain:** the station is 50 mm lower; the shelf's underside is 169 mm above
+  the bench.
+- **Costs:**
+  - **Room:** the actuators move 47 mm closer to the beaker. The free column
+    shrinks from Ø190 to Ø139 mm, and a 150 × 150 mm stir plate no longer
+    fits between them, so the station would have to stand over it on legs.
+  - **Force and resolution:** 1.3× the force (14 N at 90°), and 0.8–1.15 mm
+    of stroke per degree instead of 1.0–1.8.
+  - **The block's screws:** the clevis block moves under #203's tap bracket,
+    whose base covers the floor's top from 37 to 67 mm behind the hinge. Its
+    two M3 screws would have to go through the tap bracket's base as well
+    (M3 × 16, plus two new holes in the bracket), or into heat-set inserts
+    from below.
+  - **The base:** its slots end 70 mm behind the hinge (instead of 112), so
+    the posts land on solid shelf.
+- **Checks over 0–90°:** 3.3 mm to the deck and posts, 2.0 mm to the shelf.
+
+![M2 station](renders/mount_M2.png)
+
+**M3. The P16-150 leaning outward** (side view and numbers only)
+- **Gain:** leaning each actuator 40° outward puts its foot 257 mm from the
+  beaker axis. The shelf's underside drops to 170 mm above the bench, 47 mm
+  lower than now, with the same actuator and clevis.
+- **Costs:**
+  - **Footprint:** about Ø550 mm. That's too big for one printed deck, so
+    each actuator needs its own foot or leg.
+  - **Slots:** each lobe's slot has to run out to the lobe end, because at
+    90° the actuator crosses the shelf 127 mm behind the hinge.
+  - **Force:** 15 N at 0°.
+- **Smaller leans save less:**
+  - **30°:** saves 27 mm, with the clevis at 92.5 mm.
+  - **20°:** saves 12 mm, with the clevis at 91 mm.
+  - At 95 mm both would run out of stroke.
+
+**Also considered**
+- **Posts between the modules:** between lobes the shelf only reaches 59 mm
+  from the beaker axis, inside the vessel's column. The posts would also
+  stand in the gaps you reach the beaker through.
+- **Aluminium extrusion posts (2020):** they would work and are stiffer. But
+  at 20 mm deep they need the shelf's and deck's lobes 4 mm longer, which
+  makes both parts 327 mm wide: too wide for one H2D nozzle (325 mm).
+- **A bell crank,** with the actuator lying flat under the shelf: this would
+  lower the station the most. But the actuator would lie radially (a P16-50
+  sticks out about 150 mm past the lobe end), and the crank adds a push rod
+  and four more pins, each with some play. Not modelled.
+- **One moving deck that tilts all three** (the cheaper variant below): the
+  deck would rise 146 mm from 0° to 90° on three guides, with fixed 202 mm
+  links in place of the actuators. One actuator can't lift it from the
+  middle, where the beaker is. One pushing at a post would jam it on its
+  guides, so it would need three synchronised lead screws. Not modelled.
+
+**Limits**
+- The deck, posts, feet, stir plate, riser and beaker are placeholders.
+- The P16-100 is drawn as the P16-150 with a 50 mm shorter tube. Closed
+  length = stroke + 47 mm, as for the P16-150; check it against Actuonix's
+  drawing.
+- M3 is worked out in the module's plane only. Its clevis needs no change,
+  but its U-bracket would sit tilted 40°.
+- Nothing was modelled in Onshape except the clevis block, and nothing was
+  printed.
+
 ### A cheaper variant: one actuator for all modules
 
 The #116 battery runs found **no flow at any tilt with the auger stopped**
@@ -754,7 +942,10 @@ between bulk doses. This was not modelled.
 | [`base/`](base/) | `base.step` and `base.stl`: the base, origin on the beaker axis, z = 0 on its underside |
 | [`holes.py`](holes.py), [`holes.json`](holes.json) | Where the clevis block's two M3 holes go in the plate's floor, measured from its edges, holes, stepper wall and hinge axis; what sits over and under them; renders `clevis_holes.png` |
 | [`clevis.py`](clevis.py), [`clevis.json`](clevis.json) | The clevis block on its own: every dimension, hex nut pockets, the rod end's swing and the block, pin and screws against the base; renders `clevis_block.png` |
-| [`clevis/`](clevis/) | `clevis_block.step` (origin at the pad's top face), `clevis_block_print.stl` (flipped for printing), `clevis_block_with_hardware.step` |
+| [`clevis/`](clevis/) | `clevis_block.step` (origin at the pad's top face), `clevis_block_print.stl` (flipped for printing), `clevis_block_with_hardware.step`; `onshape.json` (the Onshape document, its features and the checks) and `clevis_block_onshape.stl` (the part as Onshape exports it) |
+| [`onshape_clevis.py`](onshape_clevis.py) | Builds the clevis block in Onshape through the REST API (needs `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY`) and checks it against `clevis.py` |
+| [`mounts.py`](mounts.py), [`mounts.json`](mounts.json) | Ways to mount the actuators: today's hangers, a lower deck on three posts, a P16-100 on a shorter lever, leaning the actuators outward. Stroke, force, height, footprint; clearance checks for the decks; renders `mount_*.png` |
+| [`mount-deck/`](mount-deck/) | `deck_M1.step` and `deck_M2.step`: the lower decks with their posts, origin on the beaker axis, hinge axes at z = 0 |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
@@ -769,6 +960,8 @@ xvfb-run -a python plate.py                 # the gearless plate against today's
 xvfb-run -a python base.py                  # the one-piece base: STEP/STL, checks, drawing (about 20 s)
 xvfb-run -a python holes.py                 # where the clevis block's holes go in the plate (about 10 s)
 xvfb-run -a python clevis.py                # the clevis block: dimensions, checks, STEP/STL, drawing (about 1 min)
+python onshape_clevis.py                    # build the clevis block in a new Onshape document (needs the keys; about 25 calls)
+xvfb-run -a python mounts.py                # actuator mount options: decks, checks, figures (about 1 min)
 ```
 
 **Limits.**

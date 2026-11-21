@@ -100,7 +100,7 @@ def kinematics(o, tilts=np.arange(0.0, 90.001, 0.5)):
         max_force_N=round(TORQUE / float(lever.min()), 1), max_force_at_tilt=float(tilts[i]),
         actuator_lean_deg=[round(min(lean), 1), round(max(lean), 1)],
         base_pin_from_beaker_axis=round(SP + float(Bp[0]), 1),
-        below_shelf_underside=round(SHELF_BOT - (float(Bp[1]) - UB["h"] - DECK_T), 1),
+        below_shelf_underside=round(SHELF_BOT - (float(Bp[1]) - UB["h"] - (DECK_T if "post_gap" in o else 4.0)), 1),
     )
 
 
@@ -344,7 +344,7 @@ def options_panel(res):
     from matplotlib.patches import Polygon, Rectangle, Circle
 
     INK, GREY, OR, DK = "#1f1f1f", "#8a8a8a", "#f2a65a", "#4a4d55"
-    fig, axs = plt.subplots(1, 4, figsize=(19, 8.6), sharey=True)
+    fig, axs = plt.subplots(1, 4, figsize=(19, 7.4), sharey=True)
     for ax, (key, o) in zip(axs, OPTIONS.items()):
         kin = res["kinematics"][key]
         Bp = base_pin(o)
@@ -386,14 +386,14 @@ def options_panel(res):
             ax.text(y(Bp[0]), bench - 9, "a foot (or leg)\nper actuator", fontsize=8.5, ha="center", va="top", color=INK)
             ax.text(y(120.0), SHELF_BOT + 10, "slot open to\nthe lobe end", fontsize=8.5, ha="center", va="bottom", color=INK)
         ax.set_title(f"{key}  {o['title']}", fontsize=12.5, fontweight="bold", loc="left")
-        txt = (f"{o['act']}, clevis {o['a']:.0f} mm behind the hinge" + (f", leaning {o['lean']:.0f}°" if o["lean"] else "") +
+        txt = (f"{o['act']}, clevis {o['a']:.0f} mm behind the hinge" + (f"\nleaning {o['lean']:.0f}° outward" if o["lean"] else "") +
                f"\nshelf underside to bench: {SHELF_BOT - bench:.0f} mm"
                f"\nactuator foot {kin['base_pin_from_beaker_axis']:.0f} mm from the beaker axis"
                f"\nstroke used {kin['rod_out']['0']:.0f}–{kin['rod_out']['90']:.0f} mm of {kin['stroke']:.0f}"
                f"\nmax force {kin['max_force_N']:.0f} N (at {kin['max_force_at_tilt']:.0f}°)")
         if res["column_r"].get(key):
             txt += f"\nfree column under the shelf Ø{2 * res['column_r'][key]:.0f} mm"
-        bx = (0.02, 0.02, "bottom", "left") if key == "M3" else (0.98, 0.985, "top", "right")
+        bx = (0.98, 0.985, "top", "right")
         ax.text(bx[0], bx[1], txt, transform=ax.transAxes, fontsize=9.4, va=bx[2], ha=bx[3],
                 bbox=dict(fc="white", ec=GREY, lw=0.6, boxstyle="round,pad=0.4"))
         ax.set_xlim(-5, 300)
@@ -404,7 +404,7 @@ def options_panel(res):
     axs[0].set_ylabel("height above the hinge axis (mm)")
     fig.suptitle("Ways to hold the three P16s, one module in side view, to scale: dark at 0°, faded at 90°. "
                  "Orange: the new support. Green: the free column under the shelf.", fontsize=12.5, x=0.01, ha="left")
-    fig.tight_layout(rect=(0, 0, 1, 0.95))
+    fig.tight_layout(rect=(0, 0, 1, 0.965))
     fig.savefig(OUT / "mount_options.png", dpi=110, bbox_inches="tight")
     plt.close(fig)
     print("  -> mount_options.png", flush=True)

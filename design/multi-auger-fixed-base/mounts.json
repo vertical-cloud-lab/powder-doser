@@ -66,7 +66,7 @@
     2.4
    ],
    "base_pin_from_beaker_axis": 127.0,
-   "below_shelf_underside": 218.9
+   "below_shelf_underside": 216.9
   },
   "M1": {
    "rod_pin_mm": [
@@ -180,7 +180,7 @@
     -27.9
    ],
    "base_pin_from_beaker_axis": 256.8,
-   "below_shelf_underside": 171.6
+   "below_shelf_underside": 169.6
   }
  },
  "deck": {
