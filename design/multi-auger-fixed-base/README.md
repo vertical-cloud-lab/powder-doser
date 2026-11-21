@@ -1138,3 +1138,63 @@ xvfb-run -a python mounts.py                # actuator mount options: decks, che
 - Meshes are triangulated to 0.15 mm.
 - The gear mesh itself isn't re-checked here. PR #170 did that.
 - No powder was simulated.
+
+## Room for the scale under the telescoping tripod (added 21 Nov)
+
+Ethan asked how much room S2 leaves underneath for the scale, and how that compares with the scale
+under the current doser: the lab's A&D HR-100A. [`scale_room.py`](scale_room.py) answers it, and
+[`scale_room.json`](scale_room.json) holds the numbers.
+
+**The HR-100A, from A&D's own drawing** (HR-A/HR-AZ manual, sections 21-22, drawn at 1:5):
+
+- 198 wide × 294 deep × 315 tall.
+- The pan centre is 167 mm behind the display's front edge.
+- The round breeze break is Ø156 inside and about Ø186 across its door frames.
+- A full-height rear column reaches 127 mm behind the pan centre.
+- The lid has a front handle 113 mm in front of the pan centre. When it opens, it swings out to the
+  user's left, to 270 mm from the pan centre.
+
+`doserlib.hr100a()`, which `stands.py` used on 20 Nov, has no rear column. It also puts the base 95 mm in
+front of the pan instead of 167, and its breeze break is 7 mm smaller in radius.
+
+**What S2 leaves under the shelf, for any balance:**
+
+| | |
+|---|---|
+| Shelf underside above the bench | 217-359 mm |
+| Lowest point of the hanging actuators | 213 mm below the shelf's underside (107 mm above the bench at 320) |
+| Below that | the whole space inside the legs. Each post's inner face is 168 mm from the beaker axis |
+| Above that | a column between the actuators: Ø233 mm with the modules parked at 0°, Ø187 mm at any tilt to 90° (narrowest just under the shelf) |
+
+**The HR-100A under S2,** pan on the beaker axis. Checked at every orientation in 5° steps, at
+320-359 mm, with the lid on and off, against the stand and all three modules over 0-90°:
+
+- **It fits only turned so its rear column points into a gap between modules** (bearing 30°, 150° or
+  270°). With the display facing the user, the rear column hits the back module's P16, even with every
+  module parked. So the 20 Nov check, which found 8.1 mm, is wrong for the real balance.
+- **With the lid off, every tilt mix clears:** the closest is 2.5 mm at 320 mm (a P16 body at 90°),
+  and that grows to 8.2 mm at 359 mm.
+- **With the lid on, only tilts up to 60° clear.** Past that, the lid's front handle hits the P16 of the
+  module opposite the rear column.
+- **The display then faces a leg.** Its front edge comes 1.0 mm from that leg's post, at any height.
+  That is under the 2 mm target and within the drawing's tolerance, so measure the real balance before
+  relying on it. Turning the balance 5° either way makes them touch.
+
+![Room under S2 for the HR-100A](renders/scale_room.png)
+
+![HR-100A under S2](renders/scale_fit.png)
+
+**Today's doser, for comparison:** its platform bridges over the HR-100A on four legs, roughly 265 mm
+apart (a photo estimate in #146), with its underside just above the 315 mm top. Nothing hangs beside
+the balance, so any orientation works and the lid can open. Under S2, the three actuators hang down
+around the balance. That, more than the height, is what limits it.
+
+**Limits**
+
+- The balance is traced from A&D's drawing (±3 mm), not measured.
+- With the lid off, the top is taken as 290 mm.
+- The lid's swing and the side doors (which open to 105 mm from the pan centre) were not checked against
+  the actuators.
+- The fast sweep uses surface samples 1.5 mm apart. The reported configurations were re-checked with
+  mesh distances.
+- `xvfb-run -a python scale_room.py` takes about 9 minutes.
