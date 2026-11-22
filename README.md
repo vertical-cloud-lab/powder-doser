@@ -104,6 +104,12 @@ Each powder lives in its own auger, filled once, capped and stored loaded, so ch
 
 <sub><b>Animation: loading an auger with Al 4047</b> (30 Sep 2026; <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/166">#166</a>). Left, a phone camera on the bench; right, the bench livestream at the same moment. The auger is filled with Al 4047 at the back of the bench (×100), fitted to the doser (×12) and checked over the balance (×20). Claude then dosed 8.0010 g of it for an atomizer charge, in three passes after a firmware error and a clog; the full video is under <a href="#videos">Videos</a>. Cut from the slide video of <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/174">#174</a>.</sub>
 
+Here is the first of those passes, filmed by the camera that streams the bench to YouTube. The balance's own display shows the powder arriving in the aluminium cup:
+
+<p align="center"><img src="docs/readme/gifs/livestream_al4047_dose.gif" alt="Animation: livestream of the doser over the balance. The tube tilts down to 40 degrees and the auger feeds Al 4047 through a paper funnel into the aluminium cup, while the balance reading climbs from zero to 3.49 g" width="360"></p>
+
+<sub><b>Livestream: Al 4047 into the aluminium cup</b> (30 Sep 2026, 5× speed; <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/166">#166</a>). After the balance is tared, the tube tilts to 40° and the auger turns at 100 rpm with a tap every 0.5 s: the <b>bulk</b> settings the optimizer recommended for salt (<code>bo-005</code>). The first 1.2 g came out in 7 s, then the feed slowed steadily, from 73 mg/s to 14 mg/s. The pass stopped after 100 s with 3.49 g in the cup, when the firmware's telemetry log ran out of memory (fixed the same day). A second pass and a bulk-only top-up then brought the cup to 8.0010 g. From the broadcast <a href="https://youtu.be/yOK01jYPknA?t=7045">yOK01jYPknA</a>, made with <a href="scripts/livestream_clip_gif.py"><code>scripts/livestream_clip_gif.py</code></a>.</sub>
+
 ## Results: 13 powders
 
 We tested seven food-safe surrogates and six research powders, including gas-atomized AlSi10Mg and two grades of silicon. Open loop, under one fixed set of settings, the powders spanned more than an order of magnitude in mass per revolution, and the flow came in waves, one surge per revolution.
@@ -206,7 +212,7 @@ Sam's Fusion 360 share links for the parts that ran in the tests (the auger, its
 - [Three-phase closed-loop test on the balance](https://youtu.be/qYwFWl76y3c).
 - [An autonomous 1 g dose on the livestream](https://youtu.be/xjtJNMo8DKw?t=15155) (3 Sep 2026, [#148](https://github.com/vertical-cloud-lab/powder-doser/issues/148)), and [xanthan gum and rice flour](https://youtu.be/JrdlEVz18R0?t=5832) (4 Sep 2026, [#116](https://github.com/vertical-cloud-lab/powder-doser/issues/116)).
 - [Remote salt doses, 1 g](https://www.youtube.com/live/XJ5TRApc6pI?t=12835) and [5 g](https://www.youtube.com/live/XJ5TRApc6pI?t=14580) (15 Aug 2026, [#145](https://github.com/vertical-cloud-lab/powder-doser/issues/145)).
-- [Dosing Al 4047 for an atomizer charge, with Claude](https://youtu.be/dXRB7c6GeDw), including a stall and a clog (30 Sep 2026, [#166](https://github.com/vertical-cloud-lab/powder-doser/issues/166)); [preparing the dose](https://youtu.be/QXSj0j1OqL8).
+- [Dosing Al 4047 for an atomizer charge, with Claude](https://youtu.be/dXRB7c6GeDw), including a stall and a clog (30 Sep 2026, [#166](https://github.com/vertical-cloud-lab/powder-doser/issues/166)); [preparing the dose](https://youtu.be/QXSj0j1OqL8); [its first pass on the livestream](https://youtu.be/yOK01jYPknA?t=7045), the clip in [Using the doser](#using-the-doser).
 - [First glove-box test, slow dispensing of salt](https://youtu.be/L0jCNZVXHoc), with the University of Utah's Lessard Lab ([#117](https://github.com/vertical-cloud-lab/powder-doser/issues/117)).
 - [Trying out Zoo Design Studio](https://www.youtube.com/watch?v=6YsOMIsOfkY), with commentary ([#92](https://github.com/vertical-cloud-lab/powder-doser/issues/92)).
 - Multi-doser, the next step: [pitch](https://www.youtube.com/watch?v=IkjBxqa06u0), [3D-printed prototype](https://www.youtube.com/watch?v=liB6YNSN8-Q) and [V1 demo](https://youtu.be/BSgpeKZgoXU) ([#128](https://github.com/vertical-cloud-lab/powder-doser/issues/128)).
@@ -271,7 +277,7 @@ Where each GIF in this README came from is in [`docs/readme/gifs/README.md`](doc
 | [`docs/powder-excavator.md`](docs/powder-excavator.md) | The project's first concept, a pure-mechanical gantry trough, with its Edison Scientific review and figures (this README until Nov 2026) |
 | [`paper/`](paper/) | Digital Discovery LaTeX template (`latexmk -pdf main.tex`) and background literature notes; the draft itself is on [#97](https://github.com/vertical-cloud-lab/powder-doser/pull/97) |
 | [`docs/readme/`](docs/readme/) | The figures in this README, cropped from the paper's previews by [`scripts/readme_figures.py`](scripts/readme_figures.py) |
-| [`docs/readme/gifs/`](docs/readme/gifs/) | The animations in this README, fetched from the threads that made them by [`scripts/readme_gifs.py`](scripts/readme_gifs.py); provenance in its [`README.md`](docs/readme/gifs/README.md) |
+| [`docs/readme/gifs/`](docs/readme/gifs/) | The animations in this README, fetched from the threads that made them by [`scripts/readme_gifs.py`](scripts/readme_gifs.py), and the livestream clip of Al 4047, made by [`scripts/livestream_clip_gif.py`](scripts/livestream_clip_gif.py); provenance in its [`README.md`](docs/readme/gifs/README.md) |
 | [`docs/poster/`](docs/poster/) | The poster as a PDF |
 
 ## License
