@@ -1,0 +1,66 @@
+{
+ "elkassem2021_kona": {
+  "citation": "El Kassem, Salloum, Brinz, Heider, Markert (2021) A semi-automated DEM parameter calibration technique of powders based on different bulk responses extracted from auger dosing experiments. KONA 38:235-250. doi:10.14356/kona.2021010",
+  "licence": "CC BY 2.0 (J-STAGE)",
+  "landing": "https://www.jstage.jst.go.jp/article/kona/38/0/38_2021010/_article",
+  "url": "https://www.jstage.jst.go.jp/article/kona/38/0/38_2021010/_pdf/-char/en",
+  "bytes": 9649827,
+  "sha256": "f365d0fe611634c9bdfab9edbfdcdc478e14b5d0d3f3346a1a6ded31b367409e",
+  "text_chars": 62487,
+  "via": "PDF taken from the routed navigation after the click",
+  "route": "headed Chrome (Playwright, Xvfb) through the doser Pi as SOCKS5, 400 kB/s",
+  "retrieved_utc": "2026-11-23T23:30:30Z",
+  "seconds": 55.7,
+  "ok": true
+ },
+ "elkassem2021_cpm": {
+  "citation": "El-Kassem, Salloum, Brinz, Heider, Markert (2021) A multivariate regression parametric study on DEM input parameters of free-flowing and cohesive powders with experimental data-based validation. Comput. Part. Mech. 8:87-111. doi:10.1007/s40571-020-00315-8",
+  "licence": "CC BY 4.0 (Springer open choice)",
+  "landing": "https://link.springer.com/article/10.1007/s40571-020-00315-8",
+  "url": "https://link.springer.com/content/pdf/10.1007/s40571-020-00315-8.pdf",
+  "bytes": 5653416,
+  "sha256": "7b24ef54e37aef33d7aad070b3cbc2cbbab1c00a8dc9609346d7e4d1be309984",
+  "text_chars": 97348,
+  "via": "browser download after the click",
+  "route": "headed Chrome (Playwright, Xvfb) through the doser Pi as SOCKS5, 400 kB/s",
+  "retrieved_utc": "2026-11-23T23:36:34Z",
+  "seconds": 76.5,
+  "ok": true
+ },
+ "matertrans2021_vibration_feeder": {
+  "citation": "Genetic algorithm based automatic input parameter calibration method for the discrete element modeling of vibration feeders. Materials Transactions 62(4) (2021). doi:10.2320/matertrans.M-M2021806",
+  "licence": "free to read; no open licence (not reused)",
+  "landing": "https://www.jstage.jst.go.jp/article/matertrans/62/4/62_M-M2021806/_article",
+  "url": "https://www.jstage.jst.go.jp/article/matertrans/62/4/62_M-M2021806/_pdf/-char/en",
+  "bytes": 1803273,
+  "sha256": "41c822e69bffcb701925fc0bc41edb7572bc5025cd1ec375fb48800dba804c35",
+  "text_chars": 25224,
+  "via": "PDF taken from the routed navigation after the click",
+  "route": "headed Chrome (Playwright, Xvfb) through the doser Pi as SOCKS5, 400 kB/s",
+  "retrieved_utc": "2026-11-23T23:32:14Z",
+  "seconds": 27.8,
+  "ok": true
+ },
+ "polymers2025_calibration": {
+  "citation": "Development of a non-spherical polymeric particles calibration procedure for numerical simulations based on the discrete element method. Polymers 17(20):2748 (2025). doi:10.3390/polym17202748",
+  "licence": "CC BY 4.0 (MDPI)",
+  "landing": "https://www.mdpi.com/2073-4360/17/20/2748",
+  "url": "https://www.mdpi.com/2073-4360/17/20/2748/pdf",
+  "bytes": 4438462,
+  "sha256": "338293a7359f3b9449620e2f2f884fc00070a1132487d088cedf4707763f61de",
+  "text_chars": 68467,
+  "via": "context request after click",
+  "route": "headed Chrome (Playwright, Xvfb) through the doser Pi as SOCKS5, 400 kB/s",
+  "retrieved_utc": "2026-11-23T23:33:31Z",
+  "seconds": 73.0,
+  "ok": true
+ },
+ "ajst2025_vertical_screw": {
+  "citation": "Study on the influence characteristics of vertical fine screw transport. Academic Journal of Science and Technology (2025). doi:10.54097/wvbec931",
+  "licence": "CC BY 4.0 (per OpenAlex)",
+  "landing": "https://doi.org/10.54097/wvbec931",
+  "ok": false,
+  "error": "TimeoutError: Locator.get_attribute: Timeout 20000ms exceeded.\nCall log:\n  - waiting for locator(\"a.obj_galley_link.pdf, a.obj_galley_link, a[href*='/download/']\").first\n",
+  "retrieved_utc": "2026-11-23T23:34:04Z"
+ }
+}

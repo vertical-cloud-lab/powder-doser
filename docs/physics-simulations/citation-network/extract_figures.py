@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Crop the key figures of El Kassem et al. (2021), KONA 38:235-250 (CC BY 4.0), from the PDF read through the Pi.
+"""Crop key figures of El Kassem et al. (2021), KONA 38:235-250, and of the same group's Computational Particle
+Mechanics 8:87-111 paper (both CC BY 4.0), from the PDFs read through the Pi.
 
-Usage:  python extract_figures.py [/tmp/kona/pdf/elkassem2021_kona.pdf]
-Writes figures/elkassem2021_kona_<fig>.png at 200 dpi. Boxes are PDF points (x0, y0, x1, y1) on the printed page.
-The PDF itself is not committed; manifest.json has its URL, size and sha256.
+Usage:  python extract_figures.py [pdf_dir]        (default /tmp/kona/pdf)
+Writes figures/<paper>_<fig>.png at 200 dpi. Boxes are PDF points (x0, y0, x1, y1) on the printed page.
+The PDFs are not committed; manifest.json has their URLs, sizes and sha256.
 """
 from __future__ import annotations
 
@@ -13,7 +14,7 @@ from pathlib import Path
 import pymupdf
 
 HERE = Path(__file__).resolve().parent
-PDF = Path(sys.argv[1] if len(sys.argv) > 1 else "/tmp/kona/pdf/elkassem2021_kona.pdf")
+PDF_DIR = Path(sys.argv[1] if len(sys.argv) > 1 else "/tmp/kona/pdf")
 CROPS = {  # name: (page, box, caption as printed)
     "fig01-02_auger_and_setup": (4, (50, 378, 293, 776),
                                  "Fig. 1 auger geometry; Fig. 2 experimental setup (CAD and lab)"),
@@ -27,16 +28,24 @@ CROPS = {  # name: (page, box, caption as printed)
     "fig14_aor_experiment_vs_dem": (11, (305, 384, 548, 553), "Fig. 14 AoR heaps, experiment and DEM"),
     "fig16_flow_rate_validation": (12, (50, 54, 293, 470), "Fig. 16 mass flow, DEM against experiment at 400-800 rpm"),
 }
+CROPS_CPM = {
+    "fig05-06_aor_free_flowing_vs_cohesive": (13, (51, 300, 292, 492),
+                                              "Figs. 5-6 experimental AoR heaps of SpheroLac 100 and InhaLac 251"),
+    "fig12_pareto_aor_cohesive": (16, (51, 352, 292, 528), "Fig. 12 Pareto of effects on the AoR, cohesive powder"),
+    "fig27-28_aor_validation": (22, (51, 54, 547, 360),
+                                "Figs. 27-28 and Table 10: DEM AoR from the prediction model against experiment"),
+}
 
 
 def main() -> None:
-    doc = pymupdf.open(PDF)
     out = HERE / "figures"
     out.mkdir(exist_ok=True)
-    for name, (page, box, cap) in CROPS.items():
-        pix = doc[page - 1].get_pixmap(dpi=200, clip=pymupdf.Rect(*box))
-        pix.save(out / f"elkassem2021_kona_{name}.png")
-        print(f"{name}: page {page}, {pix.width}x{pix.height} px  ({cap})")
+    for paper, crops in (("elkassem2021_kona", CROPS), ("elkassem2021_cpm", CROPS_CPM)):
+        doc = pymupdf.open(PDF_DIR / f"{paper}.pdf")
+        for name, (page, box, cap) in crops.items():
+            pix = doc[page - 1].get_pixmap(dpi=200, clip=pymupdf.Rect(*box))
+            pix.save(out / f"{paper}_{name}.png")
+            print(f"{paper} {name}: page {page}, {pix.width}x{pix.height} px  ({cap})")
 
 
 if __name__ == "__main__":

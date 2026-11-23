@@ -51,7 +51,8 @@ frictional DEM parameters from a small screw doser's own response and checks the
 precedents are López et al. (adhesion changes DEM screw output), Bhalode 2022 (friction from a separate drawdown test,
 then a cohesionless feeder model), Hou 2024 (30°-inclined micro-feeder alongside shear-cell flow functions, no DEM
 inversion) and two El-Kassem auger-dosing papers it could not verify. [`README.md`](README.md) sets the other eight
-answers beside the runs.
+answers beside the runs. A third El Kassem paper (*KONA* 2021), found on 23 Nov 2026, is the closest precedent so far;
+its citation network and Edison q12–q13 are in [`citation-network/`](citation-network/).
 
 ## What the full texts add for this project
 
@@ -59,6 +60,12 @@ answers beside the runs.
   cohesion by hand on other tests, then predicted the dosing. None of the papers found uses a feeder's own output to
   infer powder properties, which is the paper's claim. The closest is drum-based calibration (Pourandi et al.) and
   funnel/AoR-based calibration (Meier et al.).
+  - **Correction (23 Nov 2026):** El Kassem et al. (*KONA* 38, 2021, 235–250), found later, *did* use an auger
+    doser's own output: mass flow at three speeds, plus the angle of repose of the heap it builds and a bulk
+    density, to calibrate three DEM friction coefficients of one free-flowing lactose (no cohesion; 20-run DoE,
+    regression and overlaid contours; checked only against the responses it was fit to). So "a doser as a DEM
+    calibration device" is not new. What remains open is several powders, cohesive ones included, inferred with
+    uncertainty and checked on tests held out of the fit. See [`citation-network/`](citation-network/).
 - **One test is not enough.** Karkala et al. needed the shear cell *and* dynamic yield strength to pin down
   sliding and rolling friction; Lupo et al. could not match angle of repose and unconfined yield strength with one
   JKR parameter set. For the doser this argues for inferring from the tilt sweep **plus** at least one more

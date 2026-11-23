@@ -10,6 +10,7 @@ attempt to run **all** of the methods found.
 | [`LITERATURE.md`](LITERATURE.md) | The 21 method families found, where each is used, which doser question it could answer, and the open-source codes |
 | [`edison/`](edison/) | The nine Edison queries ([`run_queries.py`](edison/run_queries.py)). The key was refused with 403 in the session that wrote them ([`STATUS.md`](edison/STATUS.md)); after the key was rotated they were sent at 03:00 UTC from a session on #196, and their answers land here |
 | [`fulltext/`](fulltext/) | Headed-Chrome reader that opens open-access papers through the Pi with pointer moves and clicks ([`fetch_fulltexts.py`](fulltext/fetch_fulltexts.py)); [`manifest.json`](fulltext/manifest.json) pins what was read (texts not committed) |
+| [`citation-network/`](citation-network/) | El Kassem et al. (*KONA* 2021), the closest auger-dosing precedent: its references, its 21 citing works, key figures read through the Pi, and Edison q12–q13 on what is left new |
 | [`runs/<id>/`](runs/) | One folder per simulation attempt: inputs and scripts to rerun, `README.md`, `result.json`, figure, and an animation where the run evolves in time |
 | [`results.md`](results.md), [`results.json`](results.json) | All runs in one table, built by [`collect_results.py`](collect_results.py) |
 
