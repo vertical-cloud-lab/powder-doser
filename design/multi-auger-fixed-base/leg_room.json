@@ -1,0 +1,3839 @@
+{
+ "shelf_underside_above_bench": 340.0,
+ "tilts": [
+  0,
+  5,
+  10,
+  15,
+  20,
+  25,
+  30,
+  35,
+  40,
+  45,
+  50,
+  55,
+  60,
+  65,
+  70,
+  75,
+  80,
+  85,
+  90
+ ],
+ "band_mm": 10.0,
+ "options": {
+  "L0": {
+   "title": "Today",
+   "change": "nothing",
+   "actuator": {
+    "clevis_pin_behind_hinge": 95.0,
+    "actuator": "P16-150",
+    "lean_deg": 0.0,
+    "rod_out": {
+     "0": 5.0,
+     "30": 58.7,
+     "45": 85.4,
+     "60": 109.9,
+     "90": 148.6
+    },
+    "spare_at_90": 1.4,
+    "monotonic": true,
+    "mm_per_deg": [
+     1.02,
+     1.83
+    ],
+    "max_force_N": 11.1,
+    "actuator_lean_deg": [
+     -8.3,
+     2.4
+    ],
+    "base_pin_from_beaker_axis": 127.0,
+    "lean_at_0_45_90": [
+     0.0,
+     -0.8,
+     8.3
+    ]
+   },
+   "slot_ends_behind_hinge": 112.0,
+   "room": [
+    {
+     "depth": [
+      0,
+      10
+     ],
+     "act_any": 93.4,
+     "act_60": 117.4,
+     "act_parked": 120.0,
+     "legs": 144.0,
+     "free_r": 93.4,
+     "front_any": 160.5,
+     "front_parked": 200.6
+    },
+    {
+     "depth": [
+      10,
+      20
+     ],
+     "act_any": 94.8,
+     "act_60": 117.7,
+     "act_parked": 122.5,
+     "legs": 160.0,
+     "free_r": 94.8,
+     "front_any": 162.9,
+     "front_parked": 209.2
+    },
+    {
+     "depth": [
+      20,
+      30
+     ],
+     "act_any": 94.9,
+     "act_60": 116.0,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 94.9,
+     "front_any": 158.2,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      30,
+      40
+     ],
+     "act_any": 95.6,
+     "act_60": 116.2,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 95.6,
+     "front_any": 160.2,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      40,
+      50
+     ],
+     "act_any": 97.0,
+     "act_60": 116.5,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 97.0,
+     "front_any": 162.4,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      50,
+      60
+     ],
+     "act_any": 98.5,
+     "act_60": 116.7,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 98.5,
+     "front_any": 165.4,
+     "front_parked": 203.7
+    },
+    {
+     "depth": [
+      60,
+      70
+     ],
+     "act_any": 100.0,
+     "act_60": 117.0,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 100.0,
+     "front_any": 167.4,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      70,
+      80
+     ],
+     "act_any": 101.5,
+     "act_60": 117.3,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 101.5,
+     "front_any": 170.0,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      80,
+      90
+     ],
+     "act_any": 102.9,
+     "act_60": 117.6,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 102.9,
+     "front_any": 172.8,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      90,
+      100
+     ],
+     "act_any": 104.4,
+     "act_60": 117.9,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 104.4,
+     "front_any": 174.7,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      100,
+      110
+     ],
+     "act_any": 105.9,
+     "act_60": 118.1,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 105.9,
+     "front_any": 177.6,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      110,
+      120
+     ],
+     "act_any": 107.3,
+     "act_60": 118.4,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 107.3,
+     "front_any": 180.3,
+     "front_parked": 203.7
+    },
+    {
+     "depth": [
+      120,
+      130
+     ],
+     "act_any": 108.7,
+     "act_60": 114.4,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 108.7,
+     "front_any": 181.2,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      130,
+      140
+     ],
+     "act_any": 105.8,
+     "act_60": 114.5,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 105.8,
+     "front_any": 173.2,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      140,
+      150
+     ],
+     "act_any": 107.1,
+     "act_60": 114.7,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 107.1,
+     "front_any": 175.6,
+     "front_parked": 191.9
+    },
+    {
+     "depth": [
+      150,
+      160
+     ],
+     "act_any": 108.6,
+     "act_60": 115.0,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 108.6,
+     "front_any": 178.5,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      160,
+      170
+     ],
+     "act_any": 110.0,
+     "act_60": 115.3,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 110.0,
+     "front_any": 180.8,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      170,
+      180
+     ],
+     "act_any": 111.5,
+     "act_60": 115.6,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 111.5,
+     "front_any": 183.6,
+     "front_parked": 191.9
+    },
+    {
+     "depth": [
+      180,
+      190
+     ],
+     "act_any": 113.0,
+     "act_60": 115.8,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 113.0,
+     "front_any": 186.1,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      190,
+      200
+     ],
+     "act_any": 114.4,
+     "act_60": 116.1,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 114.4,
+     "front_any": 188.5,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      200,
+      210
+     ],
+     "act_any": 115.9,
+     "act_60": 122.2,
+     "act_parked": 122.3,
+     "legs": 160.0,
+     "free_r": 115.9,
+     "front_any": 190.7,
+     "front_parked": 206.2
+    },
+    {
+     "depth": [
+      210,
+      220
+     ],
+     "act_any": 123.4,
+     "act_60": 123.4,
+     "act_parked": 123.4,
+     "legs": 119.0,
+     "free_r": 119.0,
+     "front_any": 194.1,
+     "front_parked": 194.1
+    },
+    {
+     "depth": [
+      220,
+      230
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      230,
+      240
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      240,
+      250
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      250,
+      260
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      260,
+      270
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      270,
+      280
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      280,
+      290
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      290,
+      300
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      300,
+      310
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      310,
+      320
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      320,
+      330
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.2,
+     "front_parked": 281.2
+    },
+    {
+     "depth": [
+      330,
+      340
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 276.0,
+     "front_parked": 276.0
+    }
+   ],
+   "summary": {
+    "15": {
+     "free_dia_any": 190,
+     "free_dia_60": 235,
+     "free_dia_parked": 245,
+     "actuators_dia_any": 190,
+     "legs_dia": 320,
+     "front_any": 163,
+     "front_parked": 209
+    },
+    "105": {
+     "free_dia_any": 212,
+     "free_dia_60": 236,
+     "free_dia_parked": 242,
+     "actuators_dia_any": 212,
+     "legs_dia": 320,
+     "front_any": 178,
+     "front_parked": 204
+    },
+    "205": {
+     "free_dia_any": 232,
+     "free_dia_60": 244,
+     "free_dia_parked": 245,
+     "actuators_dia_any": 232,
+     "legs_dia": 320,
+     "front_any": 191,
+     "front_parked": 206
+    }
+   },
+   "hangs_below_shelf_mm": 212.9,
+   "footprint": {
+    "r_max": 247.5,
+    "box": [
+     442.8,
+     383.5
+    ]
+   },
+   "hr100a": {
+    "lid_off": {
+     "best_phi": 270,
+     "best_mm": 1.0,
+     "worst_mm": -23.0,
+     "phis_ok": [],
+     "n_ok": 0,
+     "shelf_gap": 50.0
+    },
+    "lid_on": {
+     "best_phi": 160,
+     "best_mm": -4.2,
+     "worst_mm": -23.0,
+     "phis_ok": [],
+     "n_ok": 0,
+     "shelf_gap": 25.0
+    }
+   },
+   "checks": {
+    "stand": {
+     "mm": 4.35,
+     "between": "A:P16 body / A:S2 sleeve",
+     "at_tilt": 75
+    },
+    "base": {
+     "mm": 2.0,
+     "between": "A:clevis block / base",
+     "at_tilt": 0
+    }
+   }
+  },
+  "L1": {
+   "title": "Legs splayed out",
+   "change": "three splayed legs; the P16s on their own hangers",
+   "actuator": {
+    "clevis_pin_behind_hinge": 95.0,
+    "actuator": "P16-150",
+    "lean_deg": 0.0,
+    "rod_out": {
+     "0": 5.0,
+     "30": 58.7,
+     "45": 85.4,
+     "60": 109.9,
+     "90": 148.6
+    },
+    "spare_at_90": 1.4,
+    "monotonic": true,
+    "mm_per_deg": [
+     1.02,
+     1.83
+    ],
+    "max_force_N": 11.1,
+    "actuator_lean_deg": [
+     -8.3,
+     2.4
+    ],
+    "base_pin_from_beaker_axis": 127.0,
+    "lean_at_0_45_90": [
+     0.0,
+     -0.8,
+     8.3
+    ]
+   },
+   "slot_ends_behind_hinge": 112.0,
+   "room": [
+    {
+     "depth": [
+      0,
+      10
+     ],
+     "act_any": 93.4,
+     "act_60": 117.4,
+     "act_parked": 120.0,
+     "legs": 144.0,
+     "free_r": 93.4,
+     "front_any": 160.5,
+     "front_parked": 200.6
+    },
+    {
+     "depth": [
+      10,
+      20
+     ],
+     "act_any": 94.8,
+     "act_60": 117.7,
+     "act_parked": 122.5,
+     "legs": 160.0,
+     "free_r": 94.8,
+     "front_any": 162.9,
+     "front_parked": 209.2
+    },
+    {
+     "depth": [
+      20,
+      30
+     ],
+     "act_any": 94.9,
+     "act_60": 116.0,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 94.9,
+     "front_any": 158.2,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      30,
+      40
+     ],
+     "act_any": 95.6,
+     "act_60": 116.2,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 95.6,
+     "front_any": 160.2,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      40,
+      50
+     ],
+     "act_any": 97.0,
+     "act_60": 116.5,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 97.0,
+     "front_any": 162.4,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      50,
+      60
+     ],
+     "act_any": 98.5,
+     "act_60": 116.7,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 98.5,
+     "front_any": 165.4,
+     "front_parked": 203.7
+    },
+    {
+     "depth": [
+      60,
+      70
+     ],
+     "act_any": 100.0,
+     "act_60": 117.0,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 100.0,
+     "front_any": 167.4,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      70,
+      80
+     ],
+     "act_any": 101.5,
+     "act_60": 117.3,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 101.5,
+     "front_any": 170.0,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      80,
+      90
+     ],
+     "act_any": 102.9,
+     "act_60": 117.6,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 102.9,
+     "front_any": 172.8,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      90,
+      100
+     ],
+     "act_any": 104.4,
+     "act_60": 117.9,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 104.4,
+     "front_any": 174.7,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      100,
+      110
+     ],
+     "act_any": 105.9,
+     "act_60": 118.1,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 105.9,
+     "front_any": 177.6,
+     "front_parked": 203.6
+    },
+    {
+     "depth": [
+      110,
+      120
+     ],
+     "act_any": 107.3,
+     "act_60": 118.4,
+     "act_parked": 121.0,
+     "legs": 160.0,
+     "free_r": 107.3,
+     "front_any": 180.3,
+     "front_parked": 203.7
+    },
+    {
+     "depth": [
+      120,
+      130
+     ],
+     "act_any": 108.7,
+     "act_60": 114.4,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 108.7,
+     "front_any": 181.2,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      130,
+      140
+     ],
+     "act_any": 105.8,
+     "act_60": 114.5,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 105.8,
+     "front_any": 173.2,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      140,
+      150
+     ],
+     "act_any": 107.1,
+     "act_60": 114.7,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 107.1,
+     "front_any": 175.6,
+     "front_parked": 191.9
+    },
+    {
+     "depth": [
+      150,
+      160
+     ],
+     "act_any": 108.6,
+     "act_60": 115.0,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 108.6,
+     "front_any": 178.5,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      160,
+      170
+     ],
+     "act_any": 110.0,
+     "act_60": 115.3,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 110.0,
+     "front_any": 180.8,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      170,
+      180
+     ],
+     "act_any": 111.5,
+     "act_60": 115.6,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 111.5,
+     "front_any": 183.6,
+     "front_parked": 191.9
+    },
+    {
+     "depth": [
+      180,
+      190
+     ],
+     "act_any": 113.0,
+     "act_60": 115.8,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 113.0,
+     "front_any": 186.1,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      190,
+      200
+     ],
+     "act_any": 114.4,
+     "act_60": 116.1,
+     "act_parked": 116.5,
+     "legs": 160.0,
+     "free_r": 114.4,
+     "front_any": 188.5,
+     "front_parked": 191.8
+    },
+    {
+     "depth": [
+      200,
+      210
+     ],
+     "act_any": 115.9,
+     "act_60": 122.2,
+     "act_parked": 122.3,
+     "legs": 160.0,
+     "free_r": 115.9,
+     "front_any": 190.7,
+     "front_parked": 206.2
+    },
+    {
+     "depth": [
+      210,
+      220
+     ],
+     "act_any": 123.4,
+     "act_60": 123.4,
+     "act_parked": 123.4,
+     "legs": 119.0,
+     "free_r": 119.0,
+     "front_any": 196.1,
+     "front_parked": 196.1
+    },
+    {
+     "depth": [
+      220,
+      230
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 225.1,
+     "free_r": 225.1,
+     "front_any": 380.9,
+     "front_parked": 380.9
+    },
+    {
+     "depth": [
+      230,
+      240
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 227.8,
+     "free_r": 227.8,
+     "front_any": 384.7,
+     "front_parked": 384.7
+    },
+    {
+     "depth": [
+      240,
+      250
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 230.4,
+     "free_r": 230.4,
+     "front_any": 389.7,
+     "front_parked": 389.7
+    },
+    {
+     "depth": [
+      250,
+      260
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 233.1,
+     "free_r": 233.1,
+     "front_any": 394.2,
+     "front_parked": 394.2
+    },
+    {
+     "depth": [
+      260,
+      270
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 235.7,
+     "free_r": 235.7,
+     "front_any": 399.0,
+     "front_parked": 399.0
+    },
+    {
+     "depth": [
+      270,
+      280
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 238.4,
+     "free_r": 238.4,
+     "front_any": 403.1,
+     "front_parked": 403.1
+    },
+    {
+     "depth": [
+      280,
+      290
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 241.2,
+     "free_r": 241.2,
+     "front_any": 408.0,
+     "front_parked": 408.0
+    },
+    {
+     "depth": [
+      290,
+      300
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 243.9,
+     "free_r": 243.9,
+     "front_any": 412.4,
+     "front_parked": 412.4
+    },
+    {
+     "depth": [
+      300,
+      310
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 246.5,
+     "free_r": 246.5,
+     "front_any": 417.6,
+     "front_parked": 417.6
+    },
+    {
+     "depth": [
+      310,
+      320
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 249.1,
+     "free_r": 249.1,
+     "front_any": 422.5,
+     "front_parked": 422.5
+    },
+    {
+     "depth": [
+      320,
+      330
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 251.8,
+     "free_r": 251.8,
+     "front_any": 427.2,
+     "front_parked": 427.2
+    },
+    {
+     "depth": [
+      330,
+      340
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 240.9,
+     "free_r": 240.9,
+     "front_any": 402.2,
+     "front_parked": 402.2
+    }
+   ],
+   "summary": {
+    "15": {
+     "free_dia_any": 190,
+     "free_dia_60": 235,
+     "free_dia_parked": 245,
+     "actuators_dia_any": 190,
+     "legs_dia": 320,
+     "front_any": 163,
+     "front_parked": 209
+    },
+    "105": {
+     "free_dia_any": 212,
+     "free_dia_60": 236,
+     "free_dia_parked": 242,
+     "actuators_dia_any": 212,
+     "legs_dia": 320,
+     "front_any": 178,
+     "front_parked": 204
+    },
+    "205": {
+     "free_dia_any": 232,
+     "free_dia_60": 244,
+     "free_dia_parked": 245,
+     "actuators_dia_any": 232,
+     "legs_dia": 320,
+     "front_any": 191,
+     "front_parked": 206
+    }
+   },
+   "hangs_below_shelf_mm": 212.9,
+   "footprint": {
+    "r_max": 291.3,
+    "box": [
+     518.8,
+     449.3
+    ]
+   },
+   "hr100a": {
+    "lid_off": {
+     "best_phi": 30,
+     "best_mm": 5.4,
+     "worst_mm": -23.0,
+     "phis_ok": [
+      25,
+      30,
+      35,
+      145,
+      150,
+      155,
+      265,
+      270,
+      275
+     ],
+     "n_ok": 9,
+     "shelf_gap": 50.0
+    },
+    "lid_on": {
+     "best_phi": 160,
+     "best_mm": -4.2,
+     "worst_mm": -23.0,
+     "phis_ok": [],
+     "n_ok": 0,
+     "shelf_gap": 25.0
+    }
+   },
+   "checks": {
+    "stand": {
+     "mm": 4.35,
+     "between": "A:P16 body / A:hanger",
+     "at_tilt": 75
+    },
+    "base": {
+     "mm": 2.0,
+     "between": "A:clevis block / base",
+     "at_tilt": 0
+    }
+   }
+  },
+  "L2": {
+   "title": "Actuators leaning out 25\u00b0",
+   "change": "the P16 feet move out; posts on outrigger arms",
+   "actuator": {
+    "clevis_pin_behind_hinge": 91.5,
+    "actuator": "P16-150",
+    "lean_deg": 25.0,
+    "rod_out": {
+     "0": 5.0,
+     "30": 49.6,
+     "45": 76.0,
+     "60": 102.4,
+     "90": 148.7
+    },
+    "spare_at_90": 1.3,
+    "monotonic": true,
+    "mm_per_deg": [
+     1.12,
+     1.78
+    ],
+    "max_force_N": 10.1,
+    "actuator_lean_deg": [
+     -25.0,
+     -17.1
+    ],
+    "base_pin_from_beaker_axis": 208.9,
+    "lean_at_0_45_90": [
+     25.0,
+     17.1,
+     22.4
+    ]
+   },
+   "post_centre_from_beaker_axis": 246.8,
+   "slot_ends_behind_hinge": 134.5,
+   "room": [
+    {
+     "depth": [
+      0,
+      10
+     ],
+     "act_any": 116.5,
+     "act_60": 116.5,
+     "act_parked": 116.5,
+     "legs": 145.0,
+     "free_r": 116.5,
+     "front_any": 194.5,
+     "front_parked": 194.5
+    },
+    {
+     "depth": [
+      10,
+      20
+     ],
+     "act_any": 122.6,
+     "act_60": 122.6,
+     "act_parked": 122.6,
+     "legs": 236.8,
+     "free_r": 122.6,
+     "front_any": 210.1,
+     "front_parked": 210.1
+    },
+    {
+     "depth": [
+      20,
+      30
+     ],
+     "act_any": 126.8,
+     "act_60": 126.8,
+     "act_parked": 126.8,
+     "legs": 236.8,
+     "free_r": 126.8,
+     "front_any": 213.5,
+     "front_parked": 213.5
+    },
+    {
+     "depth": [
+      30,
+      40
+     ],
+     "act_any": 130.2,
+     "act_60": 130.2,
+     "act_parked": 130.2,
+     "legs": 236.8,
+     "free_r": 130.2,
+     "front_any": 220.7,
+     "front_parked": 220.7
+    },
+    {
+     "depth": [
+      40,
+      50
+     ],
+     "act_any": 134.9,
+     "act_60": 134.9,
+     "act_parked": 134.9,
+     "legs": 236.8,
+     "free_r": 134.9,
+     "front_any": 227.6,
+     "front_parked": 227.6
+    },
+    {
+     "depth": [
+      50,
+      60
+     ],
+     "act_any": 139.5,
+     "act_60": 139.5,
+     "act_parked": 139.5,
+     "legs": 236.8,
+     "free_r": 139.5,
+     "front_any": 235.5,
+     "front_parked": 235.5
+    },
+    {
+     "depth": [
+      60,
+      70
+     ],
+     "act_any": 144.1,
+     "act_60": 144.1,
+     "act_parked": 144.1,
+     "legs": 236.8,
+     "free_r": 144.1,
+     "front_any": 245.0,
+     "front_parked": 245.0
+    },
+    {
+     "depth": [
+      70,
+      80
+     ],
+     "act_any": 148.8,
+     "act_60": 148.8,
+     "act_parked": 148.8,
+     "legs": 236.8,
+     "free_r": 148.8,
+     "front_any": 252.6,
+     "front_parked": 252.6
+    },
+    {
+     "depth": [
+      80,
+      90
+     ],
+     "act_any": 153.4,
+     "act_60": 153.4,
+     "act_parked": 153.4,
+     "legs": 236.8,
+     "free_r": 153.4,
+     "front_any": 260.8,
+     "front_parked": 260.8
+    },
+    {
+     "depth": [
+      90,
+      100
+     ],
+     "act_any": 158.1,
+     "act_60": 158.1,
+     "act_parked": 158.1,
+     "legs": 236.8,
+     "free_r": 158.1,
+     "front_any": 268.7,
+     "front_parked": 268.7
+    },
+    {
+     "depth": [
+      100,
+      110
+     ],
+     "act_any": 162.9,
+     "act_60": 162.9,
+     "act_parked": 162.9,
+     "legs": 236.8,
+     "free_r": 162.9,
+     "front_any": 275.9,
+     "front_parked": 275.9
+    },
+    {
+     "depth": [
+      110,
+      120
+     ],
+     "act_any": 167.5,
+     "act_60": 167.5,
+     "act_parked": 167.5,
+     "legs": 236.8,
+     "free_r": 167.5,
+     "front_any": 284.0,
+     "front_parked": 285.3
+    },
+    {
+     "depth": [
+      120,
+      130
+     ],
+     "act_any": 167.7,
+     "act_60": 167.7,
+     "act_parked": 167.7,
+     "legs": 236.8,
+     "free_r": 167.7,
+     "front_any": 280.4,
+     "front_parked": 280.4
+    },
+    {
+     "depth": [
+      130,
+      140
+     ],
+     "act_any": 171.7,
+     "act_60": 171.7,
+     "act_parked": 171.7,
+     "legs": 236.8,
+     "free_r": 171.7,
+     "front_any": 289.0,
+     "front_parked": 289.0
+    },
+    {
+     "depth": [
+      140,
+      150
+     ],
+     "act_any": 176.5,
+     "act_60": 176.5,
+     "act_parked": 176.5,
+     "legs": 236.8,
+     "free_r": 176.5,
+     "front_any": 296.3,
+     "front_parked": 296.3
+    },
+    {
+     "depth": [
+      150,
+      160
+     ],
+     "act_any": 181.1,
+     "act_60": 181.1,
+     "act_parked": 181.1,
+     "legs": 236.8,
+     "free_r": 181.1,
+     "front_any": 304.3,
+     "front_parked": 304.3
+    },
+    {
+     "depth": [
+      160,
+      170
+     ],
+     "act_any": 185.7,
+     "act_60": 185.7,
+     "act_parked": 185.7,
+     "legs": 236.8,
+     "free_r": 185.7,
+     "front_any": 313.3,
+     "front_parked": 313.3
+    },
+    {
+     "depth": [
+      170,
+      180
+     ],
+     "act_any": 190.4,
+     "act_60": 190.4,
+     "act_parked": 190.4,
+     "legs": 236.8,
+     "free_r": 190.4,
+     "front_any": 320.9,
+     "front_parked": 320.9
+    },
+    {
+     "depth": [
+      180,
+      190
+     ],
+     "act_any": 195.1,
+     "act_60": 195.1,
+     "act_parked": 195.1,
+     "legs": 194.8,
+     "free_r": 194.8,
+     "front_any": 325.3,
+     "front_parked": 325.3
+    },
+    {
+     "depth": [
+      190,
+      200
+     ],
+     "act_any": 202.7,
+     "act_60": 202.7,
+     "act_parked": 202.7,
+     "legs": 193.4,
+     "free_r": 193.4,
+     "front_any": 322.7,
+     "front_parked": 322.7
+    },
+    {
+     "depth": [
+      200,
+      210
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 210.5,
+     "free_r": 210.5,
+     "front_any": 353.9,
+     "front_parked": 353.9
+    },
+    {
+     "depth": [
+      210,
+      220
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.3,
+     "front_parked": 400.3
+    },
+    {
+     "depth": [
+      220,
+      230
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.2,
+     "front_parked": 400.2
+    },
+    {
+     "depth": [
+      230,
+      240
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.6,
+     "front_parked": 400.6
+    },
+    {
+     "depth": [
+      240,
+      250
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.3,
+     "front_parked": 400.3
+    },
+    {
+     "depth": [
+      250,
+      260
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.4,
+     "front_parked": 400.4
+    },
+    {
+     "depth": [
+      260,
+      270
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.2,
+     "front_parked": 400.2
+    },
+    {
+     "depth": [
+      270,
+      280
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.3,
+     "front_parked": 400.3
+    },
+    {
+     "depth": [
+      280,
+      290
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.2,
+     "front_parked": 400.2
+    },
+    {
+     "depth": [
+      290,
+      300
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.3,
+     "front_parked": 400.3
+    },
+    {
+     "depth": [
+      300,
+      310
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.2,
+     "front_parked": 400.2
+    },
+    {
+     "depth": [
+      310,
+      320
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.2,
+     "front_parked": 400.2
+    },
+    {
+     "depth": [
+      320,
+      330
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 236.8,
+     "free_r": 236.8,
+     "front_any": 400.2,
+     "front_parked": 400.2
+    },
+    {
+     "depth": [
+      330,
+      340
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 232.8,
+     "free_r": 232.8,
+     "front_any": 388.2,
+     "front_parked": 388.2
+    }
+   ],
+   "summary": {
+    "15": {
+     "free_dia_any": 245,
+     "free_dia_60": 245,
+     "free_dia_parked": 245,
+     "actuators_dia_any": 245,
+     "legs_dia": 474,
+     "front_any": 210,
+     "front_parked": 210
+    },
+    "105": {
+     "free_dia_any": 326,
+     "free_dia_60": 326,
+     "free_dia_parked": 326,
+     "actuators_dia_any": 326,
+     "legs_dia": 474,
+     "front_any": 276,
+     "front_parked": 276
+    },
+    "205": {
+     "free_dia_any": 421,
+     "free_dia_60": 421,
+     "free_dia_parked": 421,
+     "actuators_dia_any": null,
+     "legs_dia": 421,
+     "front_any": 354,
+     "front_parked": 354
+    }
+   },
+   "hangs_below_shelf_mm": 194.6,
+   "footprint": {
+    "r_max": 307.2,
+    "box": [
+     546.4,
+     473.2
+    ]
+   },
+   "hr100a": {
+    "lid_off": {
+     "best_phi": 30,
+     "best_mm": 30.0,
+     "worst_mm": 8.9,
+     "phis_ok": [
+      0,
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60,
+      65,
+      70,
+      75,
+      80,
+      85,
+      90,
+      95,
+      100,
+      105,
+      110,
+      115,
+      120,
+      125,
+      130,
+      135,
+      140,
+      145,
+      150,
+      155,
+      160,
+      165,
+      170,
+      175,
+      180,
+      185,
+      190,
+      195,
+      200,
+      205,
+      210,
+      215,
+      220,
+      225,
+      230,
+      235,
+      240,
+      245,
+      250,
+      255,
+      260,
+      265,
+      270,
+      275,
+      280,
+      285,
+      290,
+      295,
+      300,
+      305,
+      310,
+      315,
+      320,
+      325,
+      330,
+      335,
+      340,
+      345,
+      350,
+      355
+     ],
+     "n_ok": 72,
+     "shelf_gap": 50.0
+    },
+    "lid_on": {
+     "best_phi": 270,
+     "best_mm": 13.9,
+     "worst_mm": -1.3,
+     "phis_ok": [
+      0,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60,
+      65,
+      85,
+      90,
+      95,
+      115,
+      120,
+      135,
+      140,
+      145,
+      150,
+      155,
+      160,
+      165,
+      170,
+      175,
+      180,
+      185,
+      205,
+      210,
+      215,
+      235,
+      240,
+      255,
+      260,
+      265,
+      270,
+      275,
+      280,
+      285,
+      290,
+      295,
+      300,
+      305,
+      325,
+      330,
+      335,
+      355
+     ],
+     "n_ok": 48,
+     "shelf_gap": 25.0
+    }
+   },
+   "checks": {
+    "stand": {
+     "mm": 4.35,
+     "between": "A:P16 body / A:leg",
+     "at_tilt": 85
+    },
+    "base": {
+     "mm": 2.0,
+     "between": "B:clevis block / base",
+     "at_tilt": 0
+    }
+   }
+  },
+  "L3": {
+   "title": "Longer lever, P16-200",
+   "change": "P16-200s; a tail under each plate's rear end; longer slots; posts behind the P16s",
+   "actuator": {
+    "clevis_pin_behind_hinge": 135.0,
+    "actuator": "P16-200",
+    "lean_deg": 0.0,
+    "rod_out": {
+     "0": 5.0,
+     "30": 78.6,
+     "45": 113.7,
+     "60": 145.5,
+     "90": 194.3
+    },
+    "spare_at_90": 5.7,
+    "monotonic": true,
+    "mm_per_deg": [
+     1.26,
+     2.48
+    ],
+    "max_force_N": 9.0,
+    "actuator_lean_deg": [
+     -11.8,
+     1.4
+    ],
+    "base_pin_from_beaker_axis": 167.0,
+    "lean_at_0_45_90": [
+     0.0,
+     1.2,
+     11.8
+    ]
+   },
+   "post_centre_from_beaker_axis": 209.3,
+   "slot_ends_behind_hinge": 151.0,
+   "room": [
+    {
+     "depth": [
+      0,
+      10
+     ],
+     "act_any": 110.2,
+     "act_60": 144.5,
+     "act_parked": 160.0,
+     "legs": 145.0,
+     "free_r": 110.2,
+     "front_any": 189.7,
+     "front_parked": 223.4
+    },
+    {
+     "depth": [
+      10,
+      20
+     ],
+     "act_any": 112.3,
+     "act_60": 145.3,
+     "act_parked": 162.5,
+     "legs": 199.3,
+     "free_r": 112.3,
+     "front_any": 193.4,
+     "front_parked": 278.5
+    },
+    {
+     "depth": [
+      20,
+      30
+     ],
+     "act_any": 113.9,
+     "act_60": 144.2,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 113.9,
+     "front_any": 191.3,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      30,
+      40
+     ],
+     "act_any": 114.4,
+     "act_60": 144.7,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 114.4,
+     "front_any": 192.1,
+     "front_parked": 273.0
+    },
+    {
+     "depth": [
+      40,
+      50
+     ],
+     "act_any": 116.4,
+     "act_60": 145.4,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 116.4,
+     "front_any": 195.8,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      50,
+      60
+     ],
+     "act_any": 118.6,
+     "act_60": 146.2,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 118.6,
+     "front_any": 199.2,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      60,
+      70
+     ],
+     "act_any": 120.6,
+     "act_60": 146.9,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 120.6,
+     "front_any": 203.8,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      70,
+      80
+     ],
+     "act_any": 122.6,
+     "act_60": 147.7,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 122.6,
+     "front_any": 206.3,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      80,
+      90
+     ],
+     "act_any": 124.7,
+     "act_60": 148.3,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 124.7,
+     "front_any": 210.0,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      90,
+      100
+     ],
+     "act_any": 126.8,
+     "act_60": 149.1,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 126.8,
+     "front_any": 214.1,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      100,
+      110
+     ],
+     "act_any": 128.9,
+     "act_60": 149.8,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 128.9,
+     "front_any": 217.9,
+     "front_parked": 273.0
+    },
+    {
+     "depth": [
+      110,
+      120
+     ],
+     "act_any": 130.9,
+     "act_60": 150.5,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 130.9,
+     "front_any": 220.9,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      120,
+      130
+     ],
+     "act_any": 133.1,
+     "act_60": 151.3,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 133.1,
+     "front_any": 225.3,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      130,
+      140
+     ],
+     "act_any": 135.1,
+     "act_60": 152.0,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 135.1,
+     "front_any": 228.9,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      140,
+      150
+     ],
+     "act_any": 137.2,
+     "act_60": 152.8,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 137.2,
+     "front_any": 232.6,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      150,
+      160
+     ],
+     "act_any": 139.3,
+     "act_60": 153.4,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 139.3,
+     "front_any": 235.8,
+     "front_parked": 272.9
+    },
+    {
+     "depth": [
+      160,
+      170
+     ],
+     "act_any": 141.4,
+     "act_60": 154.2,
+     "act_parked": 161.0,
+     "legs": 199.3,
+     "free_r": 141.4,
+     "front_any": 239.3,
+     "front_parked": 273.0
+    },
+    {
+     "depth": [
+      170,
+      180
+     ],
+     "act_any": 143.5,
+     "act_60": 151.1,
+     "act_parked": 156.5,
+     "legs": 199.3,
+     "free_r": 143.5,
+     "front_any": 243.4,
+     "front_parked": 261.1
+    },
+    {
+     "depth": [
+      180,
+      190
+     ],
+     "act_any": 141.5,
+     "act_60": 151.1,
+     "act_parked": 156.5,
+     "legs": 199.3,
+     "free_r": 141.5,
+     "front_any": 235.0,
+     "front_parked": 261.1
+    },
+    {
+     "depth": [
+      190,
+      200
+     ],
+     "act_any": 143.0,
+     "act_60": 151.8,
+     "act_parked": 156.5,
+     "legs": 199.3,
+     "free_r": 143.0,
+     "front_any": 237.9,
+     "front_parked": 261.1
+    },
+    {
+     "depth": [
+      200,
+      210
+     ],
+     "act_any": 145.1,
+     "act_60": 152.6,
+     "act_parked": 156.5,
+     "legs": 199.3,
+     "free_r": 145.1,
+     "front_any": 242.2,
+     "front_parked": 261.1
+    },
+    {
+     "depth": [
+      210,
+      220
+     ],
+     "act_any": 147.2,
+     "act_60": 153.3,
+     "act_parked": 156.5,
+     "legs": 199.3,
+     "free_r": 147.2,
+     "front_any": 245.1,
+     "front_parked": 261.1
+    },
+    {
+     "depth": [
+      220,
+      230
+     ],
+     "act_any": 149.3,
+     "act_60": 154.0,
+     "act_parked": 156.5,
+     "legs": 199.3,
+     "free_r": 149.3,
+     "front_any": 248.9,
+     "front_parked": 261.1
+    },
+    {
+     "depth": [
+      230,
+      240
+     ],
+     "act_any": 151.4,
+     "act_60": 154.8,
+     "act_parked": 156.5,
+     "legs": 199.3,
+     "free_r": 151.4,
+     "front_any": 253.4,
+     "front_parked": 261.1
+    },
+    {
+     "depth": [
+      240,
+      250
+     ],
+     "act_any": 153.5,
+     "act_60": 155.5,
+     "act_parked": 156.5,
+     "legs": 199.3,
+     "free_r": 153.5,
+     "front_any": 255.9,
+     "front_parked": 261.1
+    },
+    {
+     "depth": [
+      250,
+      260
+     ],
+     "act_any": 155.5,
+     "act_60": 162.1,
+     "act_parked": 162.3,
+     "legs": 199.3,
+     "free_r": 155.5,
+     "front_any": 259.7,
+     "front_parked": 275.3
+    },
+    {
+     "depth": [
+      260,
+      270
+     ],
+     "act_any": 163.1,
+     "act_60": 163.1,
+     "act_parked": 163.1,
+     "legs": 154.7,
+     "free_r": 154.7,
+     "front_any": 255.9,
+     "front_parked": 255.9
+    },
+    {
+     "depth": [
+      270,
+      280
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 199.3,
+     "free_r": 199.3,
+     "front_any": 335.2,
+     "front_parked": 335.2
+    },
+    {
+     "depth": [
+      280,
+      290
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 199.3,
+     "free_r": 199.3,
+     "front_any": 335.4,
+     "front_parked": 335.4
+    },
+    {
+     "depth": [
+      290,
+      300
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 199.3,
+     "free_r": 199.3,
+     "front_any": 335.2,
+     "front_parked": 335.2
+    },
+    {
+     "depth": [
+      300,
+      310
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 199.3,
+     "free_r": 199.3,
+     "front_any": 335.7,
+     "front_parked": 335.7
+    },
+    {
+     "depth": [
+      310,
+      320
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 199.3,
+     "free_r": 199.3,
+     "front_any": 335.3,
+     "front_parked": 335.3
+    },
+    {
+     "depth": [
+      320,
+      330
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 199.3,
+     "free_r": 199.3,
+     "front_any": 335.3,
+     "front_parked": 335.3
+    },
+    {
+     "depth": [
+      330,
+      340
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 195.3,
+     "free_r": 195.3,
+     "front_any": 323.3,
+     "front_parked": 323.3
+    }
+   ],
+   "summary": {
+    "15": {
+     "free_dia_any": 225,
+     "free_dia_60": 291,
+     "free_dia_parked": 325,
+     "actuators_dia_any": 225,
+     "legs_dia": 399,
+     "front_any": 193,
+     "front_parked": 278
+    },
+    "105": {
+     "free_dia_any": 258,
+     "free_dia_60": 300,
+     "free_dia_parked": 322,
+     "actuators_dia_any": 258,
+     "legs_dia": 399,
+     "front_any": 218,
+     "front_parked": 273
+    },
+    "205": {
+     "free_dia_any": 290,
+     "free_dia_60": 305,
+     "free_dia_parked": 313,
+     "actuators_dia_any": 290,
+     "legs_dia": 399,
+     "front_any": 242,
+     "front_parked": 261
+    }
+   },
+   "hangs_below_shelf_mm": 262.9,
+   "footprint": {
+    "r_max": 269.7,
+    "box": [
+     481.4,
+     416.9
+    ]
+   },
+   "hr100a": {
+    "lid_off": {
+     "best_phi": 30,
+     "best_mm": 19.2,
+     "worst_mm": -8.9,
+     "phis_ok": [
+      25,
+      30,
+      35,
+      145,
+      150,
+      155,
+      265,
+      270,
+      275
+     ],
+     "n_ok": 9,
+     "shelf_gap": 50.0
+    },
+    "lid_on": {
+     "best_phi": 30,
+     "best_mm": 0.9,
+     "worst_mm": -11.0,
+     "phis_ok": [],
+     "n_ok": 0,
+     "shelf_gap": 25.0
+    }
+   },
+   "checks": {
+    "stand": {
+     "mm": 4.25,
+     "between": "C:M4 pin / C:leg",
+     "at_tilt": 0
+    },
+    "base": {
+     "mm": 2.0,
+     "between": "B:clevis block / base",
+     "at_tilt": 0
+    }
+   }
+  },
+  "L4": {
+   "title": "Longer lever + leaning 25\u00b0",
+   "change": "P16-200s leaning 25\u00b0; posts on longer outrigger arms",
+   "actuator": {
+    "clevis_pin_behind_hinge": 120.0,
+    "actuator": "P16-200",
+    "lean_deg": 25.0,
+    "rod_out": {
+     "0": 5.0,
+     "30": 64.0,
+     "45": 97.4,
+     "60": 130.0,
+     "90": 186.2
+    },
+    "spare_at_90": 13.8,
+    "monotonic": true,
+    "mm_per_deg": [
+     1.58,
+     2.24
+    ],
+    "max_force_N": 7.2,
+    "actuator_lean_deg": [
+     -25.0,
+     -18.5
+    ],
+    "base_pin_from_beaker_axis": 258.5,
+    "lean_at_0_45_90": [
+     25.0,
+     18.6,
+     24.8
+    ]
+   },
+   "post_centre_from_beaker_axis": 296.1,
+   "slot_ends_behind_hinge": 164.5,
+   "room": [
+    {
+     "depth": [
+      0,
+      10
+     ],
+     "act_any": 145.0,
+     "act_60": 145.0,
+     "act_parked": 145.0,
+     "legs": 145.0,
+     "free_r": 145.0,
+     "front_any": 223.4,
+     "front_parked": 223.4
+    },
+    {
+     "depth": [
+      10,
+      20
+     ],
+     "act_any": 151.1,
+     "act_60": 151.1,
+     "act_parked": 151.1,
+     "legs": 286.1,
+     "free_r": 151.1,
+     "front_any": 259.4,
+     "front_parked": 259.4
+    },
+    {
+     "depth": [
+      20,
+      30
+     ],
+     "act_any": 155.2,
+     "act_60": 155.2,
+     "act_parked": 155.2,
+     "legs": 286.1,
+     "free_r": 155.2,
+     "front_any": 262.9,
+     "front_parked": 262.9
+    },
+    {
+     "depth": [
+      30,
+      40
+     ],
+     "act_any": 158.7,
+     "act_60": 158.7,
+     "act_parked": 158.7,
+     "legs": 286.1,
+     "free_r": 158.7,
+     "front_any": 269.8,
+     "front_parked": 269.8
+    },
+    {
+     "depth": [
+      40,
+      50
+     ],
+     "act_any": 163.2,
+     "act_60": 163.2,
+     "act_parked": 163.2,
+     "legs": 286.1,
+     "free_r": 163.2,
+     "front_any": 276.8,
+     "front_parked": 276.8
+    },
+    {
+     "depth": [
+      50,
+      60
+     ],
+     "act_any": 167.9,
+     "act_60": 167.9,
+     "act_parked": 167.9,
+     "legs": 286.1,
+     "free_r": 167.9,
+     "front_any": 285.5,
+     "front_parked": 285.5
+    },
+    {
+     "depth": [
+      60,
+      70
+     ],
+     "act_any": 172.6,
+     "act_60": 172.6,
+     "act_parked": 172.6,
+     "legs": 286.1,
+     "free_r": 172.6,
+     "front_any": 293.3,
+     "front_parked": 293.3
+    },
+    {
+     "depth": [
+      70,
+      80
+     ],
+     "act_any": 177.3,
+     "act_60": 177.3,
+     "act_parked": 177.3,
+     "legs": 286.1,
+     "free_r": 177.3,
+     "front_any": 301.5,
+     "front_parked": 301.5
+    },
+    {
+     "depth": [
+      80,
+      90
+     ],
+     "act_any": 181.9,
+     "act_60": 181.9,
+     "act_parked": 181.9,
+     "legs": 286.1,
+     "free_r": 181.9,
+     "front_any": 309.9,
+     "front_parked": 309.9
+    },
+    {
+     "depth": [
+      90,
+      100
+     ],
+     "act_any": 186.6,
+     "act_60": 186.6,
+     "act_parked": 186.6,
+     "legs": 286.1,
+     "free_r": 186.6,
+     "front_any": 317.9,
+     "front_parked": 317.9
+    },
+    {
+     "depth": [
+      100,
+      110
+     ],
+     "act_any": 191.4,
+     "act_60": 191.4,
+     "act_parked": 191.4,
+     "legs": 286.1,
+     "free_r": 191.4,
+     "front_any": 325.9,
+     "front_parked": 325.9
+    },
+    {
+     "depth": [
+      110,
+      120
+     ],
+     "act_any": 195.9,
+     "act_60": 195.9,
+     "act_parked": 195.9,
+     "legs": 286.1,
+     "free_r": 195.9,
+     "front_any": 334.1,
+     "front_parked": 334.1
+    },
+    {
+     "depth": [
+      120,
+      130
+     ],
+     "act_any": 200.6,
+     "act_60": 200.6,
+     "act_parked": 200.6,
+     "legs": 286.1,
+     "free_r": 200.6,
+     "front_any": 343.0,
+     "front_parked": 343.0
+    },
+    {
+     "depth": [
+      130,
+      140
+     ],
+     "act_any": 205.2,
+     "act_60": 205.2,
+     "act_parked": 205.2,
+     "legs": 286.1,
+     "free_r": 205.2,
+     "front_any": 350.6,
+     "front_parked": 350.6
+    },
+    {
+     "depth": [
+      140,
+      150
+     ],
+     "act_any": 209.9,
+     "act_60": 209.9,
+     "act_parked": 209.9,
+     "legs": 286.1,
+     "free_r": 209.9,
+     "front_any": 358.2,
+     "front_parked": 358.2
+    },
+    {
+     "depth": [
+      150,
+      160
+     ],
+     "act_any": 214.5,
+     "act_60": 214.5,
+     "act_parked": 214.5,
+     "legs": 286.1,
+     "free_r": 214.5,
+     "front_any": 366.2,
+     "front_parked": 366.2
+    },
+    {
+     "depth": [
+      160,
+      170
+     ],
+     "act_any": 217.3,
+     "act_60": 217.3,
+     "act_parked": 217.3,
+     "legs": 286.1,
+     "free_r": 217.3,
+     "front_any": 366.4,
+     "front_parked": 366.4
+    },
+    {
+     "depth": [
+      170,
+      180
+     ],
+     "act_any": 219.0,
+     "act_60": 219.0,
+     "act_parked": 219.0,
+     "legs": 286.1,
+     "free_r": 219.0,
+     "front_any": 369.5,
+     "front_parked": 369.5
+    },
+    {
+     "depth": [
+      180,
+      190
+     ],
+     "act_any": 223.6,
+     "act_60": 223.6,
+     "act_parked": 223.6,
+     "legs": 286.1,
+     "free_r": 223.6,
+     "front_any": 377.7,
+     "front_parked": 377.7
+    },
+    {
+     "depth": [
+      190,
+      200
+     ],
+     "act_any": 228.2,
+     "act_60": 228.2,
+     "act_parked": 228.2,
+     "legs": 286.1,
+     "free_r": 228.2,
+     "front_any": 386.6,
+     "front_parked": 386.6
+    },
+    {
+     "depth": [
+      200,
+      210
+     ],
+     "act_any": 233.0,
+     "act_60": 233.0,
+     "act_parked": 233.0,
+     "legs": 286.1,
+     "free_r": 233.0,
+     "front_any": 393.5,
+     "front_parked": 393.5
+    },
+    {
+     "depth": [
+      210,
+      220
+     ],
+     "act_any": 237.6,
+     "act_60": 237.6,
+     "act_parked": 237.6,
+     "legs": 286.1,
+     "free_r": 237.6,
+     "front_any": 401.8,
+     "front_parked": 401.8
+    },
+    {
+     "depth": [
+      220,
+      230
+     ],
+     "act_any": 242.2,
+     "act_60": 242.2,
+     "act_parked": 242.2,
+     "legs": 286.1,
+     "free_r": 242.2,
+     "front_any": 409.7,
+     "front_parked": 409.7
+    },
+    {
+     "depth": [
+      230,
+      240
+     ],
+     "act_any": 247.1,
+     "act_60": 247.1,
+     "act_parked": 247.1,
+     "legs": 242.7,
+     "free_r": 242.7,
+     "front_any": 408.2,
+     "front_parked": 408.2
+    },
+    {
+     "depth": [
+      240,
+      250
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 243.7,
+     "free_r": 243.7,
+     "front_any": 411.4,
+     "front_parked": 411.4
+    },
+    {
+     "depth": [
+      250,
+      260
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 273.6,
+     "free_r": 273.6,
+     "front_any": 463.6,
+     "front_parked": 463.6
+    },
+    {
+     "depth": [
+      260,
+      270
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 286.1,
+     "free_r": 286.1,
+     "front_any": 485.7,
+     "front_parked": 485.7
+    },
+    {
+     "depth": [
+      270,
+      280
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 286.1,
+     "free_r": 286.1,
+     "front_any": 485.7,
+     "front_parked": 485.7
+    },
+    {
+     "depth": [
+      280,
+      290
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 286.1,
+     "free_r": 286.1,
+     "front_any": 485.6,
+     "front_parked": 485.6
+    },
+    {
+     "depth": [
+      290,
+      300
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 286.1,
+     "free_r": 286.1,
+     "front_any": 485.7,
+     "front_parked": 485.7
+    },
+    {
+     "depth": [
+      300,
+      310
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 286.1,
+     "free_r": 286.1,
+     "front_any": 485.6,
+     "front_parked": 485.6
+    },
+    {
+     "depth": [
+      310,
+      320
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 286.1,
+     "free_r": 286.1,
+     "front_any": 485.6,
+     "front_parked": 485.6
+    },
+    {
+     "depth": [
+      320,
+      330
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 286.1,
+     "free_r": 286.1,
+     "front_any": 485.6,
+     "front_parked": 485.6
+    },
+    {
+     "depth": [
+      330,
+      340
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 282.1,
+     "free_r": 282.1,
+     "front_any": 473.6,
+     "front_parked": 473.6
+    }
+   ],
+   "summary": {
+    "15": {
+     "free_dia_any": 302,
+     "free_dia_60": 302,
+     "free_dia_parked": 302,
+     "actuators_dia_any": 302,
+     "legs_dia": 572,
+     "front_any": 259,
+     "front_parked": 259
+    },
+    "105": {
+     "free_dia_any": 383,
+     "free_dia_60": 383,
+     "free_dia_parked": 383,
+     "actuators_dia_any": 383,
+     "legs_dia": 572,
+     "front_any": 326,
+     "front_parked": 326
+    },
+    "205": {
+     "free_dia_any": 466,
+     "free_dia_60": 466,
+     "free_dia_parked": 466,
+     "actuators_dia_any": 466,
+     "legs_dia": 572,
+     "front_any": 394,
+     "front_parked": 394
+    }
+   },
+   "hangs_below_shelf_mm": 240.0,
+   "footprint": {
+    "r_max": 356.4,
+    "box": [
+     631.8,
+     547.1
+    ]
+   },
+   "hr100a": {
+    "lid_off": {
+     "best_phi": 30,
+     "best_mm": 50.3,
+     "worst_mm": 34.7,
+     "phis_ok": [
+      0,
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60,
+      65,
+      70,
+      75,
+      80,
+      85,
+      90,
+      95,
+      100,
+      105,
+      110,
+      115,
+      120,
+      125,
+      130,
+      135,
+      140,
+      145,
+      150,
+      155,
+      160,
+      165,
+      170,
+      175,
+      180,
+      185,
+      190,
+      195,
+      200,
+      205,
+      210,
+      215,
+      220,
+      225,
+      230,
+      235,
+      240,
+      245,
+      250,
+      255,
+      260,
+      265,
+      270,
+      275,
+      280,
+      285,
+      290,
+      295,
+      300,
+      305,
+      310,
+      315,
+      320,
+      325,
+      330,
+      335,
+      340,
+      345,
+      350,
+      355
+     ],
+     "n_ok": 72,
+     "shelf_gap": 50.0
+    },
+    "lid_on": {
+     "best_phi": 155,
+     "best_mm": 36.2,
+     "worst_mm": 22.6,
+     "phis_ok": [
+      0,
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60,
+      65,
+      70,
+      75,
+      80,
+      85,
+      90,
+      95,
+      100,
+      105,
+      110,
+      115,
+      120,
+      125,
+      130,
+      135,
+      140,
+      145,
+      150,
+      155,
+      160,
+      165,
+      170,
+      175,
+      180,
+      185,
+      190,
+      195,
+      200,
+      205,
+      210,
+      215,
+      220,
+      225,
+      230,
+      235,
+      240,
+      245,
+      250,
+      255,
+      260,
+      265,
+      270,
+      275,
+      280,
+      285,
+      290,
+      295,
+      300,
+      305,
+      310,
+      315,
+      320,
+      325,
+      330,
+      335,
+      340,
+      345,
+      350,
+      355
+     ],
+     "n_ok": 72,
+     "shelf_gap": 25.0
+    }
+   },
+   "checks": {
+    "stand": {
+     "mm": 4.25,
+     "between": "B:M4 pin / B:leg",
+     "at_tilt": 0
+    },
+    "base": {
+     "mm": 2.0,
+     "between": "B:clevis block / base",
+     "at_tilt": 0
+    }
+   }
+  },
+  "L5": {
+   "title": "Drive on the hinge axis",
+   "change": "a gearmotor on each hinge axis instead of a P16; no slots",
+   "room": [
+    {
+     "depth": [
+      0,
+      10
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 144.0,
+     "free_r": 144.0,
+     "front_any": 229.4,
+     "front_parked": 229.4
+    },
+    {
+     "depth": [
+      10,
+      20
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.2,
+     "front_parked": 281.2
+    },
+    {
+     "depth": [
+      20,
+      30
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      30,
+      40
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      40,
+      50
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.2,
+     "front_parked": 281.2
+    },
+    {
+     "depth": [
+      50,
+      60
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      60,
+      70
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      70,
+      80
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      80,
+      90
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      90,
+      100
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      100,
+      110
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      110,
+      120
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      120,
+      130
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      130,
+      140
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      140,
+      150
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      150,
+      160
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      160,
+      170
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      170,
+      180
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      180,
+      190
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      190,
+      200
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      200,
+      210
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      210,
+      220
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      220,
+      230
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.2,
+     "front_parked": 281.2
+    },
+    {
+     "depth": [
+      230,
+      240
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      240,
+      250
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      250,
+      260
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      260,
+      270
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      270,
+      280
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      280,
+      290
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      290,
+      300
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      300,
+      310
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      310,
+      320
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.0,
+     "front_parked": 281.0
+    },
+    {
+     "depth": [
+      320,
+      330
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 168.0,
+     "free_r": 168.0,
+     "front_any": 281.1,
+     "front_parked": 281.1
+    },
+    {
+     "depth": [
+      330,
+      340
+     ],
+     "act_any": null,
+     "act_60": null,
+     "act_parked": null,
+     "legs": 164.0,
+     "free_r": 164.0,
+     "front_any": 269.1,
+     "front_parked": 269.1
+    }
+   ],
+   "summary": {
+    "15": {
+     "free_dia_any": 336,
+     "free_dia_60": 336,
+     "free_dia_parked": 336,
+     "actuators_dia_any": null,
+     "legs_dia": 336,
+     "front_any": 281,
+     "front_parked": 281
+    },
+    "105": {
+     "free_dia_any": 336,
+     "free_dia_60": 336,
+     "free_dia_parked": 336,
+     "actuators_dia_any": null,
+     "legs_dia": 336,
+     "front_any": 281,
+     "front_parked": 281
+    },
+    "205": {
+     "free_dia_any": 336,
+     "free_dia_60": 336,
+     "free_dia_parked": 336,
+     "actuators_dia_any": null,
+     "legs_dia": 336,
+     "front_any": 281,
+     "front_parked": 281
+    }
+   },
+   "hangs_below_shelf_mm": 0.0,
+   "footprint": {
+    "r_max": 238.5,
+    "box": [
+     427.2,
+     370.0
+    ]
+   },
+   "hr100a": {
+    "lid_off": {
+     "best_phi": 210,
+     "best_mm": 35.5,
+     "worst_mm": -16.4,
+     "phis_ok": [
+      75,
+      80,
+      85,
+      90,
+      95,
+      100,
+      105,
+      195,
+      200,
+      205,
+      210,
+      215,
+      220,
+      225,
+      315,
+      320,
+      325,
+      330,
+      335,
+      340,
+      345
+     ],
+     "n_ok": 21,
+     "shelf_gap": 50.0
+    },
+    "lid_on": {
+     "best_phi": 90,
+     "best_mm": 32.2,
+     "worst_mm": -16.4,
+     "phis_ok": [
+      75,
+      80,
+      85,
+      90,
+      95,
+      100,
+      105,
+      195,
+      200,
+      205,
+      210,
+      215,
+      220,
+      225,
+      315,
+      320,
+      325,
+      330,
+      335,
+      340,
+      345
+     ],
+     "n_ok": 21,
+     "shelf_gap": 25.0
+    }
+   },
+   "checks": {
+    "stand": {
+     "mm": 7.53,
+     "between": "B:Auger / B:drive shaft",
+     "at_tilt": 25
+    },
+    "base": {
+     "mm": 3.24,
+     "between": "A:Tap bracket (#203) / base",
+     "at_tilt": 0
+    },
+    "drive": {
+     "own module (A)": {
+      "mm": 7.53,
+      "between": "A:Auger / A:shaft",
+      "at_tilt": 0
+     },
+     "neighbour (C)": {
+      "mm": 15.49,
+      "between": "C:Mounting plate / A:shaft",
+      "at_tilt": 75
+     },
+     "base_towers_to_coupler_and_motor": {
+      "mm": 4.38,
+      "part": "A:coupler"
+     },
+     "motor_ends_station": [
+      {
+       "r": 81.5,
+       "bearing": 23.1
+      },
+      {
+       "r": 163.2,
+       "bearing": 11.3
+      }
+     ]
+    }
+   },
+   "base_bed": {
+    "xy": [
+     344.1,
+     324.3
+    ],
+    "best_rotation": {
+     "box": [
+      347.7,
+      317.6
+     ],
+     "deg": 38
+    },
+    "fits_h2d": false
+   }
+  }
+ },
+ "L5_posts_at_L2_radius": {
+  "post_centre_from_beaker_axis": 246.8,
+  "summary": {
+   "15": {
+    "free_dia_any": 474,
+    "free_dia_60": 474,
+    "free_dia_parked": 474,
+    "actuators_dia_any": null,
+    "legs_dia": 474,
+    "front_any": 400,
+    "front_parked": 400
+   },
+   "105": {
+    "free_dia_any": 474,
+    "free_dia_60": 474,
+    "free_dia_parked": 474,
+    "actuators_dia_any": null,
+    "legs_dia": 474,
+    "front_any": 400,
+    "front_parked": 400
+   },
+   "205": {
+    "free_dia_any": 474,
+    "free_dia_60": 474,
+    "free_dia_parked": 474,
+    "actuators_dia_any": null,
+    "legs_dia": 474,
+    "front_any": 400,
+    "front_parked": 400
+   }
+  },
+  "feet_r_max": 307.2,
+  "hr100a": {
+   "lid_off": {
+    "best_phi": 30,
+    "best_mm": 51.6,
+    "worst_mm": 38.7,
+    "phis_ok": [
+     0,
+     5,
+     10,
+     15,
+     20,
+     25,
+     30,
+     35,
+     40,
+     45,
+     50,
+     55,
+     60,
+     65,
+     70,
+     75,
+     80,
+     85,
+     90,
+     95,
+     100,
+     105,
+     110,
+     115,
+     120,
+     125,
+     130,
+     135,
+     140,
+     145,
+     150,
+     155,
+     160,
+     165,
+     170,
+     175,
+     180,
+     185,
+     190,
+     195,
+     200,
+     205,
+     210,
+     215,
+     220,
+     225,
+     230,
+     235,
+     240,
+     245,
+     250,
+     255,
+     260,
+     265,
+     270,
+     275,
+     280,
+     285,
+     290,
+     295,
+     300,
+     305,
+     310,
+     315,
+     320,
+     325,
+     330,
+     335,
+     340,
+     345,
+     350,
+     355
+    ],
+    "n_ok": 72,
+    "shelf_gap": 50.0
+   },
+   "lid_on": {
+    "best_phi": 30,
+    "best_mm": 35.5,
+    "worst_mm": 22.0,
+    "phis_ok": [
+     0,
+     5,
+     10,
+     15,
+     20,
+     25,
+     30,
+     35,
+     40,
+     45,
+     50,
+     55,
+     60,
+     65,
+     70,
+     75,
+     80,
+     85,
+     90,
+     95,
+     100,
+     105,
+     110,
+     115,
+     120,
+     125,
+     130,
+     135,
+     140,
+     145,
+     150,
+     155,
+     160,
+     165,
+     170,
+     175,
+     180,
+     185,
+     190,
+     195,
+     200,
+     205,
+     210,
+     215,
+     220,
+     225,
+     230,
+     235,
+     240,
+     245,
+     250,
+     255,
+     260,
+     265,
+     270,
+     275,
+     280,
+     285,
+     290,
+     295,
+     300,
+     305,
+     310,
+     315,
+     320,
+     325,
+     330,
+     335,
+     340,
+     345,
+     350,
+     355
+    ],
+    "n_ok": 72,
+    "shelf_gap": 25.0
+   }
+  }
+ }
+}
