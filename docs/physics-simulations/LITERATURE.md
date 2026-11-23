@@ -60,12 +60,20 @@ its citation network and Edison q12–q13 are in [`citation-network/`](citation-
   cohesion by hand on other tests, then predicted the dosing. None of the papers found uses a feeder's own output to
   infer powder properties, which is the paper's claim. The closest is drum-based calibration (Pourandi et al.) and
   funnel/AoR-based calibration (Meier et al.).
-  - **Correction (23 Nov 2026):** El Kassem et al. (*KONA* 38, 2021, 235–250), found later, *did* use an auger
-    doser's own output: mass flow at three speeds, plus the angle of repose of the heap it builds and a bulk
-    density, to calibrate three DEM friction coefficients of one free-flowing lactose (no cohesion; 20-run DoE,
-    regression and overlaid contours; checked only against the responses it was fit to). So "a doser as a DEM
-    calibration device" is not new. What remains open is several powders, cohesive ones included, inferred with
-    uncertainty and checked on tests held out of the fit. See [`citation-network/`](citation-network/).
+  - **Correction (23 Nov 2026): this bullet was wrong.** Fitting DEM to a screw's own output has been done at least
+    three times, each time for one powder, deterministically, and checked only on the same device:
+    - Imole et al. (2016) chose interparticle friction and cohesive stiffness for cocoa powder by matching the
+      measured mass per dose of their screw doser (3.70 g/dose). Several (μ, K<sub>c</sub>) pairs matched, and
+      they picked the lowest cohesion (§5.2 of the arXiv full text, re-read through the Pi).
+    - El Kassem et al. (*KONA* 38, 2021, 235–250) fit three friction coefficients of one free-flowing lactose to
+      an auger doser's mass flow at three speeds, plus the angle of repose of the heap it builds and a bulk
+      density (20-run DoE, regression, overlaid contours; no cohesion).
+    - Shen, Li & Xu (*J. Eng.* 2021, doi:10.1155/2021/6671511) fit JKR surface energy and two friction
+      coefficients of wheat flour to screw-conveyor mass flow (from Edison q13; not read here).
+
+    So "a doser as a DEM calibration device" is not new. What remains open is several powders, cohesive and
+    metallic ones included, inferred with uncertainty from a richer fingerprint (tilt, taps, afterflow, no-flow
+    events) and checked on tests held out of the fit. See [`citation-network/`](citation-network/).
 - **One test is not enough.** Karkala et al. needed the shear cell *and* dynamic yield strength to pin down
   sliding and rolling friction; Lupo et al. could not match angle of repose and unconfined yield strength with one
   JKR parameter set. For the doser this argues for inferring from the tilt sweep **plus** at least one more

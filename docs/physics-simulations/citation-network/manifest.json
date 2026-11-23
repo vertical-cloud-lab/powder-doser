@@ -62,5 +62,27 @@
   "ok": false,
   "error": "TimeoutError: Locator.get_attribute: Timeout 20000ms exceeded.\nCall log:\n  - waiting for locator(\"a.obj_galley_link.pdf, a.obj_galley_link, a[href*='/download/']\").first\n",
   "retrieved_utc": "2026-11-23T23:34:04Z"
+ },
+ "imole2016_arxiv": {
+  "citation": "Imole, Krijgsman, Weinhart, Magnanimo, Chavez Montes, Ramaioli, Luding (2016) Experiments and discrete element simulation of the dosing of cohesive powders in a simplified geometry. Powder Technology 287:108. arXiv:1410.2886",
+  "licence": "arXiv non-exclusive licence (not reused)",
+  "landing": "https://arxiv.org/abs/1410.2886",
+  "url": "https://arxiv.org/pdf/1410.2886",
+  "bytes": 466622,
+  "sha256": "dc701b0f813244cde93655c35179c072171e5341c4a148aa1e3101d74627cfd5",
+  "text_chars": 54472,
+  "via": "PDF taken from the routed navigation after the click",
+  "route": "headed Chrome (Playwright, Xvfb) through the doser Pi as SOCKS5, 400 kB/s",
+  "retrieved_utc": "2026-11-23T23:47:44Z",
+  "seconds": 16.9,
+  "ok": true
+ },
+ "shen2021_jeng": {
+  "citation": "Shen, Li, Xu (2021) Calibration of discrete element simulation parameters for powder screw conveying. Journal of Engineering 2021:6671511. doi:10.1155/2021/6671511",
+  "licence": "CC BY 4.0 (Hindawi/Wiley)",
+  "landing": "https://onlinelibrary.wiley.com/doi/10.1155/2021/6671511",
+  "ok": false,
+  "error": "TimeoutError: Locator.scroll_into_view_if_needed: Timeout 19994.420999999857ms exceeded.\nCall log:\n  - attempting scroll into view action\n    2 \u00d7 waiting for element to be stable\n      - element is not visible\n    - retrying scroll into view action\n    - waiting 20ms\n    2 \u00d7 waiting for element to b",
+  "retrieved_utc": "2026-11-23T23:49:29Z"
  }
 }

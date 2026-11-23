@@ -79,6 +79,9 @@ def short_ref(title: str) -> str:
     return title[:34]
 
 
+X0 = 2015.4  # left edge of the year axis; row labels are drawn just left of it
+
+
 def main() -> None:
     citing = {c["doi"]: c for c in NET["citing"] if c.get("doi")}
     fig = plt.figure(figsize=(15.5, 9.2), dpi=150)
@@ -111,25 +114,30 @@ def main() -> None:
                 continue
             rows.append(("cite", label.replace("\n", " "), yr, own, c.get("cited_by_count") or 0, doi))
         if lane == "A":
+            rows.append(("outside", "Imole 2016: cocoa powder, screw doser's mass per dose\n(not linked to KONA; Edison q13, full text checked)", 2016, None, 51, None))
+            rows.append(("outside", "Shen 2021: wheat flour, screw-conveyor mass flow\n(not linked to KONA; Edison q13)", 2021, None, 7, None))
             rows.append(("ours", "This work (TMS 2027): tilted auger, 13+ powders, Bayesian\ninference, held-out shear-cell and Hall-flow checks", 2027, None, 0, None))
     n = len(rows)
     ys = {}
     y = n
     for i, r in enumerate(rows):
-        y -= 1 if r[0] != "head" else 0.85
+        two_lines = r[0] != "head" and "\n" in r[1]
+        y -= 0.85 if r[0] == "head" else (1.3 if two_lines else 1.0)
         ys[i] = y
     for i, (kind, label, yr, own, cb, doi) in enumerate(rows):
         yy = ys[i]
         if kind == "head":
-            ax.text(2017.35, yy, label, fontsize=9.5, fontweight="bold", color=INK, va="center", ha="left")
+            ax.text(X0 + 0.05, yy, label, fontsize=9.5, fontweight="bold", color=INK, va="center", ha="left")
             ax.axhline(yy - 0.42, color=GRID, lw=0.8, zorder=0)
             continue
-        ax.text(2017.25, yy, label, fontsize=8.4, color=INK, va="center", ha="right", linespacing=1.05)
-        ax.plot([2017.4, 2027.4], [yy, yy], color="#f3f2ee", lw=0.8, zorder=0)
+        ax.text(X0 - 0.05, yy, label, fontsize=8.4, color=INK, va="center", ha="right", linespacing=1.05)
+        ax.plot([X0 + 0.1, 2027.4], [yy, yy], color="#f3f2ee", lw=0.8, zorder=0)
         if kind == "focal":
             ax.scatter([yr], [yy], s=300, marker="*", color=ORANGE, edgecolor=INK, lw=0.8, zorder=4)
         elif kind == "pre":
             ax.scatter([yr], [yy], s=55, marker="s", facecolor="white", edgecolor=ORANGE, lw=1.6, zorder=3)
+        elif kind == "outside":
+            ax.scatter([yr], [yy], s=28 + 45 * math.log10(1 + cb), color=MUTED, edgecolor="white", lw=1.0, zorder=3)
         elif kind == "ours":
             ax.scatter([yr], [yy], s=110, marker="D", facecolor="white", edgecolor=INK, lw=1.4, zorder=4)
         else:
@@ -137,10 +145,10 @@ def main() -> None:
                 ax.scatter([x], [yy], s=28 + 45 * math.log10(1 + cb), color=ORANGE if own else BLUE,
                            edgecolor="white", lw=1.0, zorder=3)
     ax.axvline(2021, color=ORANGE, lw=0.8, ls=(0, (2, 3)), alpha=0.6, zorder=0)
-    ax.set_xlim(2017.4, 2027.5)
+    ax.set_xlim(X0, 2027.5)
     ax.set_ylim(min(ys.values()) - 0.8, n + 0.2)
     ax.set_yticks([])
-    ax.set_xticks(range(2018, 2028))
+    ax.set_xticks(range(2016, 2028))
     ax.xaxis.tick_top()
     ax.tick_params(axis="x", colors=INK2, labelsize=9, length=0)
     for sp in ax.spines.values():
@@ -153,10 +161,11 @@ def main() -> None:
         Line2D([], [], marker="o", ls="", color=ORANGE, markersize=7, label="citing work, same authors"),
         Line2D([], [], marker="s", ls="", markerfacecolor="white", markeredgecolor=ORANGE, markersize=7,
                label="earlier work it builds on"),
+        Line2D([], [], marker="o", ls="", color=MUTED, markersize=7, label="related, outside the network"),
         Line2D([], [], marker="D", ls="", markerfacecolor="white", markeredgecolor=INK, markersize=7,
                label="ours (not yet published)"),
     ]
-    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(-0.02, -0.01), ncol=4, frameon=False,
+    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(-0.02, -0.01), ncol=3, frameon=False,
               fontsize=8.5, labelcolor=INK2, handletextpad=0.3, columnspacing=1.0)
 
     # ---- (b) co-citation bars

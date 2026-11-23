@@ -53,6 +53,17 @@ PAPERS = {
         "the discrete element method. Polymers 17(20):2748 (2025). doi:10.3390/polym17202748", "CC BY 4.0 (MDPI)",
         "https://www.mdpi.com/2073-4360/17/20/2748",
         "a.UD_ArticlePDF, a[href$='2748/pdf'], a[href*='2748/pdf?version']"),
+    # Named by Edison q13 (23 Nov 2026) as two more calibrations against a screw's own output; read to check that.
+    "imole2016_arxiv": (
+        "Imole, Krijgsman, Weinhart, Magnanimo, Chavez Montes, Ramaioli, Luding (2016) Experiments and discrete "
+        "element simulation of the dosing of cohesive powders in a simplified geometry. Powder Technology 287:108. "
+        "arXiv:1410.2886", "arXiv non-exclusive licence (not reused)",
+        "https://arxiv.org/abs/1410.2886", "a.download-pdf"),
+    "shen2021_jeng": (
+        "Shen, Li, Xu (2021) Calibration of discrete element simulation parameters for powder screw conveying. "
+        "Journal of Engineering 2021:6671511. doi:10.1155/2021/6671511", "CC BY 4.0 (Hindawi/Wiley)",
+        "https://onlinelibrary.wiley.com/doi/10.1155/2021/6671511",
+        "a.pdf-download, a[href*='/doi/pdf/10.1155'], a[href*='/doi/epdf/10.1155']"),
     "ajst2025_vertical_screw": (
         "Study on the influence characteristics of vertical fine screw transport. Academic Journal of Science and "
         "Technology (2025). doi:10.54097/wvbec931", "CC BY 4.0 (per OpenAlex)",

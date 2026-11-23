@@ -34,11 +34,18 @@ left new for our paper.
   powders, 30 measured material attributes (shear cell and empirical tests), three augers at three speeds, reduced
   by PCA to six components. It measured the properties on its own lots, which is what
   [`SAME_JAR.md`](../runs/heldout-powders/SAME_JAR.md) asks for.
-- **For the abstract and the paper:** cite both papers, and drop any claim that using an auger doser to
-  calibrate DEM is new. The defensible claim is the combination: many powders, cohesive and metallic ones
-  included; inference from the doser's own controlled fingerprint (tilt, speed, taps) with uncertainty and
-  identifiability checks; validation on tests held out of the fit; and the same doser's settings optimized by
-  multi-task BO. The Edison answers below test that wording.
+- **It is not the only one.** Edison q13 found two more papers that fit DEM to a screw's own output, and the
+  full text confirms the first: Imole et al. (2016) chose friction and cohesion for cocoa powder to match their
+  screw doser's mass per dose, and Shen et al. (2021) fit wheat flour's surface energy and friction to
+  screw-conveyor mass flow. All three are single-powder, deterministic, and checked only on the same device.
+- **For the abstract and the paper:** cite El Kassem 2021 and Imole 2016 at least, and drop any claim that using
+  a doser or feeder to calibrate DEM is new. Both Edison answers land on the same defensible claim: the
+  combination of
+  - many powders, cohesive and metallic ones included;
+  - inference from a richer fingerprint (tilt, taps, afterflow, no-flow events), with posterior uncertainty and
+    identifiability checks;
+  - validation on tests held out of the fit;
+  - the same doser's settings optimized by multi-task BO.
 
 ## What the KONA paper did
 
@@ -154,7 +161,53 @@ works with DOIs, open-access status and citation counts.
 
 ## What Edison adds
 
-_Pending: q12 (LITERATURE_HIGH, citation network) and q13 (PRECEDENT) were sent at 23:25 UTC on 23 Nov 2026._
+Both tasks succeeded (sent 23:25 UTC, done by 23:46): [q12 answer](../edison/q12_kona_citation_network.answer.md)
+(LITERATURE_HIGH, citation network) and [q13 answer](../edison/q13_precedent_after_kona.answer.md) (PRECEDENT),
+with full task records beside them.
+
+- **q13, precedent after KONA: "No", qualified.** Edison found no study that infers DEM or continuum contact
+  parameters mainly from screw or auger dosing for several powders, with Bayesian uncertainty, then tests them on
+  shear, Hall/Carney, density or spreading measurements left out of the fit. It is firm that **calibrating DEM to
+  doser output is not new**: besides El Kassem, it names
+  - Imole et al. 2016 (*Powder Technol.*, doi:10.1016/j.powtec.2015.07.052): cocoa powder, mass per dose of a
+    screw doser. We re-read §5.2 of the arXiv version through the Pi: friction and cohesive stiffness were swept,
+    several pairs matched 3.70 g/dose, and the lowest cohesion was chosen, then checked against dose time, speed
+    and pitch on the same rig. This corrects an earlier line in [`../LITERATURE.md`](../LITERATURE.md).
+  - Shen, Li & Xu 2021 (*J. Eng.*, doi:10.1155/2021/6671511): wheat flour, JKR surface energy and two friction
+    coefficients fit to screw-conveyor mass flow by response surfaces, within 3 % at 60–140 rpm. Not read here:
+    the Wiley PDF link could not be clicked through the Pi.
+
+  The reverse direction also exists: Tekeste et al. 2018 calibrated corn on angle-of-repose tests and validated
+  on a commercial auger; Gómez et al. 2024 calibrated on FT4 and a drum and validated on a feeder. Bayesian DEM
+  calibration exists too (Cheng et al. 2019, GrainLearning), and so does a failed transfer of
+  consolidation-calibrated metal-powder parameters to spreading (Katagiri et al. 2025).
+- **q12, the network.** Its summary of the KONA paper agrees with ours in every number checked. It adds the
+  first author's RWTH Aachen dissertation, *Machine design for auger dosing of powders by utilizing DEM
+  simulations and analysis* (2021; no DOI, not in OpenAlex), which Kruppa et al. 2022 cite. It found no later
+  paper by the group extending the auger calibration to cohesive powders, inverse identification or AM. Its
+  forward-citation table mixes verified citers with "network-adjacent" papers it could not confirm, so use the
+  open-index list above for who actually cites the paper.
+- **q12, claims to keep.** It marks these as not found in the network:
+  - the tilt sweep, tap release, afterflow and no-flow fraction, alone or as one fingerprint;
+  - a fingerprint over 13 or more powders on one device;
+  - Bayesian inference from an auger's response;
+  - held-out shear-cell and Hall/Carney checks;
+  - doser-inferred properties linked to spreading;
+  - multi-task BO of the controller across powders, in an open-source, self-driving setup.
+- **q12, claims to drop or soften.**
+  - First use of an auger as a DEM calibration device (El Kassem 2021).
+  - First multi-response calibration (Roessler et al. 2018; El Kassem 2021).
+  - First Bayesian DEM calibration (Cheng et al.).
+  - First closed-loop powder dosing (Kruppa et al. 2022, inline density sensing on a screw doser).
+  - First DEM calibration of AM powders (Meier 2019, Girnth 2024, Sani 2026).
+  - A blanket "parameter-free" for the salt twin's 105 mg/rev: list which inputs came from where instead.
+- **q12's three closest papers:** El Kassem 2021 (KONA), El-Kassem 2020 (CPM, SJKR cohesion on AoR tests), and
+  Sani et al. 2026 (*Prog. Addit. Manuf.*), who calibrate Inconel 718 and Ti-6Al-4V on a rotating drum with
+  surrogate models.
+- **Advice both answers give:** call the inferred values *effective*, device- and wall-material-dependent
+  parameters, not intrinsic properties. Model the no-flow fraction as a count or censored response. Say
+  "evaluate the association with spreadability" unless a real spreading test is held out. And show by ablation
+  that the extra fingerprint components (tilt, taps, afterflow) add information beyond mass flow.
 
 ## Files
 
@@ -176,8 +229,10 @@ _Pending: q12 (LITERATURE_HIGH, citation network) and q13 (PRECEDENT) were sent 
   The Pi was idle (no rig session since 20 Nov; load 0.00), and nothing was installed or written on it. Chrome
   ran headed under Xvfb on the runner, throttled to 400 kB/s; the pointer moved to each PDF link and clicked it.
 - **Read:** the KONA paper (9.6 MB), the group's CPM paper (5.6 MB, Springer's attachment download after
-  declining optional cookies), Katagiri et al. 2021 and García Montagut et al. 2025. Guo et al. 2025 failed (no
-  PDF link found on the landing page). Only open-access papers were opened; the rest rest on abstracts.
+  declining optional cookies), Katagiri et al. 2021, García Montagut et al. 2025, and Imole et al.'s arXiv
+  version (to check Edison q13). Two failed: Guo et al. 2025 (no PDF link found on the landing page) and Shen et
+  al. 2021 (Wiley's PDF link was not clickable). Only open-access papers were opened; for the others we rely on
+  abstracts and Edison.
 - **Committed:** crops of figures from the two CC BY 4.0 papers, with the attribution above. Nothing from
   Katagiri et al. (free to read, but no open licence).
 
