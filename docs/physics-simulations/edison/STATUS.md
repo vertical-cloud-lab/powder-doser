@@ -17,9 +17,13 @@ and the full query text are in [`_task_ids.json`](_task_ids.json).
 | `q9_ml_surrogate_simulators` | LITERATURE | `45fcea4f` | success | [answer](q9_ml_surrogate_simulators.answer.md), [record](q9_ml_surrogate_simulators.task.json) |
 | `q10_simulator_workflow_feasibility` | LITERATURE_HIGH | `ef1201e2` | success | [answer](q10_simulator_workflow_feasibility.answer.md), [record](q10_simulator_workflow_feasibility.task.json) |
 | `q11_ml_property_dose_models` | LITERATURE_HIGH | `57e91c6d` | success | [answer](q11_ml_property_dose_models.answer.md), [record](q11_ml_property_dose_models.task.json) |
+| `q12_kona_citation_network` | LITERATURE_HIGH | `71a65145` | success | [answer](q12_kona_citation_network.answer.md), [record](q12_kona_citation_network.task.json) |
+| `q13_precedent_after_kona` | PRECEDENT | `24f4a60d` | success | [answer](q13_precedent_after_kona.answer.md), [record](q13_precedent_after_kona.task.json) |
 
 `<key>.answer.md` holds the formatted answer with its reference list; `<key>.task.json` is the full verbose task
 record (trajectory and evidence) as returned by `get_task(verbose=True)`.
+
+q12 and q13 were added on 23 Nov 2026, after a search for the TMS 2027 abstract's title turned up El Kassem et al. (*KONA* 2021), an auger-dosing DEM calibration paper: q12 maps its citation network and what is left new for our paper, q13 asks for any later precedent. Both were sent at 23:25 UTC; q13 finished with `success` by 23:44 and q12 by 23:46. They are read together with the open-index map in [`../citation-network/`](../citation-network/).
 
 q11 was added on 5 Nov 2026 after another question on PR #196: how to train machine-learning models that predict powder properties from dosing behaviour and, given the properties, the dosing outcome (run 33, [`../runs/ml-property-dose/`](../runs/ml-property-dose/)). It was sent at 21:56 UTC and finished with `success` by 22:19 UTC.
 
