@@ -200,6 +200,50 @@ QUERIES = {
         "properties be kept consistent (one joint latent-variable model, Bayesian inversion of a forward model, "
         "or two separate regressions), and have such models been used to choose initial settings, priors or "
         "task descriptors for Bayesian optimization of feeding or dosing for a new material?")),
+    # Asked on PR #196 (2026-11-23): a search for the TMS 2027 abstract's title turned up El Kassem et al.
+    # (KONA 2021), which looks close to the paper's plan. Map its citation network and say what is left new.
+    "q12_kona_citation_network": ("LITERATURE_HIGH", (
+        "Our TMS 2027 abstract is titled 'Auger-Based Powder Dosing as a Mechanistic Probe of Powder Flow "
+        "Behavior: Multi-Task Bayesian Calibration and Physics-Based Property Inference'. It frames calibration of "
+        "the doser as multi-objective, multi-task Bayesian optimization of controller settings across powders "
+        "(mostly alloy precursors and AM feedstocks such as AlSi10Mg and stainless steel, dosed under inert "
+        "atmosphere), and DEM with cohesive-frictional contact laws and measured particle-size distributions to "
+        "infer effective cohesion and friction from dosing data, checked against shear-cell and Hall-flow "
+        "measurements, and to anticipate spreadability and packing uniformity. A web search for that title "
+        "returned: B. El Kassem, N. Salloum, T. Brinz, Y. Heider and B. Markert, 'A Semi-Automated DEM Parameter "
+        "Calibration Technique of Powders Based on Different Bulk Responses Extracted from Auger Dosing "
+        "Experiments', KONA Powder and Particle Journal 38 (2021) 235-250, doi:10.14356/kona.2021010. Map the "
+        "citation network of that paper. (1) Summarize exactly what it did: the dosing device and its geometry, "
+        "the powders, the measured bulk responses, the DEM code and contact, rolling-resistance and cohesion "
+        "models, which parameters were varied and which fixed, the design of experiments, the regression models, "
+        "how the contour-overlay calibration works, how many simulations, how the result was validated and what "
+        "limitations the authors state. (2) Backward: which earlier works does it build on most, including the "
+        "same group's auger-dosing and DEM papers (for example PAMM 2018, Journal of Drug Delivery Science and "
+        "Technology 2020, Computational Particle Mechanics 2020/2021) and the DEM calibration and screw-feeder "
+        "literature it relies on? (3) Forward: list as many as possible of the papers that cite it (2021 to "
+        "2026), each with full reference and DOI, and for each say what it took from the KONA paper and whether "
+        "it calibrates DEM from a feeder or doser response, uses surrogate-based or Bayesian inference with "
+        "uncertainty, validates on tests held out of the fit (shear cell, Hall flow, angle of repose, tapped "
+        "density), covers several powders, or concerns metal additive-manufacturing powders or spreading. Group "
+        "the citing papers by theme. (4) Did the same authors follow it up (for example a doctoral thesis at "
+        "RWTH Aachen, later Bosch or Aachen work) by extending the method to cohesive powders, other dosing "
+        "devices, or inverse identification? (5) Compare with our work as described in the context: which of our "
+        "elements already appear in El Kassem et al. or in the papers that cite it, and which do not (a tilt-angle "
+        "sweep of an inclined auger, solenoid tapping, multi-task Bayesian optimization of dosing controller "
+        "settings, a fingerprint over 13 or more powders, Bayesian inference with uncertainty, held-out "
+        "shear-cell and Hall-flow checks, metal AM powders and spreadability). Name the three papers in this "
+        "network closest to our work and state, as precisely as the evidence allows, what our novelty claim "
+        "should be and which claims we should drop or soften.")),
+    "q13_precedent_after_kona": ("PRECEDENT", (
+        "El Kassem et al. (KONA Powder and Particle Journal 38, 2021, 235-250, doi:10.14356/kona.2021010) "
+        "calibrated DEM contact parameters of one free-flowing lactose powder from the angle of repose, bulk "
+        "density and mass flow rate measured with an auger dosing device, using a design of experiments and "
+        "regression. Beyond that paper and its direct predecessors by the same group: has anyone used the "
+        "measured response of a screw or auger doser or feeder (mass per revolution or flow rate versus screw "
+        "speed, tilt angle or fill level, flow intermittency, afterflow) as the primary data to infer DEM or "
+        "continuum contact parameters for several different powders, with uncertainty quantification such as "
+        "Bayesian calibration, and then checked the inferred values against standard tests that were not used in "
+        "the fit (shear cell, Hall or Carney flow, tapped density, spreading)?")),
 }
 
 
