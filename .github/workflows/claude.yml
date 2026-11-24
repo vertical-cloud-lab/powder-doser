@@ -107,6 +107,11 @@ jobs:
       BASH_MAX_TIMEOUT_MS: "3600000" # 60 min ceiling per Bash call
 
     steps:
+      # Held at checkout@v4 (GitHub runs it on Node 24 anyway). checkout v6+
+      # keeps its token in an includeIf config file that claude-code-action
+      # can't remove (anthropics/claude-code-action#1721), so that header
+      # would override the App token and scripts/refresh_github_app_token.py.
+      # Bump once that issue is fixed.
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -438,14 +443,14 @@ jobs:
       # have to differ, so the two attempts upload separately.
       - name: Upload Claude execution log
         if: always() && steps.claude.outputs.execution_file != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: claude-execution-log
           path: ${{ steps.claude.outputs.execution_file }}
 
       - name: Upload fallback execution log
         if: always() && steps.fallback.outputs.execution_file != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: claude-execution-log-fallback
           path: ${{ steps.fallback.outputs.execution_file }}
