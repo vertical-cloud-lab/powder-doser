@@ -1,0 +1,26 @@
+{
+ "direct_pr176": {
+  "Setup (access, document)": 4,
+  "Build or edit geometry": 14,
+  "Look up ids, faces, features": 8,
+  "Checks (box, volume, status)": 6,
+  "Rendered views": 7,
+  "STEP export": 9,
+  "Versions": 4
+ },
+ "fsgen": {
+  "Setup (access, document)": 2,
+  "Build or edit geometry": 23,
+  "Look up ids, faces, features": 1,
+  "Checks (box, volume, status)": 4,
+  "Rendered views": 2,
+  "STEP export": 3,
+  "Versions": 1
+ },
+ "totals": {
+  "direct_pr176_logged": 54,
+  "direct_pr176_counted": 52,
+  "fsgen_logged": 36,
+  "fsgen_counted": 36
+ }
+}
