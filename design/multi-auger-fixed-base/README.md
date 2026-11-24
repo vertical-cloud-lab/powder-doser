@@ -1784,6 +1784,7 @@ is below it).
 
 All three lobes change the same way. Distances are from the beaker axis along the module's centre line, as
 in the 13 Nov drawing (subtract 32 for distances behind the hinge axis).
+
 1. **Move the slot.** Keep it 34 wide (x = ±17), but run it from **134** (it starts at 65 now) out past
    the lobe end at 174, so it is open at that end (it ends at 144 now).
    - **Why it moves out:** with the pin 120 mm behind the hinge, the clevis block's pad passes through the
