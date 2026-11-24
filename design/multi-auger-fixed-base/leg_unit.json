@@ -1,0 +1,276 @@
+{
+ "frame": "leg frame: origin on the beaker axis at the shelf's underside; x across, y out along the module's centre line, z up (for the back module, the frame of base/base.step)",
+ "actuator": {
+  "model": "Actuonix P16-200-22-12-P",
+  "closed_hole_to_hole": 247.0,
+  "stroke": 200.0,
+  "clevis_pin_behind_hinge": 120.0,
+  "rear_pin_leg_frame": [
+   0.0,
+   258.5,
+   -230.0
+  ],
+  "rear_pin_from_beaker_axis": 258.5,
+  "rod_out": {
+   "0": 4.9,
+   "30": 63.8,
+   "45": 97.3,
+   "60": 129.9,
+   "90": 186.1
+  },
+  "spare_at_90": 13.9,
+  "lean_min_deg": 18.49,
+  "lean_max_deg": 25.01
+ },
+ "head": {
+  "width_x": 64.0,
+  "arm_from_axis": [
+   92.0,
+   318.1
+  ],
+  "arm_depth": 15.0,
+  "window": [
+   [
+    0.0,
+    127.0
+   ],
+   [
+    17.0,
+    144.0
+   ],
+   [
+    17.0,
+    161.0
+   ],
+   [
+    9.0,
+    169.0
+   ],
+   [
+    9.0,
+    198.0
+   ],
+   [
+    0.0,
+    207.0
+   ],
+   [
+    -9.0,
+    198.0
+   ],
+   [
+    -9.0,
+    169.0
+   ],
+   [
+    -17.0,
+    161.0
+   ],
+   [
+    -17.0,
+    144.0
+   ]
+  ],
+  "holes": [
+   [
+    25.0,
+    100.0
+   ],
+   [
+    25.0,
+    126.0
+   ],
+   [
+    -25.0,
+    100.0
+   ],
+   [
+    -25.0,
+    126.0
+   ]
+  ],
+  "hole_d": 4.5,
+  "nut_trap_af": 7.2,
+  "nut_trap_depth": 3.4,
+  "sleeve": {
+   "inner_face": 285.5,
+   "outer_face": 318.1,
+   "wall": 6.0,
+   "bore": 20.6,
+   "bore_centre": 301.8,
+   "bottom": -281.75,
+   "bore_top": -20.0
+  },
+  "arm_web": 50.0,
+  "tab": {
+   "top": -238.1,
+   "thickness": 8.0,
+   "from_y": 250.5,
+   "web": 15.5,
+   "pocket": [
+    15.1,
+    8.1,
+    1.0
+   ],
+   "pocket_centre": [
+    0.0,
+    258.5
+   ]
+  },
+  "m5_pin": {
+   "z": -130.0,
+   "d": 5.3
+  },
+  "profile": [
+   [
+    92.0,
+    0.0
+   ],
+   [
+    318.1,
+    0.0
+   ],
+   [
+    318.1,
+    -281.75
+   ],
+   [
+    285.5,
+    -281.75
+   ],
+   [
+    285.5,
+    -261.6
+   ],
+   [
+    270.0,
+    -246.1
+   ],
+   [
+    250.5,
+    -246.1
+   ],
+   [
+    250.5,
+    -238.1
+   ],
+   [
+    285.5,
+    -238.1
+   ],
+   [
+    285.5,
+    -65.0
+   ],
+   [
+    235.5,
+    -15.0
+   ],
+   [
+    92.0,
+    -15.0
+   ]
+  ]
+ },
+ "tube": {
+  "size": 20.0,
+  "wall": 1.5,
+  "length": 280.0,
+  "pitch": 10.0,
+  "hole_d": 5.2,
+  "foot_hole_d": 4.5,
+  "foot_hole_h": 10.0,
+  "holes_from_lower_end": [
+   174.0,
+   184.0,
+   194.0,
+   204.0,
+   214.0,
+   224.0,
+   234.0,
+   244.0,
+   254.0,
+   264.0
+  ]
+ },
+ "foot": {
+  "pad": 60.0,
+  "pad_t": 6.0,
+  "socket": 28.0,
+  "socket_h": 20.0,
+  "bore": 20.4,
+  "hole_d": 4.5
+ },
+ "stand_range": [
+  310.0,
+  400.0
+ ],
+ "base_changes": {
+  "slot": {
+   "half_width": 17.0,
+   "from_axis": 134.0,
+   "to": "through the lobe end (174)"
+  },
+  "old_slot": {
+   "half_width": 17.0,
+   "from_axis": [
+    65.0,
+    144.0
+   ]
+  },
+  "old_holes": [
+   [
+    14.5,
+    151.0
+   ],
+   [
+    14.5,
+    165.0
+   ],
+   [
+    -14.5,
+    151.0
+   ],
+   [
+    -14.5,
+    165.0
+   ]
+  ],
+  "new_holes": [
+   [
+    25.0,
+    100.0
+   ],
+   [
+    25.0,
+    126.0
+   ],
+   [
+    -25.0,
+    100.0
+   ],
+   [
+    -25.0,
+    126.0
+   ]
+  ],
+  "hole_d": 4.5,
+  "countersink_d": 9.4
+ },
+ "masses": {
+  "head_cm3": 741.1,
+  "foot_cm3": 28.8,
+  "tube_cm3": 30.4,
+  "head_g_at_60pct": 551,
+  "foot_g_at_60pct": 21,
+  "tube_g": 82
+ },
+ "print": {
+  "footprint_mm": [
+   281.8,
+   226.1
+  ],
+  "height_mm": 64.0,
+  "fits_h2d": true
+ }
+}
