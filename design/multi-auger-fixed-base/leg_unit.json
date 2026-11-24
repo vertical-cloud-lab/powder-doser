@@ -272,5 +272,2324 @@
   ],
   "height_mm": 64.0,
   "fits_h2d": true
+ },
+ "files": [
+  "leg-unit/leg_foot.step",
+  "leg-unit/leg_head.step",
+  "leg-unit/leg_head_print.stl",
+  "leg-unit/leg_tube.step",
+  "leg-unit/leg_unit_S340.step",
+  "leg-unit/leg_unit_onshape.stl",
+  "leg-unit/onshape.json",
+  "leg-unit/onshape_iso.png",
+  "leg-unit/onshape_side.png"
+ ],
+ "checks": {
+  "own module": {
+   "mm": 1.2,
+   "between": "B:P16 body / B:M3 bracket screw",
+   "at_tilt": 70
+  },
+  "neighbours": {
+   "mm": 89.22,
+   "between": "B:Mounting plate / A:leg head",
+   "at_tilt": 65
+  },
+  "base": {
+   "mm": 2.0,
+   "between": "B:clevis block / base",
+   "at_tilt": 0
+  },
+  "per_leg_part_own_module": {
+   "leg head": {
+    "mm": 3.0,
+    "closest": "C:P16 body",
+    "at_tilt": 20
+   },
+   "leg tube": {
+    "mm": 10.7,
+    "closest": "B:P16 body",
+    "at_tilt": 40
+   },
+   "leg foot": {
+    "mm": 79.14,
+    "closest": "A:P16 bracket",
+    "at_tilt": 0
+   },
+   "M5 height pin": {
+    "mm": 26.52,
+    "closest": "B:P16 body",
+    "at_tilt": 40
+   },
+   "M4 base screws": {
+    "mm": 2.2,
+    "closest": "A:Mounting plate",
+    "at_tilt": 0
+   },
+   "M3 bracket screw": {
+    "mm": 1.2,
+    "closest": "B:P16 body",
+    "at_tilt": 70
+   },
+   "foot screw": {
+    "mm": 90.01,
+    "closest": "A:P16 bracket",
+    "at_tilt": 0
+   }
+  },
+  "inside_the_u_bracket": {
+   "P16 housing/lug to its U-bracket": {
+    "mm": 1.25,
+    "at_tilt": 70
+   },
+   "M3 button head to the P16's lug": {
+    "mm": 1.2,
+    "at_tilt": 70
+   }
+  }
+ },
+ "hr100a": {
+  "330": {
+   "S": 330.0,
+   "rows": [
+    {
+     "phi": 0,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 70.2,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 5,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 69.3,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 10,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 67.0,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 15,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 63.6,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 20,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -91.6
+    },
+    {
+     "phi": 25,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -83.1
+    },
+    {
+     "phi": 30,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -74.7
+    },
+    {
+     "phi": 35,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -66.4
+    },
+    {
+     "phi": 40,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 45,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 63.4,
+     "lid_swing": -50.6
+    },
+    {
+     "phi": 50,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 66.9,
+     "lid_swing": -43.1
+    },
+    {
+     "phi": 55,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 69.3,
+     "lid_swing": -36.0
+    },
+    {
+     "phi": 60,
+     "lid_on": 1.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 70.2,
+     "lid_swing": -29.3
+    },
+    {
+     "phi": 65,
+     "lid_on": 1.3,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 69.3,
+     "lid_swing": -36.0
+    },
+    {
+     "phi": 70,
+     "lid_on": 7.9,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 67.0,
+     "lid_swing": -43.1
+    },
+    {
+     "phi": 75,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 63.6,
+     "lid_swing": -50.6
+    },
+    {
+     "phi": 80,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 85,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -66.4
+    },
+    {
+     "phi": 90,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -74.7
+    },
+    {
+     "phi": 95,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -83.1
+    },
+    {
+     "phi": 100,
+     "lid_on": 5.3,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -91.6
+    },
+    {
+     "phi": 105,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 63.4,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 110,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 66.9,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 115,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 69.3,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 120,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 70.2,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 125,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 69.3,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 130,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 67.0,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 135,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 63.6,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 140,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -91.6
+    },
+    {
+     "phi": 145,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -83.1
+    },
+    {
+     "phi": 150,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -74.7
+    },
+    {
+     "phi": 155,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -66.4
+    },
+    {
+     "phi": 160,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 165,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 63.4,
+     "lid_swing": -50.6
+    },
+    {
+     "phi": 170,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 66.9,
+     "lid_swing": -43.1
+    },
+    {
+     "phi": 175,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 69.3,
+     "lid_swing": -36.0
+    },
+    {
+     "phi": 180,
+     "lid_on": 1.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 70.2,
+     "lid_swing": -29.3
+    },
+    {
+     "phi": 185,
+     "lid_on": 1.3,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 69.3,
+     "lid_swing": -36.0
+    },
+    {
+     "phi": 190,
+     "lid_on": 7.9,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 67.0,
+     "lid_swing": -43.1
+    },
+    {
+     "phi": 195,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 63.6,
+     "lid_swing": -50.6
+    },
+    {
+     "phi": 200,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 205,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -66.4
+    },
+    {
+     "phi": 210,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -74.7
+    },
+    {
+     "phi": 215,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -83.1
+    },
+    {
+     "phi": 220,
+     "lid_on": 5.3,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -91.6
+    },
+    {
+     "phi": 225,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 63.4,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 230,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 66.9,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 235,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 69.3,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 240,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 70.2,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 245,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 69.3,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 250,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 67.0,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 255,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 63.6,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 260,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -91.6
+    },
+    {
+     "phi": 265,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -83.1
+    },
+    {
+     "phi": 270,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -74.7
+    },
+    {
+     "phi": 275,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -66.4
+    },
+    {
+     "phi": 280,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 285,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 63.4,
+     "lid_swing": -50.6
+    },
+    {
+     "phi": 290,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 66.9,
+     "lid_swing": -43.1
+    },
+    {
+     "phi": 295,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 69.3,
+     "lid_swing": -36.0
+    },
+    {
+     "phi": 300,
+     "lid_on": 1.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 70.2,
+     "lid_swing": -29.3
+    },
+    {
+     "phi": 305,
+     "lid_on": 1.3,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 69.3,
+     "lid_swing": -36.0
+    },
+    {
+     "phi": 310,
+     "lid_on": 7.9,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 67.0,
+     "lid_swing": -43.1
+    },
+    {
+     "phi": 315,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 63.6,
+     "lid_swing": -50.6
+    },
+    {
+     "phi": 320,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 325,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -66.4
+    },
+    {
+     "phi": 330,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -74.7
+    },
+    {
+     "phi": 335,
+     "lid_on": 12.0,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -83.1
+    },
+    {
+     "phi": 340,
+     "lid_on": 5.3,
+     "lid_off": 25.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -91.6
+    },
+    {
+     "phi": 345,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 63.4,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 350,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 66.9,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 355,
+     "lid_on": 0.0,
+     "lid_off": 25.0,
+     "door_left": 69.3,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    }
+   ],
+   "display_facing_user": {
+    "phi": 90,
+    "lid_on": 12.0,
+    "lid_off": 25.0,
+    "door_left": 150.0,
+    "door_right": 150.0,
+    "lid_swing": -74.7
+   },
+   "worst_lid_on": 0.0,
+   "worst_lid_off": 25.0,
+   "phis_both_doors": [
+    20,
+    25,
+    30,
+    35,
+    40,
+    80,
+    85,
+    90,
+    95,
+    100,
+    140,
+    145,
+    150,
+    155,
+    160,
+    200,
+    205,
+    210,
+    215,
+    220,
+    260,
+    265,
+    270,
+    275,
+    280,
+    320,
+    325,
+    330,
+    335,
+    340
+   ],
+   "phis_one_door": [
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    85,
+    90,
+    95,
+    100,
+    105,
+    110,
+    115,
+    120,
+    125,
+    130,
+    135,
+    140,
+    145,
+    150,
+    155,
+    160,
+    165,
+    170,
+    175,
+    180,
+    185,
+    190,
+    195,
+    200,
+    205,
+    210,
+    215,
+    220,
+    225,
+    230,
+    235,
+    240,
+    245,
+    250,
+    255,
+    260,
+    265,
+    270,
+    275,
+    280,
+    285,
+    290,
+    295,
+    300,
+    305,
+    310,
+    315,
+    320,
+    325,
+    330,
+    335,
+    340,
+    345,
+    350,
+    355
+   ],
+   "phis_lid_swings": [],
+   "phis_lid_and_a_door": [],
+   "best": {
+    "phi": 60,
+    "lid_on": 1.0,
+    "lid_off": 25.0,
+    "door_left": 150.0,
+    "door_right": 70.2,
+    "lid_swing": -29.3
+   },
+   "arm_bottom_above_bench": 315.0,
+   "hr_top_lid_on": 315.0,
+   "hr_rim": 290.0
+  },
+  "340": {
+   "S": 340.0,
+   "rows": [
+    {
+     "phi": 0,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.9,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 5,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.0,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 10,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 71.6,
+     "door_right": 150.0,
+     "lid_swing": -82.3
+    },
+    {
+     "phi": 15,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 67.9,
+     "door_right": 150.0,
+     "lid_swing": -61.1
+    },
+    {
+     "phi": 20,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -45.6
+    },
+    {
+     "phi": 25,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -32.9
+    },
+    {
+     "phi": 30,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -20.6
+    },
+    {
+     "phi": 35,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -8.9
+    },
+    {
+     "phi": 40,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 2.1
+    },
+    {
+     "phi": 45,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 68.1,
+     "lid_swing": 12.5
+    },
+    {
+     "phi": 50,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 71.7,
+     "lid_swing": 22.0
+    },
+    {
+     "phi": 55,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.1,
+     "lid_swing": 30.7
+    },
+    {
+     "phi": 60,
+     "lid_on": 10.5,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.9,
+     "lid_swing": 38.4
+    },
+    {
+     "phi": 65,
+     "lid_on": 11.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.0,
+     "lid_swing": 30.7
+    },
+    {
+     "phi": 70,
+     "lid_on": 13.5,
+     "lid_off": 34.8,
+     "door_left": 150.0,
+     "door_right": 71.6,
+     "lid_swing": 22.0
+    },
+    {
+     "phi": 75,
+     "lid_on": 19.0,
+     "lid_off": 34.7,
+     "door_left": 150.0,
+     "door_right": 67.9,
+     "lid_swing": 12.5
+    },
+    {
+     "phi": 80,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 2.1
+    },
+    {
+     "phi": 85,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -8.9
+    },
+    {
+     "phi": 90,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -20.6
+    },
+    {
+     "phi": 95,
+     "lid_on": 18.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -32.9
+    },
+    {
+     "phi": 100,
+     "lid_on": 11.3,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -45.6
+    },
+    {
+     "phi": 105,
+     "lid_on": 10.0,
+     "lid_off": 34.7,
+     "door_left": 68.1,
+     "door_right": 150.0,
+     "lid_swing": -61.4
+    },
+    {
+     "phi": 110,
+     "lid_on": 10.0,
+     "lid_off": 34.8,
+     "door_left": 71.7,
+     "door_right": 150.0,
+     "lid_swing": -82.6
+    },
+    {
+     "phi": 115,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.1,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 120,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.9,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 125,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.0,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 130,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 71.6,
+     "door_right": 150.0,
+     "lid_swing": -82.3
+    },
+    {
+     "phi": 135,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 67.9,
+     "door_right": 150.0,
+     "lid_swing": -61.1
+    },
+    {
+     "phi": 140,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -45.6
+    },
+    {
+     "phi": 145,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -32.9
+    },
+    {
+     "phi": 150,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -20.6
+    },
+    {
+     "phi": 155,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -8.9
+    },
+    {
+     "phi": 160,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 2.1
+    },
+    {
+     "phi": 165,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 68.1,
+     "lid_swing": 12.5
+    },
+    {
+     "phi": 170,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 71.7,
+     "lid_swing": 22.0
+    },
+    {
+     "phi": 175,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.1,
+     "lid_swing": 30.7
+    },
+    {
+     "phi": 180,
+     "lid_on": 10.5,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.9,
+     "lid_swing": 38.4
+    },
+    {
+     "phi": 185,
+     "lid_on": 11.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.0,
+     "lid_swing": 30.7
+    },
+    {
+     "phi": 190,
+     "lid_on": 13.5,
+     "lid_off": 34.8,
+     "door_left": 150.0,
+     "door_right": 71.6,
+     "lid_swing": 22.0
+    },
+    {
+     "phi": 195,
+     "lid_on": 19.0,
+     "lid_off": 34.7,
+     "door_left": 150.0,
+     "door_right": 67.9,
+     "lid_swing": 12.5
+    },
+    {
+     "phi": 200,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 2.1
+    },
+    {
+     "phi": 205,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -8.9
+    },
+    {
+     "phi": 210,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -20.6
+    },
+    {
+     "phi": 215,
+     "lid_on": 18.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -32.9
+    },
+    {
+     "phi": 220,
+     "lid_on": 11.3,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -45.6
+    },
+    {
+     "phi": 225,
+     "lid_on": 10.0,
+     "lid_off": 34.7,
+     "door_left": 68.1,
+     "door_right": 150.0,
+     "lid_swing": -61.4
+    },
+    {
+     "phi": 230,
+     "lid_on": 10.0,
+     "lid_off": 34.8,
+     "door_left": 71.7,
+     "door_right": 150.0,
+     "lid_swing": -82.6
+    },
+    {
+     "phi": 235,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.1,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 240,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.9,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 245,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.0,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 250,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 71.6,
+     "door_right": 150.0,
+     "lid_swing": -82.3
+    },
+    {
+     "phi": 255,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 67.9,
+     "door_right": 150.0,
+     "lid_swing": -61.1
+    },
+    {
+     "phi": 260,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -45.6
+    },
+    {
+     "phi": 265,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -32.9
+    },
+    {
+     "phi": 270,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -20.6
+    },
+    {
+     "phi": 275,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -8.9
+    },
+    {
+     "phi": 280,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 2.1
+    },
+    {
+     "phi": 285,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 68.1,
+     "lid_swing": 12.5
+    },
+    {
+     "phi": 290,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 71.7,
+     "lid_swing": 22.0
+    },
+    {
+     "phi": 295,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.1,
+     "lid_swing": 30.7
+    },
+    {
+     "phi": 300,
+     "lid_on": 10.5,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.9,
+     "lid_swing": 38.4
+    },
+    {
+     "phi": 305,
+     "lid_on": 11.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 74.0,
+     "lid_swing": 30.7
+    },
+    {
+     "phi": 310,
+     "lid_on": 13.5,
+     "lid_off": 34.8,
+     "door_left": 150.0,
+     "door_right": 71.6,
+     "lid_swing": 22.0
+    },
+    {
+     "phi": 315,
+     "lid_on": 19.0,
+     "lid_off": 34.7,
+     "door_left": 150.0,
+     "door_right": 67.9,
+     "lid_swing": 12.5
+    },
+    {
+     "phi": 320,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 2.1
+    },
+    {
+     "phi": 325,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -8.9
+    },
+    {
+     "phi": 330,
+     "lid_on": 22.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -20.6
+    },
+    {
+     "phi": 335,
+     "lid_on": 18.0,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -32.9
+    },
+    {
+     "phi": 340,
+     "lid_on": 11.3,
+     "lid_off": 35.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -45.6
+    },
+    {
+     "phi": 345,
+     "lid_on": 10.0,
+     "lid_off": 34.7,
+     "door_left": 68.1,
+     "door_right": 150.0,
+     "lid_swing": -61.4
+    },
+    {
+     "phi": 350,
+     "lid_on": 10.0,
+     "lid_off": 34.8,
+     "door_left": 71.7,
+     "door_right": 150.0,
+     "lid_swing": -82.6
+    },
+    {
+     "phi": 355,
+     "lid_on": 10.0,
+     "lid_off": 35.0,
+     "door_left": 74.1,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    }
+   ],
+   "display_facing_user": {
+    "phi": 90,
+    "lid_on": 22.0,
+    "lid_off": 35.0,
+    "door_left": 150.0,
+    "door_right": 150.0,
+    "lid_swing": -20.6
+   },
+   "worst_lid_on": 10.0,
+   "worst_lid_off": 34.7,
+   "phis_both_doors": [
+    20,
+    25,
+    30,
+    35,
+    40,
+    80,
+    85,
+    90,
+    95,
+    100,
+    140,
+    145,
+    150,
+    155,
+    160,
+    200,
+    205,
+    210,
+    215,
+    220,
+    260,
+    265,
+    270,
+    275,
+    280,
+    320,
+    325,
+    330,
+    335,
+    340
+   ],
+   "phis_one_door": [
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    85,
+    90,
+    95,
+    100,
+    105,
+    110,
+    115,
+    120,
+    125,
+    130,
+    135,
+    140,
+    145,
+    150,
+    155,
+    160,
+    165,
+    170,
+    175,
+    180,
+    185,
+    190,
+    195,
+    200,
+    205,
+    210,
+    215,
+    220,
+    225,
+    230,
+    235,
+    240,
+    245,
+    250,
+    255,
+    260,
+    265,
+    270,
+    275,
+    280,
+    285,
+    290,
+    295,
+    300,
+    305,
+    310,
+    315,
+    320,
+    325,
+    330,
+    335,
+    340,
+    345,
+    350,
+    355
+   ],
+   "phis_lid_swings": [
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    160,
+    165,
+    170,
+    175,
+    180,
+    185,
+    190,
+    195,
+    200,
+    280,
+    285,
+    290,
+    295,
+    300,
+    305,
+    310,
+    315,
+    320
+   ],
+   "phis_lid_and_a_door": [
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    160,
+    165,
+    170,
+    175,
+    180,
+    185,
+    190,
+    195,
+    200,
+    280,
+    285,
+    290,
+    295,
+    300,
+    305,
+    310,
+    315,
+    320
+   ],
+   "best": {
+    "phi": 60,
+    "lid_on": 10.5,
+    "lid_off": 35.0,
+    "door_left": 150.0,
+    "door_right": 74.9,
+    "lid_swing": 38.4
+   },
+   "arm_bottom_above_bench": 325.0,
+   "hr_top_lid_on": 315.0,
+   "hr_rim": 290.0
+  },
+  "350": {
+   "S": 350.0,
+   "rows": [
+    {
+     "phi": 0,
+     "lid_on": 20.0,
+     "lid_off": 43.2,
+     "door_left": 79.6,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 5,
+     "lid_on": 20.0,
+     "lid_off": 43.8,
+     "door_left": 78.7,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 10,
+     "lid_on": 20.0,
+     "lid_off": 42.9,
+     "door_left": 76.3,
+     "door_right": 150.0,
+     "lid_swing": -80.6
+    },
+    {
+     "phi": 15,
+     "lid_on": 20.0,
+     "lid_off": 43.0,
+     "door_left": 72.6,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 20,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -44.0
+    },
+    {
+     "phi": 25,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -31.0
+    },
+    {
+     "phi": 30,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -18.4
+    },
+    {
+     "phi": 35,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -6.4
+    },
+    {
+     "phi": 40,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 4.9
+    },
+    {
+     "phi": 45,
+     "lid_on": 20.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 72.6,
+     "lid_swing": 15.5
+    },
+    {
+     "phi": 50,
+     "lid_on": 20.0,
+     "lid_off": 42.9,
+     "door_left": 150.0,
+     "door_right": 76.3,
+     "lid_swing": 25.2
+    },
+    {
+     "phi": 55,
+     "lid_on": 20.0,
+     "lid_off": 43.8,
+     "door_left": 150.0,
+     "door_right": 78.8,
+     "lid_swing": 34.0
+    },
+    {
+     "phi": 60,
+     "lid_on": 20.3,
+     "lid_off": 43.2,
+     "door_left": 150.0,
+     "door_right": 79.6,
+     "lid_swing": 41.9
+    },
+    {
+     "phi": 65,
+     "lid_on": 21.0,
+     "lid_off": 41.3,
+     "door_left": 150.0,
+     "door_right": 78.7,
+     "lid_swing": 34.4
+    },
+    {
+     "phi": 70,
+     "lid_on": 22.4,
+     "lid_off": 39.0,
+     "door_left": 150.0,
+     "door_right": 76.3,
+     "lid_swing": 25.5
+    },
+    {
+     "phi": 75,
+     "lid_on": 26.1,
+     "lid_off": 38.9,
+     "door_left": 150.0,
+     "door_right": 72.6,
+     "lid_swing": 15.7
+    },
+    {
+     "phi": 80,
+     "lid_on": 30.0,
+     "lid_off": 40.8,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 5.1
+    },
+    {
+     "phi": 85,
+     "lid_on": 32.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -6.3
+    },
+    {
+     "phi": 90,
+     "lid_on": 31.2,
+     "lid_off": 44.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -18.3
+    },
+    {
+     "phi": 95,
+     "lid_on": 25.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -30.9
+    },
+    {
+     "phi": 100,
+     "lid_on": 20.7,
+     "lid_off": 40.8,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -44.0
+    },
+    {
+     "phi": 105,
+     "lid_on": 20.0,
+     "lid_off": 38.9,
+     "door_left": 72.6,
+     "door_right": 150.0,
+     "lid_swing": -58.7
+    },
+    {
+     "phi": 110,
+     "lid_on": 20.0,
+     "lid_off": 39.0,
+     "door_left": 76.3,
+     "door_right": 150.0,
+     "lid_swing": -80.7
+    },
+    {
+     "phi": 115,
+     "lid_on": 20.0,
+     "lid_off": 41.3,
+     "door_left": 78.8,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 120,
+     "lid_on": 20.0,
+     "lid_off": 43.2,
+     "door_left": 79.6,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 125,
+     "lid_on": 20.0,
+     "lid_off": 43.8,
+     "door_left": 78.7,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 130,
+     "lid_on": 20.0,
+     "lid_off": 42.9,
+     "door_left": 76.3,
+     "door_right": 150.0,
+     "lid_swing": -80.6
+    },
+    {
+     "phi": 135,
+     "lid_on": 20.0,
+     "lid_off": 43.0,
+     "door_left": 72.6,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 140,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -44.0
+    },
+    {
+     "phi": 145,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -31.0
+    },
+    {
+     "phi": 150,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -18.4
+    },
+    {
+     "phi": 155,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -6.4
+    },
+    {
+     "phi": 160,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 4.9
+    },
+    {
+     "phi": 165,
+     "lid_on": 20.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 72.6,
+     "lid_swing": 15.5
+    },
+    {
+     "phi": 170,
+     "lid_on": 20.0,
+     "lid_off": 42.9,
+     "door_left": 150.0,
+     "door_right": 76.3,
+     "lid_swing": 25.2
+    },
+    {
+     "phi": 175,
+     "lid_on": 20.0,
+     "lid_off": 43.8,
+     "door_left": 150.0,
+     "door_right": 78.8,
+     "lid_swing": 34.0
+    },
+    {
+     "phi": 180,
+     "lid_on": 20.3,
+     "lid_off": 43.2,
+     "door_left": 150.0,
+     "door_right": 79.6,
+     "lid_swing": 41.9
+    },
+    {
+     "phi": 185,
+     "lid_on": 21.0,
+     "lid_off": 41.3,
+     "door_left": 150.0,
+     "door_right": 78.7,
+     "lid_swing": 34.4
+    },
+    {
+     "phi": 190,
+     "lid_on": 22.4,
+     "lid_off": 39.0,
+     "door_left": 150.0,
+     "door_right": 76.3,
+     "lid_swing": 25.5
+    },
+    {
+     "phi": 195,
+     "lid_on": 26.1,
+     "lid_off": 38.9,
+     "door_left": 150.0,
+     "door_right": 72.6,
+     "lid_swing": 15.7
+    },
+    {
+     "phi": 200,
+     "lid_on": 30.0,
+     "lid_off": 40.8,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 5.1
+    },
+    {
+     "phi": 205,
+     "lid_on": 32.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -6.3
+    },
+    {
+     "phi": 210,
+     "lid_on": 31.2,
+     "lid_off": 44.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -18.3
+    },
+    {
+     "phi": 215,
+     "lid_on": 25.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -30.9
+    },
+    {
+     "phi": 220,
+     "lid_on": 20.7,
+     "lid_off": 40.8,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -44.0
+    },
+    {
+     "phi": 225,
+     "lid_on": 20.0,
+     "lid_off": 38.9,
+     "door_left": 72.6,
+     "door_right": 150.0,
+     "lid_swing": -58.7
+    },
+    {
+     "phi": 230,
+     "lid_on": 20.0,
+     "lid_off": 39.0,
+     "door_left": 76.3,
+     "door_right": 150.0,
+     "lid_swing": -80.7
+    },
+    {
+     "phi": 235,
+     "lid_on": 20.0,
+     "lid_off": 41.3,
+     "door_left": 78.8,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 240,
+     "lid_on": 20.0,
+     "lid_off": 43.2,
+     "door_left": 79.6,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 245,
+     "lid_on": 20.0,
+     "lid_off": 43.8,
+     "door_left": 78.7,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    },
+    {
+     "phi": 250,
+     "lid_on": 20.0,
+     "lid_off": 42.9,
+     "door_left": 76.3,
+     "door_right": 150.0,
+     "lid_swing": -80.6
+    },
+    {
+     "phi": 255,
+     "lid_on": 20.0,
+     "lid_off": 43.0,
+     "door_left": 72.6,
+     "door_right": 150.0,
+     "lid_swing": -58.4
+    },
+    {
+     "phi": 260,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -44.0
+    },
+    {
+     "phi": 265,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -31.0
+    },
+    {
+     "phi": 270,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -18.4
+    },
+    {
+     "phi": 275,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -6.4
+    },
+    {
+     "phi": 280,
+     "lid_on": 20.0,
+     "lid_off": 45.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 4.9
+    },
+    {
+     "phi": 285,
+     "lid_on": 20.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 72.6,
+     "lid_swing": 15.5
+    },
+    {
+     "phi": 290,
+     "lid_on": 20.0,
+     "lid_off": 42.9,
+     "door_left": 150.0,
+     "door_right": 76.3,
+     "lid_swing": 25.2
+    },
+    {
+     "phi": 295,
+     "lid_on": 20.0,
+     "lid_off": 43.8,
+     "door_left": 150.0,
+     "door_right": 78.8,
+     "lid_swing": 34.0
+    },
+    {
+     "phi": 300,
+     "lid_on": 20.3,
+     "lid_off": 43.2,
+     "door_left": 150.0,
+     "door_right": 79.6,
+     "lid_swing": 41.9
+    },
+    {
+     "phi": 305,
+     "lid_on": 21.0,
+     "lid_off": 41.3,
+     "door_left": 150.0,
+     "door_right": 78.7,
+     "lid_swing": 34.4
+    },
+    {
+     "phi": 310,
+     "lid_on": 22.4,
+     "lid_off": 39.0,
+     "door_left": 150.0,
+     "door_right": 76.3,
+     "lid_swing": 25.5
+    },
+    {
+     "phi": 315,
+     "lid_on": 26.1,
+     "lid_off": 38.9,
+     "door_left": 150.0,
+     "door_right": 72.6,
+     "lid_swing": 15.7
+    },
+    {
+     "phi": 320,
+     "lid_on": 30.0,
+     "lid_off": 40.8,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": 5.1
+    },
+    {
+     "phi": 325,
+     "lid_on": 32.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -6.3
+    },
+    {
+     "phi": 330,
+     "lid_on": 31.2,
+     "lid_off": 44.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -18.3
+    },
+    {
+     "phi": 335,
+     "lid_on": 25.0,
+     "lid_off": 43.0,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -30.9
+    },
+    {
+     "phi": 340,
+     "lid_on": 20.7,
+     "lid_off": 40.8,
+     "door_left": 150.0,
+     "door_right": 150.0,
+     "lid_swing": -44.0
+    },
+    {
+     "phi": 345,
+     "lid_on": 20.0,
+     "lid_off": 38.9,
+     "door_left": 72.6,
+     "door_right": 150.0,
+     "lid_swing": -58.7
+    },
+    {
+     "phi": 350,
+     "lid_on": 20.0,
+     "lid_off": 39.0,
+     "door_left": 76.3,
+     "door_right": 150.0,
+     "lid_swing": -80.7
+    },
+    {
+     "phi": 355,
+     "lid_on": 20.0,
+     "lid_off": 41.3,
+     "door_left": 78.8,
+     "door_right": 150.0,
+     "lid_swing": -93.0
+    }
+   ],
+   "display_facing_user": {
+    "phi": 90,
+    "lid_on": 31.2,
+    "lid_off": 44.0,
+    "door_left": 150.0,
+    "door_right": 150.0,
+    "lid_swing": -18.3
+   },
+   "worst_lid_on": 20.0,
+   "worst_lid_off": 38.9,
+   "phis_both_doors": [
+    20,
+    25,
+    30,
+    35,
+    40,
+    80,
+    85,
+    90,
+    95,
+    100,
+    140,
+    145,
+    150,
+    155,
+    160,
+    200,
+    205,
+    210,
+    215,
+    220,
+    260,
+    265,
+    270,
+    275,
+    280,
+    320,
+    325,
+    330,
+    335,
+    340
+   ],
+   "phis_one_door": [
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    85,
+    90,
+    95,
+    100,
+    105,
+    110,
+    115,
+    120,
+    125,
+    130,
+    135,
+    140,
+    145,
+    150,
+    155,
+    160,
+    165,
+    170,
+    175,
+    180,
+    185,
+    190,
+    195,
+    200,
+    205,
+    210,
+    215,
+    220,
+    225,
+    230,
+    235,
+    240,
+    245,
+    250,
+    255,
+    260,
+    265,
+    270,
+    275,
+    280,
+    285,
+    290,
+    295,
+    300,
+    305,
+    310,
+    315,
+    320,
+    325,
+    330,
+    335,
+    340,
+    345,
+    350,
+    355
+   ],
+   "phis_lid_swings": [
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    160,
+    165,
+    170,
+    175,
+    180,
+    185,
+    190,
+    195,
+    200,
+    280,
+    285,
+    290,
+    295,
+    300,
+    305,
+    310,
+    315,
+    320
+   ],
+   "phis_lid_and_a_door": [
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    160,
+    165,
+    170,
+    175,
+    180,
+    185,
+    190,
+    195,
+    200,
+    280,
+    285,
+    290,
+    295,
+    300,
+    305,
+    310,
+    315,
+    320
+   ],
+   "best": {
+    "phi": 60,
+    "lid_on": 20.3,
+    "lid_off": 43.2,
+    "door_left": 150.0,
+    "door_right": 79.6,
+    "lid_swing": 41.9
+   },
+   "arm_bottom_above_bench": 335.0,
+   "hr_top_lid_on": 315.0,
+   "hr_rim": 290.0
+  }
  }
 }

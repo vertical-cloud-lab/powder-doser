@@ -21,7 +21,7 @@ under the station at every orientation (lid on and off), checks a reach-in corri
 and the lid's swing, exports STEP/STL files and draws the figures.
 
     pip install cadquery trimesh python-fcl rtree vtk pillow numpy matplotlib scipy
-    xvfb-run -a python leg_unit.py                  # about 6 min; leg_unit.json, leg-unit/, renders/leg_*.png
+    xvfb-run -a python leg_unit.py                  # about 7 min; leg_unit.json, leg-unit/, renders/leg_*.png
     xvfb-run -a python leg_unit.py --figures-only   # redraws the figures from leg_unit.json
 
 Frames.  The leg frame: origin on the beaker axis at the shelf's underside, x across the module (along its
@@ -93,7 +93,7 @@ HEAD = dict(
 )
 HEAD["post_y"] = HEAD["sleeve_y"] + HEAD["wall"] + HEAD["bore"] / 2            # 301.8: tube centre
 HEAD["sleeve_out"] = HEAD["sleeve_y"] + 2 * HEAD["wall"] + HEAD["bore"]        # 318.1
-HEAD["tab_top"] = PIN[2] - K.UB["h"] + HEAD["pocket"][2]                       # -238.25
+HEAD["tab_top"] = PIN[2] - K.UB["h"] + HEAD["pocket"][2]                       # -238.1
 TUBE = dict(size=20.0, wall=1.5, length=280.0, pitch=10.0, hole_d=5.2, foot_hole_d=4.5, foot_hole_h=10.0)
 FOOT = dict(pad=60.0, pad_t=6.0, socket=28.0, socket_h=20.0, bore=20.4, hole_d=4.5)
 S_RANGE = (310.0, 400.0)                    # shelf underside above the bench, in 10 mm steps
@@ -382,10 +382,29 @@ def checks():
 
 
 def rear_pin_swing():
-    """How far the P16-200 swings about its rear pin, relative to the vertical U-bracket (deg from vertical,
-    + = its top leaning in), and the housing's closest approach to the bracket's cheeks and the tab."""
+    """How far the P16-200 swings about its rear pin: its lean from vertical (deg, its top leaning in), which
+    is also its angle in the upright U-bracket."""
     leans = [LR.lean_at(ACT, t) for t in np.arange(0.0, 90.01, 0.5)]
     return dict(lean_min_deg=round(min(leans), 2), lean_max_deg=round(max(leans), 2))
+
+
+def bracket_check():
+    """Inside the U-bracket, by design: the P16-200 (housing and lug) against the bracket, and the M3 button
+    head against the P16, over 0-90 deg (5 deg steps)."""
+    th, u = 90.0, "A"
+    m3 = ST._objs([p for p in leg_parts(th, u) if p.name.endswith("M3 bracket screw")])[0][1]
+    w = dict(bracket=(1e9, None), m3_head=(1e9, None))
+    for t in TILTS:
+        ps = {p.name.split(":", 1)[1]: p for p in module_parts(th, u, t)}
+        (_, ob), (_, oy) = ST._objs([ps["P16 bracket"], ps["P16 body"]])
+        d = ST._dist(ob, oy)
+        if d < w["bracket"][0]:
+            w["bracket"] = (d, t)
+        d = ST._dist(m3, oy)
+        if d < w["m3_head"][0]:
+            w["m3_head"] = (d, t)
+    return {"P16 housing/lug to its U-bracket": dict(mm=round(w["bracket"][0], 2), at_tilt=w["bracket"][1]),
+            "M3 button head to the P16's lug": dict(mm=round(w["m3_head"][0], 2), at_tilt=w["m3_head"][1])}
 
 
 # --------------------------------------------------------------------------- #
@@ -547,6 +566,7 @@ def main():
     print("export done", res["files"], round(time.time() - t0), "s", flush=True)
     if "--no-checks" not in sys.argv:
         res["checks"] = checks()
+        res["checks"]["inside_the_u_bracket"] = bracket_check()
         print("checks", {k: v for k, v in res["checks"].items() if k != "per_leg_part_own_module"}, round(time.time() - t0), "s", flush=True)
     res["hr100a"] = {}
     for S in (330.0, 340.0, 350.0):

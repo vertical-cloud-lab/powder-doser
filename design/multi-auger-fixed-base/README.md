@@ -1115,6 +1115,9 @@ is taken as 95 g, a NEMA 11 as 110 g, a solenoid as 40 g, each auger holds
 | [`mount-deck/`](mount-deck/) | `deck_M1.step` and `deck_M2.step`: the lower decks with their posts, origin on the beaker axis, hinge axes at z = 0 |
 | [`new_scale.py`](new_scale.py), [`new_scale.json`](new_scale.json) | The new balance (Ethan's rough numbers, as two boxes) under every layout: the closest approach at every orientation and pan position, the room beside each side door and behind it, and behind the top door; renders `newscale_*.png` with [`new_scale_figs.py`](new_scale_figs.py) |
 | [`crank_drive.py`](crank_drive.py), [`crank_drive.json`](crank_drive.json) | L6: a P16-50 on a crank at each hinge, above the shelf. Kinematics, clearance checks over 0–90° against its own module, both neighbours and the base, and the base with its ears against the H2D's bed; renders `crank_drive.png` |
+| [`leg_unit.py`](leg_unit.py), [`leg_unit.json`](leg_unit.json) | One telescoping leg unit for L4 (printed head with arm, sleeve and the P16-200's tab; aluminium tube; printed foot), the base with L4's slot and the leg's holes, clearance checks over 0–90°, the HR-100A / HR-250AZ at every orientation with its side doors and lid; figures `leg_*.png` with [`leg_unit_figs.py`](leg_unit_figs.py) |
+| [`onshape_leg.py`](onshape_leg.py) | Builds the leg unit in Onshape through the REST API (needs `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY`) and checks it against `leg_unit.py` |
+| [`leg-unit/`](leg-unit/) | The leg's parts as STEP (leg frame), the head as it prints (STL), the unit at 340 mm with its hardware (STEP); `onshape.json` (the document, its features and the checks), the part studio as Onshape exports it and Onshape's own views |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
@@ -1136,6 +1139,8 @@ xvfb-run -a python leg_room.py             # more room for the scale: six layout
 python crank_drive.py                      # L6, the crank drive: kinematics and checks (about 1 min)
 xvfb-run -a python new_scale.py            # the new balance under every layout, figures (about 17 min)
 python actuator_size.py                     # smaller actuators: load, sizing, crank checks, figures (about 4 min)
+xvfb-run -a python leg_unit.py              # one leg unit for L4, the base change, checks, HR-100A, STEP/STL, figures (about 7 min)
+python onshape_leg.py                       # build the leg unit in a new Onshape document (needs the keys; about 50 calls)
 ```
 
 **Limits.**
@@ -1675,3 +1680,184 @@ I checked four of the crank-mounted ones in 3D, laid out as in L6:
   If it is 105 mm, the P16-50 stands 8 mm taller on the crank and hangs 8 mm lower under the floor, and
   the L12-50 (102 mm) is the shorter of the two.
 - Nothing was bought, printed or modelled in Onshape.
+
+## One telescoping leg unit for L4, in Onshape, and what the base needs (added 24 Nov)
+
+Ethan said the lab's balance is an A&D HR-250AZ and that the HR-100A dimensions used up to 21 Nov are the
+right ones. He asked for one telescoping tripod leg unit, with the actuator mount for the lever + lean
+layout (L4), built in Onshape through the REST API, and for what has to change on the tri-star base to take
+it (he will edit his own Onshape base). [`leg_unit.py`](leg_unit.py) models the leg and the base change and
+checks them; [`onshape_leg.py`](onshape_leg.py) builds the leg in Onshape; [`leg_unit.json`](leg_unit.json)
+holds every number.
+
+**The balance.** The HR-250AZ has the same body as the HR-100A. A&D gives 198 × 294 × 315 mm for the HR-AZ
+series ([A&D](https://www.aandd.jp/products/weighing/balance/analytical/hr-az_a.html)), and the HR-A and
+HR-AZ share one manual, whose drawing `scale_room.py` traced. So the checks below use that model: the round
+breeze break (Ø186 across the door frames), the full-height rear column, the lid and its handle and latches.
+
+**The actuator.** Actuonix makes the P16 with a 200 mm stroke and potentiometer feedback
+(P16-200-22-12-P, [RobotShop](https://www.robotshop.com/products/actuonix-p16-linear-actuator-200mm-221-12v-w-potentiometer-feedback)).
+RobotShop's listing of the same length with 64:1 gearing gives 247 mm closed, hole to hole
+([RobotShop](https://www.robotshop.com/products/actuonix-p16-linear-actuator-200mm-641-12v-w-limit-switches)),
+the length L4 assumed. L4's rear pin works out at 258.50 mm from the beaker axis and 230.14 mm under the
+shelf's underside. The leg puts it at 258.5 and 230.0: the rod is then 4.9 mm out at 0° and 186.1 mm out at
+90°, leaving 13.9 mm of stroke spare, and the actuator leans 18.5–25° outward over 0–90°.
+
+### The Onshape document
+
+[Leg unit - tri-star L4 telescoping stand (powder-doser #204)](https://cad.onshape.com/documents/c614f70cb5a80bf1f0bb82ce/w/8e3eed9e046f6bb91f54f3cb/e/bf06f2f90efaeb6961f0f6b9),
+tab *Leg unit*, in the account the API key belongs to (Ethan's), private until shared.
+
+![The leg unit in Onshape](renders/leg_unit_onshape.png)
+
+- **Three parts:** *Leg head* (printed), *Leg tube* (aluminium) and *Leg foot* (printed). The tube and foot
+  are drawn at the 340 mm setting.
+- **36 native features:** 15 sketches, 6 offset planes and 15 extrudes, so every size can be edited. The
+  tube's holes, its bore and the foot's socket are cut with the extrude's scope set to that part alone.
+- **Frame:** the origin is on the beaker axis at the shelf's underside, so the arm's top face is the Top
+  plane. x runs across the module, y out along its centre line, z up. For the back module this is the frame
+  of [`base/base.step`](base/base.step), so the leg drops onto a base drawn that way without moving.
+- **Checked against `leg_unit.py`:** Onshape's volumes are 741.116 (head), 30.395 (tube) and 28.836 cm³
+  (foot), the same as the local model to the last digit, and so is the bounding box. Its STL export is
+  1.5 mm³ from the local parts (triangulation).
+- **Left for you:** the sketches are dimensioned but not tied to the origin, and no material is set.
+  Hardware isn't modelled in Onshape (it's in `leg-unit/leg_unit_S340.step`).
+- **API use:** 51 calls, plus 1 key check before them. I built it in the document's default tab and renamed
+  that tab *Leg unit*, so no empty *Part Studio 1* is left over this time.
+
+### The leg unit
+
+![Drawing of the leg unit](renders/leg_unit_drawing.png)
+
+All dimensions are in mm, in the leg frame: y from the beaker axis, z from the shelf's underside (negative
+is below it).
+
+| Part | What it is |
+|---|---|
+| Head (printed, one piece) | Every section is 64 wide (x = ±32), so it prints flat on its side (x up) with no supports: 282 × 226 × 64 mm, one H2D nozzle. 741 cm³ solid |
+| Arm | Under the lobe, from 92 out to 318.1, 15 deep. 4 × Ø4.5 holes at x = ±25, y = 100 and 126, with M4 nut traps (7.2 across flats, 3.4 deep) in its underside |
+| Window in the arm | Through, symmetric about the centre line: from a point at 127, widening at 45° to ±17 at 144, ±17 to 161, narrowing at 45° to ±9 at 169, ±9 to 198, closing at 45° to a point at 207. The clevis block's lugs and M4 pin dip into it at 0°, and the P16's rod and tube pass through it |
+| Web | 45°, 50 × 50, from the arm's underside to the sleeve |
+| Sleeve | Inner face 285.5, outer face 318.1 (6 walls round a 20.6 square bore, centred 301.8 from the beaker axis), down to 281.75 under the shelf. The bore stops 20 under the arm's top |
+| Height pin hole | Ø5.3, along y through the sleeve, 130 under the shelf |
+| Tab | Top 238.1 under the shelf, 8 thick, from 250.5 out to the sleeve, with a 45° web (15.5) under it. A pocket 15.1 × 8.1 × 1.0 deep, centred 258.5 from the axis, keys the P16's U-bracket square; a Ø3.4 hole through its centre, with an M3 nut trap (5.7 across flats, 2.6 deep) underneath |
+| Tube (bought, cut and drilled) | 20 × 20 × 1.5 aluminium square tube, 280 long. Ten Ø5.2 holes along y, 174 to 264 from its lower end, 10 apart, one per height; one Ø4.5 hole across (x), 10 from its lower end, for the foot |
+| Foot (printed) | 60 × 60 × 6 pad, a 28 × 28 socket 20 tall with a 20.4 square bore, and the Ø4.5 cross hole. Put a rubber pad under it |
+| Height | The shelf's underside 310–400 mm above the bench, in 10 mm steps: one tube hole per setting lines up with the sleeve's pin hole. At least 168 mm of tube stays inside the sleeve |
+
+**Hardware per leg:** 4 × M4 × 25 countersunk (ISO 10642) and nuts, base to arm; 1 × M5 × 40 and a wing nut
+(or a Ø5 ball-lock pin), the height pin; 1 × M4 × 35 and a nyloc, foot to tube; 1 × M3 × 12 button head
+(ISO 7380) and a nut, U-bracket to tab; the P16-200's own U-bracket and #8-32 screw, its rear pin.
+
+**How the actuator connects.**
+- **Rear pin:** the P16's own U-bracket stands upright in the tab's pocket, with its pin 258.5 from the
+  beaker axis and 230.0 under the shelf. The rear pin is on the head, so it stays put relative to the
+  hinge whatever height the tube is set to.
+- **Swing:** the actuator swings 18.5–25° from vertical in the bracket. Its housing passes 1.25 mm over the
+  bracket's cheeks, as it does in Actuonix's own bracket. The M3 button head inside the U sits 1.2 mm under
+  the round end of the P16's lug.
+- **Rod end:** the same clevis block as before, 120 mm behind the hinge instead of 95. Two changes on the
+  module side:
+  - **Move the block's screws:** the rear Flexible Bracket covers the floor's top from 118 to 130 behind
+    the hinge, so the block's two M3 screws can't sit in line with the pin any more. In the Onshape clevis
+    block, move the pad so it runs from 14 ahead of the pin to 10 behind it (it was ±12), and the two
+    screw holes and nut pockets to 10 ahead of the pin. The pad then ends at the floor's rear edge (130)
+    instead of 2 mm past it.
+  - **Move the plate's holes:** they go at x = ±11, 110 behind the hinge (they were at 95).
+
+![One module and its leg from the side](renders/leg_unit_module.png)
+
+**Checks.** Each module swept over 0–90° in 5° steps, one at a time, so every tilt mix is covered. 2 mm target.
+
+| Between | Closest | Where |
+|---|---|---|
+| The leg head and its own module | 3.0 mm at 10–20° | the P16's 12 mm tube in the arm's ±9 window |
+| The tube and its own module | 10.7 mm | the P16's housing |
+| The M4 countersunk heads and the plate | 2.2 mm at 0° | the plate's floor, 2 mm over the shelf; the heads sit 0.2 under the top |
+| Every leg part and the neighbouring modules | 89.2 mm | |
+| The base (new slot and holes) and the modules | 2.0 mm at 0° | the clevis block's pad beside the slot, as before |
+| By design, inside the U-bracket | 1.25 mm / 1.2 mm | the housing over the bracket's cheeks; the M3 head under the lug |
+
+### What the base needs (no other change)
+
+![The base's lobe end, today and for L4](renders/leg_base_changes.png)
+
+All three lobes change the same way. Distances are from the beaker axis along the module's centre line, as
+in the 13 Nov drawing (subtract 32 for distances behind the hinge axis).
+1. **Move the slot.** Keep it 34 wide (x = ±17), but run it from **134** (it starts at 65 now) out past
+   the lobe end at 174, so it is open at that end (it ends at 144 now).
+   - **Why it moves out:** with the pin 120 mm behind the hinge, the clevis block's pad passes through the
+     shelf at 0° from 138 to 162. The P16's rod crosses the shelf as far out as 185 at mid tilts, past the
+     lobe end.
+   - **Why the inner part can close:** nothing passes through the shelf between 65 and 134 any more. Filling
+     it keeps the lobe end from being a 110 mm fork. If you keep it open, the new holes still clear it by
+     5.75 mm.
+2. **Delete the four hanger holes** (x = ±14.5, at 151 and 165). The new slot runs through them.
+3. **Add four holes for the leg:** Ø4.5 through at x = ±25, at 100 and 126 from the beaker axis (68 and 94
+   behind the hinge). Countersink them 90° to Ø9.4 on the top, so M4 flat heads sit 0.2 mm under the
+   surface: the plate's floor passes 2 mm over the shelf at 0°.
+   - **Distances to the edges:** each hole is 5.75 mm from the slot's start and from the old slot's sides,
+     and about 10 mm from the lobe's edge.
+   - **The towers' feet** (42–67) are well clear.
+
+The outline, the Ø78 window, the towers and the base's size are unchanged, so it still fits one H2D
+nozzle. `leg_unit.py` builds this base and checks it (the row above).
+
+### The HR-100A / HR-250AZ under it
+
+![The station on three legs over the balance](renders/leg_unit_station.png)
+
+| Shelf's underside above the bench | 330 mm | **340 mm** | 350 mm |
+|---|---|---|---|
+| Arms' underside above the bench | 315 | 325 | 335 |
+| Balance clear by, worst orientation, lid on / off | 0 / 25 mm | **10 / 35 mm** | 20 / 39 mm |
+| With the display facing you, lid on / off | 12 / 25 mm | 22 / 35 mm | 31 / 44 mm |
+| Orientations with both side doors free / at least one | 30 / 72 of 72 | 30 / 72 | 30 / 72 |
+| Orientations where the lid can swing out | 0 | 27 | 27 |
+
+**What that means:**
+- **Set the shelf's underside to 340 mm.** The arms reach in over the balance's top, so with the lid on, 330
+  leaves nothing at some orientations; 340 leaves at least 10 mm at every orientation.
+- **Side doors.** A door counts as free here if a 100 mm wide corridor beside it, over the doors' full
+  height, is clear for 150 mm out from the breeze break.
+  - **With the display facing you,** both side doors are free.
+  - **At every orientation** at least one is. The HR-100A's curved doors slide round the breeze break and
+    stay within 105 mm of the pan centre, so opening them needs no room beyond the corridor.
+- **The lid.** A&D's drawing has it swinging out to your left, to 270 mm from the pan centre.
+  - **With the display facing you,** it swings into the front-left actuator.
+  - **Turned 20° clockwise** (seen from above), it swings out with 22 mm to spare. The left door is still
+    free, and the right door has 72 mm.
+  - **Otherwise,** lift the lid off for dosing, as on 21 Nov.
+
+![Doors and lid at two orientations](renders/leg_doors.png)
+
+### Choices before printing
+
+1. **Head width.** 64 mm wide everywhere lets it print flat with no supports, but it is a lot of plastic
+   (741 cm³ solid). The sleeve could narrow to about 36 mm, at the cost of supports under it.
+2. **Height pin.** An M5 bolt and wing nut, or a Ø5 ball-lock pin for quicker changes.
+3. **Feet.** Screwed or weighted to the bench, or on rubber pads to keep the tapper off the balance.
+
+### Limits
+
+- **The balance** is the HR-100A model traced from A&D's drawing, not a measured HR-250AZ. The door corridor
+  (100 mm wide, 150 mm deep) is my definition of "free".
+- **The P16-200** is drawn from the P16-150's dimension drawing with a 50 mm longer tube, not from Actuonix's
+  STEP file.
+- **The modules** are PR #170's parts with #203's tap bracket, as before. The plate isn't re-drawn with its
+  holes at 110.
+- **Not analysed:** stiffness, and ringing under the tapper.
+- **Built:** only the leg, in Onshape (no base, as asked). Nothing was printed or ordered.
+
+**Files**
+- [`leg_unit.py`](leg_unit.py): the leg, the L4 base, the checks, the HR-100A fit and the STEP/STL export, in
+  about 7 minutes. [`leg_unit_figs.py`](leg_unit_figs.py) draws the figures (`--figures-only` redraws them
+  from `leg_unit.json`).
+- [`onshape_leg.py`](onshape_leg.py): builds the leg in a new Onshape document from `leg_unit.json` and checks
+  it (about 50 calls); `--dry-run` writes the feature JSON without calling the API.
+- [`leg-unit/`](leg-unit/):
+  - `leg_head.step`, `leg_tube.step`, `leg_foot.step`: each part in the leg frame;
+  - `leg_head_print.stl`: the head on its side, as it prints;
+  - `leg_unit_S340.step`: the unit at 340 mm with its hardware and the U-bracket;
+  - `onshape.json`, `leg_unit_onshape.stl`, `onshape_iso.png`, `onshape_side.png`: the Onshape document,
+    its features, the checks and its own views.

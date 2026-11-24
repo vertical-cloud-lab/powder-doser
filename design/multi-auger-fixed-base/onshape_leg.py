@@ -13,7 +13,7 @@ It then reads the parts back (volumes, bounding box, an STL export) and checks t
 and saves two shaded views.  It writes leg-unit/onshape.json and leg-unit/leg_unit_onshape.stl.
 
     pip install requests cadquery trimesh manifold3d numpy
-    ONSHAPE_ACCESS_KEY=... ONSHAPE_SECRET_KEY=... python onshape_leg.py     # new document (about 55 API calls)
+    ONSHAPE_ACCESS_KEY=... ONSHAPE_SECRET_KEY=... python onshape_leg.py     # new document (51 API calls on 24 Nov)
     python onshape_leg.py --did D --wid W --eid E                            # resume into an existing Part Studio
     python onshape_leg.py --check-only --did D --wid W --eid E               # re-run the checks (about 8 calls)
     python onshape_leg.py --dry-run                                          # write the feature JSON only, no calls
