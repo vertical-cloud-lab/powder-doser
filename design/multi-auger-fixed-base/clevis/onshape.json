@@ -1,0 +1,135 @@
+{
+ "what": "The clevis block (clevis.json) as a native Onshape Part Studio, built through the REST API",
+ "document": {
+  "did": "a38fe824c59c30b2f2c7acad",
+  "wid": "c7bd1cb3ff8f94c39a996741",
+  "eid": "7ee76209682949b2733e966c",
+  "url": "https://cad.onshape.com/documents/a38fe824c59c30b2f2c7acad/w/c7bd1cb3ff8f94c39a996741/e/7ee76209682949b2733e966c",
+  "owner": "the account the API key belongs to (Ethan's); private until shared"
+ },
+ "part_id": "JHD",
+ "features": [
+  {
+   "name": "Pad sketch",
+   "type": "newSketch",
+   "featureId": "F0697TmjUbH3oQf_0",
+   "status": "OK"
+  },
+  {
+   "name": "Pad",
+   "type": "extrude",
+   "featureId": "FcpVIq9BHvH4bF5_0",
+   "status": "OK"
+  },
+  {
+   "name": "Lug profile",
+   "type": "newSketch",
+   "featureId": "FkdSUnjvEAxrjg2_1",
+   "status": "OK"
+  },
+  {
+   "name": "Lugs",
+   "type": "extrude",
+   "featureId": "F85poQLv0jQ0MPE_1",
+   "status": "OK"
+  },
+  {
+   "name": "Lug gap",
+   "type": "extrude",
+   "featureId": "FTflIUdc2HbE3Xl_1",
+   "status": "OK"
+  },
+  {
+   "name": "Pin hole sketch",
+   "type": "newSketch",
+   "featureId": "FCm655nIXx1DKFN_1",
+   "status": "OK"
+  },
+  {
+   "name": "Pin hole",
+   "type": "extrude",
+   "featureId": "Fgvk6KW4jJp0hwX_1",
+   "status": "OK"
+  },
+  {
+   "name": "Screw holes sketch",
+   "type": "newSketch",
+   "featureId": "FTwpDmM4KUhY6io_1",
+   "status": "OK"
+  },
+  {
+   "name": "Screw holes",
+   "type": "extrude",
+   "featureId": "Frnx9B8UMp44jck_1",
+   "status": "OK"
+  },
+  {
+   "name": "Pad underside",
+   "type": "cPlane",
+   "featureId": "Fql91HrqMV8Exhd_1",
+   "status": "OK"
+  },
+  {
+   "name": "Nut pockets sketch",
+   "type": "newSketch",
+   "featureId": "FN584UxJeZP6LHD_1",
+   "status": "OK"
+  },
+  {
+   "name": "Nut pockets",
+   "type": "extrude",
+   "featureId": "FQLNq3nqMcxiq7O_1",
+   "status": "OK"
+  }
+ ],
+ "read_back": {
+  "volume_cm3": [
+   3.8493
+  ],
+  "bounding_box_mm": {
+   "lowX": -15.0,
+   "lowY": -12.0,
+   "lowZ": -16.75,
+   "highX": 15.0,
+   "highY": 12.0,
+   "highZ": 0.0
+  },
+  "microversion": "c0890b82239c36bb92c03aa4"
+ },
+ "compare_with_clevis_py": {
+  "onshape_volume_cm3": 3.8492,
+  "clevis_py_volume_cm3": 3.8493,
+  "onshape_bounds_mm": [
+   [
+    -15.0,
+    -12.0,
+    -16.748
+   ],
+   [
+    15.0,
+    12.0,
+    0.0
+   ]
+  ],
+  "clevis_py_bounds_mm": [
+   [
+    -15.0,
+    -12.0,
+    -16.75
+   ],
+   [
+    15.0,
+    12.0,
+    0.0
+   ]
+  ],
+  "symmetric_difference_mm3": 0.235,
+  "watertight": true
+ },
+ "api_calls_this_run": 9,
+ "when_utc": "2026-11-20T23:42:20Z",
+ "frame": "block frame: origin at the centre of the pad's top face (against the floor's underside); x along the pin (+x = the plate's plain side), y along the plate (+y = toward the rear), z up; the block hangs below z = 0",
+ "api_calls_total_20_nov": 39,
+ "api_calls_note": "39 calls on 20 Nov: 2 key checks (sessioninfo), the build in four runs (the first stopped when deleting the new document's empty 'Part Studio 1' came back 403, the second when 'symmetric' was sent as an end type, the third when the STL export's redirect dropped the key), and 2 shaded views for the figure",
+ "api_key_cannot": "delete elements (HTTP 403), so the document still has an empty 'Part Studio 1' tab"
+}
