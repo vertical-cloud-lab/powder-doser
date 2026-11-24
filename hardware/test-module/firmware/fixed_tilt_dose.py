@@ -88,12 +88,21 @@ import time
 import config
 import main_three_phase as m3
 
-SCRIPT_VERSION = "2026-11-24a"
+SCRIPT_VERSION = "2026-11-24b"
 POWDER_ID = "carboxymethyl-cellulose"   # the #116 battery's id
 
-FIRST_TRIAL = 1
-N_TRIALS = 2                   # the dose, plus at most one top-up dose
+FIRST_TRIAL = 2                # 24b: the top-up is dose 2 (24a: 1)
+N_TRIALS = 1                   # 24b: the top-up only (24a: 2, a dose and a
+                               # possible top-up after an early failure)
 TARGET_G = 3.0                 # total into the cup, both doses together
+# 24b: the cup's reading at 0 deg before dose 1 (24a's baseline, 19:52:44
+# UTC).  The top-up doses TARGET_G minus what the cup has gained since.
+TOPUP_OF_ABS0_G = 0.0429       # None in 24a
+# 24b thresholds: the bulk halts 8 mg short and the fine stage is skipped
+# (0.4 mg/s at 25 rpm in 24a); the tap stage finishes to +/-1 mg.
+THRESHOLDS = (0.008, 0.008, 0.001)   # None in 24a (stock 0.25/0.025/0.001)
+TAP_ROT_DEG = 45.0             # 24b: tap-stage turn (stock 15 deg = ~0.1 mg
+                               # of CMC at 60 deg in 24a)
 
 FIXED_TILT = 60.0              # plate deg, every stage (the request)
 BULK_RPM = 80.0                # November bulk speed
@@ -108,14 +117,14 @@ FINE_RPM = 25.0
 FINE_ANTICIPATION_G = 0.020
 TAP_TILT = FIXED_TILT
 TAP_STAGE_RPM = FINE_RPM       # speed of the tap stage's 15 deg turns
-DOSE_TIMEOUT_S = 900           # stock 600 s; CMC is slow and 3 g is a lot
+DOSE_TIMEOUT_S = 420           # 24b (900 in 24a; stock 600 s)
 
 POLL_MS = 80                   # continuous-stage poll sleep (stock 250)
 FILL_PERIOD_MS = 95            # extra reads while waiting: ~10 Hz
 FILL_MIN_REM_MS = 40           # only start a fill read with this much left
 FILL_TIMEOUT_MS = 150          # and give up on it quickly
 
-PREROLL_S = 5.0                # logged before each dose's baseline
+PREROLL_S = 20.0               # 24b: 20 s, long enough for a drift fit (5 in 24a)
 POSTROLL_S = 8.0               # logged after the controller finishes
 HOME_SETTLE_S = 6.0            # logged after the plate is back at 0 deg
 
@@ -475,6 +484,8 @@ def build_phases():
                "tap_off_ms": BULK_TAP_PERIOD_MS - BULK_TAP_ON_MS})
     p3 = dict(m3.PHASE3_TAP)
     p3.update({"angle_deg": TAP_TILT, "rotation_rpm": TAP_STAGE_RPM})
+    if TAP_ROT_DEG is not None:
+        p3.update({"rotation_deg": TAP_ROT_DEG})
     return [p1, p2, p3]
 
 
@@ -563,7 +574,9 @@ def main(hw=None):
         FINE_ANTICIPATION_G))
     meta("tap", "stock PHASE3_TAP at {} deg, turns at {} rpm".format(
         TAP_TILT, TAP_STAGE_RPM))
-    meta("thresholds", "/".join("{}".format(v) for v in m3.THRESHOLDS))
+    meta("thresholds", "/".join("{}".format(v) for v in
+                                (THRESHOLDS if THRESHOLDS else m3.THRESHOLDS)))
+    meta("topup_of_abs0_g", TOPUP_OF_ABS0_G)
     meta("dose_timeout_s", DOSE_TIMEOUT_S)
     meta("poll_ms", POLL_MS)
     meta("fill_period_ms", FILL_PERIOD_MS)
@@ -593,7 +606,7 @@ def main(hw=None):
     C.tilt = servo.angle
 
     phases = build_phases()
-    thresholds = list(m3.THRESHOLDS)
+    thresholds = list(THRESHOLDS if THRESHOLDS else m3.THRESHOLDS)
     C.sched_band_g = TARGET_G        # one angle: never steps
     for i, p in enumerate(phases):
         meta("phase{}".format(i + 1), json.dumps(p))
@@ -614,13 +627,21 @@ def main(hw=None):
             raise HardCap(stop_reason)
         meta("abs0_g", "{:.4f}".format(C.abs0))
         cup_total = 0.0                  # at 0 deg, against the session start
-        trial = 0
-        while trial < N_TRIALS:
+        if TOPUP_OF_ABS0_G is not None:  # 24b: what dose 1 already put in
+            cup_total = C.abs0 - TOPUP_OF_ABS0_G
+            ev("cup holds {:.4f} g since dose 1's baseline ({:.4f} g)".format(
+                cup_total, TOPUP_OF_ABS0_G))
+            if TARGET_G - cup_total < TOPUP_MIN_G:
+                stop_reason = "{:.4f} g in the cup: nothing to top up".format(
+                    cup_total)
+                raise HardCap(stop_reason)
+        trial = FIRST_TRIAL - 1
+        while trial < FIRST_TRIAL + N_TRIALS - 1:
             trial += 1
             want = TARGET_G - cup_total
             elapsed = time.ticks_diff(time.ticks_ms(), session_t0) / 1000.0
             doser.timeout_s = DOSE_TIMEOUT_S
-            if trial > 1:
+            if trial > FIRST_TRIAL:
                 if want < TOPUP_MIN_G:
                     stop_reason = "{:.4f} g in the cup: nothing to top up".format(
                         cup_total)
@@ -661,10 +682,11 @@ def main(hw=None):
                 final_rel = final_abs - C.base
             if final0_abs is not None and C.base is not None:
                 final0_rel = final0_abs - C.base
+            ref0 = C.abs0 if TOPUP_OF_ABS0_G is None else TOPUP_OF_ABS0_G
             if final0_abs is not None:
-                cup_total = final0_abs - C.abs0
+                cup_total = final0_abs - ref0
             elif final_abs is not None:
-                cup_total = final_abs - C.abs0
+                cup_total = final_abs - ref0
             rec = {
                 "trial": trial, "status": res.status,
                 "target_g": round(want, 4),
