@@ -371,8 +371,10 @@ and the collar's base.
 
 The P16's dimension drawing (Actuonix, Rev B) gives both ends. The rod end is
 a 6 mm tab and the rear end an 8 mm lug, each with a Ø4.25 hole (M4 or #8),
-197 mm apart when closed. Each P16 ships with two U-brackets (11.5 mm inside,
-holes 9.1 mm above the base) and #8-32 screws.
+197 mm apart when closed. Each P16 ships with two U-brackets (11.5 mm *outside*,
+about 9.1 mm inside, holes 9.1 mm above the base; corrected 24 Nov, see
+[the L4 details](#the-l4-clevis-block-its-plate-holes-from-the-back-edge-and-the-actuator-at-the-leg-added-24-nov))
+and #8-32 screws.
 
 - **Rod end to the mounting plate: a printed clevis block under the floor.**
   - The block is a 30 × 24 × 4 mm pad with two 4 mm lugs, 6.5 mm apart. It
@@ -1117,6 +1119,8 @@ is taken as 95 g, a NEMA 11 as 110 g, a solenoid as 40 g, each auger holds
 | [`crank_drive.py`](crank_drive.py), [`crank_drive.json`](crank_drive.json) | L6: a P16-50 on a crank at each hinge, above the shelf. Kinematics, clearance checks over 0–90° against its own module, both neighbours and the base, and the base with its ears against the H2D's bed; renders `crank_drive.png` |
 | [`leg_unit.py`](leg_unit.py), [`leg_unit.json`](leg_unit.json) | One telescoping leg unit for L4 (printed head with arm, sleeve and the P16-200's tab; aluminium tube; printed foot), the base with L4's slot and the leg's holes, clearance checks over 0–90°, the HR-100A / HR-250AZ at every orientation with its side doors and lid; figures `leg_*.png` with [`leg_unit_figs.py`](leg_unit_figs.py) |
 | [`onshape_leg.py`](onshape_leg.py) | Builds the leg unit in Onshape through the REST API (needs `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY`) and checks it against `leg_unit.py` |
+| [`l4_details.py`](l4_details.py), [`l4_details.json`](l4_details.json) | L4 details: the clevis block as changed for L4 (26 mm pad), the plate's two holes from its back edge, the P16-200's U-bracket joint at the leg (Actuonix's bracket, corrected to 11.5 mm outside), and their checks over 0–90°; sheets `l4_*.png` with [`l4_details_figs.py`](l4_details_figs.py) |
+| [`clevis-l4/`](clevis-l4/) | The L4 clevis block (STEP, and an STL as it prints) and the joint at the leg's tab with Actuonix's bracket (STEP) |
 | [`leg-unit/`](leg-unit/) | The leg's parts as STEP (leg frame), the head as it prints (STL), the unit at 340 mm with its hardware (STEP); `onshape.json` (the document, its features and the checks), the part studio as Onshape exports it and Onshape's own views |
 | [`renders/`](renders/) | The figures above |
 
@@ -1740,7 +1744,7 @@ is below it).
 | Web | 45°, 50 × 50, from the arm's underside to the sleeve |
 | Sleeve | Inner face 285.5, outer face 318.1 (6 walls round a 20.6 square bore, centred 301.8 from the beaker axis), down to 281.75 under the shelf. The bore stops 20 under the arm's top |
 | Height pin hole | Ø5.3, along y through the sleeve, 130 under the shelf |
-| Tab | Top 238.1 under the shelf, 8 thick, from 250.5 out to the sleeve, with a 45° web (15.5) under it. A pocket 15.1 × 8.1 × 1.0 deep, centred 258.5 from the axis, keys the P16's U-bracket square; a Ø3.4 hole through its centre, with an M3 nut trap (5.7 across flats, 2.6 deep) underneath |
+| Tab | Top 238.1 under the shelf, 8 thick, from 250.5 out to the sleeve, with a 45° web (15.5) under it. A pocket 15.1 × 8.1 × 1.0 deep (**should be 12.1 × 8.1**: see the L4 details below), centred 258.5 from the axis, keys the P16's U-bracket square; a Ø3.4 hole through its centre, with an M3 nut trap (5.7 across flats, 2.6 deep) underneath |
 | Tube (bought, cut and drilled) | 20 × 20 × 1.5 aluminium square tube, 280 long. Ten Ø5.2 holes along y, 174 to 264 from its lower end, 10 apart, one per height; one Ø4.5 hole across (x), 10 from its lower end, for the foot |
 | Foot (printed) | 60 × 60 × 6 pad, a 28 × 28 socket 20 tall with a 20.4 square bore, and the Ø4.5 cross hole. Put a rubber pad under it |
 | Height | The shelf's underside 310–400 mm above the bench, in 10 mm steps: one tube hole per setting lines up with the sleeve's pin hole. At least 168 mm of tube stays inside the sleeve |
@@ -1762,7 +1766,8 @@ is below it).
     the hinge, so the block's two M3 screws can't sit in line with the pin any more. In the Onshape clevis
     block, move the pad so it runs from 14 ahead of the pin to 10 behind it (it was ±12), and the two
     screw holes and nut pockets to 10 ahead of the pin. The pad then ends at the floor's rear edge (130)
-    instead of 2 mm past it.
+    instead of 2 mm past it. (Superseded: make the pad 16 ahead of the pin, 26 long, so the nut pockets
+    keep a 2.65 mm wall; see the L4 details below.)
   - **Move the plate's holes:** they go at x = ±11, 110 behind the hinge (they were at 95).
 
 ![One module and its leg from the side](renders/leg_unit_module.png)
@@ -1868,3 +1873,119 @@ nozzle. `leg_unit.py` builds this base and checks it (the row above).
   - `leg_unit_S340.step`: the unit at 340 mm with its hardware and the U-bracket;
   - `onshape.json`, `leg_unit_onshape.stl`, `onshape_iso.png`, `onshape_side.png`: the Onshape document,
     its features, the checks and its own views.
+
+## The L4 clevis block, its plate holes from the back edge, and the actuator at the leg (added 24 Nov)
+
+Ethan asked for specific dimensions and drawings for the clevis block's changes and for the plate's two new
+holes, measured from the plate's back edge (not the hinge), and for more detail on how the actuators attach
+to the legs. [`l4_details.py`](l4_details.py) builds the L4 block, measures it and the plate from the back
+edge, re-checks both over 0–90° with L4's kinematics, details the joint at the leg, and draws three sheets.
+[`l4_details.json`](l4_details.json) holds every number. Nothing touches Onshape.
+
+**Two corrections to earlier answers.**
+- **The block's pad is 26 mm long, not 24.** On 24 Nov the pad ran from 14 ahead of the pin to 10 behind it,
+  with the screws 10 ahead of the pin. Then the hexagonal nut pockets' corners (6.7 mm across) come within
+  0.65 mm of the pad's front end. Running the pad from 16 ahead of the pin leaves 2.65 mm. The plate's holes
+  don't move.
+- **The P16's U-bracket is 11.5 mm wide outside, not inside.** Actuonix's P16 drawing (Rev B) puts the 11.5
+  dimension on the U's outer faces. The sheet isn't dimensioned; it scales to about 1.2 mm, so the inside
+  is about 9.1 mm and the P16's 8 mm lug has about 0.55 mm each side. Every run since 12 Nov drew it 14.5
+  mm outside and 11.5 inside. ServoCity's listing of the P16 ([P16-S-200-22-12](https://www.servocity.com/200-mm-stroke-11-lb-thrust-light-duty-linear-actuator/))
+  agrees: it ships two U-brackets with 8-32 × 0.625 in screws and lock nuts, which leave 4.4 mm of thread past an
+  11.5 mm bracket and only 1.4 mm past a 14.5 mm one.
+  Only one thing on the leg changes: the tab's pocket should be **12.1 × 8.1** (1 deep), not 15.1 × 8.1.
+
+### The clevis block for L4
+
+![The L4 clevis block, dimensioned](renders/l4_clevis_block.png)
+
+Measured from the pad's rear end, which sits flush with the plate's back edge (mm):
+
+| Feature | Dimension |
+|---|---|
+| Pad | 30 wide × 26 long × 4 thick |
+| Pin axis (Ø4.25 through both lugs) | 10 from the rear end, 16 from the front end; 9.75 below the pad's top face (5.75 below its underside) |
+| Screw holes (2 × Ø3.4, M3) | 20 from the rear end (6 from the front end); 22 apart, 4 from each side |
+| Nut pockets | Hexagons 5.8 across flats, 2.6 deep from the underside, on the screw holes, corners toward the pad's ends. 2.65 mm wall to the front end, 1.1 to each side |
+| Lugs | 2, each 4 thick, 6.5 apart (14.5 over both), 14 wide along the pad, centred on the pin, ending R7 about it; 16.75 overall depth |
+
+**In the Onshape clevis block** (origin above the pin, +y toward the back edge): change *Pad sketch* to x
+±15, y from −16 to +10; move the centres in *Screw holes sketch* and *Nut pockets sketch* from y = 0 to
+y = −10 (x = ±11 stays). *Lug profile*, *Lugs*, *Lug gap* and *Pin hole* don't change.
+
+**Checks over 0–90°** (L4: P16-200 leaning, pin 120 behind the hinge; module A, all hardware):
+- **Rod end:** it turns 90° in the clevis, from 25° toward the back edge at 0° to 65° toward the hinge at
+  90°. Its hub stays at least 1.5 mm from the lugs and its tab 1.25 mm from the pad, as on 17 Nov.
+- **Base:** the block stays at least 2.0 mm from the L4 base, at 0°, where the pad sits in the slot (2 mm
+  each side, and its front end 136 from the beaker axis against the slot's start at 134). The screws,
+  nuts, pin and nyloc stay at least 3.25 mm away.
+- **Leg head:** at least 4.0 mm from the arm and its window.
+
+### The plate's two holes, from its back edge
+
+![The plate's two holes from its back edge](renders/l4_plate_holes.png)
+
+- **Two Ø3.4 holes through the 6 mm floor, 20 mm from the back edge**, 22 apart (11 either side of the
+  centre line), 23 from each side edge (the floor is 68 wide there). That is 110 mm behind the hinge axis,
+  where the 24 Nov text put them.
+- **Cross-checks:** 14 in front of and 13 inboard of the rear Flexible Bracket's holes (6 from the back
+  edge). The bracket's foot covers the floor's top from the back edge to 12 mm in, so the M3 heads clear
+  it by 5.25 mm; they are 13.99 from the stepper and 15.02 from the auger.
+- **The block lines up with the back edge:** its pad's rear end is flush with it, the clevis pin is 10 from
+  it and 9.75 under the floor, and the pad's front end is 26 from it.
+- **Assembly:** the auger tube passes 19.9 mm over the floor there, so screw the block on before the auger
+  goes in.
+- **Holes from 17 Nov** (35 from the back edge): L4 doesn't use them; if they are already drilled, they can
+  stay.
+
+All the floor holes, from the back edge: rear bracket 6 (x = ±24); **clevis block 20 (x = ±11)**; 17 Nov
+position 35 (x = ±11, unused); tap bracket 71.67 (x = ±24) and 87.67 (x = −24; x = +24 unused).
+
+### How each P16-200 attaches to its leg
+
+![The P16-200's joint at the leg](renders/l4_actuator_mount.png)
+
+The P16-200's rear lug pins into one of the two U-brackets that ship with it, and the bracket screws to the
+tab at the bottom of the leg head, keyed into a pocket.
+
+| Part | What it is (mm) |
+|---|---|
+| Tab (on the printed leg head) | 8 thick, 64 wide, from 250.5 to 285.5 from the beaker axis (the sleeve's inner face); top 238.1 under the shelf's underside |
+| Pocket in the tab | **12.1 × 8.1 × 1 deep**, centred 258.5 from the beaker axis (8.0 from the tab's inner end, 27.0 from the sleeve's face), its long side along x (parallel to the hinge) |
+| M3 hole and nut trap | Ø3.4 through the pocket's centre; a hex trap 5.7 across flats, 2.6 deep, in the tab's underside |
+| U-bracket (bought, Actuonix) | 11.5 outside, about 9.1 inside, 7.5 wide; Ø4.25 holes 9.1 above its base. Its base sits in the pocket, so the pin is 8.1 above the tab's top: 258.5 from the beaker axis and 230.0 under the shelf |
+| Bracket to tab | M3 × 12 button head (ISO 7380) from inside the U, through the bracket's base and the tab, into an M3 nut in the trap |
+| P16 to bracket | The lug between the cheeks on the #8-32 × 5/8 in screw and lock nut that ship with the P16 (an M4 × 16 and nyloc also fit the Ø4.25 holes) |
+
+**Assembly:** nut in the trap; bracket in the pocket with its holes along x; M3 screw down from inside the
+U; then the lug between the cheeks, the #8-32 screw through, and the lock nut snugged onto the cheeks and
+backed off about a quarter turn so the actuator pivots freely; last, the rod end into the clevis block.
+
+**Load path:** the P16 only pushes here (about 5–10 N). The pin carries it into the bracket, whose base
+bears on the pocket's floor; the pocket's walls take the sideways part, since the P16 leans 18.5–25°. The
+M3 only holds the bracket down.
+
+**Clearances** (2D, from Actuonix's outlines; the lug's corner radius and the housing's end are scaled
+from the drawing): the lug has about 0.55 mm each side in the U; the housing's end, about 4.6 mm from the
+pin, passes about 0.85 mm over the bracket's R3.75 ends at any lean, as in Actuonix's own use of the
+bracket; the M3 button head sits 1.05 mm under the lug at 25° lean.
+
+**What this changes in the 24 Nov leg:** only the tab's pocket, from 15.1 × 8.1 to 12.1 × 8.1. With the
+15.1 pocket the bracket could slide 1.8 mm each way along the pin.
+
+### Limits
+
+- **The plate** is PR #170's plate without its gears, arms and front wings, as before, not an export of
+  Ethan's Onshape plate (they matched to a median of 0.38 mm on 10 Nov). The back edge is the floor's rear
+  edge, straight across at 130 mm behind the hinge axis.
+- **The bracket's sheet (about 1.2 mm) and base hole** aren't dimensioned on Actuonix's drawing, and the
+  lug's corner radius and the housing's end are scaled from it. Measure a bracket before printing the tab.
+- **The joint's clearances** are worked out in 2D; the 3D leg checks of 24 Nov used the wider bracket.
+- **Not changed here:** the Onshape leg and clevis block (no API calls), and nothing was printed.
+
+**Files**
+- [`l4_details.py`](l4_details.py): the L4 block, the plate's holes, the joint, the checks and the exports,
+  in about 15 s. [`l4_details_figs.py`](l4_details_figs.py) draws the three sheets.
+- [`clevis-l4/`](clevis-l4/): `clevis_block_l4.step` (block frame: origin on the pad's top face above the
+  pin), `clevis_block_l4_print.stl` (flipped to print), `leg_tab_joint.step` (the tab, Actuonix's bracket
+  and the M3 screw and nut, in the leg frame).

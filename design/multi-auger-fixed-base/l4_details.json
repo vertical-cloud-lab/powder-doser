@@ -1,0 +1,506 @@
+{
+ "frame_block": "block frame: origin on the pad's top face straight above the pin; x along the pin (+x = the plate's plain side, away from the stepper), y along the plate (+y toward the back edge), z up",
+ "block": {
+  "overall": {
+   "x": 30.0,
+   "y": 26.0,
+   "z": 16.75
+  },
+  "pad": {
+   "x": 30.0,
+   "y": 26.0,
+   "thickness": 4.0,
+   "from_pin": [
+    -16.0,
+    10.0
+   ]
+  },
+  "measured_from_pad_rear_end": {
+   "pin": 10.0,
+   "screws": 20.0,
+   "pad_front_end": 26.0,
+   "lugs": [
+    3.0,
+    17.0
+   ]
+  },
+  "screws_from_pad_front_end": 6.0,
+  "pin_hole": {
+   "dia": 4.25,
+   "below_pad_top": 9.75,
+   "below_pad_underside": 5.75
+  },
+  "lugs": {
+   "t": 4.0,
+   "gap": 6.5,
+   "over_both": 14.5,
+   "width": 14.0,
+   "end_radius": 7.0,
+   "hang_below_pad": 12.75
+  },
+  "screw_holes": {
+   "dia": 3.4,
+   "x": [
+    -11.0,
+    11.0
+   ],
+   "apart": 22.0,
+   "from_pad_sides": 4.0
+  },
+  "nut_pockets": {
+   "af": 5.8,
+   "ac": 6.7,
+   "depth": 2.6,
+   "corners": "on +-y (flats face the pad's sides)",
+   "wall_to_pad_front": 2.65,
+   "wall_to_pad_front_24nov": 0.65,
+   "wall_to_pad_side": 1.1
+  },
+  "volume_cm3": 4.09,
+  "mass_g_pla": 5.1,
+  "changes": [
+   "pad 26 long instead of 24: from 16 ahead of the pin to 10 behind it (17 Nov: +-12; 24 Nov text: 14 ahead)",
+   "screw holes and nut pockets 10 ahead of the pin (17 Nov: on the pin's line)",
+   "nothing else: lugs, pin hole, hole and pocket sizes as on 17 Nov"
+  ]
+ },
+ "block_24nov_volume_cm3": 3.85,
+ "plate": {
+  "back_edge_behind_hinge": 130.0,
+  "back_edge_straight_across": [
+   -34.0,
+   34.0
+  ],
+  "side_edges_at_the_holes": [
+   -34.0,
+   34.0
+  ],
+  "new_holes": {
+   "dia": 3.4,
+   "x": [
+    -11.0,
+    11.0
+   ],
+   "from_back_edge": 20.0,
+   "behind_hinge": 110.0,
+   "centre_to_centre": 22.0,
+   "from_centre_line": 11.0,
+   "from_side_edges": 23.0,
+   "from_rear_bracket_holes": {
+    "along": 14.0,
+    "across": 13.0
+   }
+  },
+  "pin": {
+   "from_back_edge": 10.0,
+   "below_floor_underside": 9.75,
+   "behind_hinge": 120.0
+  },
+  "pad": {
+   "from_back_edge": [
+    0.0,
+    26.0
+   ],
+   "flush_with_back_edge": true
+  },
+  "rear_bracket_footprint_from_back_edge": [
+   0.0,
+   12.0
+  ],
+  "holes": [
+   {
+    "x": -24.0,
+    "y_behind_hinge": 42.33,
+    "dia": 3.4,
+    "from_back_edge": 87.67,
+    "used_by": "#203's tap bracket (-x); +x not used"
+   },
+   {
+    "x": 24.0,
+    "y_behind_hinge": 42.33,
+    "dia": 3.4,
+    "from_back_edge": 87.67,
+    "used_by": "#203's tap bracket (-x); +x not used"
+   },
+   {
+    "x": -24.0,
+    "y_behind_hinge": 58.33,
+    "dia": 3.4,
+    "from_back_edge": 71.67,
+    "used_by": "#203's tap bracket"
+   },
+   {
+    "x": 24.0,
+    "y_behind_hinge": 58.33,
+    "dia": 3.4,
+    "from_back_edge": 71.67,
+    "used_by": "#203's tap bracket"
+   },
+   {
+    "x": -11.0,
+    "y_behind_hinge": 110.0,
+    "dia": 3.4,
+    "from_back_edge": 20.0,
+    "used_by": "new: L4 clevis block"
+   },
+   {
+    "x": 11.0,
+    "y_behind_hinge": 110.0,
+    "dia": 3.4,
+    "from_back_edge": 20.0,
+    "used_by": "new: L4 clevis block"
+   },
+   {
+    "x": -24.0,
+    "y_behind_hinge": 124.0,
+    "dia": 3.4,
+    "from_back_edge": 6.0,
+    "used_by": "rear Flexible Bracket"
+   },
+   {
+    "x": 24.0,
+    "y_behind_hinge": 124.0,
+    "dia": 3.4,
+    "from_back_edge": 6.0,
+    "used_by": "rear Flexible Bracket"
+   },
+   {
+    "x": "+-11",
+    "y_behind_hinge": 95.0,
+    "dia": 3.4,
+    "from_back_edge": 35.0,
+    "used_by": "17 Nov position: not used by L4 (harmless if already drilled)"
+   }
+  ],
+  "over_the_holes": {
+   "auger_tube_above_floor_top_over_a_5_5mm_head": 19.86,
+   "screws_to_nearest_parts_mm": {
+    "Bracket (rear)": 5.25,
+    "Stepper (NEMA 11)": 13.99,
+    "Auger": 15.02,
+    "Stepper pinion": 37.6,
+    "Tap bracket (#203)": 39.92
+   }
+  }
+ },
+ "bracket": {
+  "u_bracket": {
+   "outside": 11.5,
+   "width": 7.5,
+   "pin_above_base": 9.1,
+   "hole": 4.25,
+   "sheet": 1.2,
+   "base_hole": 4.25,
+   "inside": 9.1
+  },
+  "lug": {
+   "t": 8.0,
+   "w": 10.0,
+   "end": 4.5,
+   "corner_r": 3.0,
+   "housing_from_pin": 4.6
+  },
+  "tab": {
+   "top": -238.1,
+   "t": 8.0,
+   "y0": 250.5,
+   "y1": 285.5,
+   "pocket_depth": 1.0,
+   "pocket_24nov": [
+    15.1,
+    8.1
+   ],
+   "pocket": [
+    12.1,
+    8.1
+   ],
+   "m3_d": 3.4,
+   "m3_nut_af": 5.7,
+   "m3_nut_h": 2.6,
+   "half": 32.0
+  },
+  "lean": {
+   "lean_min_deg": 18.49,
+   "lean_max_deg": 25.01
+  },
+  "checks": {
+   "lug_side_gap_each_side": 0.55,
+   "m3_head_to_lug_min": 1.05,
+   "housing_to_bracket_ends": 0.85,
+   "base_inside_below_pin": 7.9,
+   "pin_above_tab_top": 8.1,
+   "pocket_play_each_side": {
+    "x": 0.3,
+    "y": 0.3
+   },
+   "pocket_24nov_play_x": 1.8,
+   "pin_screw_grip": 11.5,
+   "pin_thread_past_bracket": 4.4
+  }
+ },
+ "checks": {
+  "rod_swing": {
+   "rod_from_plate_down_deg": {
+    "at_0": -25.0,
+    "at_90": 65.2,
+    "min": -25.0,
+    "max": 65.2,
+    "sign": "+ = toward the hinge, - = toward the plate's back edge"
+   },
+   "hub_and_rod_to_block_min": {
+    "mm": 1.5,
+    "at_tilt": 40.0
+   },
+   "tab_to_pad_min": {
+    "mm": 1.25,
+    "at_tilt": 80.0
+   },
+   "by_tilt": {
+    "0": {
+     "rod_from_plate_down_deg": -25.0,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "2.5": {
+     "rod_from_plate_down_deg": -21.6,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "5": {
+     "rod_from_plate_down_deg": -18.3,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "7.5": {
+     "rod_from_plate_down_deg": -15.1,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "10": {
+     "rod_from_plate_down_deg": -11.9,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "12.5": {
+     "rod_from_plate_down_deg": -8.8,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "15": {
+     "rod_from_plate_down_deg": -5.8,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "17.5": {
+     "rod_from_plate_down_deg": -2.8,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "20": {
+     "rod_from_plate_down_deg": 0.1,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "22.5": {
+     "rod_from_plate_down_deg": 3.0,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "25": {
+     "rod_from_plate_down_deg": 5.8,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "27.5": {
+     "rod_from_plate_down_deg": 8.5,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "30": {
+     "rod_from_plate_down_deg": 11.2,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "32.5": {
+     "rod_from_plate_down_deg": 13.9,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "35": {
+     "rod_from_plate_down_deg": 16.5,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "37.5": {
+     "rod_from_plate_down_deg": 19.0,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "40": {
+     "rod_from_plate_down_deg": 21.5,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "42.5": {
+     "rod_from_plate_down_deg": 24.0,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "45": {
+     "rod_from_plate_down_deg": 26.4,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "47.5": {
+     "rod_from_plate_down_deg": 28.8,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "50": {
+     "rod_from_plate_down_deg": 31.1,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "52.5": {
+     "rod_from_plate_down_deg": 33.5,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "55": {
+     "rod_from_plate_down_deg": 35.7,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "57.5": {
+     "rod_from_plate_down_deg": 38.0,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.26
+    },
+    "60": {
+     "rod_from_plate_down_deg": 40.2,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "62.5": {
+     "rod_from_plate_down_deg": 42.4,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "65": {
+     "rod_from_plate_down_deg": 44.6,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "67.5": {
+     "rod_from_plate_down_deg": 46.8,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "70": {
+     "rod_from_plate_down_deg": 48.9,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "72.5": {
+     "rod_from_plate_down_deg": 51.0,
+     "hub_to_block": 1.52,
+     "tab_to_pad": 1.25
+    },
+    "75": {
+     "rod_from_plate_down_deg": 53.1,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "77.5": {
+     "rod_from_plate_down_deg": 55.1,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "80": {
+     "rod_from_plate_down_deg": 57.2,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "82.5": {
+     "rod_from_plate_down_deg": 59.2,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.25
+    },
+    "85": {
+     "rod_from_plate_down_deg": 61.2,
+     "hub_to_block": 1.51,
+     "tab_to_pad": 1.26
+    },
+    "87.5": {
+     "rod_from_plate_down_deg": 63.2,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    },
+    "90": {
+     "rod_from_plate_down_deg": 65.2,
+     "hub_to_block": 1.5,
+     "tab_to_pad": 1.25
+    }
+   }
+  },
+  "base_and_leg": {
+   "clevis block": {
+    "to_base": {
+     "mm": 2.0,
+     "at_tilt": 0
+    },
+    "to_leg_head": {
+     "mm": 4.0,
+     "at_tilt": 0
+    }
+   },
+   "M3 x 10 screws": {
+    "to_base": {
+     "mm": 4.5,
+     "at_tilt": 0
+    },
+    "to_leg_head": {
+     "mm": 4.22,
+     "at_tilt": 0
+    }
+   },
+   "M3 nuts": {
+    "to_base": {
+     "mm": 3.25,
+     "at_tilt": 0
+    },
+    "to_leg_head": {
+     "mm": 4.2,
+     "at_tilt": 0
+    }
+   },
+   "M4 x 20 pin": {
+    "to_base": {
+     "mm": 4.25,
+     "at_tilt": 0
+    },
+    "to_leg_head": {
+     "mm": 4.25,
+     "at_tilt": 0
+    }
+   },
+   "M4 nyloc": {
+    "to_base": {
+     "mm": 4.75,
+     "at_tilt": 0
+    },
+    "to_leg_head": {
+     "mm": 4.75,
+     "at_tilt": 0
+    }
+   },
+   "pad_front_from_beaker_axis_at_0": 136.0,
+   "slot_start_from_beaker_axis": 134.0
+  }
+ },
+ "files": [
+  "clevis-l4/clevis_block_l4.step",
+  "clevis-l4/clevis_block_l4_print.stl",
+  "clevis-l4/leg_tab_joint.step"
+ ]
+}
