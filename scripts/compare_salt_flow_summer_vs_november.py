@@ -13,7 +13,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-OUT = "data/three-phase/2026-11-19_why-stalls"
+OUT = "data/stepped-tilt-trials/salt/2026-11-19_why-stalls"
 SUMMER, NOV = "#2a78d6", "#eb6834"          # validated categorical slots 1-2
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#e4e3df"
 GAIN_G, STALL_S = 0.002, 8.0                # stock bulk stall rule (phase 1)
@@ -78,8 +78,8 @@ for k, (ts, ms, rp) in sorted(by.items()):
                  longest_dry(ts, ms), "tube likely refilled, not weighed"))
 
 # --- November: the 12 stepped-tilt trials, bulk stage split by commanded angle
-for f in sorted(glob.glob("data/three-phase/2026-11-1*_salt_tilt-schedule*/launch*/trial_*.csv")):
-    sess = f.split("three-phase/")[1].split("/")[0]
+for f in sorted(glob.glob("data/stepped-tilt-trials/salt/2026-11-1*_salt_tilt-schedule*/launch*/trial_*.csv")):
+    sess = f.split("stepped-tilt-trials/salt/")[1].split("/")[0]
     tube = "new tube" if "new-auger" in sess else "old tube"
     day = sess[:10]
     if "50-30" in sess:
