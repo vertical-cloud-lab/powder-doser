@@ -22,8 +22,7 @@ on two mountings:
   floor  today's: the rod pin 45 mm below the hinge (the clevis block under the plate's floor), a mm
          behind it, the actuator hanging straight down under the shelf (mounts.py's kinematics).
   crank  a crank on the hinge axis beside the module, the actuator above the shelf pulling the crank
-         pin up, as in the other 23 Nov run's L6 (crank_drive.py on claude/issue-204-20261123-2326,
-         which places a P16-50 there).  The crank points (span/2) below the horizontal at 0 deg and as
+         pin up, as in L6 (crank_drive.py, 23 Nov, which places a P16-50 there).  The crank points (span/2) below the horizontal at 0 deg and as
          far above it at the end of the span, so the chord is vertical and the actuator hangs from a
          pivot straight above.
 

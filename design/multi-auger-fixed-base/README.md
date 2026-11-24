@@ -1113,6 +1113,8 @@ is taken as 95 g, a NEMA 11 as 110 g, a solenoid as 40 g, each auger holds
 | [`leg_room.py`](leg_room.py), [`leg_room.json`](leg_room.json) | Six layouts that make more room for the scale: legs splayed, P16s leaning out, a longer lever (P16-200), both, and a gearmotor on each hinge axis. Free diameter and front opening by depth, clearance checks over 0–90°, the HR-100A at every orientation; renders `legroom_*.png` |
 | [`actuator_size.py`](actuator_size.py), [`actuator_size.json`](actuator_size.json) | Do the actuators need to be that big? The module's load from its mass model; Actuonix's smaller actuators (P16, L16, L12, P8, PQ12) on a shorter lever under the floor or on a crank at the hinge; force margins, resolution, move times; clearance checks for the crank; renders `actuator_*.png` |
 | [`mount-deck/`](mount-deck/) | `deck_M1.step` and `deck_M2.step`: the lower decks with their posts, origin on the beaker axis, hinge axes at z = 0 |
+| [`new_scale.py`](new_scale.py), [`new_scale.json`](new_scale.json) | The new balance (Ethan's rough numbers, as two boxes) under every layout: the closest approach at every orientation and pan position, the room beside each side door and behind it, and behind the top door; renders `newscale_*.png` with [`new_scale_figs.py`](new_scale_figs.py) |
+| [`crank_drive.py`](crank_drive.py), [`crank_drive.json`](crank_drive.json) | L6: a P16-50 on a crank at each hinge, above the shelf. Kinematics, clearance checks over 0–90° against its own module, both neighbours and the base, and the base with its ears against the H2D's bed; renders `crank_drive.png` |
 | [`renders/`](renders/) | The figures above |
 
 ```bash
@@ -1131,6 +1133,8 @@ xvfb-run -a python clevis.py                # the clevis block: dimensions, chec
 python onshape_clevis.py                    # build the clevis block in a new Onshape document (needs the keys; about 25 calls)
 xvfb-run -a python mounts.py                # actuator mount options: decks, checks, figures (about 1 min)
 xvfb-run -a python leg_room.py             # more room for the scale: six layouts, checks, figures (about 11 min)
+python crank_drive.py                      # L6, the crank drive: kinematics and checks (about 1 min)
+xvfb-run -a python new_scale.py            # the new balance under every layout, figures (about 17 min)
 python actuator_size.py                     # smaller actuators: load, sizing, crank checks, figures (about 4 min)
 ```
 
@@ -1329,6 +1333,195 @@ HR-100A):
 - **Run time:** `xvfb-run -a python leg_room.py` takes about 11 minutes. `--figures-only` redraws the
   charts from `leg_room.json`.
 
+## The new balance: fitting the tri-star over it with a side door free (added 23 Nov)
+
+Ethan gave rough dimensions for the balance the doser will be built around, and asked three things:
+which balance the earlier checks were planned for, what has to change for the tri-star to fit easily over
+the new one with room to open at least one side door while keeping the linear actuators, and whether the
+earlier answers still hold. [`new_scale.py`](new_scale.py) fits the new balance under every layout so far
+and two new ones, [`crank_drive.py`](crank_drive.py) designs and checks the new drive (L6), and
+[`new_scale.json`](new_scale.json) and [`crank_drive.json`](crank_drive.json) hold the numbers.
+
+**The balance the earlier checks used** is the lab's A&D HR-100A, traced from A&D's drawing
+(`scale_room.py`, 21 Nov):
+
+| | A&D HR-100A (10–21 Nov) | New balance (Ethan, 23 Nov, rough) |
+|---|---|---|
+| Overall | 198 wide × 294 deep × 315 tall (290 with the lid off) | base 190 wide × 260 long; 320 tall |
+| Around the pan | a round breeze break, Ø186 across its door frames (Ø156 inside), from 72 to 290 mm up | an enclosure 183 wide × 240 long |
+| Pan | Ø90, 86.5 mm up; its centre 167 mm behind the display's front edge | not known; assumed centred in the enclosure |
+| Other | a full-height rear column reaching 127 mm behind the pan centre; a lid with a front handle | not known; the enclosure is assumed to start 90 mm up |
+| Doors | curved side doors (open to 105 mm from the pan centre); the lid swings out 270 mm to the left | sliding side doors on both long sides, assumed; a top door |
+
+![The HR-100A and the new balance](renders/newscale_dims.png)
+
+The new balance is a little smaller than the HR-100A on the bench, but above its base it takes far more
+room: the HR-100A's breeze break fits in a Ø186 circle, while a 183 × 240 box is 302 mm corner to corner.
+
+**How it was checked.**
+- The balance is two boxes: the base (190 × 260, its back flush with the enclosure's, from the bench to
+  90 mm) and the enclosure (183 × 240, from 90 to 320 mm). The real one has rounder corners, so this is
+  conservative.
+- The pan centre sits on the beaker axis. The baseline has it centred in the enclosure (120 mm behind
+  its front); 80–160 mm is swept as well.
+- The balance is turned in 5° steps, and every actuator swept over 0–90° in 5° steps.
+- **Fits easily** means 10 mm between the balance and everything under the shelf (2 mm is the
+  mechanism's own target).
+- **Side door, reach-in:** a clear space beside the door, as long as the enclosure and from 90 to 320 mm
+  up, at least 100 mm deep (a hand with a beaker).
+- **Side door, slide-back:** if the door slides back past the enclosure's back, a strip 20 mm wide beside
+  that side, 200 mm long behind the enclosure.
+- **Top door:** the clear length behind the enclosure's top for it to slide back into. It has to be open
+  while dosing.
+
+| Layout | Shelf | Clears the balance by ¹ | Best side door ²: reach-in / slide-back | Top door ³ | Pan 20–40 mm off centre ⁴ |
+|---|---|---|---|---|---|
+| **L0** Today: S2, P16-150s straight down | 340 | collides: 23 mm into the actuators | — | — | collides (11 mm) |
+| L0 with tilts kept to 60° | 340 | collides (6 mm) | — | — | 3 mm, no door |
+| L1 Legs splayed | 340 | collides (23 mm) | — | — | collides |
+| **L2** P16-150s leaning 25° out | 340 | 6 mm | none: 21 mm beside it at most | — | 15 mm, no door |
+| L2 with the shelf at 380 | 380 | 22 mm | none: 37 mm at most | — | 28 mm, no door |
+| L3 Longer lever, P16-200 | 340 | collides (6 mm) | — | — | 4 mm, no door |
+| L3 with tilts kept to 60° | 340 | 24 mm | none: 30 mm at most | — | 24 mm, no door |
+| **L4** Lever + lean, P16-200 | 340 | 24 mm (11 turned for the door) | right: clear / **18** | 10 | 24 mm, no door |
+| L4 with the shelf at 380 | 380 | 48 mm (20 turned for the door) | left: clear / **88** | 36 | a full door in 6–12 of 72 orientations |
+| L5 Gearmotor on each hinge, S2's posts | 340 | 26 mm | none: 49 mm at most | — | a full door only with the pan 20 mm forward of centre |
+| L5 with its posts at r 247 | 340 | 26 mm | both: 113 / clear | 117 | a full door at every orientation |
+| **T0** Today's P16-150s above the balance (tall stand) | 550 | 13 mm | left: clear / clear | 115 | a full door at every orientation |
+| **L6** P16-50 on a crank, above the shelf | 340 | 26 mm | both: 113 / clear | 117 | a full door at every orientation |
+
+¹ The closest the balance comes to anything under the shelf (actuators at any tilt, hangers, legs), at
+its best orientation, with the pan centred in the enclosure. 10 mm counts as fitting easily.
+² With the balance turned for the best door: the clear depth beside the door (100 mm wanted) / the clear
+length behind the enclosure's back for a door that slides back (200 mm wanted). "clear": nothing there.
+³ The clear length behind the enclosure's top for the top door to slide back into.
+⁴ The pan centre 80, 100, 140 or 160 mm behind the enclosure's front instead of 120.
+
+![Each layout with the new balance at its best orientation](renders/newscale_plans.png)
+
+**What it takes.**
+- **Height: the shelf's underside at 340 mm.** S2 can be set there, and it leaves 20 mm over the
+  balance's 320 mm top.
+- **The actuators can't hang beside the balance.** With P16s under the shelf, one is always beside or
+  behind it:
+  - **Straight down (L0, L1),** the balance collides at every orientation, even with tilts kept to 60°.
+  - **Leaning out or on a longer lever (L2–L4),** it fits. The best door comes with the balance turned
+    so that one side faces a gap between modules. You can reach through that door, but the next
+    module's P16 sits 18 mm behind the balance's back corner. A door that slides back past the
+    enclosure's back can't open, and the top door has only 10 mm to slide into.
+  - **Raising the shelf to 380 mm** helps the leaning layouts fit but doesn't free a door. L2 at 380 mm
+    clears by 22 mm but still has at most 37 mm beside a door. L4 at 380 mm keeps its reach-in door,
+    with 88 mm of slide-back and 36 mm for the top door; it gets a full door only if the pan sits
+    20–40 mm off centre.
+- **Two ways keep a linear actuator and free the doors.** Both take the actuators out of the space
+  beside the balance:
+  - **L6:** a P16-50 on a crank at each hinge, above the shelf (next section). At 340 mm, nothing but
+    the legs is under the shelf.
+  - **T0:** today's P16-150s, clevis blocks and hangers, unchanged, on a stand tall enough that they end
+    above the balance. The shelf goes to 550 mm, because the P16s and their hangers reach 217 mm
+    below it. The outlets are then about 265 mm above the balance, so the powder needs a funnel down
+    to the vessel, and the stand is tall and top-heavy.
+- **Either way, the legs go out to r 247 mm** (L2's outrigger arms; feet within 546 × 473 mm).
+  - The balance then clears everything by 26 mm (13 mm on T0, where the hangers end just above it).
+  - Both side doors are free, with 109–113 mm beside each and nothing behind.
+  - The balance can face the user, within 5°, wherever its pan is (80–160 mm from the front). The top
+    door then has 75–157 mm to slide into: the further back the pan, the more.
+  - Posts closer in block a door. With S2's posts (L5), a door never has more than 49 mm beside it with
+    the pan centred.
+- **My pick is L6.** T0 needs no new drive, but a 550 mm stand and a 265 mm drop are worse to live
+  with than a crank and a post per module. L4 is enough only if the side doors don't slide back past
+  the balance's back and the top glass can come off.
+
+### L6: a P16-50 on a crank at each hinge, above the shelf
+
+The idea is L5's (a drive on each hinge axis, so nothing hangs under the shelf), but with a linear
+actuator instead of a gearmotor. Beside each module's +X side, past 64 mm from its centre line and behind
+its hinge line, nothing passes at any tilt: not the module itself (its parts reach 63.6 mm), not its
+neighbour, not the base. Everything goes there.
+
+Dimensions in the module's frame: x along the hinge axis from the module's centre line (toward its +X
+side, the tap bracket's side), y behind the hinge axis, z above it.
+
+| Part | What and where |
+|---|---|
+| Shaft | Ø8, keyed into the plate's +X knuckle in place of the M5 hinge screw, through the +X tower, out to x = 75 (as L5's) |
+| Crank | 6 thick at x = 67.5–73.5, Ø16 hub on the shaft, 14 wide arm, pin 33 from the hinge axis. It turns with the plate: at 0° it points 45° down and back, at 90° 45° up and back |
+| Crank pin | M4 shoulder screw from the crank out to x = 86, through the P16's rod end |
+| Actuator | Actuonix P16-50 (50 mm stroke, 105 mm closed hole to hole), hanging in the plane x = 79. Its rear lug is pinned in its own U-bracket at y = 28, z = 130 (167 above the shelf's top) |
+| Post and arm | Post 20 × 16 at x = 69–89, y = 62–78, from the shelf up to z = 147; an 8 mm arm from it forward over the pivot, with the U-bracket screwed underneath |
+| Ear | The shelf grows a 6 mm ear under each post (x = 40–95, y = 46–94) |
+
+In the station, the pivot is 99 mm from the beaker axis and the post 129 mm, both in the gap next to the
+module's +X side. Each gap holds one actuator.
+
+**Kinematics.**
+- **Stroke:** the module tilts as the rod retracts. It is out 48.4 mm at 0°, 33.6 at 30°, 25.1 at 45°,
+  16.5 at 60° and 1.8 at 90°. That uses 46.6 of the 50 mm, with 1.6–1.8 mm to spare at each end.
+- **Swing:** the actuator stays within 3° of vertical.
+- **Force:** at most 29 N, at 90°, with the upper torque estimate (0.65 N·m). Actuonix rates the 22:1
+  gearbox at 40 N at peak power (50 N maximum, 75 N back-drive); the 64:1 at 80 N (90 N, 200 N), so
+  64:1 gives the margin.
+- **Resolution:** 0.39–0.58 mm of stroke per degree, against 1.0–1.8 for the P16-150 under the plate.
+  The P16-50's potentiometer spans its 50 mm stroke, so the counts per degree come out about the same.
+  The gearbox's backlash (0.3 mm on Actuonix's T16 datasheet) is worth 0.5–0.8° of tilt instead of
+  0.2–0.3°.
+- **Holding:** like the P16-150, it holds its position with the power off: the 29 N is well under the
+  75 N back-drive force.
+
+**Checks** over 0–90° in 5° steps (2 mm target):
+- **Its own module:** 6.3 mm, the ear to the plate's floor at 0°. Everything else is further away.
+- **The neighbour its +X side faces:** 15.5 mm (the shaft end to that module's plate), at every pair of
+  tilts. The other neighbour is 47.9 mm away.
+- **The base:** 13.3 mm (the crank).
+- **The base with its three ears** is 320.5 × 319.3 mm, so it still fits one H2D nozzle (325 × 320), but
+  with only 0.7 mm to spare. The ears could also be printed separately and screwed on.
+
+**What it changes:**
+- Each module loses its P16-150, clevis block and M4 pin. The plate doesn't need the clevis block's two
+  holes, and the shelf doesn't need its slots.
+- Each module gains a shaft, a crank and a P16-50, plus a post, an arm and an ear (placeholders).
+- The legs only have to clear the balance. With L2's outrigger posts (r 247), both side doors and the top
+  door are free at every orientation. With posts where S2's are (r 178), a door never has more than
+  49 mm beside it with the pan centred.
+
+![L6's crank and P16-50 at 0, 45 and 90°](renders/crank_drive.png)
+
+![The three layouts that keep linear actuators, with the new balance](renders/newscale_options.png)
+
+**Do the earlier answers still hold for the new balance?**
+
+| Earlier answer | With the new balance |
+|---|---|
+| The tri-star itself: spacing, outlets, #203's tap bracket, the plate without gears (7–13 Nov) | Unchanged |
+| The one-piece base, 320.5 × 280.2 mm (13 Nov) | Unchanged for every layout except L6, which adds an ear per module (320.5 × 319.3, still one H2D nozzle) |
+| Clevis block, its holes in the plate and the P16-150's stroke table (12–20 Nov) | Hold for today's geometry and T0. L2 moves the pin 3.5 mm nearer the hinge and L4 to 120 mm on a tail, so the holes move. L6 doesn't use them |
+| S2's height, 217–359 mm (20 Nov) | Fine: set it to 340 mm, 20 mm over the balance |
+| The room under S2: Ø190 between the P16s at any tilt, Ø233 parked (21 Nov) | Still true, but this balance needs more: it collides with today's P16s at every orientation |
+| The HR-100A under S2: rear column into a gap, lid off (21 Nov) | Only for the HR-100A |
+| `leg_room.py`'s six layouts (21 Nov) | L0, L1 and L3 collide (L3 fits only with tilts kept to 60°). L2 and L4 fit, but no side door has both reach-in and slide-back room. L5 (gearmotor) frees the doors with its posts out at r 247 |
+| The M1 deck (20 Nov) | Doesn't work here: with the shelf at 340 mm the deck sits about 120 mm up, level with the enclosure, and the balance (302 mm corner to corner) can't pass through its Ø224 opening |
+| Stands S1, S3, S4 (20 Nov) | S1 is too low (217 mm). S3 (372 mm) and S4 are tall enough, but with today's P16s the balance still collides, and S4's rod stands in a gap a door would face |
+| Weighing while dosing: a beaker on a 180 mm riser up through the HR-100A's top (20 Nov) | Needs redoing. With the shelf at 340 mm, the outlets are 372–383 mm up, 50–65 mm above the enclosure's top. A riser on the pan that brings the vessel up to the open top door, or a funnel hung from the shelf, closes that gap. On T0 the outlets are about 265 mm above the top |
+
+**What I need to firm this up**
+- the make and model, so the next run can use the maker's drawing;
+- where the pan's centre is, from the enclosure's front and from one side, and how high the base is;
+- how the side doors open: do they slide back past the enclosure's back, and how far;
+- whether the top door slides back or lifts off.
+
+**Limits**
+- The balance is two boxes from rough numbers. The pan position, the base height and the doors are
+  assumptions.
+- The fast pass compares surface samples (1.5–2 mm apart) with the balance's exact boxes.
+- L6's crank, shaft, post, arm and ear, T0's tall posts, and every leg are placeholders.
+- The P16-50's closed length is taken as 105 mm hole to hole, as RobotShop lists the P16-50-22-12-P
+  (the stroke + 47 mm rule of the P16-100 and P16-150 would give 97 mm). Check it against Actuonix's
+  drawing: at 97 mm, the pivot comes down 8 mm.
+- Not analysed: stiffness and ringing under the tapper, especially on T0's tall stand.
+- Nothing was modelled in Onshape, printed or ordered.
+- Run time: `xvfb-run -a python new_scale.py` takes about 17 minutes; `--figures-only` redraws the figures.
+  `python crank_drive.py` takes about 1 minute.
+
 ## Do the actuators need to be that big? (added 24 Nov)
 
 Ethan asked whether the actuators need to be as big as the P16-150s in the renders.
@@ -1361,9 +1554,9 @@ stroke, and the stroke comes from where the rod pins to the plate.
   forward shortens the lever only so far. Nearer than 40 mm behind the hinge, the actuator would stand in
   the vessel's way. With the pin 48.5 mm behind the hinge (66 mm from it), 0–90° still needs 94 mm of rod,
   so a 100 mm stroke.
-- **On a crank on the hinge axis, beside the module.** This is the other 23 Nov run's L6
-  (`crank_drive.py` on branch `claude/issue-204-20261123-2326`, which puts a P16-50 there). The crank can
-  be any length:
+- **On a crank on the hinge axis, beside the module.** This is L6 from the section above
+  ([`crank_drive.py`](crank_drive.py)), which uses a P16-50 on a 33 mm crank. The crank can be any
+  length:
   - At 0° it points 45° below horizontal, and at 90° 45° above, so the pin's path has a vertical chord.
   - The actuator hangs from a pivot straight above the pin, on a post standing on the shelf, and pulls
     the pin up as the module tilts.
@@ -1449,9 +1642,11 @@ I checked four of the crank-mounted ones in 3D, laid out as in L6:
   from the beaker axis. That is inside the new scale's enclosure footprint (183 mm wide, so its sides are
   about 90 mm from a centred pan). So the shelf would have to clear the scale's 320 mm top by the
   actuator's hang plus its bracket: about 427 mm for a P8-50 under the floor (0–45°)
-  and 477–494 mm for a 100 mm stroke (0–90°). With nothing under the shelf, 340 mm is enough.
-- **On a crank, nothing hangs under the shelf.** The shelf can then sit just above the scale, and only the
-  legs have to fit round it. The other run is fitting that layout (L6) to the new scale.
+  and 477–494 mm for a 100 mm stroke (0–90°). The section above's T0 does the same for today's P16-150s,
+  with the shelf at 550 mm. With nothing under the shelf, 340 mm is enough.
+- **On a crank, nothing hangs under the shelf.** The section above found that, with the shelf at 340 mm and
+  only L6's legs under it, the new balance clears by 26 mm and both side doors and the top door are free.
+  That holds whichever crank-mounted actuator is used, since none of them reaches under the shelf.
 
 ### Controls
 
@@ -1471,6 +1666,11 @@ I checked four of the crank-mounted ones in 3D, laid out as in L6:
 - **Outlines.** The actuators are drawn from their dimension drawings: housing, tube, rod and end holes,
   not their STEP files.
 - **The load is modelled, not measured.** Weigh a loaded module and find its balance point to confirm it.
-- **The crank layout** uses the other run's L6 geometry. The post, arm and shaft are its placeholders and
-  aren't checked here.
+- **The crank layout** follows L6 (`crank_drive.py`): the same crank and actuator plane, with the pivot
+  straight above the pin (L6 puts it 4.3 mm further back). The post, arm and shaft aren't in this check;
+  `crank_drive.py` checks them for the P16-50.
+- **The P16-50's length.** L6 takes it as 105 mm closed, as one RobotShop listing gives. This section uses
+  97 mm: stroke + 47 mm, as for the P16-100 and P16-150 in #202, and as another RobotShop listing gives.
+  If it is 105 mm, the P16-50 stands 8 mm taller on the crank and hangs 8 mm lower under the floor, and
+  the L12-50 (102 mm) is the shorter of the two.
 - Nothing was bought, printed or modelled in Onshape.
