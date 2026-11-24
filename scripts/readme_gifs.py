@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Fetch the README's animations from the branches they were made on.
 
-Every GIF in ``docs/readme/gifs/`` was first posted on an issue or PR and
-lives on that PR's branch, which is not merged.  This script downloads each one
+Every GIF in ``docs/readme/gifs/`` but one was first posted on an issue or PR
+and lives on that PR's branch, which is not merged.  (The exception,
+``al4047_claude_dose.gif``, is made from the project page's teaser by
+``scripts/readme_teaser_gif.py``.)  The README now shows only that GIF and
+``three_phase_dose.gif``; the rest are kept for reuse.  This script downloads each one
 from the commit it was posted at, so the README keeps working after those
 branches are deleted, and shrinks the larger ones with gifsicle so the README
 stays quick to load.  One GIF is cut from an MP4 on a PR branch (CLIPS), which

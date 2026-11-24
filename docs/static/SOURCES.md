@@ -51,5 +51,11 @@ ffmpeg -i assembly_steps.gif -an -vf "fps=15,scale=1280:-2:flags=lanczos" -c:v l
 ```
 
 The captions under Figs. 1–7, S1 and S4 and Table 1 are copied from the
-README on that branch, which takes them from #209's `CAPTIONS.md`. If the
-README's figures or captions change, update both.
+README on that branch, which takes them from #209's `CAPTIONS.md`. The README
+has since been cut down to a pointer to this page, so the page is now the
+only place they are kept up to date (the README with every figure is at
+[`bf3f87a`](https://github.com/vertical-cloud-lab/powder-doser/blob/bf3f87a/README.md)).
+The README shows this page's teaser as a GIF,
+`docs/readme/gifs/al4047_claude_dose.gif`, which
+[`scripts/readme_teaser_gif.py`](../../scripts/readme_teaser_gif.py) makes from
+`videos/teaser_al4047_dose.mp4`; re-run it if the teaser changes.

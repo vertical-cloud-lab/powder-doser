@@ -1,6 +1,19 @@
-# Animations in the README
+# Animations for the README
 
-Every GIF here was made on an issue or PR whose branch isn't merged (one,
+The README shows two of these, [`al4047_claude_dose.gif`](al4047_claude_dose.gif)
+and [`three_phase_dose.gif`](three_phase_dose.gif), and points to the
+[project page](https://vertical-cloud-lab.github.io/powder-doser/) for the
+rest. The others were in the README as merged in
+[#217](https://github.com/vertical-cloud-lab/powder-doser/pull/217)
+([`bf3f87a`](https://github.com/vertical-cloud-lab/powder-doser/blob/bf3f87a/README.md))
+and are kept here to reuse.
+
+[`scripts/readme_teaser_gif.py`](../../../scripts/readme_teaser_gif.py) makes
+`al4047_claude_dose.gif` from the project page's teaser,
+[`docs/static/videos/teaser_al4047_dose.mp4`](../../static/videos/teaser_al4047_dose.mp4),
+because GitHub doesn't play a video from the repository inside a README.
+
+Every other GIF here was made on an issue or PR whose branch isn't merged (one,
 `loading_al4047.gif`, is cut from an MP4 there). [`scripts/readme_gifs.py`](../../../scripts/readme_gifs.py) fetches
 each one from the commit it was posted at and shrinks the larger ones with
 gifsicle (`-O3 --lossy=30`, and a narrower width where one is listed), so the
@@ -8,6 +21,7 @@ README keeps working if those branches are deleted.
 
 | GIF | What it shows | Made on | Source (commit: path) |
 |---|---|---|---|
+| [`al4047_claude_dose.gif`](al4047_claude_dose.gif) | Claude doses 8 g of Al 4047 for an atomizer charge (30 Sep 2026): left, the phone's screen recording of the #166 thread, with the follow-up to Claude typed after a clog; right, the fixed camera over the balance. The teaser from 7.2 s to the end, without the auger being fitted (720 px wide, 15 fps) | [#215](https://github.com/vertical-cloud-lab/powder-doser/pull/215) ([#166](https://github.com/vertical-cloud-lab/powder-doser/pull/166), [#174](https://github.com/vertical-cloud-lab/powder-doser/pull/174)) | [`873325b`: `docs/static/videos/teaser_al4047_dose.mp4`](https://github.com/vertical-cloud-lab/powder-doser/blob/873325b/docs/static/videos/teaser_al4047_dose.mp4) |
 | [`assembly.gif`](assembly.gif) | The doser assembled in CAD in 19 steps, with each step's parts highlighted in the bill of materials (numbered as in SI Fig. S4) | [#170](https://github.com/vertical-cloud-lab/powder-doser/pull/170) | [`7f5b3b7`: `cad/full-assembly/renders/assembly_steps.gif`](https://github.com/vertical-cloud-lab/powder-doser/blob/7f5b3b7/cad/full-assembly/renders/assembly_steps.gif) |
 | [`doser_motion.gif`](doser_motion.gif) | Tilt, turn and tap, close up on the CAD (scaled to 800 px wide) | [#170](https://github.com/vertical-cloud-lab/powder-doser/pull/170) | [`7f5b3b7`: `cad/full-assembly/renders/doser_motion.gif`](https://github.com/vertical-cloud-lab/powder-doser/blob/7f5b3b7/cad/full-assembly/renders/doser_motion.gif) |
 | [`three_phase_dose.gif`](three_phase_dose.gif) | A 0.5 g salt dose with the optimizer's recommended settings (`bo-005`), replayed on the CAD with the logged mass (scaled to 960 px wide) | [#175](https://github.com/vertical-cloud-lab/powder-doser/pull/175) | [`ff074df`: `docs/optimization/slides/procedure/procedure_annotated.gif`](https://github.com/vertical-cloud-lab/powder-doser/blob/ff074df/docs/optimization/slides/procedure/procedure_annotated.gif) |

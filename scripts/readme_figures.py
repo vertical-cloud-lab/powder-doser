@@ -15,6 +15,10 @@ first gap of 15 px or more is the space between the figure and its caption.
 
 PREVIEW_DIR defaults to paper/v2/preview and OUT_DIR to docs/readme.  Needs
 Pillow and NumPy.  Check each output by eye after a re-run.
+
+The README no longer shows these figures: it points to the project page
+(``docs/index.html``), which has its own copies in ``docs/static/images/``.
+To update the page's figures, pass that folder as OUT_DIR.
 """
 
 from __future__ import annotations
