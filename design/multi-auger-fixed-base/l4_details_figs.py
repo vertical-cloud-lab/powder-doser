@@ -623,8 +623,8 @@ def joint_sheet(res):
             # the actuator's local +y (housing's wide side) faces outward (+y), its axis leans in
             q = np.column_stack([PIN[1] + q[:, 0], pz + q[:, 1]])
             _poly(ax, q, "none", ec=col, lw=1.0, z=6, ls=ls)
-    ax.text(PIN[1] - 26.0, pz + 30.0, f"P16-200 at {L4.LEAN['lean_max_deg']:.0f}° (solid)\nand {L4.LEAN['lean_min_deg']:.1f}° (dashed)",
-            fontsize=8.5, ha="left", va="center", zorder=9, bbox=dict(boxstyle="square,pad=0.1", fc="white", ec="none"))
+    ax.text(yi + 6.0, pz + 40.0, f"P16-200 at {L4.LEAN['lean_max_deg']:.0f}° (solid)\nand {L4.LEAN['lean_min_deg']:.1f}° (dashed)",
+            fontsize=8.5, ha="right", va="center", zorder=9, bbox=dict(boxstyle="square,pad=0.1", fc="white", ec="none"))
     _cen(ax, [PIN[1]] * 2, [tb - 3, pz + 8])
     _cen(ax, [PIN[1] - 7, PIN[1] + 7], [pz, pz])
     # dims along y
