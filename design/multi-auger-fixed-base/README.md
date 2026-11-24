@@ -1553,7 +1553,8 @@ stroke, and the stroke comes from where the rod pins to the plate.
 - **Under the floor, as today.** The pin sits 45 mm below the hinge (under the clevis block), so moving it
   forward shortens the lever only so far. Nearer than 40 mm behind the hinge, the actuator would stand in
   the vessel's way. With the pin 48.5 mm behind the hinge (66 mm from it), 0–90° still needs 94 mm of rod,
-  so a 100 mm stroke.
+  so a 100 mm stroke. That far forward, the clevis block sits under #203's tap bracket (37–67 mm behind
+  the hinge), so its screws go through the bracket's base too, as for M2 (20 Nov).
 - **On a crank on the hinge axis, beside the module.** This is L6 from the section above
   ([`crank_drive.py`](crank_drive.py)), which uses a P16-50 on a 33 mm crank. The crank can be any
   length:
