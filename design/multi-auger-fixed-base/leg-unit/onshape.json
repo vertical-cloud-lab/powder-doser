@@ -1,0 +1,303 @@
+{
+ "what": "One tri-star leg unit (leg_unit.json) as a native Onshape Part Studio, built through the REST API",
+ "document": {
+  "did": "c614f70cb5a80bf1f0bb82ce",
+  "wid": "8e3eed9e046f6bb91f54f3cb",
+  "eid": "bf06f2f90efaeb6961f0f6b9",
+  "url": "https://cad.onshape.com/documents/c614f70cb5a80bf1f0bb82ce/w/8e3eed9e046f6bb91f54f3cb/e/bf06f2f90efaeb6961f0f6b9",
+  "owner": "the account the API key belongs to (Ethan's); private until shared"
+ },
+ "tab": "Leg unit",
+ "parts": [
+  {
+   "partId": "JHD",
+   "name": "Leg head"
+  },
+  {
+   "partId": "JrD",
+   "name": "Leg tube"
+  },
+  {
+   "partId": "J3D",
+   "name": "Leg foot"
+  }
+ ],
+ "features": [
+  {
+   "name": "Head profile",
+   "type": "newSketch",
+   "featureId": "FyjIrFXWB7AHmID_0",
+   "status": "OK"
+  },
+  {
+   "name": "Leg head",
+   "type": "extrude",
+   "featureId": "F5mFUEblUfmotan_0",
+   "status": "OK"
+  },
+  {
+   "name": "Arm window and screw holes",
+   "type": "newSketch",
+   "featureId": "FCxV4PUyfGcKm42_1",
+   "status": "OK"
+  },
+  {
+   "name": "Arm cut",
+   "type": "extrude",
+   "featureId": "FKFIzu0uLFFLQww_1",
+   "status": "OK"
+  },
+  {
+   "name": "Arm underside",
+   "type": "cPlane",
+   "featureId": "FqDjGT5Idoudc6j_1",
+   "status": "OK"
+  },
+  {
+   "name": "Nut traps sketch",
+   "type": "newSketch",
+   "featureId": "F2Efy6FhrkalMj6_1",
+   "status": "OK"
+  },
+  {
+   "name": "Nut traps",
+   "type": "extrude",
+   "featureId": "FtSSZ6DtD2SxLYa_1",
+   "status": "OK"
+  },
+  {
+   "name": "Sleeve bottom",
+   "type": "cPlane",
+   "featureId": "Fnole1dN8apWktk_1",
+   "status": "OK"
+  },
+  {
+   "name": "Bore sketch",
+   "type": "newSketch",
+   "featureId": "Fw8mUwUgxblF4Uh_1",
+   "status": "OK"
+  },
+  {
+   "name": "Bore",
+   "type": "extrude",
+   "featureId": "F7RDZ24DJJhxtSL_1",
+   "status": "OK"
+  },
+  {
+   "name": "Height pin hole sketch",
+   "type": "newSketch",
+   "featureId": "Fj3YEe20GZFd1Er_1",
+   "status": "OK"
+  },
+  {
+   "name": "Height pin hole",
+   "type": "extrude",
+   "featureId": "FOsZQikdk47ZfSu_1",
+   "status": "OK"
+  },
+  {
+   "name": "Tab top",
+   "type": "cPlane",
+   "featureId": "FfCcdgMYGurQnBH_1",
+   "status": "OK"
+  },
+  {
+   "name": "Bracket pocket sketch",
+   "type": "newSketch",
+   "featureId": "FPhfa5vWpBTTYMV_1",
+   "status": "OK"
+  },
+  {
+   "name": "Bracket pocket",
+   "type": "extrude",
+   "featureId": "FDekuE8rLxw5S3d_1",
+   "status": "OK"
+  },
+  {
+   "name": "Bracket screw hole sketch",
+   "type": "newSketch",
+   "featureId": "FEzvXy6WZiHTUm4_1",
+   "status": "OK"
+  },
+  {
+   "name": "Bracket screw hole",
+   "type": "extrude",
+   "featureId": "FJ1tnweb887P3Iw_1",
+   "status": "OK"
+  },
+  {
+   "name": "Tab underside",
+   "type": "cPlane",
+   "featureId": "FAuAslJPGq2pjga_1",
+   "status": "OK"
+  },
+  {
+   "name": "Bracket nut trap sketch",
+   "type": "newSketch",
+   "featureId": "FjBbQOePv3mcZ0c_1",
+   "status": "OK"
+  },
+  {
+   "name": "Bracket nut trap",
+   "type": "extrude",
+   "featureId": "Fs0QFfcavtYbFnP_1",
+   "status": "OK"
+  },
+  {
+   "name": "Tube bottom",
+   "type": "cPlane",
+   "featureId": "F46Kx3B45hX7IF7_1",
+   "status": "OK"
+  },
+  {
+   "name": "Tube outline",
+   "type": "newSketch",
+   "featureId": "F7ltcyIaFDLHCIS_1",
+   "status": "OK"
+  },
+  {
+   "name": "Leg tube",
+   "type": "extrude",
+   "featureId": "FD4FIBZyquM5pbP_1",
+   "status": "OK"
+  },
+  {
+   "name": "Tube bore sketch",
+   "type": "newSketch",
+   "featureId": "F6XL7CRFyDfo8ec_2",
+   "status": "OK"
+  },
+  {
+   "name": "Tube bore",
+   "type": "extrude",
+   "featureId": "FZK9UUH8P1T5DZO_2",
+   "status": "OK"
+  },
+  {
+   "name": "Tube pin holes sketch",
+   "type": "newSketch",
+   "featureId": "FLpHuB8atEvgKYl_2",
+   "status": "OK"
+  },
+  {
+   "name": "Tube pin holes",
+   "type": "extrude",
+   "featureId": "FkDlPawEddJIcDu_2",
+   "status": "OK"
+  },
+  {
+   "name": "Bench",
+   "type": "cPlane",
+   "featureId": "FPeNG38xsC0Uhik_2",
+   "status": "OK"
+  },
+  {
+   "name": "Foot pad sketch",
+   "type": "newSketch",
+   "featureId": "FY3KYZHFaKAhfWY_2",
+   "status": "OK"
+  },
+  {
+   "name": "Leg foot",
+   "type": "extrude",
+   "featureId": "FSQSUC5sYXsw0uq_2",
+   "status": "OK"
+  },
+  {
+   "name": "Foot socket sketch",
+   "type": "newSketch",
+   "featureId": "FDWxZnnaG9q9V40_3",
+   "status": "OK"
+  },
+  {
+   "name": "Foot socket",
+   "type": "extrude",
+   "featureId": "FBcky4qoTU40IdY_3",
+   "status": "OK"
+  },
+  {
+   "name": "Foot socket bore sketch",
+   "type": "newSketch",
+   "featureId": "FgUQccdtA7lrQVc_3",
+   "status": "OK"
+  },
+  {
+   "name": "Foot socket bore",
+   "type": "extrude",
+   "featureId": "FuaC9XLwLTYU1r9_3",
+   "status": "OK"
+  },
+  {
+   "name": "Foot screw hole sketch",
+   "type": "newSketch",
+   "featureId": "FS0tLVtHVKEGEvo_3",
+   "status": "OK"
+  },
+  {
+   "name": "Foot screw hole",
+   "type": "extrude",
+   "featureId": "F3j51vJCpbtzu9I_3",
+   "status": "OK"
+  }
+ ],
+ "read_back": {
+  "volume_cm3_by_part_id": {
+   "JHD": 741.116,
+   "J3D": 28.836,
+   "JrD": 30.395
+  },
+  "bounding_box_mm": {
+   "lowX": -32.0,
+   "lowY": 92.0,
+   "lowZ": -340.0,
+   "highX": 32.0,
+   "highY": 331.8,
+   "highZ": 0.0
+  },
+  "microversion": "f9af15edb8f35f1e966179c3"
+ },
+ "compare_with_leg_unit_py": {
+  "onshape_volume_cm3": 800.349,
+  "leg_unit_py_volume_cm3": 800.347,
+  "leg_unit_py_by_part_cm3": {
+   "head": 741.116,
+   "tube": 30.395,
+   "foot": 28.836
+  },
+  "onshape_bounds_mm": [
+   [
+    -32.0,
+    92.0,
+    -340.0
+   ],
+   [
+    32.0,
+    331.8,
+    0.0
+   ]
+  ],
+  "leg_unit_py_bounds_mm": [
+   [
+    -32.0,
+    92.0,
+    -340.0
+   ],
+   [
+    32.0,
+    331.8,
+    0.0
+   ]
+  ],
+  "symmetric_difference_mm3": 1.5,
+  "watertight": true
+ },
+ "shaded_views": [
+  "leg-unit/onshape_iso.png",
+  "leg-unit/onshape_side.png"
+ ],
+ "tube_and_foot_drawn_at": 340.0,
+ "frame": "leg frame: origin on the beaker axis at the shelf's underside, x across, y out along the module's centre line, z up",
+ "api_calls_this_run": 51,
+ "when_utc": "2026-11-24T01:05:51Z",
+ "api_calls_build": 51
+}
