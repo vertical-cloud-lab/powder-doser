@@ -1111,6 +1111,7 @@ is taken as 95 g, a NEMA 11 as 110 g, a solenoid as 40 g, each auger holds
 | [`onshape_clevis.py`](onshape_clevis.py) | Builds the clevis block in Onshape through the REST API (needs `ONSHAPE_ACCESS_KEY`/`ONSHAPE_SECRET_KEY`) and checks it against `clevis.py` |
 | [`mounts.py`](mounts.py), [`mounts.json`](mounts.json) | Ways to mount the actuators: today's hangers, a lower deck on three posts, a P16-100 on a shorter lever, leaning the actuators outward. Stroke, force, height, footprint; clearance checks for the decks; renders `mount_*.png` |
 | [`leg_room.py`](leg_room.py), [`leg_room.json`](leg_room.json) | Six layouts that make more room for the scale: legs splayed, P16s leaning out, a longer lever (P16-200), both, and a gearmotor on each hinge axis. Free diameter and front opening by depth, clearance checks over 0–90°, the HR-100A at every orientation; renders `legroom_*.png` |
+| [`actuator_size.py`](actuator_size.py), [`actuator_size.json`](actuator_size.json) | Do the actuators need to be that big? The module's load from its mass model; Actuonix's smaller actuators (P16, L16, L12, P8, PQ12) on a shorter lever under the floor or on a crank at the hinge; force margins, resolution, move times; clearance checks for the crank; renders `actuator_*.png` |
 | [`mount-deck/`](mount-deck/) | `deck_M1.step` and `deck_M2.step`: the lower decks with their posts, origin on the beaker axis, hinge axes at z = 0 |
 | [`renders/`](renders/) | The figures above |
 
@@ -1130,6 +1131,7 @@ xvfb-run -a python clevis.py                # the clevis block: dimensions, chec
 python onshape_clevis.py                    # build the clevis block in a new Onshape document (needs the keys; about 25 calls)
 xvfb-run -a python mounts.py                # actuator mount options: decks, checks, figures (about 1 min)
 xvfb-run -a python leg_room.py             # more room for the scale: six layouts, checks, figures (about 11 min)
+python actuator_size.py                     # smaller actuators: load, sizing, crank checks, figures (about 4 min)
 ```
 
 **Limits.**
@@ -1326,3 +1328,149 @@ HR-100A):
 - **The HR-100A is only an example;** the new scale will differ.
 - **Run time:** `xvfb-run -a python leg_room.py` takes about 11 minutes. `--figures-only` redraws the
   charts from `leg_room.json`.
+
+## Do the actuators need to be that big? (added 24 Nov)
+
+Ethan asked whether the actuators need to be as big as the P16-150s in the renders.
+[`actuator_size.py`](actuator_size.py) sizes Actuonix's smaller actuators for one tri-star module, and
+[`actuator_size.json`](actuator_size.json) holds every number.
+
+**Short answer: no.** The P16-150 is far stronger than a module needs. Its length comes from its 150 mm
+stroke, and the stroke comes from where the rod pins to the plate.
+
+- **The load is small.** The module's own mass model (the one `stands.py` uses: printed parts at 60% of
+  solid PLA, the NEMA 11 at 110 g, the solenoid at 40 g, powder at the auger's middle) gives:
+  - 0.24 N·m about the hinge with an empty auger, 0.46 N·m with 250 g of powder;
+  - largest at 0°, falling to almost nothing at 90°, where the centre of mass ends up over the hinge.
+  - On today's lever that is at most 4.8 N. The P16-150-22 gives 40 N at its peak-power point and holds
+    75 N with the power off.
+  - The earlier runs used a flat 0.65 N·m, the upper estimate for the geared module. Against that figure
+    the actuators below have less margin; `actuator_size.json` lists both.
+- **The stroke sets the length.** Every Actuonix model is its stroke plus a fixed length: P8 + 35 mm,
+  P16 + 47, L12 + 52, L16 + 68. To tilt 0–90°, the rod pin travels about 1.41 × its distance from the
+  hinge. Today's pin is 105 mm from the hinge (95 behind it, 45 below), so 0–90° takes 144 mm of rod:
+  a 150 mm stroke and 197 mm between the holes.
+- **A shorter lever needs a shorter actuator, but more force.** With this little load there is room to
+  trade one for the other.
+
+![What sizes the actuator](renders/actuator_sizing.png)
+
+### Where a shorter lever can go
+
+- **Under the floor, as today.** The pin sits 45 mm below the hinge (under the clevis block), so moving it
+  forward shortens the lever only so far. Nearer than 40 mm behind the hinge, the actuator would stand in
+  the vessel's way. With the pin 48.5 mm behind the hinge (66 mm from it), 0–90° still needs 94 mm of rod,
+  so a 100 mm stroke.
+- **On a crank on the hinge axis, beside the module.** This is the other 23 Nov run's L6
+  (`crank_drive.py` on branch `claude/issue-204-20261123-2326`, which puts a P16-50 there). The crank can
+  be any length:
+  - At 0° it points 45° below horizontal, and at 90° 45° above, so the pin's path has a vertical chord.
+  - The actuator hangs from a pivot straight above the pin, on a post standing on the shelf, and pulls
+    the pin up as the module tilts.
+  - Nothing hangs under the shelf.
+
+### The smallest that works
+
+Rule: the largest force over the tilt range is at most half the actuator's peak-power force and at most
+half its back-drive force (so it holds the tilt with the power off, through taps). Load: 250 g of powder.
+Each actuator is put on the longest lever whose stroke covers the range, keeping 1 mm spare at each end.
+
+| Mounting | 0–90° | 0–60° only | 0–45° only |
+|---|---|---|---|
+| Under the floor | P8-100-165 (135 mm), P16-100-22 (147 mm), L12-100-100-6-R (152 mm); pin 48.5 mm behind the hinge; hangs 145–163 mm under the shelf | the same 100 mm strokes, pin 82.5 mm behind the hinge | P8-50-165 (85 mm), P16-50-22 (97 mm), L12-50-100-6-R (102 mm); pin 41.5 mm behind the hinge; hangs 95–113 mm under the shelf |
+| On a crank | P8-50-165 (85 mm), P16-50-22 (97 mm), L12-50-210-6-R (102 mm), L16-50-63-6-R (118 mm); crank 33.5 mm; stands 150–185 mm above the shelf | P8-25-252 (60 mm, crank 23 mm), L12-30-210-6-R (82 mm, crank 28 mm); stands 113–139 mm above the shelf | P8-25-165 (60 mm, crank 30 mm), L12-30-210-6-R (82 mm) |
+
+Lengths are between the holes, closed. For comparison, today's P16-150-22 is 197 mm and hangs 208 mm under
+the shelf. Each part number gives the stroke and then the gearing (P8-50-165 is a 50 mm stroke with 165:1
+gearing).
+
+**The main candidates in detail.** The force is the largest over the range, with 250 g of powder; in
+brackets, with the earlier flat 0.65 N·m. The margins are the actuator's peak-power force and back-drive
+force over that force. Moves to 30° take the lower time at no load and the higher at the peak-power load.
+
+| Actuator | Closed | Where, range | Lever | Most force | × peak power / × held | Rod per degree | 0–30° takes | Reaches |
+|---|---|---|---|---|---|---|---|---|
+| P16-150-22-12-P (today) | 197 mm | floor, 0–90° | pin 95 mm behind | 5 N (11) | 8.3 / 15.6 | 1.03–1.83 mm | 1.2–2.1 s | 208 mm under the shelf |
+| P16-100-22-12-P | 147 mm | floor, 0–90° | pin 48.5 mm behind | 9 N (14) | 4.3 / 8.0 | 0.80–1.15 mm | 0.7–1.2 s | 158 mm under |
+| P8-100-165-12-P | 135 mm | floor, 0–90° | pin 48.5 mm behind | 9 N (14) | 8.5 / 4.3 | 0.80–1.15 mm | 3.4–6.5 s | 145 mm under |
+| P8-50-165-12-P | 85 mm | floor, 0–45° | pin 41.5 mm behind | 11 N (15) | 7.3 / 3.7 | 0.73–1.07 mm | 3.0–5.8 s | 95 mm under |
+| P16-50-22-12-P (L6's pick) | 97 mm | crank, 0–90° | crank 33.5 mm | 19 N (27) | 2.1 / 3.9 | 0.42–0.58 mm | 0.3–0.6 s | 164 mm above the shelf |
+| P8-50-165-12-P | 85 mm | crank, 0–90° | crank 33.5 mm | 19 N (27) | 4.2 / 2.1 | 0.42–0.58 mm | 1.6–3.1 s | 150 mm above |
+| L12-50-210-6-R | 102 mm | crank, 0–90° | crank 33.5 mm | 19 N (27) | 2.3 / 4.2 | 0.42–0.58 mm | 2.9–5.9 s | 168 mm above |
+| L16-50-63-6-R | 118 mm | crank, 0–90° | crank 33.5 mm | 19 N (27) | 3.9 / 2.4 | 0.42–0.58 mm | 0.7–1.5 s | 185 mm above |
+| L12-30-210-6-R | 82 mm | crank, 0–60° | crank 28 mm | 19 N (27) | 2.4 / 4.2 | 0.43–0.49 mm | 2.8–5.6 s | 139 mm above |
+| P8-25-252-12-P | 60 mm | crank, 0–60° | crank 23 mm | 23 N (32) | 5.3 / 2.8 | 0.35–0.40 mm | 1.8–3.8 s | 113 mm above |
+| L12-30-210-6-R | 82 mm | crank, 0–90° | crank 19.5 mm | 33 N (47) | **1.4** / 2.4 | 0.24–0.34 mm | 1.7–3.4 s | fails: too weak |
+| PQ12-100-6-R | 42 mm | crank, 0–45° | crank 23.5 mm | 21 N (30) | **1.9 / 1.7** | 0.38–0.41 mm | 1.2–2.0 s | fails: too weak |
+
+- **"Reaches"** is the actuator itself: its lowest point under the shelf, or its top above the shelf's top
+  face. Its bracket, and the hanger or arm it screws to, add 9–14 mm.
+- **With the flat 0.65 N·m,** every 50 mm stroke on a 0–90° crank falls short of 2× on one count. The
+  P16-50 has 1.5× of its peak-power force. The P8-50-252, P16-50-64 and L16-50-150 keep 2×, but they're
+  slower.
+
+![Actuonix actuators that could tilt a module, to scale](renders/actuator_lineup.png)
+
+![One module with each actuator, to the same scale](renders/actuator_layouts.png)
+
+### Clearance on the crank
+
+I checked four of the crank-mounted ones in 3D, laid out as in L6:
+- **Layout:** the actuator 79 mm out from the module's centre line, and the crank at 67.5–73.5 mm.
+- **Sweep:** module A over its range in 5° steps, against itself, both neighbours at every tilt from 0 to
+  90°, and the base.
+- **Not checked:** the post, arm and shaft, which are L6's and not part of this check.
+
+| Actuator, range | Own module | Neighbour it faces | Other neighbour | Base |
+|---|---|---|---|---|
+| P8-50-165, 0–90° | 9.9 mm | 25.9 mm | 86.2 mm | 13.3 mm |
+| L12-50-210, 0–90° | 9.4 mm | 25.9 mm | 86.2 mm | 13.3 mm |
+| P16-50-22, 0–90° | 5.4 mm | 23.5 mm | 86.2 mm | 13.3 mm |
+| L12-30-210, 0–60° | 9.4 mm | 25.9 mm | 86.2 mm | 13.3 mm |
+
+- **Own module:** the closest is always the actuator body to the module's own solenoid plunger, at 50–70°
+  of tilt.
+- **Neighbour:** the closest is the crank to the neighbour's mounting plate.
+- **Target:** every gap is above the 2 mm target.
+
+### What a shorter lever costs
+
+- **Resolution.** On a 33.5 mm crank the rod moves 0.42–0.58 mm per degree of tilt; today it moves
+  1.03–1.83. So an actuator's repeatability and backlash count 2–3 times as many degrees. For the L12-50,
+  ±0.3 mm of repeatability is about ±0.7°, and its 0.2 mm of backlash about 0.5°.
+- **Speed.** The slow gearings that give the force margin take longer. On a crank, 0–30° takes
+  0.3–0.6 s with the P16-50-22, 1.6–3.1 s with the P8-50-165 and 2.9–5.9 s with the
+  L12-50-210.
+- **Pins.** Play in the rod-end and crank pins also counts more on a short lever.
+
+### What it means for the new scale
+
+- **Under the floor, a smaller actuator still sits over the scale.** For 0–90° or 0–45° it stands 73–81 mm
+  from the beaker axis. That is inside the new scale's enclosure footprint (183 mm wide, so its sides are
+  about 90 mm from a centred pan). So the shelf would have to clear the scale's 320 mm top by the
+  actuator's hang plus its bracket: about 427 mm for a P8-50 under the floor (0–45°)
+  and 477–494 mm for a 100 mm stroke (0–90°). With nothing under the shelf, 340 mm is enough.
+- **On a crank, nothing hangs under the shelf.** The shelf can then sit just above the scale, and only the
+  legs have to fit round it. The other run is fitting that layout (L6) to the new scale.
+
+### Controls
+
+- **L12, L16 and PQ12 come as `-R` linear servos.** They take an RC pulse (1.0 ms in, 2.0 ms out) and 6 V,
+  like the MG996R the Pico drives today, so they need no LAC board. Their datasheets give a 5 V pulse;
+  check them on the Pico's 3.3 V, or add a level shifter.
+  - The `-R` reports no position. The L12's `-I` version takes the same RC pulse and gives a 0–3.3 V
+    position signal the Pico's ADC can read.
+- **P16 and P8 come as `-P`** (potentiometer feedback) and need an LAC board each, as #202 planned. The
+  P8 can also use Actuonix's smaller Ext-R board, which takes an RC pulse.
+
+### Limits
+
+- **Datasheet numbers.** Forces and speeds are Actuonix's (L12 Rev B, L16 2019, PQ12 Rev D, P8 2022; the
+  P16 from #202). The P16's 64:1 peak-power point isn't published, so it's estimated as 0.8 × its 90 N
+  maximum. The PQ12's closed length (42 mm) is from a retailer listing.
+- **Outlines.** The actuators are drawn from their dimension drawings: housing, tube, rod and end holes,
+  not their STEP files.
+- **The load is modelled, not measured.** Weigh a loaded module and find its balance point to confirm it.
+- **The crank layout** uses the other run's L6 geometry. The post, arm and shaft are its placeholders and
+  aren't checked here.
+- Nothing was bought, printed or modelled in Onshape.
