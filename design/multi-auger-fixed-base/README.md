@@ -1955,7 +1955,7 @@ tab at the bottom of the leg head, keyed into a pocket.
 | M3 hole and nut trap | Ø3.4 through the pocket's centre; a hex trap 5.7 across flats, 2.6 deep, in the tab's underside |
 | U-bracket (bought, Actuonix) | 11.5 outside, about 9.1 inside, 7.5 wide; Ø4.25 holes 9.1 above its base. Its base sits in the pocket, so the pin is 8.1 above the tab's top: 258.5 from the beaker axis and 230.0 under the shelf |
 | Bracket to tab | M3 × 12 button head (ISO 7380) from inside the U, through the bracket's base and the tab, into an M3 nut in the trap |
-| P16 to bracket | The lug between the cheeks on the #8-32 × 5/8 in screw and lock nut that ship with the P16 (an M4 × 16 and nyloc also fit the Ø4.25 holes) |
+| P16 to bracket | The lug between the cheeks on the #8-32 × 5/8 in screw and lock nut that ship with the P16 (an M4 × 20 and a nyloc also fit the Ø4.25 holes) |
 
 **Assembly:** nut in the trap; bracket in the pocket with its holes along x; M3 screw down from inside the
 U; then the lug between the cheeks, the #8-32 screw through, and the lock nut snugged onto the cheeks and
