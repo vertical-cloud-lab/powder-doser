@@ -1839,6 +1839,12 @@ nozzle. `leg_unit.py` builds this base and checks it (the row above).
 2. **Height pin.** An M5 bolt and wing nut, or a Ø5 ball-lock pin for quicker changes.
 3. **Feet.** Screwed or weighted to the bench, or on rubber pads to keep the tapper off the balance.
 
+**Assembly order.**
+- **Legs first:** the M4 screws go in from the shelf's top, under the plates. Screw the legs on before the
+  modules go on, or with each module tilted up.
+- **Bracket before the actuator:** screw the U-bracket to the tab before the P16's lug goes in, because the
+  M3 head sits inside the U.
+
 ### Limits
 
 - **The balance** is the HR-100A model traced from A&D's drawing, not a measured HR-250AZ. The door corridor
