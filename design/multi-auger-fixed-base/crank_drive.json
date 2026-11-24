@@ -1,0 +1,165 @@
+{
+ "kinematics": {
+  "actuator": "P16-50",
+  "closed": 105.0,
+  "stroke": 50.0,
+  "crank_radius": 33.0,
+  "pivot_yz": [
+   28.0,
+   130.0
+  ],
+  "length_at": {
+   "0": 153.4,
+   "30": 138.6,
+   "45": 130.1,
+   "60": 121.5,
+   "90": 106.8
+  },
+  "rod_out": {
+   "0": 48.4,
+   "30": 33.6,
+   "45": 25.1,
+   "60": 16.5,
+   "90": 1.8
+  },
+  "spare_retracted": 1.8,
+  "spare_extended": 1.6,
+  "stroke_used": 46.6,
+  "monotonic": true,
+  "mm_per_deg": [
+   0.39,
+   0.58
+  ],
+  "max_force_N": 29.0,
+  "max_force_at_tilt": 90.0,
+  "swing_deg": [
+   -1.7,
+   2.2,
+   -2.5
+  ]
+ },
+ "crank": {
+  "R": 33.0,
+  "beta0": -45.0,
+  "x": [
+   67.5,
+   73.5
+  ],
+  "hub_r": 8.0,
+  "arm_w": 14.0
+ },
+ "actuator": {
+  "name": "P16-50",
+  "closed": 105.0,
+  "stroke": 50.0,
+  "x": 79.0,
+  "pivot": [
+   28.0,
+   130.0
+  ]
+ },
+ "shaft": {
+  "r": 4.0,
+  "x": [
+   20.0,
+   75.0
+  ]
+ },
+ "support": {
+  "x": [
+   69.0,
+   89.0
+  ],
+  "post_y": [
+   62.0,
+   78.0
+  ],
+  "arm_t": 8.0,
+  "arm_y0": 16.0,
+  "ear_x": [
+   40.0,
+   95.0
+  ],
+  "ear_y": [
+   46.0,
+   94.0
+  ]
+ },
+ "checks": {
+  "own_module": {
+   "mm": 6.32,
+   "between": "A:Mounting plate / A:ear",
+   "at_tilt": 0
+  },
+  "neighbour C (its +X side faces it)": {
+   "mm": 15.48,
+   "between": "C:Mounting plate / A:drive shaft",
+   "tilt_A": 30,
+   "tilt_other": 75
+  },
+  "neighbour B": {
+   "mm": 47.85,
+   "between": "B:Auger / A:drive shaft",
+   "tilt_A": 55,
+   "tilt_other": 45
+  },
+  "base": {
+   "mm": 13.33,
+   "part": "A:crank",
+   "at_tilt": 45
+  }
+ },
+ "station_positions_module_A": {
+  "pivot": {
+   "r": 99.2,
+   "bearing": 37.2
+  },
+  "post": {
+   "r": 129.0,
+   "bearing": 52.2
+  }
+ },
+ "base_with_ears": {
+  "box": [
+   320.5,
+   319.3
+  ],
+  "bed": [
+   325.0,
+   320.0
+  ],
+  "fits_h2d_at_0": true,
+  "rotations_that_fit_deg": [
+   0,
+   2,
+   4,
+   6,
+   26,
+   30,
+   32,
+   34,
+   36,
+   56,
+   60,
+   62,
+   64,
+   66,
+   86,
+   90,
+   92,
+   94,
+   96,
+   116,
+   120,
+   122,
+   124,
+   126,
+   146,
+   150,
+   152,
+   154,
+   156,
+   176
+  ]
+ }
+}

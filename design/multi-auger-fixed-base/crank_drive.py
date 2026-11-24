@@ -9,7 +9,7 @@ L6 keeps a linear actuator instead:
     hinge screw (as L5's);
   * a crank on the shaft's outer end (x = 67.5-73.5 mm), beside the module, 33 mm from the hinge axis to its pin.  At 0 deg it
     points 45 deg down and back; at 90 deg, 45 deg up and back;
-  * an Actuonix P16-50 (50 mm stroke) hanging from a pivot 122 mm above the hinge axis, pulling the crank pin
+  * an Actuonix P16-50 (50 mm stroke) hanging from a pivot 130 mm above the hinge axis, pulling the crank pin
     up as the module tilts.  It holds its position with the power off, like the P16-150;
   * the pivot is the P16's own U-bracket, under an arm on a post that stands on a small ear added to the
     shelf beside the module.
@@ -18,12 +18,16 @@ Beside each module's +X side, past x = 64 mm and behind the hinge line (the modu
 neighbour or the base passes at any tilt (probed 23 Nov), which is where all of this goes.  Under the shelf
 there is then nothing but the legs.
 
-    xvfb-run -a python crank_drive.py       # kinematics, clearance checks over 0-90 deg, crank_drive.json, renders
+    python crank_drive.py       # kinematics, clearance checks over 0-90 deg, the base with ears; crank_drive.json (1 min)
+                                # (renders/crank_drive.png is drawn by new_scale_figs.py)
 
 Frames as in doserlib.py: the unit frame of a module has its hinge axis on x, +y behind the hinge, z up,
 hinge at z = 0; the station frame has the beaker axis on z, modules at bearings 90, 210 and 330 deg.  The
-crank, pin, post, arm and ear are placeholders.  The P16-50's closed length (97 mm, hole to hole) is taken as
-stroke + 47 mm, like the P16-100 and P16-150: check it against Actuonix's drawing.
+crank, pin, post, arm and ear are placeholders.  The P16-50's closed length is taken as 105 mm hole to hole
+(open 155 mm), as RobotShop lists the P16-50-22-12-P; the stroke + 47 mm rule the P16-100 and P16-150 follow
+would give 97 mm.  Check it against Actuonix's drawing: if it is 97 mm, lower the pivot by 8 mm.
+Forces: the P16 and T16 share their gearboxes; Actuonix's T16 datasheet gives, for 22:1 / 64:1, a peak power
+point of 40 N / 80 N, a maximum force of 50 N / 90 N and a back-drive force of 75 N / 200 N.
 """
 from __future__ import annotations
 
@@ -50,7 +54,7 @@ TILTS = tuple(range(0, 91, 5))
 GAP = 2.0
 
 CR = dict(R=33.0, beta0=-45.0, x=(67.5, 73.5), hub_r=8.0, arm_w=14.0)          # crank on the +X shaft end
-ACT = dict(name="P16-50", closed=97.0, stroke=50.0, x=79.0, pivot=(28.0, 122.0))  # actuator plane x; pivot (y, z)
+ACT = dict(name="P16-50", closed=105.0, stroke=50.0, x=79.0, pivot=(28.0, 130.0))  # actuator plane x; pivot (y, z)
 SHAFT = dict(r=4.0, x=(20.0, 75.0))
 PIN = dict(r=2.0, x=(67.5, 83.0), nut_r=3.9, nut_x=(83.0, 86.2))
 SUP = dict(x=(69.0, 89.0), post_y=(62.0, 78.0), arm_t=8.0, arm_y0=16.0, ear_x=(40.0, 95.0), ear_y=(46.0, 94.0))
@@ -228,6 +232,24 @@ def checks(step=10):
     return res
 
 
+def base_with_ears():
+    """The one-piece base (no slots, as L5's) with the three ears: its box, and whether it fits one H2D nozzle."""
+    import cadquery as cq
+    shp = LR.base_for("L5")
+    ear = support_shapes()["ear"]
+    for th in LR.BEARINGS:
+        shp = shp.fuse(ear.moved(LR.C_loc(D.place(th, SP, 0.0))))
+    bb = shp.BoundingBox()
+    fits = []
+    for rot in range(0, 180, 2):
+        b2 = shp.rotate(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), rot).BoundingBox()
+        a, c = sorted((b2.xlen, b2.ylen), reverse=True)
+        if a <= B.BED[0] and c <= B.BED[1]:
+            fits.append(rot)
+    return dict(box=[round(bb.xlen, 1), round(bb.ylen, 1)], bed=list(B.BED), fits_h2d_at_0=bool(0 in fits),
+                rotations_that_fit_deg=fits)
+
+
 def main():
     t0 = time.time()
     LR.prepare()
@@ -243,6 +265,8 @@ def main():
         p = MA @ np.array([x, y, 0.0, 1.0])
         pts[nm] = dict(r=round(float(math.hypot(p[0], p[1])), 1), bearing=round(math.degrees(math.atan2(p[1], p[0])) % 360, 1))
     res["station_positions_module_A"] = pts
+    res["base_with_ears"] = base_with_ears()
+    print("base with ears", res["base_with_ears"]["box"], res["base_with_ears"]["fits_h2d_at_0"], flush=True)
     if "--no-json" not in sys.argv:
         (HERE / "crank_drive.json").write_text(json.dumps(res, indent=1, default=float) + "\n")
 
