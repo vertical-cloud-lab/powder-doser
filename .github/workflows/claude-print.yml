@@ -69,6 +69,8 @@ jobs:
       id-token: write
       actions: read
     steps:
+      # Held at checkout@v4; see the note in claude.yml
+      # (anthropics/claude-code-action#1721).
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
