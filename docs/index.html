@@ -81,6 +81,8 @@
     figure img, figure video { width: 100%; height: auto; display: block; }
     figure video { border-radius: 6px; }
     figure.clip { max-width: 820px; margin-left: auto; margin-right: auto; }
+    .clips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .clips figure { margin: 0; }
     figcaption { font-size: .92rem; color: var(--muted); margin-top: .7rem; line-height: 1.5; }
     figcaption b { color: var(--text); }
     details { margin-top: .45rem; }
@@ -124,6 +126,7 @@
       background: var(--light); padding: 1.1rem 1.4rem; border-radius: 6px; overflow-x: auto;
       font-size: .85rem; line-height: 1.45; margin: 0;
     }
+    section.light pre { background: #fff; }
     footer { padding: 2rem 0 3rem; text-align: center; font-size: .9rem; color: var(--muted); }
     footer p { margin: .3rem 0; }
 
@@ -137,6 +140,7 @@
       .prose p { text-align: left; }
       .two-col { grid-template-columns: 1fr; }
       .two-col img { max-width: 320px; margin: 0 auto; }
+      .clips { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -172,6 +176,10 @@
       <a class="button" href="#build">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M3 7l9 5 9-5"/></svg>
         <span>CAD</span>
+      </a>
+      <a class="button" href="#multi-doser">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6" r="3"/><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/></svg>
+        <span>Multi-doser</span>
       </a>
       <a class="button" href="https://www.youtube.com/watch?v=YmvaeqOQAU4&amp;t=514s">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/></svg>
@@ -420,7 +428,77 @@
   </div>
 </section>
 
-<section id="videos">
+<section id="multi-doser">
+  <div class="container">
+    <h2>Next: many powders</h2>
+    <div class="prose narrow" style="margin:0 auto">
+      <p>The doser holds one powder at a time, and changing powder means swapping the auger by hand. The team is designing two multi-dosers that need no one to swap augers. Both build on the single doser: each powder still lives in its own auger on a hinged plate, turned by a stepper and tapped by a solenoid. Both exist only in CAD so far. Nothing below has been built, and every number is a prediction from the CAD.</p>
+    </div>
+
+    <h3>Chain carousel: 13 augers past one dosing station</h3>
+    <div class="prose">
+      <p>Two roller chains carry 13 auger modules round a vertical loop. A NEMA&nbsp;34 stepper indexes the chains to bring each module in turn to one station over the balance. There an electronics carriage, with a small stepper to turn the auger and the solenoid to tap it, couples to the module, and a linear actuator tilts the two together to dose. The design has been through ten versions in the open (<a href="https://github.com/vertical-cloud-lab/powder-doser/pull/185">#185</a>, from <a href="https://github.com/vertical-cloud-lab/powder-doser/issues/128">#128</a>), most of them revised from Sam's review of the one before. v7 is the team's main version, and v8–v10 are variations on it. The first TMS&nbsp;2027 abstract <a href="#talks">below</a> sets the targets: 15+ reservoirs, with each powder's own auger swapped in automatically.</p>
+    </div>
+    <figure class="clip">
+      <video class="lazy" muted loop playsinline preload="none" poster="static/images/carousel_overview_v10.jpg" width="1280" height="720" aria-label="Chain carousel v10: the whole machine, then one index, pull-up and dose at the station">
+        <source src="static/videos/carousel_overview_v10.mp4" type="video/mp4">
+      </video>
+      <figcaption><b>v10, the newest version (19 Nov 2026).</b> Sam's idea of turning the station upside down: the electronics carriage and one Actuonix P16-100 linear actuator sit inside the loop, and the actuator, fully extended between doses, pulls the carriage and the module coupled to it up about the hinge to dose. With nothing of the station under the auger, the beaker's rim is 18&nbsp;mm under the exit, against 154&nbsp;mm on v7 and about 85&nbsp;mm on the single doser. What it costs is tilt: v10 reaches 4–65° instead of 0–90°, which still covers the 20–40° the dosing studies recommend. Its bill of materials comes to $2,352, some of it estimated. <a href="https://cad.onshape.com/documents/99bd983c585992043f2eff96/w/7b5725dc5dfb7fe370fa0c71/e/56a319b93daf812d262f5eab">Onshape (public)</a> &middot; <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/c72c5bc/cad/chain-carousel-v10/README.md">README</a> &middot; <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/c72c5bc/cad/chain-carousel-v10/BOM.md">BOM</a> &middot; <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/c72c5bc/cad/chain-carousel-v10/TEST-PLAN.md">test plan</a></figcaption>
+    </figure>
+    <div class="clips">
+      <figure>
+        <video class="lazy" muted loop playsinline preload="none" poster="static/images/carousel_pull_v10.jpg" width="1280" height="720" aria-label="v10: the actuator inside the loop pulls the module up to dose">
+          <source src="static/videos/carousel_pull_v10.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Pull up to dose.</b> The P16-100 retracts and turns the carriage and the module about the hinge: to 30° for a dose, and on to 65°. The exit stays on the hinge axis at every tilt.</figcaption>
+      </figure>
+      <figure>
+        <video class="lazy" muted loop playsinline preload="none" poster="static/images/carousel_rail_v10.jpg" width="1280" height="720" aria-label="v10: the keyed rail couples each module to the electronics carriage">
+          <source src="static/videos/carousel_rail_v10.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>A keyed rail instead of a dock.</b> A T-bracket on each plate slides into a slot under the carriage. The slot's ramps lift the module 4° so that its gear meshes with the carriage's pinion, and a second ramp opens the outlet door. No magnets or kinematic coupling.</figcaption>
+      </figure>
+      <figure>
+        <video class="lazy" muted loop playsinline preload="none" poster="static/images/carousel_drop_v10.jpg" width="1280" height="720" aria-label="v10: the dose falls 18 mm from the exit into the beaker">
+          <source src="static/videos/carousel_drop_v10.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>18&nbsp;mm to the beaker.</b> The lowest thing over the beaker is the auger's own tube, so the dose falls 18&nbsp;mm from the exit to the rim (v9: 32&nbsp;mm).</figcaption>
+      </figure>
+      <figure>
+        <video class="lazy" muted loop playsinline preload="none" poster="static/images/carousel_limit_v10.jpg" width="1280" height="720" aria-label="v10: the tilt is clear to 65 degrees and touches at 70">
+          <source src="static/videos/carousel_limit_v10.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Where the tilt stops.</b> Everything is clear from 4 to 65°. At 70° the front of the carriage reaches the front chain (red).</figcaption>
+      </figure>
+    </div>
+    <p class="note">Two more v10 clips: <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/c72c5bc/cad/chain-carousel-v10/renders/v10/guide_v10.mp4">the carriage's guide between modules</a> and <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/c72c5bc/cad/chain-carousel-v10/renders/v10/wiring_v10.mp4">the wiring, out through the front side plate</a>. Each version below has its own clips in its <code>renders/</code> folder on <a href="https://github.com/vertical-cloud-lab/powder-doser/pull/185">#185</a>.</p>
+    <div class="table-wrap">
+      <table style="min-width:640px">
+        <thead><tr><th>Version</th><th>Date</th><th>What changed</th><th class="num">Exit to beaker rim</th><th>CAD</th><th>Clip</th></tr></thead>
+        <tbody>
+          <tr><td>v7&nbsp;(main)</td><td>10&nbsp;Nov</td><td>One P16-150 under the station both lifts and tilts; the carriage docks on three posts on the plate; a ladder frame; tilts 0–90°</td><td class="num">154&nbsp;mm</td><td><a href="https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8/e/4802634f69ef3323004d7bf6">Onshape</a></td><td><a href="https://github.com/vertical-cloud-lab/powder-doser/blob/c72c5bc/cad/chain-carousel-v7/renders/v7/overview_v7.mp4">MP4</a></td></tr>
+          <tr><td>v8</td><td>12&nbsp;Nov</td><td>A new carriage on the layout of Sam's August one, behind the balance, with the solenoid in front of the gear</td><td class="num">50&nbsp;mm</td><td><a href="https://cad.onshape.com/documents/a093aef97b81fce9ce0f322f/w/7b029051ee0ec62ff198253f/e/7518535395874b79077ff86b">Onshape</a></td><td><a href="https://github.com/vertical-cloud-lab/powder-doser/blob/c72c5bc/cad/chain-carousel-v8/renders/v8/overview_v8.mp4">MP4</a></td></tr>
+          <tr><td>v9</td><td>17&nbsp;Nov</td><td>v7 without the balance's draft cage: the balance on a granite block, and a bay window and weighing chamber in the frame instead</td><td class="num">32&nbsp;mm</td><td><a href="https://cad.onshape.com/documents/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590">Onshape</a></td><td><a href="https://github.com/vertical-cloud-lab/powder-doser/blob/c72c5bc/cad/chain-carousel-v9/renders/v9/overview_v9.mp4">MP4</a></td></tr>
+          <tr><td><b>v10</b></td><td>19&nbsp;Nov</td><td>v9 with the station inside the loop, pulled up by a P16-100; a keyed rail; the wires out through the front side plate; tilts 4–65°</td><td class="num"><b>18&nbsp;mm</b></td><td><a href="https://cad.onshape.com/documents/99bd983c585992043f2eff96/w/7b5725dc5dfb7fe370fa0c71/e/56a319b93daf812d262f5eab">Onshape</a></td><td>above</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">For comparison, the single doser's exit is about 85&nbsp;mm over its beaker's rim. Dates are 2026. Every Onshape document is public.</p>
+
+    <h3>Tri-star: three augers on one fixed base</h3>
+    <div class="prose">
+      <p>The other design keeps every powder in place: three modules on one printed base round a single beaker, so that two or three powders can be dosed into it without anyone changing augers (<a href="https://github.com/vertical-cloud-lab/powder-doser/issues/204">#204</a>, Ethan's request). Each module loses its two servos and tilt gears and is tilted instead by its own linear actuator (<a href="https://github.com/vertical-cloud-lab/powder-doser/issues/202">#202</a>), and Ethan's solenoid bracket (<a href="https://github.com/vertical-cloud-lab/powder-doser/issues/203">#203</a>) takes the place of the tap collar. Without the servos the three hinges fit 32&nbsp;mm from the beaker's axis (with them it would be 66&nbsp;mm), which puts the outlets on a circle 41&nbsp;mm across at 0° and 64&nbsp;mm at 90°. The newest layout, L4 (24 Nov 2026), leans an Actuonix P16-200 25° outward under each module and mounts it on a telescoping leg. The legs stand the base 340&nbsp;mm up, over an A&amp;D HR-100A or HR-250AZ balance (the two share a body), with both of its side doors free. The clevis block that joins each actuator to its plate, and one leg, are already modelled in Onshape.</p>
+    </div>
+    <figure class="clip">
+      <video class="lazy" muted loop playsinline preload="none" poster="static/images/tristar_tilts.jpg" width="1280" height="720" aria-label="The tri-star: each of the three modules tilts in turn, all three reach 90 degrees together, then a view from above">
+        <source src="static/videos/tristar_tilts.mp4" type="video/mp4">
+      </video>
+      <figcaption><b>The tri-star's L4 layout over the balance.</b> Each module tilts to 40° in turn, then all three reach 90° together, then the view from above. Rendered for this page from #204's CAD of 24 Nov 2026 (<a href="https://github.com/vertical-cloud-lab/powder-doser/blob/13c5154/design/multi-auger-fixed-base/README.md">README</a>), which uses the current design's parts (<a href="https://github.com/vertical-cloud-lab/powder-doser/pull/170">#170</a>) with the new base and legs. The clip shows the tilt, not the powder. Stills: <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/13c5154/design/multi-auger-fixed-base/renders/leg_unit_station.png">the station over the balance</a>, <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/13c5154/design/multi-auger-fixed-base/renders/parts_overview.png">where each part comes from</a>, <a href="https://github.com/vertical-cloud-lab/powder-doser/blob/13c5154/design/multi-auger-fixed-base/renders/leg_unit_drawing.png">the leg unit</a>.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="videos" class="light">
   <div class="container">
     <h2>Videos</h2>
     <div class="grid">
@@ -432,14 +510,14 @@
       <div class="card"><h4><a href="https://youtu.be/dXRB7c6GeDw">Dosing Al&nbsp;4047 with Claude</a></h4><p>An atomizer charge, including a stall and a clog (30 Sep 2026, <a href="https://github.com/vertical-cloud-lab/powder-doser/issues/166">#166</a>); <a href="https://youtu.be/QXSj0j1OqL8">preparing the dose</a>.</p></div>
       <div class="card"><h4><a href="https://youtu.be/L0jCNZVXHoc">First glove-box test</a></h4><p>Slow dispensing of salt, with the University of Utah's Lessard Lab (<a href="https://github.com/vertical-cloud-lab/powder-doser/issues/117">#117</a>).</p></div>
       <div class="card"><h4><a href="https://www.youtube.com/watch?v=6YsOMIsOfkY">Trying out Zoo Design Studio</a></h4><p>With commentary (<a href="https://github.com/vertical-cloud-lab/powder-doser/issues/92">#92</a>).</p></div>
-      <div class="card"><h4>Multi-doser, the next step</h4><p><a href="https://www.youtube.com/watch?v=IkjBxqa06u0">Pitch</a>, <a href="https://www.youtube.com/watch?v=liB6YNSN8-Q">3D-printed prototype</a> and <a href="https://youtu.be/BSgpeKZgoXU">V1 demo</a> (<a href="https://github.com/vertical-cloud-lab/powder-doser/issues/128">#128</a>).</p></div>
+      <div class="card"><h4>Multi-doser, the next step</h4><p><a href="https://www.youtube.com/watch?v=IkjBxqa06u0">Pitch</a>, <a href="https://www.youtube.com/watch?v=liB6YNSN8-Q">3D-printed prototype</a> and <a href="https://youtu.be/BSgpeKZgoXU">V1 demo</a> (<a href="https://github.com/vertical-cloud-lab/powder-doser/issues/128">#128</a>). The newest designs, in CAD, are <a href="#multi-doser">above</a>.</p></div>
       <div class="card"><h4><a href="https://youtu.be/hfnQBAeRIg0">Electronics setup tutorial</a></h4><p>Video tutorial.</p></div>
       <div class="card"><h4><a href="https://youtube.com/@byu-vcl-hardware-streams">Livestreams of the rig</a></h4><p>BYU VCL Hardware Streams.</p></div>
     </div>
   </div>
 </section>
 
-<section id="talks" class="light">
+<section id="talks">
   <div class="container">
     <h2>Talks, abstracts and the poster</h2>
     <div class="two-col">
@@ -459,7 +537,7 @@
   </div>
 </section>
 
-<section id="bibtex">
+<section id="bibtex" class="light">
   <div class="container narrow">
     <h2>BibTeX</h2>
     <p>Until the paper is out, please cite the repository:</p>
@@ -497,10 +575,28 @@
     });
   });
   // Respect "reduce motion": stop the looping clips and give them controls instead.
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
     document.querySelectorAll('video[autoplay]').forEach(function (v) {
       v.removeAttribute('autoplay'); v.pause(); v.controls = true;
     });
+  }
+  // The multi-doser clips load only when scrolled to, and play only while on screen.
+  var lazy = document.querySelectorAll('video.lazy');
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var p = e.target.play();
+          if (p && p.catch) p.catch(function () { e.target.controls = true; });
+        } else {
+          e.target.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+    lazy.forEach(function (v) { io.observe(v); });
+  } else {
+    lazy.forEach(function (v) { v.controls = true; });
   }
 </script>
 </body>
