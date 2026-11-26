@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Drive and log the chain-carousel test rig v10 from a Raspberry Pi (issue #128). v10 (Sam's note of 2026-11-19, PR #185) is
+"""Drive and log the chain-carousel test rig v11 from a Raspberry Pi (issue #128). v11 (Sam's notes of 2026-11-25, PR #185) is v10 with
+0-90 deg: the carriages 40 mm longer, a P16-150 (back from v10's P16-100) whose base is outside the front side plate on a bar across
+the front posts, through a slot in the plate; a straight rail (no lift: the module sits at 0 deg, its 44T gear meeting a 24T pinion
+at rest, so GEAR_RATIO is 44/24); the EC opens each door itself; the solenoid taps over clip 1; the tall-cage balance on the bench,
+the beaker on a pillar 33 mm under the exit. The P16's table below is v11's (layout.p16_11_ext). The rest of this docstring is v10's,
+with the v11 changes noted where they matter.
+
+v10 (Sam's note of 2026-11-19, PR #185) is
 v9 (the balance on a granite block with no draft cage, the bay window and the weighing chamber) with the station turned upside
 down: the electronics carriage (EC) is inside the loop on the plate's side of the module, a keyed rail replaces the kinematic
 dock, and one P16-100, fully extended between doses, retracts to pull the module up to dose. Nothing of the station is under the
@@ -116,17 +123,18 @@ RUN_DIRECTION = -1                                 # -1: bottom run toward -y
 # station linkage (v10: params.P16_10_PIN, P16_10_YW, P16_10_BX, TAU0; layout.P16_10_B, layout.p16_10_ext): the rod-end pin on
 # the EC's arm (Sam x 90, z -30), the base pin on a bracket on the front side plate at world x -18, y -34 (its z set so the P16
 # is fully extended at 4 deg)
-ACT_RETRACTED, ACT_STROKE = 147.4, 100.0           # P16-100: hole to hole fully retracted, and its stroke (v7-v9's P16-150: 197.4, 150)
-TILT_MIN = 4.0                                     # coupled: the rail's ramps lift every module this far about its hinge (params.TAU0)
-TILT_MAX = 65.0                                    # the clash check's limit, see README (clear at 4-65 deg; at 70 the EC's front meets the front chain)
+ACT_RETRACTED, ACT_STROKE = 197.4, 150.0           # v11: P16-150: hole to hole fully retracted, and its stroke (v10's P16-100: 147.4, 100)
+TILT_MIN = 0.0                                     # v11: no lift, the module rests at 0 deg between doses (v10: 4, the rail's ramps)
+TILT_MAX = 90.0                                    # v11: the clash check is clear at 0-90 deg (v10: 4-65)
 # v10: the P16's extension (mm from fully retracted) for a tilt, the module coupled, from layout.p16_10_ext. Fully extended
 # between doses (99.40 at 4 deg, 0.6 mm short of its own stop), it retracts to tilt. The curve bends past 40 deg: linear
 # interpolation between these points is within 0.15 mm of it to 40 deg and 0.5 mm (0.6 deg) at 65 (a pin turning about the
 # hinge, fitted to these points).
-P16_TABLE = ((4, 99.40), (10, 89.62), (15, 81.33), (20, 73.07), (30, 56.70), (40, 41.24), (50, 27.31), (60, 15.85), (65, 11.26), (70, 7.74))
-P16_HOME_EXT = P16_TABLE[0][1]                     # 99.40 mm: fully extended, between doses (module at 4 deg, shoe in its seat)
+P16_TABLE = ((0, 139.22), (10, 123.47), (15, 115.22), (20, 106.79), (30, 89.60), (40, 72.35), (50, 55.61), (60, 40.05), (70, 26.44), (80, 15.61),
+             (90, 8.33))                           # v11: layout.p16_11_ext (base pin outside the front plate at x -62, z 612, y -31; rod-end pin Sam (96, -25))
+P16_HOME_EXT = P16_TABLE[0][1]                     # v11: 139.22 mm, 10.8 short of full extension, between doses (module at 0 deg, shoe in its seat)
 P16_MM_S, P16_DUTY = 46.0, 0.20                    # the P16's speed (no load) and rated duty cycle (p16_rest_s)
-GEAR_RATIO = 44 / 20                               # NEMA 11 turns per auger turn
+GEAR_RATIO = 44 / 24                               # NEMA 11 turns per auger turn (v11: a 24T pinion; v2-v10: 20T)
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
 SEEK_REV_S = -0.25                                 # v10 --seek: the pinion's rev/s while the chain moves (Rig.nema11)

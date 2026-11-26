@@ -175,16 +175,17 @@ CATS = ("Chain", "Shafts", "Drive", "Frame", "Fasteners", "Printed", "Station", 
 def write_bom(rs: list[dict]) -> None:
     rs = sorted(rs, key=lambda r: (CATS.index(r["category"]), r["item"]))
     t = bom.totals(rs)
-    lines = ["# Bill of materials: chain-carousel test rig v10", "",
+    lines = ["# Bill of materials: chain-carousel test rig v11", "",
              "Every line is a real, orderable part (or one of the lab's own). Quantities of modelled parts are "
              "counted from the CAD (`layout.placements()`). Prices are USD on the date shown on each line and will "
-             "drift. **Step** is the assembly step that uses the line (`layout.STEPS`; v10's step 8 is the station inside the loop: the "
-             "EC, the P16-100 and its bracket, the guide hanger and the wiring; step 12 is the balance on its block, the weighing chamber "
-             "and the bay window). `bom.csv` has the same data.", "",
+             "drift. **Step** is the assembly step that uses the line (`layout.STEPS`; v11's step 8 is the station inside the loop: the "
+             "EC, the P16-150 through the front side plate and its clevis on the front bar, the guide hanger on the station beam; step 12 "
+             "is the balance with its tall draft cage on the bench, its dosing lid and the beaker's pillar, and the enclosure with the "
+             "front doorway). `bom.csv` has the same data.", "",
              f"**Total ${t['total']:,.2f}; rig without test gear ${t['without_test']:,.2f}.** Lines marked estimate "
              f"add up to ${t['estimated']:,.2f}. The NEMA 34, the CL86T, the 13 augers (#134's batch "
-             "of 16) and the electronics carriage's NEMA 11 and solenoid are already in the lab and count as $0 (EC v10's body is new, "
-             "item 77).", "",
+             "of 16), the electronics carriage's NEMA 11 and solenoid, and the balance are already in the lab and count as $0 (EC v11's "
+             "body is new, item 77).", "",
              "| # | Qty | Part | Vendor | Part no. | Unit | Ext. | Step |", "|---|---|---|---|---|---|---|---|"]
     cat = None
     for r in rs:
@@ -206,7 +207,7 @@ def write_assembly(rs: list[dict]) -> None:
     for r in rs:
         for s in map(int, r["steps"].split(",")):
             by_step.setdefault(s, []).append(r)
-    out = ["# Assembly: chain-carousel test rig v7 (the step texts are layout.STEPS; v7 has no step renders yet)", "",
+    out = ["# Assembly: chain-carousel test rig v11 (the step texts are layout.STEPS; v11 has no step renders yet)", "",
            "Twelve steps in build order, then the test set-up. In each render the parts from earlier steps are "
            "pale, and the step's new parts are in colour, lifted along the way they go in. The table under each "
            "render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). The animation "

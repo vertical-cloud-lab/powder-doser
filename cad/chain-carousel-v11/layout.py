@@ -584,17 +584,17 @@ MAGNET_RED = (0.75, 0.15, 0.12)
 
 STEPS = {
     1: "Base frame: side rails and the back cross rail (a U round the balance), corner brackets, leveling feet",
-    2: "Posts, top frame, and the ladder: two rungs between the front and back posts on each side, and two cross bars between the rungs (the P16's, the guides')",
-    3: "Side plates onto the posts",
+    2: "Posts, top frame, and the ladder: two rungs between the front and back posts on each side (v11: under the back plate's lower edge)",
+    3: "Side plates onto the posts (v11: the front plate's P16 slot and grommet hole)",
     4: "Flange bearings and top-shaft tensioners on the side plates",
     5: "Corner shafts with their sprockets (back set screws loose)",
     6: "NEMA 34 on the back plate, 15T sprockets, drive chain",
-    7: "Chains: 13 A-1 links per chain, close both loops",
-    8: "Station: hold-downs, hall switches; the P16-150's clevis on its cross bar; the two guides (funnel mouths, cone and vee seats) on theirs; EC v9 (v7's, its front cut back to a slim door finger, the solenoid on the tail behind the gear) on the P16's rod end; the latch cam; the side tabs",
-    9: "Modules on the bench: plate v7 printed with its three dock posts (a magnet dropped into each at a print pause), the auger into clips 1 and 2 and onto the cap saddle, outlet door; plate pinned onto a carriage's outer face, latch bolt over the keeper",
+    7: "Chains: 13 Nitro CL35-A1 links per chain, close both loops",
+    8: "Station: hold-downs, hall switches; the station beam inside the loop and the EC's guide on it; the front bar across the front posts and the P16-150's clevis under it; EC v11 (door ramp, solenoid over clip 1, straight rail, NEMA 11 and 24T pinion, the arm) on the P16's rod end, through the front plate's slot; the latch cam; the side tabs",
+    9: "Modules on the bench: plate v11 with its T-bracket, the auger into clips 1 and 2 and onto the cap saddle, the outlet door with its rod and head; plate pinned onto a carriage's outer face, latch bolt over the keeper",
     10: "Carriages onto the chain at the loading position, one index at a time; phase and tension",
     11: "Electronics board: supply, driver, Pi, interface board, LAC, e-stop",
-    12: "The balance (no draft cage) on its granite block; the weighing chamber (side and back baffles, the deck under the bottom run); acrylic panels on standoffs, the bay window round the balance with its door, and the side hatch (swaps)",
+    12: "The balance with its tall draft cage on the bench through the front doorway, the dosing lid in its top, the pillar and beaker; acrylic panels on standoffs, the side hatch (swaps)",
 }
 SCALE_GHOST = (0.93, 0.93, 0.95)
 GRANITE = (0.45, 0.43, 0.44)
@@ -1085,7 +1085,7 @@ def _station_v11(st: State, add) -> None:
     add(Placement("bar11", "Front bar (2020, across the front posts' front faces; carries the P16's base clevis)", T(Rx(-math.pi / 2), (float(np.mean(BAR11_X)), -(POST_Y + EXT / 2), BAR11_ZC)),
                   8, ALU, "frame", (-60, 0, 0)))
     for sy in (-1, 1):
-        add(Placement("m5x35_shcs", "Front bar screw M5x35 (through the bar into a T-nut in the post's front slot)", T(Ry(math.pi / 2), (BAR11_X[0], sy * POST_Y, BAR11_ZC)),
+        add(Placement("m5x35_shcs", "Front bar screw M5x35 (through the bar into a T-nut in the post's front slot)", T(Ry(-math.pi / 2), (BAR11_X[0], sy * POST_Y, BAR11_ZC)),
                       8, DARK, "frame", (-60, 0, 0)))
     add(Placement("p16_bracket11", "P16 base clevis under the front bar (printed; two M5 into T-nuts in the bar)", T(None), 8, ORANGE, "station", (-40, 0, 0)))
     add(Placement("clevis_screw", "Shoulder screw 4 x 16 mm, M3 (P16 base pin)", T(Rx(math.pi / 2), B + np.array([0, -(SHOULDER_CLEVIS_L - 0.2) / 2, 0])), 8, STEEL,

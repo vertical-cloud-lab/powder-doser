@@ -30,7 +30,7 @@ for i in STEPS:
         d = ((L.slot_of(p.module, s) - L.CARRIAGE_LINK0 + L.N_LINKS / 2) % L.N_LINKS - L.N_LINKS / 2) * P
         if abs(d) <= 2.2 * MODULE_LINKS * P:
             near.append(p)
-    fixed = [p for p in pl if p.group in ("station", "station_ec", "station_act", "cable", "scale", "chamber") or p.key in ("beam10", "rung", "nema34")]
+    fixed = [p for p in pl if p.group in ("station", "station_ec", "station_act", "cable", "scale", "chamber") or p.key in ("beam10", "rung", "nema34", "bar11", "side_plate_front", "side_plate_back")]
     fixed = [p for p in fixed if p.key != "cable10_outside"]
     mo, fo = CI.objects(near), CI.objects(fixed)
     objs = mo + fo

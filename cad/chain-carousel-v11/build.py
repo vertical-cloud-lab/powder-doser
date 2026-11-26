@@ -1,16 +1,16 @@
-"""Export the chain-carousel test rig v10 (v9 with Sam's 2026-11-19 note: the station inside the loop, the EC on the plate's side pulled up by a
-P16-100, a keyed rail instead of the kinematic dock, the wiring out through the front side plate, the beaker 18 mm under the exit).
+"""Export the chain-carousel test rig v11 (v10 with Sam's 2026-11-25 notes: longer carriages and the hinge nearer the carriage, 0-90 deg with a
+P16-150 through the front side plate, a straight rail, the door opened by the EC, the solenoid near the outlet, the tall-cage balance).
 
     python build.py
 
-* step/chain_carousel_rig_v9.step  the whole rig as one STEP assembly: named,
+* step/chain_carousel_rig_v11.step  the whole rig as one STEP assembly: named,
   coloured instances that share their part definitions (the two chains'
   182 plain links are 2 parts, not 182), so Onshape imports it as one
   assembly plus one Part Studio per unique part.
 * step/components/<key>.step     every unique part on its own (reference parts: reference/).
 * stl/<part>.stl                 the printed parts, print-ready orientation.
-* dxf/side_plate_front.dxf, dxf/side_plate_back.dxf  cutting/drilling templates (1:1); the acrylic
-  panels, the bay window's sheets and door, the weighing chamber's baffles and deck (laser cut from 1/8 in cast acrylic).
+* dxf/side_plate_front.dxf, dxf/side_plate_back.dxf  cutting/drilling templates (1:1; v11: the P16's slot and the grommet hole in the
+  front plate); the acrylic panels (v11: the front panel with the balance's doorway) and the balance's dosing lid (1/8 in cast acrylic).
 * placements.json                every instance: key, name, step, 4x4 transform.
 """
 from __future__ import annotations
@@ -24,13 +24,12 @@ import numpy as np
 import layout as L
 
 HERE = Path(__file__).resolve().parent
-PRINTED = ("carriage", "hold_down", "tensioner_block", "latch_rail", "latch_bolt", "door_housing", "door_shutter", "door_guide10", "door_tab10",
-           "side_tab", "side_tab_m", "catch", "ec10", "t_bracket", "p16_bracket10", "guide10")   # v10: the EC, the T-bracket, the P16's bracket, the guide
-PRINTED_REF = {"sam_mounting_plate": "mounting_plate_v10"}   # Sam's plate + v6/v7's extension, v10's insert holes and motor relief
-ACRYLIC = ("panel_side", "panel_side_hatch", "panel_front_bay", "panel_back", "panel_top", "hatch_side", "bay9_door")
-WORLD_ACRYLIC = ("bay10_front", "bay10_top", "bay10_side_p", "bay10_side_m", "baffle10_side_p", "baffle10_side_m", "baffle10_back", "deck10_front",
-                 "deck10_riser", "deck10_back")   # built in place
-STEP_FILE = "chain_carousel_rig_v10.step"
+PRINTED = ("carriage", "hold_down", "tensioner_block", "latch_rail11", "latch_bolt", "door_housing", "door_shutter", "door_head11",
+           "side_tab", "side_tab_m", "catch", "ec11", "t_bracket", "p16_bracket11", "guide11", "pillar11")   # v11: the EC, the T, the door's head, the clevis, the pillar
+PRINTED_REF = {"sam_mounting_plate": "mounting_plate_v11"}   # Sam's plate + v6/v7's extension, the T-bracket's insert holes
+ACRYLIC = ("panel_side", "panel_side_hatch", "panel_front_door11", "panel_back", "panel_top", "hatch_side")
+WORLD_ACRYLIC = ("bal11_lid",)   # built in place (the balance's frame): the dosing lid
+STEP_FILE = "chain_carousel_rig_v11.step"
 
 
 def loc(M: np.ndarray) -> cq.Location:
@@ -43,7 +42,7 @@ def loc(M: np.ndarray) -> cq.Location:
 def assembly(tilt_deg: float = 0.0) -> cq.Assembly:
     """Root -> one sub-assembly per assembly step ("05 Idler ...") -> parts,
     so the Onshape assembly's tree reads like the build instructions."""
-    asm = cq.Assembly(name="Chain carousel test rig v10")
+    asm = cq.Assembly(name="Chain carousel test rig v11")
     subs: dict[int, cq.Assembly] = {}
     names: dict[str, int] = {}
     for p in L.placements(tilt_deg):
@@ -73,7 +72,7 @@ def main() -> None:
     for k in PRINTED + tuple(PRINTED_REF):
         s = L.shape(k)
         if k == "carriage":                         # v4: the lugs and the latch housing stand on the outer face, so it prints
-            s = L.P10.carriage_v10(print_web=True).val()  # outer face up, on supports under the plate between the ribs
+            s = L.P11.carriage_v11(print_web=True).val()  # outer face up, on supports under the plate between the ribs
             s = s.rotate((0, 0, 0), (1, 0, 0), -90)
         if k == "sam_mounting_plate":               # underside down (balls go in after printing)
             pass

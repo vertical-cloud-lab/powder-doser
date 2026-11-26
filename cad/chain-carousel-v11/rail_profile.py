@@ -126,12 +126,13 @@ def draw(off: float, path=None, note: str = ""):
     a1.set_xlabel("along the run (mm from the station)", fontsize=9)
     a1.set_ylabel("from the auger's axis, toward the loop (mm)", fontsize=9)
     zl = -(T11_HEAD_Z[0] + RAIL11_LIP_GAP)
-    a1.annotate("lips level over the straight part:\nthe T never rides up, nothing lifts", xy=(-2.0, zl - 0.15), xytext=(-34.0, 17.0), fontsize=8.6,
-                arrowprops=dict(arrowstyle="->", lw=0.8))
+    BB = dict(boxstyle="round,pad=0.25", fc="white", ec=(0.75, 0.75, 0.8), lw=0.6, alpha=0.92)
+    a1.annotate("lips level over the straight part:\nthe T never rides up, nothing lifts", xy=(-3.0, zl - 0.15), xytext=(-34.0, 30.0), fontsize=8.6,
+                arrowprops=dict(arrowstyle="->", lw=0.8), bbox=BB, zorder=8)
     ye = RAIL11_FLAT + RAIL11_FUNNEL_L
     a1.annotate(f"flared mouth over {RAIL11_FUNNEL_L:g} mm: {RAIL11_FUNNEL:g} mm wider sideways and toward the loop,\n{RAIL11_FUNNEL_DOWN:g} mm toward the plate, so a T a little off line is steered\nto the middle (alignment only)",
-                xy=(ye - 1.0, zl - 1.0), xytext=(1.0, 15.2), fontsize=8.6, arrowprops=dict(arrowstyle="->", lw=0.8))
-    a1.annotate("mounting plate's underside", xy=(off + 12, 18.0), xytext=(off + 2, 15.6), fontsize=8, color=(0.1, 0.2, 0.6))
+                xy=(-(ye - 1.0), zl - 1.0), xytext=(-34.0, 15.2), fontsize=8.2, arrowprops=dict(arrowstyle="->", lw=0.8), bbox=BB, zorder=8)
+
     a1.text(-35, 33.8, "EC (fixed at the station)", fontsize=8.5, color=COL["ec"])
     a1.text(off - 6, 31.0 if abs(off) > 13 else 30.6, "T-bracket", fontsize=8.5, color=(0.6, 0.3, 0.0))
     # 2. across the travel at the station
@@ -142,8 +143,9 @@ def draw(off: float, path=None, note: str = ""):
     if abs(off) <= T11_HY:
         p = patch(S_T_Y, fc=COL["t"], ec=(0.1, 0.1, 0.15), lw=0.6, zorder=3)
         a2.add_patch(p)
-        a2.annotate(f"{RAIL11_LIP_GAP:g} mm over the lips at rest:\nthe module rests on its own\ncarriage; the lips take it\nonly when the P16 pulls",
-                    xy=(T11_HEAD_X[1] - 1.0, zl + 0.1), xytext=(70.5, 20.0), fontsize=8.2, arrowprops=dict(arrowstyle="->", lw=0.8))
+        a2.annotate(f"{RAIL11_LIP_GAP:g} mm over the lips\nat rest: the module\nrests on its carriage;\nthe lips take it only\nwhen the P16 pulls",
+                    xy=(T11_HEAD_X[1] - 1.0, zl + 0.1), xytext=(66.0, 30.2), fontsize=7.8, arrowprops=dict(arrowstyle="->", lw=0.8),
+                    bbox=dict(boxstyle="round,pad=0.25", fc="white", ec=(0.75, 0.75, 0.8), lw=0.6, alpha=0.92), zorder=8)
         a2.annotate(f"{RAIL11_CLEAR:g} mm each side", xy=(T11_HEAD_X[0] - 0.15, 25.5), xytext=(36.5, 31.6), fontsize=8.2, arrowprops=dict(arrowstyle="->", lw=0.8))
     else:
         a2.text(46.5, 25.5, "(the T reaches this\nsection at the station)", fontsize=8.5, color=(0.45, 0.45, 0.5))
@@ -162,13 +164,14 @@ def draw(off: float, path=None, note: str = ""):
     a3.set_xlim(-60, 60)
     a3.set_ylim(-8.0, 36.5)
     a3.set_aspect("equal")
-    a3.set_title(f"3. The door ramp at the EC's front (cut through a lip; the rod, shutter and housing through the rod): door open {dz:.1f} of {DOOR_TRAVEL:g} mm",
+    a3.set_title(f"3. The door ramp at the EC's front: door open {dz:.1f} of {DOOR_TRAVEL:g} mm",
                  fontsize=11, loc="left")
     a3.set_xlabel("along the run (mm from the station)", fontsize=9)
     zf = -(DOOR11_HEAD_Z0 - DOOR_TRAVEL)
     a3.annotate(f"the lips catch the rod's head and draw it {DOOR_TRAVEL:g} mm toward the loop\nover {DOOR11_RAMP:g} mm; the shutter on the rod's other end opens",
-                xy=(DOOR11_RAMP_FLAT + DOOR11_RAMP * 0.5, zf - 3.5), xytext=(18.0, -6.5), fontsize=8.6, arrowprops=dict(arrowstyle="->", lw=0.8))
-    a3.annotate("shutter over the 3 mm exit\n(spring-closed)", xy=(off - 0.0, 1.0 + dz), xytext=(-58.0, -6.5), fontsize=8.6, arrowprops=dict(arrowstyle="->", lw=0.8))
+                xy=(DOOR11_RAMP_FLAT + DOOR11_RAMP * 0.5, zf - 3.5), xytext=(16.0, -6.5), fontsize=8.4, arrowprops=dict(arrowstyle="->", lw=0.8), bbox=BB, zorder=8)
+    a3.annotate("shutter over the 3 mm exit\n(spring-closed); cut through\nthe rod, the EC through a lip", xy=(off - 0.0, 1.0 + dz), xytext=(-58.0, -6.5), fontsize=8.4,
+                arrowprops=dict(arrowstyle="->", lw=0.8), bbox=BB, zorder=8)
     a3.text(-58, 33.5, "EC's door ramp (fixed)", fontsize=8.5, color=COL["ec"])
     for a in (a1, a2, a3):
         a.tick_params(labelsize=8)

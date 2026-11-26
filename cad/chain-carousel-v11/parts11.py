@@ -246,11 +246,11 @@ def p16_bracket_v11(bx: float, by: float, bz: float, bar_x0: float, bar_x1: floa
 
 # ---------------------------------------------------------------- 5. carriage v11: v10's, its opening longer at the front
 def carriage_v11(print_web: bool = False) -> cq.Workplane:
-    """carriage_v10 (ribs on the outer face) with its opening run forward to HINGE_X - 38: at 90 deg the EC's spine passes the
+    """carriage_v10 (ribs on the outer face) with its opening run forward to HINGE_X - 40: at 90 deg the EC's spine passes the
     carriage's plane 19-37 mm in front of the hinge ("the holes in the plate can be bigger")."""
     c = P10.carriage_v10(print_web)
     w0, w1 = CAR_W0 - CAR_T, CAR_W0
-    return c.cut(_box(-OPEN_U, OPEN_U, w0 - 1.0, w1 + 1.0, HINGE_X - 38.0, HINGE_X - 18.0))
+    return c.cut(_box(-OPEN_U, OPEN_U, w0 - 1.0, w1 + 1.0, HINGE_X - 40.0, HINGE_X - 18.0))   # 40: at 38 the EC passed its edge by 0.5 mm at 90 deg
 
 
 # ---------------------------------------------------------------- 6. mounting plate v11: v10's additions, no motor relief
