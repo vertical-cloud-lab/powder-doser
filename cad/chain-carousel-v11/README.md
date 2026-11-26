@@ -15,7 +15,14 @@
 
 Nothing is built. Every number here is a prediction from the CAD.
 
-**Onshape (public):** ONSHAPE_LINK
+**Onshape (public):** [Multi-doser chain carousel, test rig v11](https://cad.onshape.com/documents/868943ea72f58c7a9d6e421e/w/b69337d1a5f8ee47f70e6908/e/951aa82be5a4c3bfe1ed5b08)
+(ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); 11 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl):
+10 for the import, 1 to confirm it is public). It was imported from `step/chain_carousel_rig_v11.step` by
+[`onshape/onshape_build.py`](onshape/onshape_build.py). Earlier versions:
+[v10](https://cad.onshape.com/documents/99bd983c585992043f2eff96/w/7b5725dc5dfb7fe370fa0c71/e/56a319b93daf812d262f5eab),
+[v9](https://cad.onshape.com/documents/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590),
+[v8](https://cad.onshape.com/documents/a093aef97b81fce9ce0f322f/w/7b029051ee0ec62ff198253f/e/7518535395874b79077ff86b),
+[v7 (main)](https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8/e/4802634f69ef3323004d7bf6).
 
 ![Overview](renders/v11/overview_v11.gif)
 
