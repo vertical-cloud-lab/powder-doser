@@ -23,7 +23,7 @@ Nothing is built. Every number here is a prediction from the CAD.
 
 | # | Sam asked | v11 | How it works | Clip |
 |---|---|---|---|---|
-| 1 | "The augers still need to be able to go up to 90 degrees ... If the base plates need to be a bit longer, i.e. to give some more room for the rotation in the front, then go ahead" | **The carriages are 40 mm longer** (the chains 345 mm apart instead of 305; each carriage 391 mm over its tongues) and **the hinge is 40 mm further back** (73 mm behind the front chain's centre plane, v10: 33) | On the plate's side everything near the hinge swings forward as the module tilts. In v10 the EC's front reached the front chain's A-1 link at 70°. With the hinge 73 mm back, the module and the EC stand clear at 90°: the nearest approaches are the EC to the carriage's opening edge (2.5 mm) and the solenoid to the carriage's tab hook (2.5 mm) | [tilt90](renders/v11/tilt90_v11.gif) |
+| 1 | "The augers still need to be able to go up to 90 degrees ... If the base plates need to be a bit longer, i.e. to give some more room for the rotation in the front, then go ahead" | **The carriages are 40 mm longer** (the chains 345 mm apart instead of 305; each carriage 391 mm over its tongues) and **the hinge is 40 mm further back** (73 mm behind the front chain's centre plane, v10: 33) | On the plate's side everything near the hinge swings forward as the module tilts. In v10 the EC's front reached the front chain's A-1 link at 70°. With the hinge 73 mm back, the module and the EC stand clear at 90°: the nearest approaches are the EC to the carriage's opening edge (2.5 mm), and the solenoid to the carriage (2.5 mm) and its front tab's locknut (3.7 mm) | [tilt90](renders/v11/tilt90_v11.gif) |
 | 1 | "punch a hole through the metal plate so the linear actuator has some more room. If this requires new mounts (i.e. a new bar of 8020 across the outside, or just a 3D-printed mount) then design those" | **A P16-150 (back from v10's P16-100), its base outside the front side plate, through a 22 × 68 mm slot in the plate.** Its rear tab sits in a printed clevis under a **new 2020 bar across the front posts' front faces** (z 620-640, in front of the top bearings) | 0-90° takes 131 mm of travel, more than a P16-100 has. Laid out numerically, no base position inside the front plate gets the module to 90°: the line of pull runs over centre, or the actuator hits the top sprocket. With the base pin 26 mm in front of the plate, the P16-150 runs from 139.2 mm out (rest) to 8.3 mm out (90°). That leaves 10.8 mm short of full extension and 8.3 mm over full retraction, with a lever about the hinge of 30 mm or more. The front acrylic panel moves out to 30 mm standoffs to clear the bar and the P16's housing | [tilt90](renders/v11/tilt90_v11.gif) |
 | 2 | "Why is there a ramp? I was assuming each carriage would just move straight through it ... not lifting if it's not necessary" and "The auger can move a bit as well to get the hinge closer to the plate, or the holes in the plate can be bigger to accommodate the mounting plate" | **No lift.** The rail's lips are level; its ends only flare (2.5 mm sideways and toward the loop, 1.5 mm toward the plate, over 8 mm) to steer a T that arrives a little off line. **The hinge sits 5 mm nearer the carriage plate**, so the mounting plate sinks into the carriage's opening. **The pinion is 24T** (KHK SS1-24 class, v2-v10: 20T) | v10 lifted every module 4° only to bring its 44T gear up to the pinion while keeping the pinion over the passing carriages. With the hinge 5 mm nearer the carriage, the gear pokes 5 mm past the carriage at rest, and a 24T pinion (centre distance 34.25 mm) meets it there. At rest each module sits on its own carriage, its T 0.2 mm over the lips; the lips take it only when the P16 pulls. A 20T pinion would put the NEMA 11's body 0.25 mm off the passing plates; the 24T puts it 2.25 mm off | [rail profile](renders/v11/rail_profile_v11.gif), [rail](renders/v11/rail_v11.gif) |
 | 3 | "if the electronics carriage is already taking up space on the inside, I think it can extend all the way down to the dispensing end of the auger ... so it can directly open it ... Maybe that part can have a ramp ... Keep this part as simple as possible" | **The EC reaches forward over the outlet.** Each shutter (v10's) carries a 1.5 mm stainless rod up its spring's axis and out through the housing's cap to a small printed head. **The EC's front is a ramp slot** whose two wedge lips catch the head and draw it 6 mm toward the loop as the module arrives | No cable, sleeve or guide (v10 had all three). The door is fully open within 7 mm of the station and shut again 16.5 mm out. It is still v4's door: the shutter opens toward the plate, so it stays out of the falling dose | [door](renders/v11/door_v11.gif), [rail profile](renders/v11/rail_profile_v11.gif) (part 3) |
@@ -82,7 +82,7 @@ the flares stay for alignment.
 | Its lever about the hinge, mm | 87 | 93 | 97 | 99 | 98 | 93 | 84 | 71 | 53 | 30 |
 
 The module and the EC at 90° (by a minimum-distance check on the CAD): the EC passes the station carriage's extended opening by
-2.5 mm, and the solenoid passes the carriage's tab hook by 2.5 mm and the tab's locknut by 3.7 mm. The mounting plate runs 0.8 mm
+2.5 mm, and the solenoid passes the carriage by 2.5 mm and its front tab's locknut by 3.7 mm. The mounting plate runs 0.8 mm
 inside the opening's sides, as in v4-v10.
 
 ## Auger-to-beaker height
@@ -121,7 +121,7 @@ every check.
 | Check | What moves | Result |
 |---|---|---|
 | Home ([`checks/home.json`](checks/home.json)) | Every pair of the 829 instances | **0** |
-| `--tilt11` ([`tilt_a.json`](checks/tilt_a.json), [`tilt_b.json`](checks/tilt_b.json)) | Module 1, the EC and the P16 (its body swings on its base pin, its rod slides) at 0, 10, 20 ... 80, 85 and 90° against everything else | **0 at every angle** |
+| `--tilt11` ([`tilt_a.json`](checks/tilt_a.json), [`tilt_c.json`](checks/tilt_c.json), [`tilt_b.json`](checks/tilt_b.json)) | Module 1, the EC and the P16 (its body swings on its base pin, its rod slides) at 0, 10, 20 ... 80, 85 and 90° against everything else | **0 at every angle** |
 | [`sweep_station.py`](sweep_station.py) ([`checks/sweep_station.json`](checks/sweep_station.json)) | Every carriage and module within 2.2 modules of the station, over one module of travel in 1-link steps (9 poses), each door opened by the EC's ramp as it passes, against the EC, the P16 and its bar, the guide, the beam, the balance, the pillar and the beaker | **0** |
 
 The first runs found and fixed these:
@@ -137,7 +137,19 @@ The first runs found and fixed these:
 
 ## Cost
 
-COST_PARAGRAPH
+**$2,083.31, or $1,941.92 without test gear** ([BOM.md](BOM.md)). v10 was $2,352.10 ($2,210.71): $268.79 less. Lines marked
+estimate add up to $473.94.
+- **Removed:** v10's granite block, the bay window and the weighing chamber (two of v10's six acrylic sheets, the cement, the bay
+  door's hinges), the door cables, the P16-100 and its bracket's inserts, half of the M2 screws and inserts (the cable guides').
+- **Added:**
+  - the P16-150 ($90, back from v7-v9);
+  - a second 72 in shaft bar (the shafts are 40 mm longer);
+  - the 24T pinion (estimated);
+  - the front bar's screws and T-nuts, the P16's printed clevis;
+  - the door rods (estimated) and their printed heads;
+  - the beaker's pillar and the dosing lid (from an acrylic offcut);
+  - two spare Nitro CL35 connecting links.
+- **The same:** the NEMA 11, the solenoid, the one LAC, the balance (the lab's), the enclosure's other panels, the wiring lines.
 
 ## Check before building
 

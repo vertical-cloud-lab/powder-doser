@@ -1,5 +1,7 @@
 # Chain carousel v10: the station inside the loop, a keyed rail, the beaker 18 mm under the exit
 
+> **v11** ([README](../chain-carousel-v11/README.md), Sam's notes of 2026-11-25) builds on v10: 0-90 deg (longer carriages, a P16-150 through the front side plate), a straight rail with no lift, the door opened by the EC through a rod, the solenoid over clip 1, and the tall-cage balance on the bench.
+
 **v10 is a variation on [v9](../chain-carousel-v9/README.md)** (the balance on a granite block with no draft cage, a bay window and
 a weighing chamber), and so on [v7](../chain-carousel-v7/README.md), which stays the main version. It follows Sam's note of
 2026-11-19 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):

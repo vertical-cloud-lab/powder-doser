@@ -129,7 +129,7 @@ CAM_SIDE = ((HX + 10.0, SY, HZ + 85.0), (0.0, -1.0, 0.08), 760)          # the s
 CAM_SIDE_HI = ((HX - 5.0, SY, HZ + 120.0), (0.0, -1.0, 0.06), 900)       # ... with the module up at 90 deg
 CAM_FRONT = ((-48.0, -31.0, 575.0), (-0.78, -0.62, 0.30), 380)            # outside the front plate: the bar, the clevis, the slot
 CAM_RAIL = ((HX + 62.0, SY + 2.0, HZ + 26.0), (-0.62, -0.62, 0.48), 230)  # the rail, the T and the gear meeting the pinion
-CAM_GEAR = ((HX + 84.0, SY, HZ + 22.0), (-0.97, -0.10, 0.22), 150)       # the gear meeting the pinion, from the front
+CAM_GEAR = ((HX + 83.0, SY, HZ + 26.0), (-0.80, -0.45, 0.40), 155)       # the gear meeting the pinion, from the front, the solenoid hidden
 CAM_DOOR = ((HX - 3.0, SY, HZ + 22.0), (-0.72, -0.52, 0.46), 165)        # the door ramp over the outlet
 CAM_SOL = ((HX + SOL11_X, SY, HZ + 25.0), (-0.35, -0.86, 0.36), 190)    # the solenoid over clip 1
 CAM_BAL = ((HX - 20.0, SY, 260.0), (-1.0, -1.05, 0.42), 1250)            # the balance under the station, from the front
@@ -226,7 +226,7 @@ def rail(preview=False):
                                           "ends flare only to steer a T that arrives a little off line.",
                                      save_as="r1" if preview else None))
     c.chapter(2, "2. The gear meets the pinion from the side, at rest")
-    c.move(4.0, lambda t, i, n: dict(st=L.State(shift=incoming(0.75 + 0.25 * t), **S0), cam=CAM_GEAR, hide=close_cut, focus=foc,
+    c.move(4.0, lambda t, i, n: dict(st=L.State(shift=incoming(0.75 + 0.25 * t), **S0), cam=CAM_GEAR, hide=lambda q: close_cut(q) or q.key in ("solenoid", "door_head11", "door_rod11"), focus=foc,
                                      opacity=lambda pl: opac(pl, {"ec11": 0.35, "sam_mounting_plate": 0.5, "t_bracket": 0.6, "door_housing": 0.5}), readout=off_ro,
                                      text="The gear slides into mesh sideways over its last 11 mm, as in v10. Leave the NEMA 11 free (or turn it "
                                           "slowly) while the chain indexes, so the pinion turns out of the gear's way.",

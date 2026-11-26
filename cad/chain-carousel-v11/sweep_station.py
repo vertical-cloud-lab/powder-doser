@@ -40,4 +40,4 @@ for i in STEPS:
     poses.append(s)
     print(f"  shift {s:+3.0f} links: {len(h)} clash(es) ({len(near)} moving, {len(fixed)} fixed)", flush=True)
 CI._report(sys.argv[2] if len(sys.argv) > 2 else "sweep_station", hits, {"step_links": 1, "poses": len(poses), "direction": RUN_DIRECTION, "seconds": round(time.time() - t0),
-                                   "scope": "carriages and modules within 2.2 modules of the station vs the parked station, the balance, its block and the beaker, and the weighing chamber (deck, baffles)"})
+                                   "scope": "v11: carriages and modules within 2.2 modules of the station vs the parked station (the EC, the P16 and its front bar, the guide, the beam, the latch cam, the hold-downs), the side plates, the rungs, the NEMA 34, the balance, the pillar and the beaker"})
