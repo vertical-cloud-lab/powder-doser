@@ -1,0 +1,825 @@
+{
+ "documentId": "ae9f107d3972fc9d390e541f",
+ "workspaceId": "b4151a24f733d0ffc48da6d2",
+ "owner": "Vertical Cloud Lab",
+ "url": "https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f/w/b4151a24f733d0ffc48da6d2",
+ "partStudios": {
+  "fusion-step/baseplate.step": {
+   "elementId": "0043eabe02f952fba23eb592",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Baseplate",
+     "solid": "Body1"
+    }
+   ],
+   "sha256": "9328bd45049414fc8bab82e096d0105ff3adce7491cc0dd79f0f5e6cd68d80ba"
+  },
+  "fusion-step/mounting-plate.step": {
+   "elementId": "c129d8bb42b4ef96e5384506",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Tilt gear 28T (left)",
+     "solid": "Spur Gear (28 teeth)"
+    },
+    {
+     "partId": "JFH",
+     "name": "Tilt gear arm (left)",
+     "solid": "Body2"
+    },
+    {
+     "partId": "JFL",
+     "name": "Mounting plate",
+     "solid": "Body3"
+    },
+    {
+     "partId": "JFP",
+     "name": "Tilt gear 28T (right)",
+     "solid": "Spur Gear (28 teeth) (1)"
+    },
+    {
+     "partId": "JFT",
+     "name": "Tilt gear arm (right)",
+     "solid": "Body5"
+    }
+   ],
+   "sha256": "a255ea72f7d0dcf22e265cd86d5a4c277465fb1ec94ada65ab414b2387978280"
+  },
+  "fusion-step/auger.step": {
+   "elementId": "87e3fcaef4c956b47a8ff5ba",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Auger",
+     "solid": "Shaft"
+    }
+   ],
+   "sha256": "06cd250b5885fa9261eee4b0ed785ef02d52bac3bfc72ba77bf36334fc82fcbe"
+  },
+  "fusion-step/auger-cap.step": {
+   "elementId": "f99e877987cdd73ea3ab57ce",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Auger cap",
+     "solid": "Cap"
+    }
+   ],
+   "sha256": "8aa578308e3fcd594f1f590cb2c88ad5ef87ecab0401bb9cb2b55437ed1fea30"
+  },
+  "fusion-step/brackets.step": {
+   "elementId": "d4266dcd202f4faf52ba5e51",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Auger bracket",
+     "solid": "Body1"
+    }
+   ],
+   "sha256": "24d5a53c8a9840ee33b2aa28bb95f67973fdb46888a7887a2eec687d436d5d24"
+  },
+  "ai-step/tap-collar-base.step": {
+   "elementId": "e1153bae6c800f6e0a2e6ff9",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Tap collar base (AI, PR 51)",
+     "solid": null
+    }
+   ],
+   "sha256": "7670961002057765f3c5961088ebdfe7a57c3d6c06cd07b35c581e3bad3f41fc"
+  },
+  "fusion-step/tap-collar.step": {
+   "elementId": "d280770701066bab90c7a84e",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Tap collar",
+     "solid": "Body1"
+    }
+   ],
+   "sha256": "31326250271216f63c9def6554e78299a9400df821f27656e897c149d420b1cf"
+  },
+  "purchased/adafruit-412-solenoid.step": {
+   "elementId": "d3ffa0bfdef25c1369b96854",
+   "sha256": "e4f6e73e8f269567968d5984aed0957ebbac3a293016eacba312e4186bc44ca4",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Adafruit 412 solenoid",
+     "solid": null
+    }
+   ]
+  },
+  "fusion-step/stepper-pinion.step": {
+   "elementId": "15b8225e32009990daff71ef",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Stepper pinion 20T",
+     "solid": "Spur Gear (20 teeth)"
+    }
+   ],
+   "sha256": "4159c0b169bfb719678eacf90e35f907b6d3ac2dac0ca4ace26afe311fe96955"
+  },
+  "purchased/nema11-11hs18-0674s.step": {
+   "elementId": "37290fc4dca25d407f9168cb",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "NEMA 11 stepper 11HS18-0674S",
+     "solid": null
+    }
+   ],
+   "sha256": "73c2c09421a07b3f06fc127ae47d1d5b01b33df06e35b6026155b16e4601851f"
+  },
+  "fusion-step/servo-pinion.step": {
+   "elementId": "8377769b57b15d1601716d4d",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Servo pinion 14T",
+     "solid": "Spur Gear (14 teeth)"
+    }
+   ],
+   "sha256": "17eda10f49bbe508598b2882a3bcd5df2af6862c7f9e0cb0c292bcfd35eba47f"
+  },
+  "purchased/mg996r-servo.step": {
+   "elementId": "ad6ed61ddae64b27b09139c0",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "MG996R servo",
+     "solid": null
+    }
+   ],
+   "sha256": "4b6422363b180821ed3f3ea5d2184c1e54cb9a8f9473718339d240caef944dc8"
+  },
+  "hardware/bhcs_m5x45.step": {
+   "elementId": "7d54151d5299fd2f69cfc87b",
+   "sha256": "632355a30c116f56430785cd569792e606e747afd7d7d0a0317a811a4f350f0c",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M5 x 45 button head screw (McMaster 92095A223)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/locknut_m5.step": {
+   "elementId": "3815b5f91d55b34aaa20146a",
+   "sha256": "a8d87d548ebaddebd219fce7f06e2df9794815f942ad78ec0868a4e4711dedc0",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M5 nylon-insert locknut (McMaster 93625A200)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/bhcs_m3x20.step": {
+   "elementId": "fff224b7ae41060e004c3398",
+   "sha256": "b6d5c80d945900f02afcd158125e826ab13e5d507adc8f9987a00913cc30d054",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 x 20 button head screw (McMaster 92095A185)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/hexnut_m3.step": {
+   "elementId": "63eae747d72b0304d2ee062d",
+   "sha256": "207a573e04004fd61ecbfcce27ec42dafa9ddac64e0984cd8640bd85b0d55348",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 hex nut (McMaster 91828A211)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/shcs_m3x12.step": {
+   "elementId": "2ce96844065a29cd1a1d8b91",
+   "sha256": "08d49b8734985a297acd2b3310a4035b8f702009068deffd0eebd94216df9c28",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 x 12 socket head screw (McMaster 91292A114)",
+     "solid": null
+    }
+   ],
+   "superseded": true
+  },
+  "hardware/bhcs_m3x25.step": {
+   "elementId": "cbb5a9bc8232b59e5872a6dc",
+   "sha256": "912ca26602180cd57c01fae9798305c1d020d477c6dab88c021591db939de72d",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 x 25 button head screw (McMaster 92095A186)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/fhcs_m3x30.step": {
+   "elementId": "ecabb74909f4716edac72fe5",
+   "sha256": "56d7e0aeda079983a9d006d199273f5f25cea750f407c6bdf2ab17437ed32938",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 x 30 flat head screw (McMaster 92125A140)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/shcs_m3x5.step": {
+   "elementId": "c02b1d0eb676306253639534",
+   "sha256": "a56c93127f74d377e9bd4e1c30802158cd81da3db3321e1f16bd37ca84f41078",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 x 5 socket head screw (McMaster 91292A110)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/shcs_m2p5x8.step": {
+   "elementId": "bacc9722db61aa6fd3c775e4",
+   "sha256": "32e06a5c771db11a18cf19114c965af9e5298c1a38a1eceff637876d598a112b",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M2.5 x 8 socket head screw (McMaster 91292A012)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/locknut_m3.step": {
+   "elementId": "8ef95ec74f99b822172120fe",
+   "sha256": "17be64c97905d242fd3f431fdac88d2b41a0bf4c6e56ac1c70db0b185894ebcf",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 nylon-insert locknut (McMaster 93625A100)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/shcs_m3x14.step": {
+   "elementId": "87885b992d4c5bc7dcf488fb",
+   "sha256": "c4992f6ed8524f94520e0e3df13e1d052f90f6480bd945ce1d79d27584222f46",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 x 14 socket head screw (McMaster 91292A027)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/shcs_m3x10.step": {
+   "elementId": "a21498865ce6691a19c8b5f8",
+   "sha256": "2841901a1fc080c9425b2b91971c4bf79184795081cc23e87e95f862d8506c1f",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "M3 x 10 socket head screw (McMaster 91292A113)",
+     "solid": null
+    }
+   ]
+  },
+  "mount/mounting-board.step": {
+   "elementId": "0bb9360e89beba81d26e4f32",
+   "sha256": "5f754afaab372681b7cfa14eed56aa10442d045f13035e5661f05c96d223cae2",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "Mounting board (any flat board, 1.5 in thick)",
+     "solid": null
+    }
+   ]
+  },
+  "hardware/wood_10x1p25.step": {
+   "elementId": "484f650d7f2ee347f97f71a2",
+   "sha256": "7ca0dc940ff25902e9eca57c7a94dc547f06b0cc545fec43d85234db9a14efca",
+   "parts": [
+    {
+     "partId": "JFD",
+     "name": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)",
+     "solid": null
+    }
+   ]
+  }
+ },
+ "assembly": {
+  "elementId": "dfbe0ae499cd860a85aa8da6",
+  "instances": [
+   {
+    "placement": "Baseplate",
+    "instanceId": "MxVpCC3Sa7MIctvwc",
+    "elementId": "0043eabe02f952fba23eb592",
+    "partId": "JFD",
+    "part": "Baseplate"
+   },
+   {
+    "placement": "Mounting plate",
+    "instanceId": "MDXknuje2Uqfbj/fm",
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFD",
+    "part": "Tilt gear 28T (left)"
+   },
+   {
+    "placement": "Mounting plate",
+    "instanceId": "M9XU0ruDc5t2p2qGj",
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFH",
+    "part": "Tilt gear arm (left)"
+   },
+   {
+    "placement": "Mounting plate",
+    "instanceId": "MsxZIJpfKCyC9q6tU",
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFL",
+    "part": "Mounting plate"
+   },
+   {
+    "placement": "Mounting plate",
+    "instanceId": "MLmrJCpJhPai32alj",
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFP",
+    "part": "Tilt gear 28T (right)"
+   },
+   {
+    "placement": "Mounting plate",
+    "instanceId": "MjEmXknJKT3LF5x+s",
+    "elementId": "c129d8bb42b4ef96e5384506",
+    "partId": "JFT",
+    "part": "Tilt gear arm (right)"
+   },
+   {
+    "placement": "Auger",
+    "instanceId": "MQ2iWZyAoXJvnMo5K",
+    "elementId": "87e3fcaef4c956b47a8ff5ba",
+    "partId": "JFD",
+    "part": "Auger"
+   },
+   {
+    "placement": "Auger cap",
+    "instanceId": "M3vXt8e4ev+07cuT4",
+    "elementId": "f99e877987cdd73ea3ab57ce",
+    "partId": "JFD",
+    "part": "Auger cap"
+   },
+   {
+    "placement": "Bracket (rear)",
+    "instanceId": "Mh6QZukK6aSESq9WG",
+    "elementId": "d4266dcd202f4faf52ba5e51",
+    "partId": "JFD",
+    "part": "Auger bracket"
+   },
+   {
+    "placement": "Bracket (front)",
+    "instanceId": "M8A8S3qWvuvSxZTQQ",
+    "elementId": "d4266dcd202f4faf52ba5e51",
+    "partId": "JFD",
+    "part": "Auger bracket"
+   },
+   {
+    "placement": "Tap collar base (AI)",
+    "instanceId": "MSdzgT85RmE6G1sAa",
+    "elementId": "e1153bae6c800f6e0a2e6ff9",
+    "partId": "JFD",
+    "part": "Tap collar base (AI, PR 51)"
+   },
+   {
+    "placement": "Tap collar",
+    "instanceId": "MdHyJPztLyuR+RcTV",
+    "elementId": "d280770701066bab90c7a84e",
+    "partId": "JFD",
+    "part": "Tap collar"
+   },
+   {
+    "placement": "Solenoid (Adafruit 412)",
+    "instanceId": "MI7l/3ifZUFw0iDLE",
+    "elementId": "d3ffa0bfdef25c1369b96854",
+    "partId": "JFD",
+    "part": "Adafruit 412 solenoid"
+   },
+   {
+    "placement": "Stepper pinion",
+    "instanceId": "MrURar88lbcOyGaZx",
+    "elementId": "15b8225e32009990daff71ef",
+    "partId": "JFD",
+    "part": "Stepper pinion 20T"
+   },
+   {
+    "placement": "Stepper (NEMA 11)",
+    "instanceId": "MprMBXCxJJcxEl4zo",
+    "elementId": "37290fc4dca25d407f9168cb",
+    "partId": "JFD",
+    "part": "NEMA 11 stepper 11HS18-0674S"
+   },
+   {
+    "placement": "Servo pinion (+X)",
+    "instanceId": "MIUJy6t3PlbHqI3Ti",
+    "elementId": "8377769b57b15d1601716d4d",
+    "partId": "JFD",
+    "part": "Servo pinion 14T"
+   },
+   {
+    "placement": "Servo pinion (-X)",
+    "instanceId": "Mzk+DwgCPMdJk/tfj",
+    "elementId": "8377769b57b15d1601716d4d",
+    "partId": "JFD",
+    "part": "Servo pinion 14T"
+   },
+   {
+    "placement": "Servo MG996R (+X)",
+    "instanceId": "MlF5grbJOuQGUCEU7",
+    "elementId": "ad6ed61ddae64b27b09139c0",
+    "partId": "JFD",
+    "part": "MG996R servo"
+   },
+   {
+    "placement": "Servo MG996R (-X)",
+    "instanceId": "Mhj3AxOG8Vl+DlW/A",
+    "elementId": "ad6ed61ddae64b27b09139c0",
+    "partId": "JFD",
+    "part": "MG996R servo"
+   },
+   {
+    "placement": "Mounting board",
+    "instanceId": "McmD1mzJEnwj+cVtx",
+    "elementId": "0bb9360e89beba81d26e4f32",
+    "partId": "JFD",
+    "part": "Mounting board (any flat board, 1.5 in thick)"
+   },
+   {
+    "placement": "Hinge screw (+X)",
+    "instanceId": "MPbd6pNydmYa8wPpH",
+    "elementId": "7d54151d5299fd2f69cfc87b",
+    "partId": "JFD",
+    "part": "M5 x 45 button head screw (McMaster 92095A223)"
+   },
+   {
+    "placement": "Hinge locknut (+X)",
+    "instanceId": "M7/cwjHpnJUPoxjA8",
+    "elementId": "3815b5f91d55b34aaa20146a",
+    "partId": "JFD",
+    "part": "M5 nylon-insert locknut (McMaster 93625A200)"
+   },
+   {
+    "placement": "Hinge screw (-X)",
+    "instanceId": "MlsSWzmEb6syRnIIy",
+    "elementId": "7d54151d5299fd2f69cfc87b",
+    "partId": "JFD",
+    "part": "M5 x 45 button head screw (McMaster 92095A223)"
+   },
+   {
+    "placement": "Hinge locknut (-X)",
+    "instanceId": "M/hxGhKHZPTibdspf",
+    "elementId": "3815b5f91d55b34aaa20146a",
+    "partId": "JFD",
+    "part": "M5 nylon-insert locknut (McMaster 93625A200)"
+   },
+   {
+    "placement": "Bracket screw (rear, -)",
+    "instanceId": "MWocIRcUzVev+FlDI",
+    "elementId": "fff224b7ae41060e004c3398",
+    "partId": "JFD",
+    "part": "M3 x 20 button head screw (McMaster 92095A185)"
+   },
+   {
+    "placement": "Bracket nut (rear, -)",
+    "instanceId": "MnLfA6P4B3TQdHBlF",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Bracket screw (rear, +)",
+    "instanceId": "Mx/SXl5yj8sG7RvFB",
+    "elementId": "fff224b7ae41060e004c3398",
+    "partId": "JFD",
+    "part": "M3 x 20 button head screw (McMaster 92095A185)"
+   },
+   {
+    "placement": "Bracket nut (rear, +)",
+    "instanceId": "M/Gw2N2Nmfj+PUDnD",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Bracket clamp screw (rear)",
+    "instanceId": "Mv+unS6B2dYslyTIH",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Bracket clamp nut (rear)",
+    "instanceId": "MVjdG2REVeOA8kjfD",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Bracket screw (front, -)",
+    "instanceId": "MQdjexW3CJ/+txH36",
+    "elementId": "fff224b7ae41060e004c3398",
+    "partId": "JFD",
+    "part": "M3 x 20 button head screw (McMaster 92095A185)"
+   },
+   {
+    "placement": "Bracket nut (front, -)",
+    "instanceId": "MwFol48lM+WYwBOFw",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Bracket screw (front, +)",
+    "instanceId": "M8osXWCWmV7N/A6/+",
+    "elementId": "fff224b7ae41060e004c3398",
+    "partId": "JFD",
+    "part": "M3 x 20 button head screw (McMaster 92095A185)"
+   },
+   {
+    "placement": "Bracket nut (front, +)",
+    "instanceId": "MlvWOdPO6uw3E4Cz3",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Bracket clamp screw (front)",
+    "instanceId": "MuEAeOw8N/WTu9WRk",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Bracket clamp nut (front)",
+    "instanceId": "Mllct7hS7q/e3oZAk",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Tap base screw (-)",
+    "instanceId": "MkxZFBQmKsiuZLdY4",
+    "elementId": "cbb5a9bc8232b59e5872a6dc",
+    "partId": "JFD",
+    "part": "M3 x 25 button head screw (McMaster 92095A186)"
+   },
+   {
+    "placement": "Tap base nut (-)",
+    "instanceId": "MgMrCxeMOMH/jVpNI",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Tap base screw (+)",
+    "instanceId": "M3Qrk9kT5Ajk+py3n",
+    "elementId": "ecabb74909f4716edac72fe5",
+    "partId": "JFD",
+    "part": "M3 x 30 flat head screw (McMaster 92125A140)"
+   },
+   {
+    "placement": "Tap base nut (+)",
+    "instanceId": "MkjuQxLPRkN67slBv",
+    "elementId": "63eae747d72b0304d2ee062d",
+    "partId": "JFD",
+    "part": "M3 hex nut (McMaster 91828A211)"
+   },
+   {
+    "placement": "Tap collar clamp screw",
+    "instanceId": "MYpEUGj40VJWAuuTd",
+    "elementId": "fff224b7ae41060e004c3398",
+    "partId": "JFD",
+    "part": "M3 x 20 button head screw (McMaster 92095A185)"
+   },
+   {
+    "placement": "Tap collar clamp nut",
+    "instanceId": "MvpBqyxNTxoShgT29",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Solenoid screw (lower)",
+    "instanceId": "MWBPsWOwtTdZ35mLC",
+    "elementId": "c02b1d0eb676306253639534",
+    "partId": "JFD",
+    "part": "M3 x 5 socket head screw (McMaster 91292A110)"
+   },
+   {
+    "placement": "Solenoid screw (upper)",
+    "instanceId": "MJL6Kk07h+eHmSLnd",
+    "elementId": "c02b1d0eb676306253639534",
+    "partId": "JFD",
+    "part": "M3 x 5 socket head screw (McMaster 91292A110)"
+   },
+   {
+    "placement": "Stepper screw (--)",
+    "instanceId": "Mxf5APmZOSTKwA6G/",
+    "elementId": "bacc9722db61aa6fd3c775e4",
+    "partId": "JFD",
+    "part": "M2.5 x 8 socket head screw (McMaster 91292A012)"
+   },
+   {
+    "placement": "Stepper screw (-+)",
+    "instanceId": "M3HJFv0vC83PEqTs0",
+    "elementId": "bacc9722db61aa6fd3c775e4",
+    "partId": "JFD",
+    "part": "M2.5 x 8 socket head screw (McMaster 91292A012)"
+   },
+   {
+    "placement": "Stepper screw (+-)",
+    "instanceId": "MYUDtJWM8X74OSuzD",
+    "elementId": "bacc9722db61aa6fd3c775e4",
+    "partId": "JFD",
+    "part": "M2.5 x 8 socket head screw (McMaster 91292A012)"
+   },
+   {
+    "placement": "Stepper screw (++)",
+    "instanceId": "Mt4bS5afl7QywIiQr",
+    "elementId": "bacc9722db61aa6fd3c775e4",
+    "partId": "JFD",
+    "part": "M2.5 x 8 socket head screw (McMaster 91292A012)"
+   },
+   {
+    "placement": "Servo screw (+X, y12 z11)",
+    "instanceId": "Mn0Pme8n8dtstsX8p",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Servo nut (+X, y12 z11)",
+    "instanceId": "MO1Lj+cSEUJKcxRZw",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Servo screw (+X, y12 z21)",
+    "instanceId": "MPHCVDNC++l4wo93t",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Servo nut (+X, y12 z21)",
+    "instanceId": "MUBoZ1qYet7e/XOcw",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Servo screw (+X, y60 z11)",
+    "instanceId": "MEHCgjpdsGzV2zRHa",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Servo nut (+X, y60 z11)",
+    "instanceId": "MMO/xjrGFZI3TiG55",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Servo screw (+X, y60 z21)",
+    "instanceId": "McVmDLmx0lM7kAmBW",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Servo nut (+X, y60 z21)",
+    "instanceId": "Mg2Jo75JAE5stkQ0k",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Servo pinion screw (+X)",
+    "instanceId": "MfBR+x6z4e59rLoCq",
+    "elementId": "a21498865ce6691a19c8b5f8",
+    "partId": "JFD",
+    "part": "M3 x 10 socket head screw (McMaster 91292A113)"
+   },
+   {
+    "placement": "Servo screw (-X, y12 z11)",
+    "instanceId": "Mk9hZHd29YOXzslbl",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Servo nut (-X, y12 z11)",
+    "instanceId": "MWJOMWUtTHhxK9LOT",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Servo screw (-X, y12 z21)",
+    "instanceId": "MZ+uupotKVAUO0FyO",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Servo nut (-X, y12 z21)",
+    "instanceId": "MezCya47wKVicwTCe",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Servo screw (-X, y60 z11)",
+    "instanceId": "MnEW8VPTwhA9eLKnM",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Servo nut (-X, y60 z11)",
+    "instanceId": "MUCDxh583DHScpRVz",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Servo screw (-X, y60 z21)",
+    "instanceId": "MSPgzm7doxi2Vc3PT",
+    "elementId": "87885b992d4c5bc7dcf488fb",
+    "partId": "JFD",
+    "part": "M3 x 14 socket head screw (McMaster 91292A027)"
+   },
+   {
+    "placement": "Servo nut (-X, y60 z21)",
+    "instanceId": "Mq7QKLA+7QbbtLctU",
+    "elementId": "8ef95ec74f99b822172120fe",
+    "partId": "JFD",
+    "part": "M3 nylon-insert locknut (McMaster 93625A100)"
+   },
+   {
+    "placement": "Servo pinion screw (-X)",
+    "instanceId": "MZI8l65XjUVyheFRS",
+    "elementId": "a21498865ce6691a19c8b5f8",
+    "partId": "JFD",
+    "part": "M3 x 10 socket head screw (McMaster 91292A113)"
+   },
+   {
+    "placement": "Board screw (+X, y65)",
+    "instanceId": "My3YbzTHQpg4f27Ix",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (+X, y95)",
+    "instanceId": "MwukZSH8FX8IoVZ0X",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (-X, y65)",
+    "instanceId": "Mk027aAUv05dRXoXu",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (-X, y95)",
+    "instanceId": "MXlfYJa/ePOr4IoRp",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (leg +X)",
+    "instanceId": "MRCo3vybIttcDwdoo",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   },
+   {
+    "placement": "Board screw (leg -X)",
+    "instanceId": "MqI9ORYEb5T2tjjjt",
+    "elementId": "484f650d7f2ee347f97f71a2",
+    "partId": "JFD",
+    "part": "#10 x 1-1/4 in pan head wood screw (McMaster 93360A609)"
+   }
+  ],
+  "url": "https://cad.onshape.com/documents/ae9f107d3972fc9d390e541f/w/b4151a24f733d0ffc48da6d2/e/dfbe0ae499cd860a85aa8da6"
+ }
+}
