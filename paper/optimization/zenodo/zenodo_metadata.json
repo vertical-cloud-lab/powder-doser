@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "upload_type": "dataset",
+    "title": "Dose records, analysis code and figures for: Per-powder Bayesian calibration of an auger doser for alloy feedstock preparation, and dosing records as a probe of powder flow",
+    "description": "<p>Every calibration and production dose record of an open-source, 3D-printed auger powder doser from 29 September to 20 October 2026 (125 records with balance telemetry): two multi-objective Bayesian-optimization campaigns on sodium chloride and their validation blocks, single doses from 5 mg to 10 g at the recommended settings, and doses of gas-atomized AlSi10Mg and laboratory-atomized Al 4047 into atomizer charges. Also included are the campaign configurations, the scripts that compute every statistic and figure in the manuscript, the supplementary tables, and the manuscript source.</p>",
+    "creators": [
+      {
+        "name": "[to be filled once the author list is agreed]",
+        "affiliation": "Brigham Young University"
+      }
+    ],
+    "keywords": [
+      "powder dosing",
+      "feedstock",
+      "powder flowability",
+      "Bayesian optimization",
+      "self-driving laboratory",
+      "additive manufacturing"
+    ],
+    "license": "cc-by-4.0",
+    "access_right": "open",
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/vertical-cloud-lab/powder-doser",
+        "relation": "isSupplementTo",
+        "resource_type": "software"
+      }
+    ],
+    "notes": "Draft metadata; nothing has been deposited. The repository's code is under the MIT License (LICENSE at the repository root); the data are proposed under CC BY 4.0. Confirm both before depositing."
+  }
+}
