@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Supplementary Information for:
-% "An open-source, 3D-printed auger powder doser designed with generative
-%  artificial intelligence" (Digital Discovery submission)
+% "An open-source powder doser for autonomous alloy discovery, designed by
+%  engineers and modelled by AI agents" (Digital Discovery submission)
 % Build: latexmk -pdf si.tex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[10pt]{article}
@@ -19,8 +19,8 @@
 \renewcommand{\thesection}{S\arabic{section}}
 
 \title{Supplementary Information\\[2mm]
-\large An open-source, 3D-printed auger powder doser designed with generative
-artificial intelligence}
+\large An open-source powder doser for autonomous alloy discovery, designed by
+engineers and modelled by AI agents}
 \author{Sam Charles, Will Mulberry, Luke Winters, Carl Robison,\\
 Gage Erickson, and Sterling G. Baird}
 \date{}
@@ -157,8 +157,8 @@ Smaller auger, about 9.2~mL & \url{https://a360.co/47qXATc} \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{figures/figS_assembly_exploded}
-\caption{Exploded view of the current design with every item of its mechanical
+\includegraphics[width=\textwidth]{v2/figures/figS_assembly_exploded}
+\caption{Every part of the doser. Exploded view of the current design with every item of its mechanical
 bill of materials numbered: printed parts, purchased parts, and fasteners
 (McMaster-Carr part numbers in \texttt{cad/full-assembly/BOM.md}). Item~1 is
 whatever the doser is screwed to; the CAD uses a board 38~mm thick, the depth
@@ -168,7 +168,7 @@ are simplified models made from their datasheets. Electronics are listed in
 Table~\ref{tbl:bom}. The CAD assembly was built by an AI agent from the team's
 part files, working through Onshape's programming interface, and rendered from
 the same files (pull request \#170).}
-\label{fgr:exploded}
+\label{fgr:exploded}\label{fgr:v2exploded}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -274,6 +274,22 @@ boxes AI steps. Each Zoo Design Studio round took about an hour.}
 \label{fgr:workflow}
 \end{figure}
 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{v2/figures/figS_cad_comparison}
+\caption{Generative-CAD comparison. Asked for the whole doser at once, every tool
+returned parts that did not make a working assembly; one part at a time, with
+review, worked better. (a--c) The same prompt (issue~\#104, 22 June 2026) given to
+the GitHub Copilot coding agent, CADSmith, and the Zoo Text-to-CAD API, each
+rendered from the same viewpoint. (d--f) The tap collar from the coding agent (first
+version and after review) and from Zoo Design Studio (third Zookeeper iteration).
+(g, h) CADSmith's mounting plate and baseplate. (i--l) The coding agent's four
+mounting-plate iterations: out-of-date input files led to a hole, then platforms,
+then a gap, until the correct files were supplied.}
+\label{fgr:v2cadcompare}
+\end{figure}
+
 Table~\ref{tbl:designlog} summarizes the CAD entries of the design log. Of the
 76 entries that made or changed a part model, the coding agent wrote 72, and 16
 were printed. The log records 41 defects. People reviewing renders, slicer
@@ -285,6 +301,58 @@ AI-modelled entries. The log was compiled afterwards from the repository, so
 these counts are lower bounds.
 
 \input{figures/data/design_log_cad_table}
+
+\clearpage
+
+\section{Open-loop delivery for every powder}
+\label{sec:openloopall}
+
+Table~\ref{tbl:v2openloop} gives the open-loop numbers behind the main-text
+figure on delivery per revolution and per tap, at all three tilts, and
+Fig.~\ref{fgr:v2revvar} plots the revolution-to-revolution variation against
+the mass per revolution.
+
+\begin{table}[htbp]
+\small
+  \caption{Open-loop delivery for every powder (protocols C and E, round 1, one
+  run per powder). Mass per auger revolution (mg, mean $\pm$ standard error of six
+  revolutions) with the tube horizontal (0$^\circ$) and tilted to 22.5$^\circ$ and
+  45$^\circ$; the revolution-to-revolution coefficient of variation (CV) at
+  22.5$^\circ$; and the mass released by one solenoid tap at 22.5$^\circ$ (mean
+  $\pm$ standard error of eight taps). n.r.: not resolved, meaning the mean did not
+  exceed twice its standard error. Tap values in italics are within the balance
+  noise of their run; $^\dagger$fumed silica's only run failed screening.}
+  \label{tbl:v2openloop}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llrrrrr}
+    \hline
+    Powder & Group & 0$^\circ$ & 22.5$^\circ$ & 45$^\circ$ & CV at 22.5$^\circ$ (\%) & Per tap (mg) \\
+    \hline
+    AlSi10Mg (gas-atomized) & Research & 49 $\pm$ 7 & 231 $\pm$ 13 & 339 $\pm$ 6 & 13 & \textit{-1.9 $\pm$ 5.0} \\
+    Silicon, $-$110/+200 mesh & Research & 57 $\pm$ 7 & 211 $\pm$ 6 & 302 $\pm$ 5 & 7 & \textit{-3.5 $\pm$ 2.4} \\
+    Sodium sulfate & Research & 51 $\pm$ 8 & 208 $\pm$ 13 & 244 $\pm$ 12 & 15 & 9.3 $\pm$ 2.8 \\
+    Calcium lactate & Surrogate & 47 $\pm$ 5 & 198 $\pm$ 2 & 232 $\pm$ 3 & 2 & 20.4 $\pm$ 1.0 \\
+    Barium chloride & Research & 23 $\pm$ 4 & 185 $\pm$ 13 & 200 $\pm$ 31 & 17 & 2.1 $\pm$ 0.4 \\
+    Xanthan gum & Surrogate & 24 $\pm$ 2 & 161 $\pm$ 8 & 187 $\pm$ 3 & 12 & 13.6 $\pm$ 1.2 \\
+    Sodium chloride (NaCl) & Surrogate & 38 $\pm$ 4 & 146 $\pm$ 11 & 265 $\pm$ 13 & 18 & 0.9 $\pm$ 0.1 \\
+    Carboxymethyl cellulose (CMC) & Surrogate & 2.6 $\pm$ 0.5 & 26 $\pm$ 1 & n.r. & 9 & \textit{0.1 $\pm$ 0.1} \\
+    White rice flour & Surrogate & 3.8 $\pm$ 0.3 & 13 $\pm$ 2 & 37 $\pm$ 7 & 37 & \textit{0.1 $\pm$ 0.1} \\
+    Sodium alginate & Surrogate & 0.8 $\pm$ 0.2 & 9.6 $\pm$ 0.3 & 11 $\pm$ 1 & 8 & 0.2 $\pm$ 0.1 \\
+    Brown rice flour & Surrogate & n.r. & n.r. & n.r. & -- & \textit{0.2 $\pm$ 0.1} \\
+    Silicon, $-$325 mesh & Research & n.r. & n.r. & n.r. & -- & \textit{0.6 $\pm$ 0.3} \\
+    Fumed silica & Research & n.r. & n.r. & n.r. & -- & \textit{1.9 $\pm$ 0.8}$^\dagger$ \\
+    \hline
+  \end{tabular*}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{v2/figures/figS_rev_variation}
+\caption{Variation between revolutions. Most powders varied by 2--18\% from one
+revolution to the next; white rice flour, at 37\%, varied most.
+Revolution-to-revolution coefficient of variation against mass per revolution at
+22.5$^\circ$ (protocol C). The same numbers are in Table~\ref{tbl:v2openloop}.}
+\label{fgr:v2revvar}
+\end{figure}
 
 \clearpage
 
@@ -416,6 +484,16 @@ and (f) is from 4 August 2026.}
 \label{fgr:dosetraces}
 \end{figure}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{v2/figures/figS_dose_time}
+\caption{Time per dose (protocols G and H). Larger doses took longer: for doses
+within the limit, the median was 52~s at 50~mg, 152~s at 200~mg and 185~s at
+1~g. Time to finish each dose, by target mass; lines are the medians of the doses
+that finished within the acceptance limit.}
+\label{fgr:v2dosetime}
+\end{figure}
+
 {\small
 \input{figures/data/dose_accounting_table}
 }
@@ -423,6 +501,145 @@ and (f) is from 4 August 2026.}
 \small
 \input{figures/data/dose_summary_table}
 \normalsize
+
+\section{Stepped-tilt trials}
+\label{sec:steppedtilt}
+
+The repeated doses of the main text (18--20 November 2026) ran up to 30
+consecutive closed-loop doses per powder, unattended, on a script that wrapped the
+microcontroller's own three-phase controller. A team member chose the settings
+in the repository's pull-request thread, and an AI agent wrote the script,
+ran it on the doser over the network, and logged the balance at about 9--10
+readings per second, one CSV file per trial.
+
+\paragraph{Procedure.} Bulk: auger at 80~rpm with one 60~ms solenoid tap every
+300~ms; the tube starts at 60$^\circ$ and steps down through 55, 50, 45, and
+40$^\circ$, one step per equal band of mass (0.15~g for a 1~g target, 0.35~g for
+2~g) or after 3~s without flow at an angle, until 0.25~g remains. Fine: tube at
+30$^\circ$, auger turning steadily at 25~rpm with the same taps, stopped 20~mg
+before the hand-over at 25~mg to go. Tap: the controller's stock tap phase at
+0$^\circ$ (one tap and a 15$^\circ$ auger turn per cycle, a 1.5~s settle, and a
+5$^\circ$ nudge after three cycles without gain, up to ten), finishing within
+$\pm$1~mg. A trial stalled after 8~s without a 2~mg gain. A run stopped itself
+after two failed trials in a row, at a cap on the mass in the beaker, or on a
+balance overload. Targets were 1~g (NaCl), 1.5~g (sodium sulfate and barium
+chloride), and 2~g (AlSi10Mg, calcium lactate, and xanthan gum); only the target
+and what scales with it (the tilt bands, the stall margins, and the beaker cap)
+changed between powders.
+
+\paragraph{Development on salt.} Before the settings were frozen, 17 trials on
+salt changed them step by step. With a tube filled to the brim, the salt plugged
+at 60--40$^\circ$ and the auger turned without delivering. Bulk angles of
+50--30$^\circ$, and then a newly printed tube, fed very little. Adding the summer
+tap rate to the bulk phase got the salt moving, and raising the bulk speed from
+55 to 80~rpm on the original, partly emptied tube gave the frozen settings. The
+same tube then delivered 24 doses of 1~g in a row before it ran dry. Comparing
+these runs with summer runs at the same angles and speeds, the settings meant the
+same thing in both; the salt in the tube (how full, how packed, and how caked it
+was) had changed.
+
+\paragraph{Results.} Table~\ref{tbl:steppedsupp} lists the trials that did not
+reach their target and the stage in which the completed doses ended. Powder
+that kept falling after the fine phase stopped the auger (a median of 28--40~mg
+for the four powders that reached that phase) exceeded the fixed 20~mg
+anticipation, so 43 doses ended in the fine phase at or above the target. The
+doses that reached the tap phase were the accurate ones: for AlSi10Mg, 9 of the
+11 finished within $\pm$1~mg. Every sodium sulfate dose ended in the bulk phase,
+which fed 0.36~g~s$^{-1}$ against 0.09--0.17~g~s$^{-1}$ for the others. The data
+are in \texttt{paper/v2/data/stepped\_tilt/}: \texttt{trials.csv} (all 133
+trials), \texttt{summary.csv}, and byte-identical copies of the per-launch
+summaries from the run folders, which also hold every per-trial balance record,
+bench-camera frames, and the scripts. \texttt{build.sh} there rebuilds the main-text
+figure and table with gawk and pdflatex.
+
+\begin{table}[htbp]
+\small
+\caption{Stepped-tilt trials on the frozen settings: what happened in each run.
+Development trials on salt (17, none completed) are not included.}
+\label{tbl:steppedsupp}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{2.6cm}cccccp{6.2cm}}
+\toprule
+Powder & Trials & Doses & Ended in bulk & Ended in fine & Ended in tap & Trials that did not reach the target \\
+\midrule
+AlSi10Mg & 26 & 20 & 0 & 9 & 11 & Two priming trials while powder reached the outlet (one per launch), three as the tube ran dry, one balance overload \\
+Sodium sulfate & 23 & 23 & 23 & 0 & 0 & None; stopped at the beaker cap \\
+Calcium lactate & 18 & 18 & 0 & 12 & 6 & None; stopped at the beaker cap \\
+Barium chloride & 4 & 0 & -- & -- & -- & Nothing left the tube in about 113 revolutions; the powder had caked \\
+Xanthan gum & 18 & 18 & 0 & 8 & 10 & None; stopped at the beaker cap \\
+NaCl & 27 & 24 & 0 & 14 & 10 & Three as the tube ran dry \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\clearpage
+
+\section{Al~4047 atomizer doses}
+\label{sec:al4047}
+
+The doser filled three containers with Al~4047 powder made by the laboratory's
+ultrasonic atomizer: an 8~g charge for the atomizer (30 September 2026) and two
+cups of a composition spread at 7.5 and 15 weight percent of the cup and its plug
+(19--20 October 2026). An AI agent ran every step on request in the repository
+(pull request \#166 and issue \#186). Table~\ref{tbl:al4047} lists the ten
+closed-loop doses, and Table~\ref{tbl:al4047charges} the three containers. The
+closed-loop doses used settings from the salt optimization campaign, first with
+the three-phase controller and then with a bulk-only mode written for this
+powder (main text, Experimental). Between them the agent ran hand-driven steps
+through the same command interface: reverse turns with the tube level, stepwise
+doses with a stable reading after each step, and top-ups. These are logged as
+separate records in the same database campaign. The coarse agglomerates in this
+unsieved powder blocked the outlet twice. On 19--20 October a slow trickle of
+about 1~mg~s$^{-1}$, then nothing at 60$^\circ$ and 75$^\circ$ with faster
+rotation and tapping, gave way after about 13 reverse turns at 0$^\circ$; the tube
+then fed 60--80~mg per turn in either direction. On 20 October the flow faded
+again over three doses, and a team member cleared the larger particles from the
+auger, after which a single dose fed 1.10~g at about 25~mg~s$^{-1}$. The data are
+in \texttt{paper/v2/data/al4047/}, with the location of every source record.
+
+\begin{table}[htbp]
+\small
+\caption{The ten closed-loop Al~4047 doses. Aim is the mass the dose was asked
+for (often 100~mg short of the remainder, to be finished by hand-driven steps);
+delivered is the mass over the dose's own tare. Tilt, auger speed, and tap rate
+are those of the bulk phase.}
+\label{tbl:al4047}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llccccp{5.6cm}}
+\toprule
+Dose & Container & Settings & Aim (g) & Delivered (g) & Status & What happened \\
+\midrule
+3e7490c2 & 8~g charge & 40$^\circ$, 100 rpm, 2 taps/s & 8.0000 & 3.4905 & no result & A telemetry memory error ended the dose 100~s into the bulk phase \\
+de4dd913 & 8~g charge & 40$^\circ$, 100 rpm, 2 taps/s & 4.5095 & 4.1906 & cycle budget & The bulk fed 11--17~mg~s$^{-1}$; a partial clog let nothing through at the shallower fine and tap tilts \\
+56a01060 & 8~g charge & bulk only, 40$^\circ$ & 0.3189 & 0.3199 & ok & 65~s; the charge totalled 8.0010~g \\
+a5fdadaa & 7.5~wt\% cup & bulk only, 40$^\circ$ & 2.9904 & 0.2028 & stalled & 86~mg in 6~s, then about 1~mg~s$^{-1}$: outlet blocked \\
+b13e5997 & 7.5~wt\% cup & 60$^\circ$, 109 rpm, 3.5 taps/s & 0.5000 & 0.0025 & stalled & Steeper and faster did not clear the outlet \\
+f6a3403f & 7.5~wt\% cup & 75$^\circ$, 109 rpm, 4.2 taps/s & 0.5000 & 0.0079 & stalled & Then 13 reverse turns at 0$^\circ$ freed the outlet; a stepwise reverse dose added 2.8192~g \\
+cb3096e9 & 15~wt\% cup & bulk only, 40$^\circ$ & 6.4674 & 2.2421 & stalled & Flow fell to about 1~mg~s$^{-1}$ in 2--3~min; reversing at 0$^\circ$ then added 0.4302~g \\
+d737cec5 & 15~wt\% cup & bulk only, 40$^\circ$ & 3.7951 & 2.2496 & timeout & 300~s limit \\
+9480b818 & 15~wt\% cup & bulk only, 40$^\circ$ & 1.5455 & 0.3901 & stalled & Each restart began slower; a team member then cleared the auger \\
+5851b6d6 & 15~wt\% cup & bulk only, 40$^\circ$ & 1.1012 & 1.1028 & ok & 48~s; a stepwise top-up at 40$^\circ$ added 0.0981~g \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\begin{table}[htbp]
+\small
+\caption{The three Al~4047 containers. The composition targets follow the
+spread's definition, powder / (cup + plug + powder); the 7.5~wt\% cup's plug mass
+is a computed value, and the 15~wt\% cup was weighed with its plug. Each net mass
+carries about $\pm$1--2~mg.}
+\label{tbl:al4047charges}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccc}
+\toprule
+Container & Date & Target (g) & Powder in it (g) & Error (mg) & Closed-loop doses & Hand-driven steps \\
+\midrule
+8~g atomizer charge & 30 Sep 2026 & 8.0000 & 8.0010 & +1.0 & 3 & none \\
+7.5~wt\% cup & 19--20 Oct 2026 & 3.0407 & 3.0432 & +2.5 & 3 & reverse turns, stepwise dose \\
+15~wt\% cup & 20 Oct 2026 & 6.5674 & 6.5676 & +0.2 & 4 & reverse turns, top-up \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\clearpage
 
 \section{Composition error from dosing error}
 \label{sec:comperror}
