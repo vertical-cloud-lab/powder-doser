@@ -1,212 +1,202 @@
 # Optimization manuscript: outline and what still needs to be prepared
 
-Draft: [`main.tex`](main.tex) → [`main.pdf`](main.pdf) (issue #179). Working title, from the TMS 2027
-abstract: *Auger-based powder dosing as a probe of powder flow: multi-objective, multi-task Bayesian
-calibration and physics-based property inference.*
+Draft: [`main.tex`](main.tex) → [`main.pdf`](main.pdf), SI [`si.tex`](si.tex) → [`si.pdf`](si.pdf)
+(issue #179). Working title: *Per-powder Bayesian calibration of an auger doser for alloy feedstock
+preparation, and dosing records as a probe of powder flow*. The TMS 2027 talk title is broader
+("...multi-task Bayesian calibration and physics-based property inference"); widen the paper's title when
+those results exist.
 
-In the PDF, orange bracketed sans-serif text marks a value or claim that waits on data, and every figure
-panel built from invented numbers carries a diagonal "SYNTHETIC DATA" mark and a caption that starts with
-"[Placeholder: synthetic data.]". Everything else reports work that exists in the repository.
+In the PDF, orange bracketed sans-serif text marks a value or claim that waits on data or a decision, and
+every figure panel built from invented numbers carries a diagonal "SYNTHETIC DATA" mark and a caption that
+starts with "[Placeholder: synthetic data.]". Everything else reports work that exists in the repository.
+Every number in the text comes from [`analysis/results/stats.json`](analysis/results/stats.json) and
+[`gp_cv.json`](analysis/results/gp_cv.json), written by `analysis/opt_stats.py` and
+`analysis/gp_diagnostics.py` from the dose records in `data/`.
+
+## 0. Where it stands (27 Nov 2026)
+
+- **Data.** All 125 records of MongoDB `opt_trials` (29 Sep to 20 Oct 2026) are in
+  `data/opt_trials/`. There are no newer calibration or production records. The 133 stepped-tilt trials
+  of 18–24 Nov (#131) are Xavier's data-assimilation work (#210), and Sterling assigned them to the
+  hardware paper on 27 Nov, so they are not used here.
+- **Real results in the draft:**
+  - campaign 1 and its validation, with exact tests against the hand-tuned baseline and the best observed dose;
+  - leave-one-out checks of the GP model against simpler models;
+  - campaign 2 (the hand-over margin) and the powder drift that stopped it;
+  - six salt doses from 5 mg to 10 g at the recommended settings;
+  - the AlSi10Mg transfer dose and the Al 4047 feed signal;
+  - property rank correlations with literature values;
+  - the DEM forward model.
+- **Placeholders:** multi-task results (Fig. 5, synthetic), DEM inference (Fig. 6b–c), measured
+  properties (Fig. 7c), hardware facts (tube ID, exit geometry, capacity), supplier and lot, CRediT,
+  funding, the data DOI. There are 24 orange markers in all.
+- **Journal requirements:** checked against the live guide in [`SUBMISSION.md`](SUBMISSION.md). The
+  cover letter draft is [`cover_letter.md`](cover_letter.md).
+
+### Boundary with the hardware paper (#97)
+
+Both requests of 27 Nov name the Al 4047 atomizer doses, and the hardware run has already added "the 10
+executor trials and the three charges they filled" to its branch (`4012927`). To keep the two papers
+apart:
+
+| Data | Hardware paper (#97) | This paper |
+|---|---|---|
+| 13-powder fixed-setting battery and its 50 mg / 200 mg / 1 g closed-loop doses | owns the figures, table and claims (10–231 mg/rev, 24 of 39 doses within 5%, ...) | cites them; uses the records only for the new property correlations (Fig. 7). The old Fig. 2 and Table 1 are removed |
+| Speed exponent from protocol D | "an indication only" (firmware timing error) | no longer used as a result |
+| Al 4047 atomizer charges (30 Sep, 19–20 Oct) | owns the charges: how they were dosed and their final masses | uses only the bulk feed rate at fixed settings, as a feedstock-flow signal (Fig. 4a–b), and cites #97 for the charges |
+| AlSi10Mg 8 g charge (29 Sep) | shows the request and reply as an example of use (v2 Fig. 4a), "about 8 g" | reports its accuracy (7.993 g, −0.09%) as the transfer of calibrated settings |
+| Salt BO campaigns, validation, dose range, GP checks | mentions controller work as future work only | owns them |
+| Stepped-tilt trials (#131) | owns them | not used |
+
+**Check both drafts against each other before either is submitted** (Sam and Will).
 
 ## 1. Target and constraints
 
-- **Journal:** *Additive Manufacturing* (Elsevier), full-length article, @sgbaird's stated preference
-  (#179). Fallbacks discussed in the repo: *Additive Manufacturing Letters* (≤5,000 words, faster) if the
-  DEM inference is not mature; *Powder Technology* or *KONA* if the DEM inference becomes the main claim;
-  a controls venue (e.g. IEEE/ASME *Transactions on Mechatronics*, IEEE *T-ASE*) only if the controller
-  and multi-task BO are the contribution (#91 scouting notes, `15-target-journals-and-venues.md`).
-- **Guide-for-authors items that shape the draft** (archived 2024 guide plus current Elsevier policy pages;
-  re-check the live guide before submission):
-  - 5,000–13,000 words *including* references and figure captions.
-  - Abstract ≤250 words, no references; ≤6 keywords; 3–5 highlights of ≤85 characters (separate file);
-    graphical abstract ≥531 × 1328 px.
-  - Numbered references (`elsarticle-num`), figures in-line, third person preferred (the draft uses
-    "we", matching the companion paper; decide).
-  - "Two-part papers are not allowed": the paper must stand on its own, so it repeats enough of the
-    hardware description (Section 2.1) rather than deferring to the companion paper.
-  - Posting a preprint before submission is discouraged.
-  - **Machine-learning rubric** (Elsevier ML requirements, linked from the guide): papers that skip it are
-    returned as premature. It asks for each model's formulation, the dataset, why ML is needed over a
-    simpler model, training/testing protocol and hyperparameters, residual and edge-case analysis, and
-    comparison against random guessing or the prior state of the art. The multi-task and inference
-    results need baselines and held-out tests for this reason (Section 4.B).
-  - Generative-AI declaration with Elsevier's wording, immediately before the references; AI used in the
-    research itself (the agent that operated the campaigns, wrote firmware and analysis code) goes in
-    Methods. Both are in the draft.
+- **Journal:** *Additive Manufacturing* (Elsevier), full-length article, Sterling's stated preference
+  (#179, 10 Oct). The live guide (27 Nov) adds a **Methods paper** type: tutorial-style papers on
+  "calibration, and validation procedures" and "best practices for uncertainty quantification,
+  repeatability, and reproducibility". The present data fit that type better than a full-length research
+  article. Other fallbacks discussed in the repo: *Additive Manufacturing Letters* (≤5,000 words), *Powder
+  Technology* or *KONA* if the DEM inference becomes the main claim, and a controls venue.
+- **Limits and rules:** see [`SUBMISSION.md`](SUBMISSION.md). In short: 5,000–13,000 words including
+  references and captions; abstract ≤250 words; 1–7 keywords; 3–5 highlights ≤85 characters; ISO/ASTM
+  52900 terms in the title and abstract; third person preferred; full reproducibility details; data
+  deposited and cited (Option C); Elsevier's ML requirements; no preprint before submission; no part papers.
+- **Editor conflict:** Associate Editor Nathan B. Crane is at BYU (Mechanical Engineering). Ask in the
+  cover letter that he not handle the paper. Editor-in-Chief: A. T. Clare (board read 27 Nov).
 
 ## 2. Status of each claim in the TMS abstract
 
-Builds on the status table in `docs/optimization/tms-2027/README.md` on the #166 branch, updated with
-the DEM results in PR #180 and the flowability work on the #163 branches.
-
 | Claim | Status | Evidence in the draft | Still needed |
 |---|---|---|---|
-| Calibration as AI-driven multi-objective BO | **Done, one powder** | Salt: 42-dose SOBOL→SAASBO/qNEHVI campaign (Ax 0.4.3); `bo-005` validated 8/8, median 78 s, 1.8 mg vs 245 s hand-tuned (Fig. 3) | Same campaign on more powders |
-| Objectives: accuracy, repeatability, time, accessible dose range | **Two of four** | Time and \|error\| optimized; repeatability only measured after the fact (validation blocks); every dose targeted 0.5 g | Repeatability and dose-range objectives in the campaign code; replicate design; dose-range blocks |
-| Every calibration curve is a probe of cohesion, friction, packing | **Early evidence** | 24-fold delivery range, no-flow powders, Si size pair (Fig. 2); delivery ranks like literature angle of repose, ρ = −0.84 (Fig. 6a); per-powder τ_afterflow, tap quantum, speed exponent | Measured properties of the same lots; batch-to-batch resolution |
-| Each powder is a related task; multi-task models cut calibration effort | **Not started** | Salt settings carried over to AlSi10Mg (7.993 g of 8 g); Fig. 4 is synthetic | Multi-task GP in `opt_campaign.py`; ≥4 single-task campaigns; benchmark |
-| Alloy precursors, elemental or master alloy, under inert atmosphere; AlSi10Mg and stainless steel | **Not started** | One AlSi10Mg and one Al 4047 production dose in air; one qualitative glove-box trial (salt, norbornene, AIBN; Jul 2026) | Glove-box integration; precursor list and hazard review; 316L powder |
-| DEM with cohesive-frictional contacts and measured PSDs | **Forward model done** | LIGGGHTS twin, no fitted parameters: 105 vs 105 ± 11 mg/rev at the centre point; tilt trend; exit-gap and grain-size sensitivity (Fig. 5a) | Friction sweep and cohesion curve in the rig geometry; measured PSD and exit geometry; emulator; inference (Fig. 5b, c synthetic) |
-| Checked against shear-cell and Hall-flow measurements | **Not started** | Fig. 6c synthetic | Hall/Carney, shear cell (outsourced), PSD, densities on the same lots |
-| May anticipate spreadability and packing uniformity | **Proposed only** | Doser flowability proxies V_g and I_stop proposed on the #163 branch | Blade-spread single layers on 3–4 deliberately varied batches |
+| Calibration as AI-driven multi-objective BO | **Done, one powder** | Campaign 1: 42 doses (16 corners, 4 centre, 4 hand-tuned, 4 re-centre, 2 Sobol, 12 SAASBO/qLogNEHVI; Ax 0.4.3). `bo-005` validated 8/8, median 78 s (CI 69–110 s), 1.8 mg; vs 4 hand-tuned doses p = 0.004, 3.1× (2.7× at matched τ). `corner-09` (best single dose) repeated at a median 202 s. LOO checks: the GP's uncertainty is calibrated, but it does not out-predict a linear model | Same session design on more powders; a matched 8-dose hand-tuned block |
+| Objectives: accuracy, repeatability, time, accessible dose range | **Two optimized; range seen once** | Time and \|error\| optimized. Repeatability reported from validation blocks, which matches the 28 Oct decision to report it rather than optimize it. Six single doses from 5 mg to 10 g at `bo-005` all ended 0.3–2.7 mg under target, so ±5% is met only above about 60 mg | Dose-range blocks (8 doses each at 0.05 and 5 g) per validated setting; one-sided error and P(overshoot) constraint in the code |
+| Every calibration curve is a probe of cohesion, friction, packing | **Early evidence** | Delivery ranks like literature AoR (ρ = −0.84, n = 12); moisture tracks 1 g dose error (ρ = +0.87, n = 9). The Al 4047 bulk feed is 13× below AlSi10Mg at the same settings and recovered after oversized particles were removed | Measured properties of the same lots; within-alloy batch comparison (sieved vs unsieved Al 4047) |
+| Each powder is a related task; multi-task models cut calibration effort | **Not started** | Salt settings carried over to AlSi10Mg (one dose, −0.09%) but not to unsieved Al 4047. Fig. 5 is synthetic | ≥2 more single-task sessions, a retrospective benchmark, one prospective session |
+| Alloy precursors under inert atmosphere | **Dropped for now** (28 Oct meeting) | — | In air, in a dehumidified enclosure; maybe some tests in the Utah glove box |
+| DEM with cohesive-frictional contacts and measured PSDs | **Forward model done** | No fitted parameters: 105 vs 105 ± 11 mg/rev at the centre point; tilt trend; exit-gap and grain-size sensitivity (Fig. 6a) | Friction × cohesion design, emulator, inference on salt with a measured PSD and exit geometry |
+| Checked against shear-cell and Hall-flow measurements | **Not started** | Fig. 7c synthetic | Funnel set (buy); shear cell (outside lab) on the campaign lots |
+| May anticipate spreadability and packing | **Proposed only** | — | Blade-spread layers with the CubXL or a printer with a wiper (28 Oct) |
 
 ## 3. Manuscript outline and figure plan
 
-| Section | State in the draft |
+| Section | State |
 |---|---|
-| Abstract, highlights, keywords | Written; one placeholder sentence for the multi-task and inference results |
-| 1 Introduction | Written (AM alloy discovery → flow characterization limits → feeder behaviour depends on flow properties → BO / multi-task BO → DEM calibration → contributions) |
-| 2.1 Doser and dose procedure | Written from the #97/#166 hardware facts; confirm the solenoid model and supply voltage of the tested tap collar |
-| 2.2 Powders (Table 1) | Written; needs supplier/lot and measured PSD for every powder |
-| 2.3 Gravimetric response at fixed settings | Written (protocols C, D, E, G; dosing fingerprint; V_g, I_stop) |
-| 2.4 Calibration as multi-objective BO (Table 2) | Written; describes the salt campaign as run |
-| 2.5 Multi-task calibration | Written as a plan; formulation thresholds are placeholders |
-| 2.6 DEM | Written for the forward model; inference design is a placeholder |
-| 2.7 Independent characterization | Written as a plan |
-| 2.8 Statistics | Written; ML-rubric items flagged |
-| 3.1 Dosing response separates powders (Fig. 2) | **Real data** (#97/#173, #116 battery) |
-| 3.2 Bayesian calibration on salt (Fig. 3) | **Real data** (#166 campaign + 2026-10-06 validation) |
-| 3.3 Multi-task calibration (Fig. 4) | **Placeholder** text and synthetic figure |
-| 3.4 DEM twin (Fig. 5) | (a) **real** (#180); (b, c) synthetic; inference text placeholder |
-| 3.5 Dosing response and properties (Fig. 6) | (a, b) **real** (#163 correlation study); (c) synthetic; comparison text placeholder |
-| 4 Discussion | Written; multi-task paragraph has a placeholder |
-| 5 Conclusions | Written; one placeholder sentence |
-| Declarations | GenAI and competing-interest statements written; CRediT, funding, acknowledgements open |
-
-Figures (all built by `figures/make_figures.py` from `data/`):
+| Abstract (246 words), highlights (5), keywords (7) | Written from real data; one placeholder sentence for multi-task and DEM inference |
+| 1 Introduction | Written; four questions, each tied to its evidence |
+| 2.1–2.3 Doser, powders, dose records | Written; tube ID, exit geometry, capacity, supplier and lot are placeholders |
+| 2.4 Campaign 1 | Written, with the corrections of 27 Nov (the cup was never emptied; 2 Sobol + 12 model doses; baseline at two τ values) |
+| 2.5 Campaign 2 | Written |
+| 2.6 Metal feedstock doses | Written (feed rate only; charges cited to #97) |
+| 2.7 Fixed-setting records | Written (protocols C and G of the companion study) |
+| 2.8 Multi-task (planned) | Written as a plan, with state covariates and the 28 Oct objectives |
+| 2.9 DEM, 2.10 characterization (planned), 2.11 statistics | Written |
+| 3.1 Calibration on salt (Fig. 2) | **Real data**, with exact tests and LOO model checks |
+| 3.2 Campaign 2 and drift (Fig. 3) | **Real data** |
+| 3.3 Metal feedstock (Fig. 4) | **Real data** |
+| 3.4 Multi-task (Fig. 5) | **Placeholder** |
+| 3.5 DEM (Fig. 6) | (a) **real**; (b, c) synthetic |
+| 3.6 Properties (Fig. 7) | (a, b) **real** (literature properties); (c) synthetic |
+| 4 Discussion, 5 Conclusions | Written; placeholders where results are missing |
+| SI | Per-dose tables for every campaign and the metal doses; screening main effects; LOO model checks and setting relevance; ML-requirements table; property table with provenance |
 
 | Fig. | Panels | Real now | Synthetic now → replaced by |
 |---|---|---|---|
-| 1 Overview | (a) one `bo-005` dose trace with stages; (b) data-flow schematic | (a) | — (schematic; update boxes as work completes). Consider adding a photo of the rig and the procedure still from #175 |
-| Overview, relations (new; placement open) | (a) cheap doser measurements (feed factor, "ghost dose" tapped density, angle of repose); (b) the relational matrix that physics-based ML learns between (a) and (c), with the powder's state and history as inputs; (c) the standard tests (Hall/Carney, PSD, shear cell, tapped density, moisture); from the 28 Oct whiteboard sketch (`meetings/2026-10-28-whiteboard.jpg`) | schematic with a 3D still on every card (`figures/stills/`: the standard tests from the PR #190 animations, the doser measurements as new scenes around the PR #170 doser CAD) | — (`figures/make_overview_relations.py`; stills from `figures/render3d/render_stills.py`; draft caption below) |
-| 2 Thirteen powders | (a) mg/rev at fixed settings; (b) 1 g closed-loop outcomes | all | — |
-| 3 Salt campaign | (a) objective space incl. validation blocks; (b) repeatability; (c) traces; (d) settings changed | all | — (the hypervolume trace was dropped: the observed hypervolume barely moved after screening because two lucky single doses dominate it; move it to the SI with that explanation if wanted) |
-| 4 Multi-task | (a) hypervolume vs doses on a held-out powder; (b) learned task correlations | none | leave-one-powder-out replays + one prospective campaign |
-| 5 DEM | (a) sim vs measured mg/rev vs tilt; (b) response surface; (c) posterior | (a) | emulator and posterior from the cohesion/friction design |
-| 6 Properties | (a) delivery vs literature angle of repose; (b) tilt response per powder; (c) inferred cohesion vs shear-cell ffc | (a, b) | measured ffc, Hall flow on the same lots; swap literature AoR for measured |
-| SI (to make) | test-protocol table; screening main effects; per-dose campaign table; τ_afterflow fit; DEM inputs and sensitivity; property table with sources | — | — |
+| 1 Overview (#195) | cheap doser measurements ↔ standard tests (relational matrix) | schematic (no data) | — |
+| 2 Campaign 1 | objective space; repeat blocks; traces; settings changed | all | — |
+| 3 Campaign 2 | paired corners at 35 vs 0 mg; bulk feed by session; every dose in order | all | — |
+| 4 Metal feedstock | bulk feed at fixed settings (salt, AlSi10Mg, Al 4047); delivery rate within doses; dose range at `bo-005` | all | — |
+| 5 Multi-task | hypervolume vs doses; task correlations | none | leave-one-out replays + one prospective session |
+| 6 DEM | sim vs measured; response surface; posterior | (a) | emulator and posterior |
+| 7 Properties | delivery vs AoR; 1 g dose error vs moisture; inferred cohesion vs ffc | (a, b) | measured ffc and Hall flow on the same lots |
+| S1 | LOO predictions of three models | all | — |
+| Graphical abstract | — | old DEM-centred sketch | redraw once the scope is fixed |
 
-Draft caption for the relations figure (PR #195):
+## 4. What is missing for a complete paper
 
-> **Cheap measurements on the doser and the standard powder tests they could stand in for.** (a) Three measurements made with the doser itself: the feed factor (mg per auger revolution) at several tilts, before and after the powder sits in humid air, measured so far for 13 powders; a "ghost dose", in which a transparent doser with its outlet closed is tapped while the bulk and tapped fill levels are read; and the angle of repose θ of the pile the doser pours, read by a camera. Solid border: measured; dashed: proposed. (b) Physics-based machine learning (surrogate models and DEM simulations) learns the relational matrix between (a) and (c), with the powder's composition and handling history as extra inputs. Filled dots: links expected when the study was planned; open dots: the other pairs, which are tested as well; diamond: the ghost dose measures tapped density directly. Side arrows: the two uses, inferring the standard properties of a new powder from its doser measurements (down) and using known properties to speed up the doser's calibration (up). (c) The standard tests, each on its own instrument, with the governing standard and whether it runs in-house or in an outside laboratory. The renders are illustrative; the figure shows no data.
+### A. Experiments, with run counts
 
-## 4. Still to prepare
+Sizes follow the one-session-per-jar design in
+[`campaign-as-data/PLAN.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/claude/physics-sims-20261031/docs/physics-simulations/runs/campaign-as-data/PLAN.md)
+(#196 branch): about 5–6 h per session, half of it unattended. One session runs an opening fingerprint
+(protocols C, D and E), a fixed 22-dose screen, 14–20 BO doses, an 8-dose validation block, a dose-range
+block, a closing fingerprint and a salt reference. To that design this plan adds an **8-dose hand-tuned
+(or carried-over) block interleaved with the validation block**, the comparison campaign 1 lacks. Block
+sizes: with the dose-time scatter of campaign 1 (log-SD 0.26), 8 vs 8 doses detect a 2-fold difference in
+time with power ≈1.0 and a 1.5-fold one with power 0.78 (exact Mann–Whitney, α = 0.05; 4 vs 8, as now,
+gives 0.72 for a 2-fold difference). Showing P(inside band) ≥ 0.8 with no failures takes 14 doses, ≥ 0.9
+takes 29 and ≥ 0.95 takes 59, so the paper should report Clopper–Pearson bounds, not claim 0.95.
 
-### A. Experiments (in dependency order)
+| # | What | Doses | Rig time | Powder | Who | Why it is needed |
+|---|---|---|---|---|---|---|
+| E0 | Bench reset and hardware state: record the tube ID; measure the exit bore and core-tip gap; drawdown test for the working fill; calibration weight; T/RH sensor | — | ½ day | salt | **Will** (bench), **Sterling** (buy the sensor and weight) | Reproducibility (journal rule); the DEM shows a 1 mm tip shift doubles delivery; campaign 2 failed on an emptying tube |
+| E1 | **Salt session** with the fixed code (C1–C9): screen 22, BO 20, validation 8 + hand-tuned 8, dose range 8 × 0.05 g + 8 × 5 g | ≈74 | 1 day | ≈70 g handled | **Will + Claude** | Matched baseline (removes the τ confound); re-validates `bo-005` on a fresh fill after its 13 Oct failure; dose range; drift check |
+| E2 | **AlSi10Mg session**, same design; the 8-dose baseline is the salt `bo-005` settings (transfer) | ≈74 | 1 day | ≈70 g | **Will + Claude** | Second powder; the AM feedstock; tests transfer properly (now one dose) |
+| E3 | **Sieved Al 4047 session**, same design, plus the opening fingerprint on the unsieved batch | ≈74 + 20 min | 1 day | ≈70 g sieved | **Will** (sieving), **Claude** | Third powder; the lab's own feedstock; within-alloy batch comparison (editor and reviewers asked for it) |
+| E4 | **Prospective multi-task session** on a fourth feedstock (630 bronze, Al 6063 or a custom alloy; 28 Oct list): 12 multi-task BO doses, validation 8, baseline 8, opening fingerprint | ≈30 | ½ day | ≈40 g | **Sterling** (choose and obtain the powder), **Will + Claude** | The multi-task claim; without it, drop "multi-task" from the scope |
+| E5 | **Same-lot characterization** of the 4 campaign lots (+ salt): bulk and tapped density, angle of repose (Will's stand), loss on drying with T/RH, PSD by SEM image analysis or sieving | — | 1–2 days bench + SEM time | few g each | **Will** (in-house), **Sterling** (SEM access) | Measured properties instead of literature values (all four mock reviewers) |
+| E6 | Hall/Carney flow on the metal lots | — | 1 h | 50 g each, reusable | **Sterling** (buy a funnel set), **Will** | Standard AM flow test; cohesive powders recorded as no-flow |
+| E7 | Shear cell ($ff_c$) on 3–4 lots, outside lab | — | 2–4 weeks turnaround | 10–85 mL each | **Sterling** (contract lab or collaborator) | The check on inferred cohesion |
+| E8 | DEM friction × cohesion design for salt (≈30 parameter sets × 3 tilts), emulator, Bayesian calibration | — | ≈45–90 CPU-h + 2–3 days of code | — | **Claude** (needs E0 geometry and the salt PSD from E5) | Inference on one powder (proof of concept) |
+| E9 | Blade-spread single layers of 3–4 Al 4047 batches (sieved, unsieved, dried, humid) | — | 1–2 days | 5–10 g per layer | **Will** (CubXL or printer with a wiper) | Only if the spreadability sentence stays; otherwise cut it from the abstract and discussion |
 
-1. **Record and fix the hardware state.** Which auger and exit produced each dataset (unresolved in
-   #180); measure the as-printed exit hole and core-tip gap, since the DEM shows delivery doubling when the
-   tip moves 1 mm. Confirm the tap solenoid and its voltage.
-2. **Characterize the lots** (same jars that are dosed): PSD by sieving (sieves on order,
-   byu-vcl#262) or laser diffraction; bulk and tapped density / Hausner ratio; angle of repose; moisture
-   (loss on drying) with RH logged; Hall flow, or Carney for powders that do not pass; shear-cell ffc
-   (FT4 or ring shear, likely outsourced). The #163 discussion judged the full suite for every powder
-   unreasonable, so prioritize the powders used in the campaigns and the inference.
-3. **Single-task campaigns** with the salt protocol (≈42 doses + 8-dose validation each): AlSi10Mg, 316L
-   stainless steel, sieved Al 4047, and at least one elemental alloy precursor. These are the tasks for the
-   multi-task model; plan powder quantities (a battery uses 4–10 g; a campaign moves ≈20 g into the cup).
-4. **Repeatability and dose range.** Add a dose-range block at each validated point (e.g. 0.05, 0.5 and
-   5 g) and decide the replicate count per evaluation for the repeatability objective.
-5. **Dosing fingerprints** for every lot (battery A–H or the 15-min proxy protocol proposed on #163),
-   with a same-day reference powder: salt's feed factor drifted ≈10 % between days.
-6. **Inert atmosphere.** Glove-box dosing of reactive elemental precursors; decide elemental vs master
-   alloy per element from handling constraints and hazards (the TMS abstract's framing); static and
-   loosening fasteners were problems in the July glove-box trial.
-7. **Prospective multi-task test** on a freshly atomized batch.
-8. **Spreadability and batch-to-batch resolution.** Blade-spread single 50–100 µm layers of 3–4
-   deliberately varied batches of one alloy (sieved vs unsieved, dried vs humid, reused vs virgin, plus
-   commercial AlSi10Mg); fingerprint the same batches on the same day. Specify blade gap and speed,
-   substrate, spread length, RH, replicate layers and image metrics (areal mass, coverage, uniformity,
-   streak/void area), and validate coarse-grained DEM against one fine-powder experiment.
+**Total new rig work for the full scope: about 250 doses in 4 rig days (E1–E4), ½ day of bench reset, and
+1–2 days of characterization.** Before E1 the code changes C1–C9 and decisions D1–D7 in
+[`READINESS.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/claude/physics-sims-20261031/docs/physics-simulations/runs/campaign-as-data/READINESS.md)
+have to be done. They take about 2–3 days of agent work plus Will's review; Will settled four of the
+decisions on 17 Nov. Close the paused campaign 2 and void its starved doses (D6).
 
-9. **Controller housekeeping that affects comparisons across powders** (from the #154/#166/#131
-   records): identify the balance lag τ_bal in the HR-100A's configured response mode (drop tests give
-   0.16 s; the firmware assumes the datasheet's 0.7 s, worth 12 mg at trickle and 50–85 mg at bulk rates)
-   and its data rate (5.1 vs 10.5 Hz seen); run the built-but-unrun margin and bulk→tap campaigns; A/B the
-   refill-tap endgame (taps take a median 76 % of dose time).
-10. **Owed bench items:** dried BaCl₂ closed-loop re-run (caked after humidity cycling); block F
-   (vibration) never ran; CMC 200 mg re-run; T/RH logging; a drawdown test separating fill level from
-   packing (feed factor moved 1.5–1.8× between sessions, #140); wall hold-up of the auger; a calibration
-   weight and the granite-slab comparison for the balance (#147).
-11. **Glove-box and low-inventory requirements** raised by users: 0.1–10 mg at ±0.1 mg for synthetic
-   chemistry (#117), static in argon, and a micro-auger for expensive elements such as Sc (#158; the
-   current auger needs 30–40 g to prime, a 10 mm micro-auger 1–2 g). Hazard review for combustible and
-   pyrophoric fines (Al, Mg, Ti, Zr; #141).
+**Minimum version** (drops multi-task and DEM inference from the claims, keeps them as outlook): E0–E3,
+E5, E6. That is about 220 doses in 3 rig days. It is still an *Additive Manufacturing* full-length article
+only if E5–E6 show the doser resolving the sieved and unsieved Al 4047. Otherwise submit as an AM **Methods
+paper** or to *Powder Technology*.
 
 ### B. Analyses and code
 
-1. **Formulation.** Move from \|error\| to a one-sided error with a P(overshoot) constraint, plus
-   repeatability P(\|e\| ≤ tol) and accessible dose range, reconciling with the formulation already in
-   `docs/optimization/README.md` (#162: minimize time s.t. P(\|error\| ≤ tol) ≥ 0.95 and P(overshoot) ≤ 0.01).
-2. **Multi-task model** in `scripts/opt_campaign.py`: task parameter (multi-task GP, index kernel) and a
-   descriptor kernel from the dosing fingerprint; warm start from existing doses (the mechanism already
-   used to attach screening doses).
-3. **Benchmark** (needed for the ML rubric): leave-one-powder-out replays on surrogates fitted to each
-   campaign; baselines Sobol, single-task SAASBO, carry-over of the most similar powder's settings, a pooled
-   GP without task correlations, a descriptor-only model and a rule-based warm start; same initial designs
-   for every method, paired seeds, and no held-out data in the "best known hypervolume";
-   metric = doses to 90 % of best known hypervolume; ≥10 replays with seeds; report hyperparameters.
-4. **DEM.** Friction sweep and a cohesion curve in the rig geometry (only one cohesion point, in the
-   micro-auger, exists); separate particle–wall adhesion from particle–particle cohesion; tie the inferred
-   cohesion to the softened stiffness; fix the inconsistencies listed in the #180 review (counting-disk
-   position in the README, exit area 7 vs 6.5 mm², whole-run vs steady-state mg/rev, 30→60 rpm scaling of
-   the 0° and 45° references, missing `micro_hifric` / `micro_tilt0` data); longer runs and several seeds;
-   coarse-graining for fine metal powders; add taps.
-5. **Inference.** Emulator design (number of runs, ranges), Bayesian calibration with a discrepancy term,
-   identifiability check on synthetic data, virtual shear test vs measured shear cell.
-6. **Property links.** Redo Fig. 6 with measured properties; add V_g and I_stop once their repeatability
-   is measured; correct for multiple comparisons or pre-register the few tests that matter.
-7. **Statistics for Fig. 3.** Bootstrap intervals on the validation-block medians; report the model's
-   prediction intervals at `bo-005` before and after dosing.
+1. **Code before E1:** C1–C9 of `READINESS.md`. These cover the bulk-spin timing, protocol D timing, a
+   session runner, logging of `session_id`, `jar_id`, `auger_id`, fill, T/RH and τ_bal, a hopper limit,
+   telemetry retry, a box widened to 45°, and τ_bal = 0.16 s.
+2. **Model changes from this draft's checks:** model log(time) (LOO ρ 0.44 vs 0.24); a one-sided error
+   with a P(overshoot) constraint; the state covariates as context inputs.
+3. **Multi-task model and benchmark:** index and descriptor kernels; leave-one-powder-out replays with
+   paired seeds and the same initial designs, with no held-out data in "best known". Baselines: Sobol,
+   single-task SAASBO, a pooled GP, a descriptor-only model, carry-over of the most similar powder's settings
+   and a linear model, at least 10 replays. Item 9 of the ML requirements needs this.
+4. **DEM:** see E8, plus the #180 review fixes listed in the 13 Oct outline (counting-disk position, exit
+   area, whole-run vs steady-state mg/rev, the 30 → 60 rpm scaling).
+5. **Property links:** redo Fig. 7 with measured properties; pre-register the few physically motivated
+   tests (cohesion ↔ delivery and interruption fraction; moisture ↔ dose error in hygroscopic powders;
+   size ↔ flow within one material) and treat the rest as leads.
 
-12. **Reconcile units in older records.** Battery records (#116) store tilt as a servo setting (0/45/90 =
-   0/22.5/45° of auger tilt); early #131 scripts reported per *motor* revolution (×2.2 for the auger). The
-   draft uses auger tilt and auger revolutions throughout; check every number copied from older docs.
-13. **The trim study's "±5 mg is out of reach of any control law" (#154, simulation)** is contradicted by
-   later bench data (16/16 validation doses inside a 3 mg band; AlSi10Mg 1 g doses −2.7, +9.4, −1.1 mg)
-   because taps on a depleted lip free 0.4–3.6 mg rather than the assumed 6.5 mg. Do not cite the claim.
-14. **Optional idea (@sgbaird, #124):** estimate in-flight mass and feed factor from a single run by data
-   assimilation (JAX), which would turn every dose, not just calibration batteries, into a measurement.
+### C. Writing and submission (who)
 
-15. **Salt campaign caveats to address or state** (from the #166 records): the BO phase was stopped by a
-   CI deadline after 14 of the 30–40 planned doses and the observed hypervolume did not grow during it;
-   the four hand-tuned doses ran at two different τ_afterflow values (two at 0.30 s, two at 0.834 s), so
-   run a matched 8-dose hand-tuned block at the fitted τ; spills were never observed in unattended runs,
-   so "validated" means no jam or overshoot only; time noise is heavy-tailed (centre point 24–391 s),
-   which argues for a robust or heteroscedastic noise model; the screening boxes were never range-found.
-16. **Expected reviewer question:** why multi-objective BO rather than single-objective constrained BO
-   (an Edison methods check on #124 recommended the latter at about 24 trials)? Answer with the
-   Pareto/repeatability argument, or add a single-objective baseline. Novelty support: the 07-07 Edison
-   query on #124 found no published multi-objective or contextual BO of powder-dosing parameters in an
-   SDL setting.
+| Item | Who |
+|---|---|
+| Scope decision: full (multi-task + DEM inference) or minimum; title follows | **Sterling** |
+| Author list, order, corresponding author; CRediT | **Sterling** and every author |
+| Funding statement and acknowledgements | **Sterling** |
+| Hardware facts in §2.1: tube ID, capacity (58 or 70 mL), exit geometry, solenoid voltage; salt and AlSi10Mg supplier and lot | **Will** |
+| Boundary with #97: confirm the split above and read both drafts against each other | **Sam** and **Will** |
+| Zenodo release of `paper/optimization/` + firmware with a DOI (Option C); not published until approved | **Sterling** approves; Claude prepares |
+| Redraw the graphical abstract; remove placeholder conventions; final word count in Word or iThenticate | Claude, after the scope decision |
+| Reviewer slate and editor conflict (cover letter) | **Sterling**, each author checks conflicts |
+| Edison mock review of the next full draft | Claude, when E1–E3 are in |
 
-### C. Writing and submission
+### D. Realistic schedule
 
-- Author list, order and corresponding author (the draft copies the companion paper's six authors with
-  W. Mulberry first, since he leads #179 and presents at TMS; nothing is decided). CRediT roles.
-- Funding and acknowledgements.
-- Decide "we" vs third person.
-- Replace every orange placeholder and synthetic panel; remove the placeholder conventions from `main.tex`.
-- Supplementary information (list in Section 3).
-- Archive data and code with a DOI (e.g. Zenodo release) and update the data-availability statement.
-- **Overlap with the companion paper.** The 13-powder data in Fig. 2 and Table 1 are already reported in
-  the *Digital Discovery* draft (#97). Either cite them as published there and keep them short (or move
-  them to the SI), or agree which paper reports them first; Elsevier screens for duplicate publication.
-- Relationship to the companion hardware paper (*Digital Discovery*, due 13 Nov): cite it as a preprint
-  or published paper; keep enough hardware detail here to stand alone.
-- Suggested reviewers and cover letter from the #91 notes (`17-suggested-reviewers.md`), conflict-screened.
-- Check the 12 entries flagged in [`references_validation.md`](references_validation.md) (six ASTM
-  standards without DOIs, the software/repository/companion-paper entries, two DataCite DOIs that resolve
-  but are not in Crossref, one subtitle mismatch).
-- Word count against the 5,000–13,000 limit once results are in.
+| Window | Work |
+|---|---|
+| 30 Nov – 11 Dec | Scope and author decisions (Sterling); C1–C9 and D1–D7 (Claude, Will reviews); E0 bench reset; buy the sensor, weight and funnel set; sieve Al 4047 |
+| 14–18 Dec | E1 salt session (pilot) |
+| 5–23 Jan | E2 AlSi10Mg and E3 sieved Al 4047 sessions; E5 in-house characterization; ship E7 shear-cell samples |
+| 26 Jan – 13 Feb | E4 prospective session; multi-task benchmark; E8 DEM inference on salt |
+| 16 Feb – 5 Mar | Write-up, figures, Edison mock review, author review |
+| 14–18 Mar | TMS 2027 talk |
+| **Submit** | **Full scope: about 2 April 2027**, if the shear-cell results are back by early March. **Minimum version: about 12 February 2027.** |
 
-### D. Suggested order of work (relative to TMS, 14–18 Mar 2027)
-
-1. Now–Nov: hardware state (A1), lot characterization started (A2), formulation and multi-task code
-   (B1–B2), DEM sweeps (B4).
-2. Nov–Jan: single-task campaigns (A3–A5), benchmark (B3), emulator and inference on salt (B5).
-3. Jan–Feb: glove-box precursor campaign (A6), prospective test (A7), property links (B6).
-4. Mar: TMS talk with real Figs. 3–6; spreadability (A8) and submission after.
+The dates assume the single working doser is free for 4 rig days in December and January. Will must be
+available for sample handling: one person per session, a cup return every 10 doses. The BYU winter
+break (about 18 Dec – 5 Jan) is left free.
 
 ## 4b. Edison mock review (2026-10-13) and what was done with it
 

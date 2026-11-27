@@ -9,7 +9,7 @@ Status: **done** = in the draft now; **open** = someone has to act (owner in bra
 
 | Requirement | Status |
 |---|---|
-| 5,000–13,000 words for the whole manuscript, including references and figure captions | **done**: about 9,100 words with references and captions, 1 table of powders, 2 tables in total, 7 figures (count with Word or iThenticate before submitting) |
+| 5,000–13,000 words for the whole manuscript, including references and figure captions | **at risk**: about 9,000 words before the references and 12,700 with the 80 references (a `pdftotext` count of `main.pdf`, graphical abstract and highlights excluded). The planned multi-task, DEM and property results would push it past 13,000, so plan to cut about 1,500 words: move the DEM model details and the fixed-setting descriptors to the SI and trim the references. Recount in Word or iThenticate before submitting |
 | Abstract of at most 250 words, no references, stands alone | **done**: 247 words; one orange placeholder sentence still to replace |
 | 1–7 keywords | **done**: 7 |
 | 3–5 highlights of at most 85 characters each, as a separate file named with "highlights" | text **done** (5, longest 84 characters); separate file **open** (export at submission) |

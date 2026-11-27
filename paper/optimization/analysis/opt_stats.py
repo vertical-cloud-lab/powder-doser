@@ -341,6 +341,10 @@ def main() -> None:
                                            int(((pairs.status_35 != "overshoot") & (pairs.status_0 == "overshoot")).sum())]}
     b = M["pairs"]["discordant_overshoot"]
     M["pairs"]["mcnemar_exact_p"] = float(stats.binomtest(min(b), sum(b), 0.5).pvalue) if sum(b) else 1.0
+    # does a setting's rank carry over from one session to the next? (16 corners, all outcomes)
+    for col, key in (("t", "time"), ("abs", "abs"), ("bulk_rate_mgps", "bulk")):
+        r = stats.spearmanr(pairs[f"{col}_35"], pairs[f"{col}_0"], nan_policy="omit")
+        M["pairs"][f"spearman_{key}"] = {"rho": float(r.statistic), "p": float(r.pvalue)}
     # bulk feed of the same corner, 09-29 vs 10-13 (bulk stage is identical at both margins)
     bf = pairs.dropna(subset=["bulk_rate_mgps_35", "bulk_rate_mgps_0"])
     if len(bf) >= 5:

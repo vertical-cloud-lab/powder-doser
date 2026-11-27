@@ -641,21 +641,59 @@ def arrow(ax, p, q, col=INK2, dashed=False):
 
 
 def fig_graphical_abstract() -> None:
-    fig = plt.figure(figsize=(5.31, 2.17))  # 531 x 1328 px at 250 dpi wide format
-    s = fig.add_axes([0, 0, 1, 1])
-    s.axis("off")
-    box(s, (0.02, 0.30), 0.20, 0.40, "auger doser\n+ balance", BLUE_L, bold=True, fs=8)
-    box(s, (0.28, 0.55), 0.22, 0.30, "Bayesian\ncalibration", "#ffffff", fs=8)
-    box(s, (0.28, 0.15), 0.22, 0.30, "DEM twin", "#ffffff", fs=8)
-    box(s, (0.56, 0.30), 0.20, 0.40, "cohesion,\nfriction", "#ffffff", ec=ORANGE, fs=8)
-    box(s, (0.82, 0.30), 0.16, 0.40, "AM\nfeedstock\nbehaviour", "#ffffff", ec=ORANGE, fs=8)
-    arrow(s, (0.22, 0.55), (0.28, 0.68))
-    arrow(s, (0.22, 0.45), (0.28, 0.32))
-    arrow(s, (0.50, 0.68), (0.56, 0.55))
-    arrow(s, (0.50, 0.32), (0.56, 0.45))
-    arrow(s, (0.76, 0.50), (0.82, 0.50), dashed=True)
-    s.text(0.5, 0.94, "Every calibration of a powder doser is also a measurement of the powder",
-           ha="center", va="center", fontsize=8.5, color=INK)
+    """Three real results, left to right; at least 1328 x 531 px as Elsevier asks."""
+    from scipy.stats import spearmanr
+    sal = pd.read_csv(RES / "doses_salt_20260929.csv")
+    met = pd.read_csv(RES / "doses_metal_feedstock.csv")
+    resp = pd.read_csv(DATA / "powders" / "battery_responses.csv")
+    lit = pd.read_csv(DATA / "powders" / "literature_powder_properties.csv")
+    fig = plt.figure(figsize=(6.6, 2.64))
+    fig.text(0.5, 0.965, "Every calibration of a powder doser is also a measurement of the powder",
+             ha="center", va="top", fontsize=9, color=INK, fontweight="bold")
+    axs = [fig.add_axes([0.08 + k * 0.32, 0.17, 0.24, 0.52]) for k in range(3)]
+    a, b, c = axs
+    # 1: calibration by BO beats hand tuning
+    hand = sal[sal.group == "hand"].t.values
+    bo = sal[sal.group == "val-bo"].t.values
+    for k, (v, col) in enumerate(((hand, ORANGE), (bo, BLUE))):
+        a.scatter(k + np.linspace(-0.12, 0.12, len(v)), v, s=12, c=col, edgecolors="white", linewidths=0.4, zorder=3)
+        a.plot([k - 0.25, k + 0.25], [np.median(v)] * 2, color=INK, lw=1.0)
+    a.set_xticks([0, 1], ["hand-\ntuned", "Bayesian\noptimized"], fontsize=6.5)
+    a.set_xlim(-0.6, 1.6)
+    a.set_ylim(0, 380)
+    a.set_title("calibrate each powder", fontsize=7.5, color=INK, pad=16, fontweight="bold")
+    ylabel_top(a, "s per 0.5 g dose (salt)")
+    # 2: the same settings on three feedstocks
+    vb = sal[sal.group == "val-bo"].bulk_rate_mgps.dropna().values
+    al = met[met.powder == "alsi10mg"].bulk_rate_mgps.values
+    a47 = met[met.powder.str.startswith("al4047") & (met["mode"] == "production") & (met.bulk_tilt == 40.0)]
+    a47 = a47.dropna(subset=["bulk_rate_mgps"])
+    a47 = a47[a47.utc != "2026-09-30T21:50"].bulk_rate_mgps.values
+    for k, (v, col, mk) in enumerate(((vb, BLUE, "o"), (al, ORANGE, "s"), (a47, "#8c5a2b", "D"))):
+        b.scatter(k + (np.linspace(-0.15, 0.15, len(v)) if len(v) > 1 else np.zeros(1)), v, s=12, c=col, marker=mk,
+                  edgecolors="white", linewidths=0.4, zorder=3)
+    b.set_yscale("log")
+    b.set_ylim(0.8, 400)
+    b.set_xticks([0, 1, 2], ["salt", "AlSi10Mg", "Al 4047\nunsieved"], fontsize=6.5)
+    b.set_xlim(-0.6, 2.6)
+    b.set_title("same settings, other feedstock", fontsize=7.5, color=INK, pad=16, fontweight="bold")
+    ylabel_top(b, "bulk feed (mg/s)")
+    # 3: records rank powders like a standard flow measure
+    df = resp.merge(lit, on="powder_id")
+    ff = df.ff90_mg_per_rev.clip(lower=0.1)
+    metal = df.batch.str.startswith("metal")
+    for m, col, mk in ((~metal, BLUE, "o"), (metal, ORANGE, "s")):
+        c.scatter(df.loc[m, "angle_repose_deg"], ff[m], s=12, c=col, marker=mk, edgecolors="white", linewidths=0.4)
+    rho, _ = spearmanr(df.angle_repose_deg, np.log10(ff))
+    c.set_yscale("log")
+    c.set_ylim(0.08, 800)
+    c.set_xlim(27, 50)
+    c.set_xlabel("angle of repose (°)", fontsize=6.5)
+    c.text(0.04, 0.04, f"ρ = {rho:.2f}, 12 powders", transform=c.transAxes, ha="left", va="bottom", fontsize=6.3)
+    c.set_title("records rank powders", fontsize=7.5, color=INK, pad=16, fontweight="bold")
+    ylabel_top(c, "mg per revolution")
+    for ax in axs:
+        ax.tick_params(labelsize=6)
     save(fig, "graphical_abstract")
 
 
