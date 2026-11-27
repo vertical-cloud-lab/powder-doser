@@ -1,0 +1,71 @@
+{
+ "raw_time": [
+  {
+   "label": "bo-010",
+   "pred_t_s": 56.8,
+   "pred_abs_mg": 12.1
+  },
+  {
+   "label": "bo-005",
+   "pred_t_s": 96.3,
+   "pred_abs_mg": 1.14
+  },
+  {
+   "label": "bo-003",
+   "pred_t_s": 112.3,
+   "pred_abs_mg": 0.06
+  }
+ ],
+ "log_time": [
+  {
+   "label": "corner-04",
+   "pred_t_s": 21.5,
+   "pred_abs_mg": 45.72
+  },
+  {
+   "label": "corner-13",
+   "pred_t_s": 22.7,
+   "pred_abs_mg": 25.61
+  },
+  {
+   "label": "bo-004",
+   "pred_t_s": 25.5,
+   "pred_abs_mg": 21.42
+  },
+  {
+   "label": "corner-07",
+   "pred_t_s": 35.7,
+   "pred_abs_mg": 21.41
+  },
+  {
+   "label": "bo-007",
+   "pred_t_s": 38.9,
+   "pred_abs_mg": 13.03
+  },
+  {
+   "label": "bo-010",
+   "pred_t_s": 39.8,
+   "pred_abs_mg": 12.1
+  },
+  {
+   "label": "bo-008",
+   "pred_t_s": 68.0,
+   "pred_abs_mg": 4.88
+  },
+  {
+   "label": "corner-09",
+   "pred_t_s": 80.2,
+   "pred_abs_mg": 3.76
+  },
+  {
+   "label": "bo-005",
+   "pred_t_s": 90.8,
+   "pred_abs_mg": 1.14
+  },
+  {
+   "label": "bo-003",
+   "pred_t_s": 99.5,
+   "pred_abs_mg": 0.06
+  }
+ ]
+}

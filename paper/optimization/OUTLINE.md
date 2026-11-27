@@ -35,16 +35,16 @@ Every number in the text comes from [`analysis/results/stats.json`](analysis/res
 
 ### Boundary with the hardware paper (#97)
 
-Both requests of 27 Nov name the Al 4047 atomizer doses, and the hardware run has already added "the 10
-executor trials and the three charges they filled" to its branch (`4012927`). To keep the two papers
-apart:
+Both requests of 27 Nov name the Al 4047 atomizer doses. The hardware run, working in parallel on #97,
+added "the 10 executor trials and the three charges they filled" to its branch (`4012927`), and later the
+charge accuracies (`4b6cd5b`). The two papers are kept apart as follows:
 
 | Data | Hardware paper (#97) | This paper |
 |---|---|---|
 | 13-powder fixed-setting battery and its 50 mg / 200 mg / 1 g closed-loop doses | owns the figures, table and claims (10–231 mg/rev, 24 of 39 doses within 5%, ...) | cites them; uses the records only for the new property correlations (Fig. 7). The old Fig. 2 and Table 1 are removed |
 | Speed exponent from protocol D | "an indication only" (firmware timing error) | no longer used as a result |
-| Al 4047 atomizer charges (30 Sep, 19–20 Oct) | owns the charges: how they were dosed and their final masses | uses only the bulk feed rate at fixed settings, as a feedstock-flow signal (Fig. 4a–b), and cites #97 for the charges |
-| AlSi10Mg 8 g charge (29 Sep) | shows the request and reply as an example of use (v2 Fig. 4a), "about 8 g" | reports its accuracy (7.993 g, −0.09%) as the transfer of calibrated settings |
+| Al 4047 atomizer charges (30 Sep, 19–20 Oct) | owns the charges: how they were dosed, the bulk-only mode, "each container within 2.5 mg" (`4b6cd5b`), and "can be blocked by coarse agglomerates" as a design limit | uses only the bulk feed rate at fixed settings and its decay, as a feedstock-flow signal (Fig. 4a–b), and cites #97 for the charges |
+| AlSi10Mg 8 g charge (29 Sep) | shows the request and reply (v2 Fig. 4a) and, since `4b6cd5b` (27 Nov), states "7.993 g for 8 g" in its results and conclusions | cites #97 for the accuracy ("within 0.1%") and uses only the bulk feed rate (144 mg/s) as the transfer result. The abstract and conclusions no longer state the charge accuracy |
 | Salt BO campaigns, validation, dose range, GP checks | mentions controller work as future work only | owns them |
 | Stepped-tilt trials (#131) | owns them | not used |
 

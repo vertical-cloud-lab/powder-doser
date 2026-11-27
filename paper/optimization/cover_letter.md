@@ -28,7 +28,7 @@ about the feedstock:
   repeat, which shows why a model-based recommendation and a validation block are needed.
 - A second campaign shows the main obstacle to unattended calibration: the powder's response drifted
   between and within sessions. The manuscript states what has to be recorded and modelled as a result.
-- Applied unchanged to metal feedstock, the settings dosed gas-atomized AlSi10Mg within 0.1%. With the
+- Used unchanged to fill atomizer charges, the settings fed gas-atomized AlSi10Mg freely. With the
   laboratory's own unsieved Al 4047, the same settings fed an order of magnitude more slowly and stalled
   until oversized particles were removed. The dose record alone flagged the feedstock problem.
 - **[Multi-task calibration across N metal feedstocks, and same-lot shear-cell, Hall-flow and particle-size
