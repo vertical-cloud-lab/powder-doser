@@ -1,0 +1,4 @@
+charge,dates,issue,target_powder_g,powder_in_cup_g,error_mg,composition,executor_trials,hand_driven_steps
+8 g atomizer charge (Al 4047 lot 9fxeqt),2026-09-30,#166,8.0000,8.0010,+1.0,8.0 g charge,3,none
+7.5 wt% atomizer cup,2026-10-19 to 2026-10-20,#186,3.0407,3.0432,+2.5,7.506 wt%,3,"0.0103 g leaked in at fitting; 13 reverse turns at 0 deg to clear the outlet; stepwise reverse dose of 2.8192 g"
+15 wt% atomizer cup,2026-10-20,#186,6.5674,6.5676,+0.2,15.000 wt%,4,"reversing and rocking at 0 deg (0.4302 g); operator cleared the auger; stepwise top-up of 0.0981 g at 40 deg"
