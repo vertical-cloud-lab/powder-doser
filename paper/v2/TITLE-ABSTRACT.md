@@ -41,3 +41,18 @@ Still open from the 28 Oct README: whether the glove-box sentence carries the ri
 (question 2), and whether one AI lesson should come back (question 3). Also: Claude Code
 (Opus 5.5) assembled the design in Onshape in October; the abstract leaves that out
 because it is not part of how the tested parts were modelled.
+
+## Abstract version 6 (27 Nov 2026, in `main.tex`; 246 words)
+
+Version 5 with the November results added and three phrases cut to stay under 250 words. Revert to
+version 5 above if you prefer it; the body text does not depend on the abstract.
+
+> Additive manufacturing of aerospace alloys depends on rapid, reproducible exploration of powder feedstocks, yet metering and blending dry metal powders remains largely manual in research laboratories. Commercial dispensers are costly and poorly matched to many-powder alloy workflows, and open-source designs have not been tested on feedstocks for laser powder bed fusion (L-PBF). We developed an open-source, low-cost, modular powder doser for a self-driving materials-discovery loop in which dosed powders feed ultrasonic atomization and L-PBF. The first module, a single channel built from 3D-printed parts and off-the-shelf electronics, cost under $200 plus an analytical balance, roughly two orders of magnitude below commercial dosing heads. In closed loop, every 1 g dose on seven of 13 tested powders landed within ±5% of the target; smaller doses were less reliable. With a revised procedure that steps the tilt down as the cup fills, 20 consecutive 2 g doses of AlSi10Mg all landed within ±5%, 11 of them within ±1 mg. The doser also ran in a glove box under an AI agent's control, and filled atomizer charges with AlSi10Mg and with Al 4047 from our own atomizer. Its parts were designed by engineers and, from April to July 2026, modelled by AI agents (GitHub Copilot with Claude Opus 4.7–4.8; Zoo Design Studio's Zookeeper): engineers supplied dimensions, sketches, and manufacturing constraints; AI modelled the parts as editable parametric scripts; and engineers reviewed, printed, and iterated. AI was most effective as a modelling assistant rather than an autonomous design agent.
+
+| Change from version 5 | Reason |
+|---|---|
+| New sentence on the stepped-tilt doses (20 of 20 doses of 2 g of AlSi10Mg within ±5%, 11 within ±1 mg) | The repeated doses of 18–20 Nov (PR #131) are the paper's strongest accuracy result on an alloy powder |
+| "filled atomizer charges with AlSi10Mg and with Al 4047 from our own atomizer" replaces "weighed AlSi10Mg into a charge that our ultrasonic atomizer turned into new powder" | The ten Al 4047 doses (PR #166, issue #186) |
+| Dropped "and the nine on AlSi10Mg, coarse silicon, and sodium sulfate landed within 1%" | Room for the above; the stepped-tilt sentence makes the same point with more doses |
+| Shortened: "remains largely manual", "costly and poorly matched to many-powder alloy workflows", "in a glove box under an AI agent's control"; cut "for metal and feedstock powders, intended" | Length |
+| "modelled" (British spelling, as in the title and body) | Consistency |
