@@ -1,0 +1,24 @@
+[
+ {
+  "key": "vial_986546",
+  "kind": "screenshot",
+  "file": "files/dwk/vial_986546.png",
+  "page": "https://www.dwk.com/na/wheaton-liquid-scintillation-vials-borosilicate-glass-22-400-white-urea-caps-attached-to-vials-polyethylene-cone-liner-20-ml-986546",
+  "url": "https://www.dwk.com/na/wheaton-liquid-scintillation-vials-borosilicate-glass-22-400-white-urea-caps-attached-to-vials-polyethylene-cone-liner-20-ml-986546",
+  "sha256": "2d48b93971af5b3805e9ef583dc1e4b6bd68932aa451fcfbdf0345ee6292ea7d",
+  "bytes": 399735,
+  "retrieved": "2026-10-27",
+  "note": "WHEATON\u00ae Liquid Scintillation Vials, Borosilicate Glass, 22-400 White Urea Caps Attached to Vials, P"
+ },
+ {
+  "key": "vial_986546",
+  "kind": "text",
+  "file": "files/dwk/vial_986546.txt",
+  "page": "https://www.dwk.com/na/wheaton-liquid-scintillation-vials-borosilicate-glass-22-400-white-urea-caps-attached-to-vials-polyethylene-cone-liner-20-ml-986546",
+  "url": "https://www.dwk.com/na/wheaton-liquid-scintillation-vials-borosilicate-glass-22-400-white-urea-caps-attached-to-vials-polyethylene-cone-liner-20-ml-986546",
+  "sha256": "69e45c1736f4d3d6e07538489ec29f2a90f8c06eb0bcc047b814ba848b41da2b",
+  "bytes": 3276,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

@@ -1,0 +1,250 @@
+{
+ "documentId": "07e7ce814d25e75e52c09a86",
+ "workspaceId": "25522f59a0ed7fbbe5b6befb",
+ "name": "Multi-doser chain carousel - test rig v4, augers outside the loop (#128)",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "step": "cad/chain-carousel-v4/step/chain_carousel_rig_v4.step",
+ "stepBytes": 20654267,
+ "stepSha256": "88f5918fb7e02d53bd8d5880a8d04b837e19f3e072408a2a3f94c1edefb92f87",
+ "stepCommit": "513efea",
+ "stepRoot": "Chain carousel test rig v4",
+ "url": "https://cad.onshape.com/documents/07e7ce814d25e75e52c09a86/w/25522f59a0ed7fbbe5b6befb",
+ "translationId": "6af374ca830999c232a4ddf9",
+ "importedElementIds": [
+  "ebea995de3f3a464bc051035",
+  "8d8f5d3e0951e3ee848d01c5",
+  "b974560e5a8a48e8d60564d6",
+  "f3409bf6087ff6eb7b658302",
+  "0bef39e1fa4a99a9519aa43a",
+  "c3e3abaa1978d3e38e45884a",
+  "ed94969b1e9db524bb8b8d1c",
+  "cbb13aa8e98eae674d104379",
+  "f22fe33094cd5d4805b780a6",
+  "b2d3e744ebe395f467adca62",
+  "d22aa49d1a295611d0d67dff",
+  "efa958af4bd37359137856c1",
+  "2a81f8f1a74f870b329ceec2",
+  "6541847a02ce3f63f56c8301",
+  "eb773ad78752dab1194ffaa8",
+  "a3e4b38329023b290930065d",
+  "9aa253e743689b611b586cf0",
+  "9d235660dcb96797b8996441",
+  "f5263287b1a00de2de17a17c"
+ ],
+ "elements": [
+  {
+   "id": "f5263287b1a00de2de17a17c",
+   "name": "Chain carousel test rig v4",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "9d235660dcb96797b8996441",
+   "name": "09 Modules on the bench",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "9aa253e743689b611b586cf0",
+   "name": "10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "a3e4b38329023b290930065d",
+   "name": "Outlet door spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "eb773ad78752dab1194ffaa8",
+   "name": "Outlet door housing (printed) 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "6541847a02ce3f63f56c8301",
+   "name": "Outlet door spring 2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "2a81f8f1a74f870b329ceec2",
+   "name": "Carriage 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "efa958af4bd37359137856c1",
+   "name": "Latch spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d22aa49d1a295611d0d67dff",
+   "name": "01 Base frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "b2d3e744ebe395f467adca62",
+   "name": "02 Posts and top frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "f22fe33094cd5d4805b780a6",
+   "name": "03 Side plates onto the posts",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "cbb13aa8e98eae674d104379",
+   "name": "04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ed94969b1e9db524bb8b8d1c",
+   "name": "05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "c3e3abaa1978d3e38e45884a",
+   "name": "06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "0bef39e1fa4a99a9519aa43a",
+   "name": "07 Chains",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "f3409bf6087ff6eb7b658302",
+   "name": "08 Station",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "b974560e5a8a48e8d60564d6",
+   "name": "11 Electronics board",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "8d8f5d3e0951e3ee848d01c5",
+   "name": "12 Enclosure",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ebea995de3f3a464bc051035",
+   "name": "chain_carousel_rig_v4 parts",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "fede32477f2cf91c46bb6a3e",
+   "name": "Part Studio 1",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "5e8fff8e0b20b826f242fd76",
+   "name": "Assembly 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "27094fe6d36a1a330a308aa2",
+   "name": "BOM : Assembly 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b9704e7a6eeb68559f1ed744",
+   "name": "chain_carousel_rig_v4.step",
+   "type": "BLOB"
+  },
+  {
+   "id": "1b953adad5b31a9faf2b5d2c",
+   "name": "BOM : Outlet door housing (printed) 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "984cd191645026e544ebc7eb",
+   "name": "BOM : Outlet door spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b313fed7118b03953376fa7e",
+   "name": "BOM : Outlet door spring 2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "77fbf228cb4eb6f5f3d8f197",
+   "name": "BOM : Latch spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "4e3565ae0bdf9f6f1fea68a2",
+   "name": "BOM : 12 Enclosure",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "877f876afe8d8eea7b141f21",
+   "name": "BOM : Chain carousel test rig v4",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "c13d42a39deabcda221523b9",
+   "name": "BOM : 02 Posts and top frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "c16a3cc81634208d7987a8f4",
+   "name": "BOM : 05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "746716e1a1a45a6d9a8d52bd",
+   "name": "BOM : 10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e23dd23543fc989c1d6e24f8",
+   "name": "BOM : 01 Base frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "1782771e36d03ba3a2397c35",
+   "name": "BOM : 11 Electronics board",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "2ecee5c429b66a961dd4baa5",
+   "name": "BOM : 07 Chains",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "8a3c26d7b812dde28560d855",
+   "name": "BOM : Carriage 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "8d551e1da2690548bdbcf1de",
+   "name": "BOM : 09 Modules on the bench",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b193fe2e2348f8e2037bfdd4",
+   "name": "BOM : 03 Side plates onto the posts",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "409118ac02f60ecf91335072",
+   "name": "BOM : 04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "10f76dc87b1c2d76cec1d58d",
+   "name": "BOM : 08 Station",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "0f147dc1d574d32b45b36972",
+   "name": "BOM : 06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "BILLOFMATERIALS"
+  }
+ ],
+ "assemblyElementId": "f5263287b1a00de2de17a17c",
+ "assemblyName": "Chain carousel test rig v4",
+ "assemblyUrl": "https://cad.onshape.com/documents/07e7ce814d25e75e52c09a86/w/25522f59a0ed7fbbe5b6befb/e/f5263287b1a00de2de17a17c",
+ "version": {
+  "id": "cb123bf5d06bda983b3701a6",
+  "name": "v4 augers outside"
+ },
+ "api_calls": 8
+}

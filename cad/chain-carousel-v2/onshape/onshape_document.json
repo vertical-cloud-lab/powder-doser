@@ -1,0 +1,210 @@
+{
+ "documentId": "5263dae97a3922029b5cccf3",
+ "workspaceId": "30f999cdf6cf5f4014d88b2a",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "url": "https://cad.onshape.com/documents/5263dae97a3922029b5cccf3/w/30f999cdf6cf5f4014d88b2a",
+ "translationId": "6aceb68782237b2152c142f9",
+ "importedElementIds": [
+  "a437faacaa430b4dcc84453e",
+  "3a5bcef172350e2756b77eb5",
+  "55ea1caa4e375321435a8e9b",
+  "485cea8142952f93d73f8d6e",
+  "6ee1e584209b257f84b0ec88",
+  "0696ac58c84556ffeb3f36a6",
+  "4f9debeb89184dc51c4324c0",
+  "1dda5008983213428f782ef9",
+  "ba62110a599362ddf129dd67",
+  "2eb6fa4c85db2a6ce3b8db23",
+  "4e5325e6d281a7009d573b61",
+  "cdd66f6e5b8d8025a33ffb49",
+  "48840eb1310aa05671eb126f",
+  "f54ab595ba66efc604c5251a",
+  "97aa233bc6191b64ab073a8c",
+  "f8db64562886e92e866b11ed"
+ ],
+ "elements": [
+  {
+   "id": "f8db64562886e92e866b11ed",
+   "name": "Chain carousel test rig v2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "97aa233bc6191b64ab073a8c",
+   "name": "01 Base frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "f54ab595ba66efc604c5251a",
+   "name": "02 Posts and top frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "48840eb1310aa05671eb126f",
+   "name": "Post",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "cdd66f6e5b8d8025a33ffb49",
+   "name": "Base rail -y",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "4e5325e6d281a7009d573b61",
+   "name": "Base cross rail front",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "2eb6fa4c85db2a6ce3b8db23",
+   "name": "03 Side plates onto the posts",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ba62110a599362ddf129dd67",
+   "name": "04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "1dda5008983213428f782ef9",
+   "name": "05 Corner shafts with their sprockets (set screws loose)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "4f9debeb89184dc51c4324c0",
+   "name": "06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "0696ac58c84556ffeb3f36a6",
+   "name": "07 Chains",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "6ee1e584209b257f84b0ec88",
+   "name": "08 Carriages across both chains; phase and tension",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "485cea8142952f93d73f8d6e",
+   "name": "09 Station",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "55ea1caa4e375321435a8e9b",
+   "name": "10 Modules",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "3a5bcef172350e2756b77eb5",
+   "name": "11 Electronics board",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "a437faacaa430b4dcc84453e",
+   "name": "chain_carousel_rig_v2 parts",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "8c35aa4909fc13a236506e9f",
+   "name": "Part Studio 1",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "2942e0eac331b75795d27ef3",
+   "name": "Assembly 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "38fba371ef20625b8cfd5aa7",
+   "name": "BOM : Assembly 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a039bfe5a8bdf14e013d0e31",
+   "name": "chain_carousel_rig_v2.step",
+   "type": "BLOB"
+  },
+  {
+   "id": "f936a54420cdbfe5e9f9a815",
+   "name": "BOM : 01 Base frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "ae880a0c6f2d7f80feb64603",
+   "name": "BOM : 04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "eeabbc4f55eedc37cb3a28d3",
+   "name": "BOM : 11 Electronics board",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "785cb80cbf50fc04c105c031",
+   "name": "BOM : 09 Station",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e4617f046558e8f546fb55bb",
+   "name": "BOM : 08 Carriages across both chains; phase and tension",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b157375b0bda0d998450eaff",
+   "name": "BOM : 02 Posts and top frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "8647bef3c6f7f8c4f7091fd2",
+   "name": "BOM : Base rail -y",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e0897b4ca29f59f2c13de173",
+   "name": "BOM : Post",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "dfcd93b75501ef912f7dc82f",
+   "name": "BOM : 05 Corner shafts with their sprockets (set screws loose)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "f83f8dd8915c51fc6d2b0b52",
+   "name": "BOM : 03 Side plates onto the posts",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b8943035067a2a91bfa359bc",
+   "name": "BOM : Base cross rail front",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b93bb4949ad79e776f1b6063",
+   "name": "BOM : Chain carousel test rig v2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "5c400dfd4321270fc1d10e80",
+   "name": "BOM : 07 Chains",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "4c2b718a8c21eedee06b02b5",
+   "name": "BOM : 06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "9e1a061ac132afb80e93bf9a",
+   "name": "BOM : 10 Modules",
+   "type": "BILLOFMATERIALS"
+  }
+ ],
+ "assemblyElementId": "f8db64562886e92e866b11ed",
+ "assemblyUrl": "https://cad.onshape.com/documents/5263dae97a3922029b5cccf3/w/30f999cdf6cf5f4014d88b2a/e/f8db64562886e92e866b11ed",
+ "version": {
+  "id": "4c9ec2eae9659111196c4b1c",
+  "name": "v2 vertical twin chain"
+ },
+ "api_calls": 10
+}

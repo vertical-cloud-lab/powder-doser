@@ -1,0 +1,10 @@
+{"run": "sam-aug27-export", "n": 1, "method": "GET", "path": "/documents/d/fc58e8f075dd5981b4307d7e/w/8916fbe4fc097631f09c9941/elements", "status": 402, "utc": "2026-10-29T17:38:10Z"}
+{"run": "create-document-v3", "n": 1, "method": "GET", "path": "/companies", "status": 200, "utc": "2026-11-10T19:44:54Z"}
+{"run": "create-document-v3", "n": 2, "method": "POST", "path": "/documents", "status": 200, "utc": "2026-11-10T19:44:55Z"}
+{"run": "create-document-v3", "n": 3, "method": "POST", "path": "/blobelements/d/6b0ba196592dddf4d153b887/w/f8df3cb392da1117da5c65ab", "status": 200, "utc": "2026-11-10T19:44:56Z"}
+{"run": "create-document-v3", "n": 4, "method": "GET", "path": "/translations/6af374388a72ff53f640545c", "status": 200, "utc": "2026-11-10T19:46:56Z"}
+{"run": "create-document-v3", "n": 5, "method": "GET", "path": "/documents/d/6b0ba196592dddf4d153b887/w/f8df3cb392da1117da5c65ab/elements", "status": 200, "utc": "2026-11-10T19:46:57Z"}
+{"run": "create-document-v3", "n": 6, "method": "GET", "path": "/assemblies/d/6b0ba196592dddf4d153b887/w/f8df3cb392da1117da5c65ab/e/16408e631d86575eee2bfeea/shadedviews", "status": 200, "utc": "2026-11-10T19:46:59Z"}
+{"run": "create-document-v3", "n": 7, "method": "GET", "path": "/assemblies/d/6b0ba196592dddf4d153b887/w/f8df3cb392da1117da5c65ab/e/16408e631d86575eee2bfeea/shadedviews", "status": 200, "utc": "2026-11-10T19:47:00Z"}
+{"run": "create-document-v3", "n": 8, "method": "POST", "path": "/documents/d/6b0ba196592dddf4d153b887/versions", "status": 200, "utc": "2026-11-10T19:47:01Z"}
+{"run": "check-public", "n": 1, "method": "GET", "path": "/documents/6b0ba196592dddf4d153b887", "status": 200, "utc": "2026-11-10T19:54:34Z"}

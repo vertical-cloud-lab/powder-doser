@@ -1,0 +1,24 @@
+[
+ {
+  "key": "HR-100A",
+  "kind": "manual",
+  "file": "files/aandd/hr-az_hr-a_manual.pdf",
+  "page": "https://www.aandd.jp/products/weighing/balance/analytical/hr-az_a.html",
+  "url": "https://www.aandd.jp/products/manual/balances/hr-az_hr-a_manual.pdf",
+  "sha256": "7cde75bde2a1165db8186a29bbb29464c51b4dba483adb2a34a2fbdc25b192c2",
+  "bytes": 1869716,
+  "retrieved": "2026-11-27",
+  "note": "HR-AZ/HR-A instruction manual 1WMPD4002375: section 23 External Dimensions, printed p.79 (PDF p.81); read for v11 2026-11-27"
+ },
+ {
+  "key": "HR-100A",
+  "kind": "manual_colour",
+  "file": "files/aandd/1WMPD4002375C_HR-AZ_HR-A_color.pdf",
+  "page": "https://www.aandd.jp/products/weighing/balance/analytical/hr-az_a.html",
+  "url": "https://www.aandd.jp/products/manual/balances/1WMPD4002375C_HR-AZ_HR-A_color.pdf",
+  "sha256": "b220a8b127813bb2b213871fd2daf66f9e11a3dfd9ffe9f8663e887481f1dc66",
+  "bytes": 2376960,
+  "retrieved": "2026-11-27",
+  "note": "colour edition 1WMPD4002375C: section 25 External Dimensions, p.94 (same drawing)"
+ }
+]

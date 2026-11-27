@@ -1,0 +1,202 @@
+{
+ "carriage": {
+  "qty": 13,
+  "source": "V.carriage()",
+  "bbox_mm": [
+   66.0,
+   32.55,
+   391.0
+  ],
+  "volume_mm3": 68716.5
+ },
+ "sam_mounting_plate": {
+  "qty": 13,
+  "source": "layout.shape('sam_mounting_plate')",
+  "bbox_mm": [
+   257.0,
+   54.05,
+   32.56
+  ],
+  "volume_mm3": 70202.5
+ },
+ "t_bracket": {
+  "qty": 13,
+  "source": "layout.shape('t_bracket')",
+  "bbox_mm": [
+   32.0,
+   16.0,
+   9.0
+  ],
+  "volume_mm3": 2067.5
+ },
+ "door_housing": {
+  "qty": 13,
+  "source": "layout.shape('door_housing')",
+  "bbox_mm": [
+   27.45,
+   32.5,
+   24.5
+  ],
+  "volume_mm3": 2188.5
+ },
+ "door_shutter": {
+  "qty": 13,
+  "source": "layout.shape('door_shutter')",
+  "bbox_mm": [
+   4.55,
+   14.0,
+   11.5
+  ],
+  "volume_mm3": 187.4
+ },
+ "door_head11": {
+  "qty": 13,
+  "source": "layout.shape('door_head11')",
+  "bbox_mm": [
+   6.0,
+   6.0,
+   2.5
+  ],
+  "volume_mm3": 84.2
+ },
+ "latch_bolt": {
+  "qty": 13,
+  "source": "V.latch_bolt()",
+  "bbox_mm": [
+   21.0,
+   8.0,
+   12.1
+  ],
+  "volume_mm3": 869.2
+ },
+ "ec12": {
+  "qty": 1,
+  "source": "layout.shape('ec12')",
+  "bbox_mm": [
+   155.6,
+   83.02,
+   49.1
+  ],
+  "volume_mm3": 48062.5
+ },
+ "cradle12": {
+  "qty": 1,
+  "source": "layout.shape('cradle12')",
+  "bbox_mm": [
+   46.6,
+   48.0,
+   33.5
+  ],
+  "volume_mm3": 9586.3
+ },
+ "pillar11": {
+  "qty": 1,
+  "source": "layout.shape('pillar11')",
+  "bbox_mm": [
+   60.02,
+   60.0,
+   212.02
+  ],
+  "volume_mm3": 28088.2
+ },
+ "p16_bracket11": {
+  "qty": 1,
+  "source": "layout.shape('p16_bracket11')",
+  "bbox_mm": [
+   20.35,
+   40.0,
+   14.0
+  ],
+  "volume_mm3": 4347.2
+ },
+ "guide11": {
+  "qty": 1,
+  "source": "layout.shape('guide11')",
+  "bbox_mm": [
+   22.0,
+   42.29,
+   110.85
+  ],
+  "volume_mm3": 14939.6
+ },
+ "guide12": {
+  "qty": 1,
+  "source": "layout.shape('guide12')",
+  "bbox_mm": [
+   22.0,
+   36.77,
+   110.85
+  ],
+  "volume_mm3": 13756.1
+ },
+ "latch_rail11": {
+  "qty": 1,
+  "source": "layout.shape('latch_rail11')",
+  "bbox_mm": [
+   46.0,
+   56.78,
+   28.0
+  ],
+  "volume_mm3": 16617.5
+ },
+ "hold_down": {
+  "qty": 2,
+  "source": "layout.shape('hold_down')",
+  "bbox_mm": [
+   40.0,
+   42.0,
+   23.0
+  ],
+  "volume_mm3": 23251.0
+ },
+ "tensioner_block": {
+  "qty": 4,
+  "source": "layout.shape('tensioner_block')",
+  "bbox_mm": [
+   30.0,
+   18.0,
+   14.0
+  ],
+  "volume_mm3": 4926.9
+ },
+ "side_tab": {
+  "qty": 1,
+  "source": "layout.shape('side_tab')",
+  "bbox_mm": [
+   22.0,
+   28.0,
+   21.0
+  ],
+  "volume_mm3": 3876.3
+ },
+ "side_tab_m": {
+  "qty": 1,
+  "source": "layout.shape('side_tab_m')",
+  "bbox_mm": [
+   22.0,
+   28.0,
+   21.0
+  ],
+  "volume_mm3": 3876.3
+ },
+ "catch": {
+  "qty": 1,
+  "source": "layout.shape('catch')",
+  "bbox_mm": [
+   24.0,
+   10.0,
+   6.2
+  ],
+  "volume_mm3": 875.1
+ },
+ "hatch_knob": {
+  "qty": 1,
+  "source": "V.hatch_knob()",
+  "bbox_mm": [
+   16.0,
+   16.0,
+   18.0
+  ],
+  "volume_mm3": 3129.0
+ }
+}

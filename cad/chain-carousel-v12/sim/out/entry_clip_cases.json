@@ -1,0 +1,165 @@
+[
+ {
+  "title": "v11 as drawn: tip lands on tip, the index jams",
+  "result": {
+   "phase": 0.25,
+   "mode": "free",
+   "a_err": 0.0,
+   "spring": false,
+   "cradle": false,
+   "piv_dy": -18.5,
+   "seats": 2,
+   "f_spring": 6.0,
+   "stop_deep": 0.4,
+   "k_roll": 10.0,
+   "drag_mNm": 5.0,
+   "cd_end": 35.901,
+   "tooth_force_max_N": 841.0,
+   "tooth_force_2ms_max_N": 806.9,
+   "cd_at_stop": 35.881,
+   "chain_force_max_N": 146.48,
+   "chain_lag_max_mm": 0.073,
+   "pinion_turn_deg": -4.3,
+   "auger_turn_deg": -6.53,
+   "ec_roll_max_deg": 0.301,
+   "module_lift_max_deg": 1.47,
+   "end_tooth_force_N": 363.06,
+   "end_seats_N": [
+    45.96
+   ],
+   "end_t_force_N": 1303.92,
+   "rest_seats_N": [
+    1.59
+   ],
+   "rest_lift_mm": 0.0,
+   "lift_max_mm": 0.0,
+   "end_lift_mm": 0.0,
+   "n_seeks": 1,
+   "reindexed": false,
+   "hall": [
+    false,
+    false
+   ],
+   "cds": [
+    35.881,
+    35.901
+   ],
+   "jam": true,
+   "meshed": false,
+   "stubbed": false,
+   "meshed_after_seek": false,
+   "hall_right": false,
+   "outcome": "jam"
+  }
+ },
+ {
+  "title": "v12: the gear lands on the pinion's tips",
+  "result": {
+   "phase": 0.5833333333333334,
+   "mode": "free",
+   "a_err": 0.0,
+   "spring": false,
+   "cradle": true,
+   "piv_dy": -18.5,
+   "seats": 2,
+   "f_spring": 6.0,
+   "stop_deep": 0.4,
+   "k_roll": 10.0,
+   "drag_mNm": 5.0,
+   "cd_end": 34.033,
+   "tooth_force_max_N": 14.42,
+   "tooth_force_2ms_max_N": 12.54,
+   "cd_at_stop": 35.873,
+   "chain_force_max_N": 8.18,
+   "chain_lag_max_mm": 0.001,
+   "pinion_turn_deg": -19.6,
+   "auger_turn_deg": -20.59,
+   "ec_roll_max_deg": 0.275,
+   "module_lift_max_deg": -0.0,
+   "end_tooth_force_N": 20.6,
+   "end_seats_N": [
+    0.0,
+    0.0
+   ],
+   "end_t_force_N": 5.18,
+   "rest_seats_N": [
+    1.04,
+    0.7
+   ],
+   "rest_lift_mm": -0.402,
+   "lift_max_mm": 1.667,
+   "end_lift_mm": -0.171,
+   "n_seeks": 1,
+   "reindexed": false,
+   "hall": [
+    true,
+    false
+   ],
+   "cds": [
+    35.873,
+    34.033
+   ],
+   "jam": false,
+   "meshed": false,
+   "stubbed": true,
+   "meshed_after_seek": true,
+   "hall_right": true,
+   "outcome": "stub, cleared by the seek"
+  }
+ },
+ {
+  "title": "v12: most arrivals mesh on their own",
+  "result": {
+   "phase": 0.0,
+   "mode": "free",
+   "a_err": 0.0,
+   "spring": false,
+   "cradle": true,
+   "piv_dy": -18.5,
+   "seats": 2,
+   "f_spring": 6.0,
+   "stop_deep": 0.4,
+   "k_roll": 10.0,
+   "drag_mNm": 5.0,
+   "cd_end": 34.03,
+   "tooth_force_max_N": 48.61,
+   "tooth_force_2ms_max_N": 32.32,
+   "cd_at_stop": 34.042,
+   "chain_force_max_N": 6.33,
+   "chain_lag_max_mm": 0.001,
+   "pinion_turn_deg": -39.3,
+   "auger_turn_deg": -10.96,
+   "ec_roll_max_deg": 0.439,
+   "module_lift_max_deg": -0.0,
+   "end_tooth_force_N": 23.54,
+   "end_seats_N": [
+    0.0,
+    0.0
+   ],
+   "end_t_force_N": 3.87,
+   "rest_seats_N": [
+    0.97,
+    0.79
+   ],
+   "rest_lift_mm": -0.402,
+   "lift_max_mm": -0.084,
+   "end_lift_mm": -0.143,
+   "n_seeks": 1,
+   "reindexed": false,
+   "hall": [
+    false,
+    false
+   ],
+   "cds": [
+    34.042,
+    34.03
+   ],
+   "jam": false,
+   "meshed": true,
+   "stubbed": false,
+   "meshed_after_seek": true,
+   "hall_right": true,
+   "outcome": "meshed"
+  }
+ }
+]

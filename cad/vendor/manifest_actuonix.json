@@ -1,0 +1,145 @@
+[
+ {
+  "key": "actuonix_lac",
+  "kind": "datasheet",
+  "file": "files/actuonix/ActuonixLACDatasheet.pdf",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/ActuonixLACDatasheet.pdf",
+  "sha256": "b9cfe5e6b962ef2e297b676137d5ee2994d9be79af521c4fcbfeb7caf8ecf775",
+  "bytes": 282832,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "actuonix_lac",
+  "kind": "zip",
+  "file": "files/actuonix/LAC_3D.zip",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/LAC_3D.zip",
+  "sha256": "a6fb28feda60ac41764be4f326c2176be6564e8aa848254fdabdf5013d567d47",
+  "bytes": 1414773,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "actuonix_lac:LAC",
+  "kind": "step",
+  "file": "files/actuonix/LAC.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/LAC_3D.zip#LAC.stp",
+  "sha256": "76a3c4265d53ca814fd24391b62d9fd7a57e6c85c7e143e077cd97bc2e27a396",
+  "bytes": 8086538,
+  "retrieved": "2026-10-27",
+  "note": "extracted from LAC_3D.zip"
+ },
+ {
+  "key": "actuonix_p16",
+  "kind": "datasheet",
+  "file": "files/actuonix/ActuonixP16Datasheet.pdf",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/ActuonixP16Datasheet.pdf",
+  "sha256": "070deb5f22cead2e67abec1e02b870234e9e321fdacc38d4debb51c247c1768d",
+  "bytes": 410585,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "actuonix_p16",
+  "kind": "zip",
+  "file": "files/actuonix/P16_STP.zip",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip",
+  "sha256": "cd89204e9fe798f4ea7f243dcbe71d8f272703fae8d88219f099f7c746dae69f",
+  "bytes": 4634525,
+  "retrieved": "2026-10-27",
+  "note": ""
+ },
+ {
+  "key": "actuonix_p16:p16_100mm_in",
+  "kind": "step",
+  "file": "files/actuonix/p16_100mm_in.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip#p16_100mm_in.stp",
+  "sha256": "680949a6b1903704da13a9ce03ec4e080b7bfd5aa6f4134cba7e023a516b6d6c",
+  "bytes": 2634060,
+  "retrieved": "2026-10-27",
+  "note": "extracted from P16_STP.zip"
+ },
+ {
+  "key": "actuonix_p16:p16_100mm_out",
+  "kind": "step",
+  "file": "files/actuonix/p16_100mm_out.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip#p16_100mm_out.stp",
+  "sha256": "534f9ce383b6e4e2f5ccad38ee94d12ef473ccff6fcd58fe7e02d06edc50f500",
+  "bytes": 2634061,
+  "retrieved": "2026-10-27",
+  "note": "extracted from P16_STP.zip"
+ },
+ {
+  "key": "actuonix_p16:p16_150mm_in",
+  "kind": "step",
+  "file": "files/actuonix/p16_150mm_in.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip#p16_150mm_in.stp",
+  "sha256": "fb2a5080de8c7c257605fe7cf49f34637384a6f34e016d5a10a84b69b7601b30",
+  "bytes": 2634956,
+  "retrieved": "2026-10-27",
+  "note": "extracted from P16_STP.zip"
+ },
+ {
+  "key": "actuonix_p16:p16_150mm_out",
+  "kind": "step",
+  "file": "files/actuonix/p16_150mm_out.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip#p16_150mm_out.stp",
+  "sha256": "e2eccf86f3851a262c1404cc0aa09d5383c620888e9dbbdab120a33bcc49df93",
+  "bytes": 2634957,
+  "retrieved": "2026-10-27",
+  "note": "extracted from P16_STP.zip"
+ },
+ {
+  "key": "actuonix_p16:p16_200mm_in",
+  "kind": "step",
+  "file": "files/actuonix/p16_200mm_in.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip#p16_200mm_in.stp",
+  "sha256": "eef256fd7c963413d757eb4dc8ef35d6298c43e7e9c4e545820f8be30037b24a",
+  "bytes": 2636964,
+  "retrieved": "2026-10-27",
+  "note": "extracted from P16_STP.zip"
+ },
+ {
+  "key": "actuonix_p16:p16_200mm_out",
+  "kind": "step",
+  "file": "files/actuonix/p16_200mm_out.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip#p16_200mm_out.stp",
+  "sha256": "518afa6b679a3623ebec7aec86ab7d5cd470a878f541fd98e5ca95c681c64717",
+  "bytes": 2636965,
+  "retrieved": "2026-10-27",
+  "note": "extracted from P16_STP.zip"
+ },
+ {
+  "key": "actuonix_p16:p16_50mm_in",
+  "kind": "step",
+  "file": "files/actuonix/p16_50mm_in.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip#p16_50mm_in.stp",
+  "sha256": "bbaa144a6cac67447a71dc43d4d939d17d9527ec51a05d1712b2eba7056b0b56",
+  "bytes": 2555449,
+  "retrieved": "2026-10-27",
+  "note": "extracted from P16_STP.zip"
+ },
+ {
+  "key": "actuonix_p16:p16_50mm_out",
+  "kind": "step",
+  "file": "files/actuonix/p16_50mm_out.stp",
+  "page": "https://www.actuonix.com/datasheets",
+  "url": "https://www.actuonix.com/assets/images/datasheets/P16_STP.zip#p16_50mm_out.stp",
+  "sha256": "566a33669581b10069da3645e11c32e4931ac5651568a3b43ab807afd6e59a99",
+  "bytes": 2633995,
+  "retrieved": "2026-10-27",
+  "note": "extracted from P16_STP.zip"
+ }
+]

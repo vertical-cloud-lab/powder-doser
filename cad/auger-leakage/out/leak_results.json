@@ -1,0 +1,1574 @@
+{
+ "runs": {
+  "avib5_a0": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 132,
+   "prefix": "prefix",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "avib",
+   "vib_g": 1.0,
+   "vib_hz": 5.0,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "avib5_a10": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 126,
+   "prefix": "prefix",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "avib",
+   "vib_g": 1.0,
+   "vib_hz": 5.0,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "avib_a0_s0": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 128,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "avib",
+   "vib_g": 2.0,
+   "vib_hz": 25.0,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "avib_a10_s0": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 123,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "avib",
+   "vib_g": 2.0,
+   "vib_hz": 25.0,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "avib_a15_s0": {
+   "kind": "branch",
+   "alpha_deg": 15.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 123,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "avib",
+   "vib_g": 2.0,
+   "vib_hz": 25.0,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "avib_a5_s0": {
+   "kind": "branch",
+   "alpha_deg": 5.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 128,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "avib",
+   "vib_g": 2.0,
+   "vib_hz": 25.0,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "prefix": {
+   "kind": "prefix",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 173,
+   "at_exit_final": 132,
+   "dose_tilt_world": 30.0
+  },
+  "prefix15": {
+   "kind": "prefix",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228
+   },
+   "at_exit_start": 173,
+   "at_exit_final": 150,
+   "dose_tilt_world": 15.0
+  },
+  "prefix15_s1": {
+   "kind": "prefix",
+   "alpha_deg": 0.0,
+   "seed": 1,
+   "exits_by_phase": {
+    "dose": 226
+   },
+   "at_exit_start": 177,
+   "at_exit_final": 156,
+   "dose_tilt_world": 15.0
+  },
+  "prefix15_s2": {
+   "kind": "prefix",
+   "alpha_deg": 0.0,
+   "seed": 2,
+   "exits_by_phase": {
+    "dose": 228
+   },
+   "at_exit_start": 177,
+   "at_exit_final": 155,
+   "dose_tilt_world": 15.0
+  },
+  "prefix_s1": {
+   "kind": "prefix",
+   "alpha_deg": 0.0,
+   "seed": 1,
+   "exits_by_phase": {
+    "dose": 208,
+    "stop": 3
+   },
+   "at_exit_start": 177,
+   "at_exit_final": 145,
+   "dose_tilt_world": 30.0
+  },
+  "prefix_s2": {
+   "kind": "prefix",
+   "alpha_deg": 0.0,
+   "seed": 2,
+   "exits_by_phase": {
+    "dose": 215,
+    "stop": 1
+   },
+   "at_exit_start": 177,
+   "at_exit_final": 135,
+   "dose_tilt_world": 30.0
+  },
+  "r15_a0": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 154,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15_a0_s1": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 226,
+    "return to rest": 10
+   },
+   "at_exit_start": 156,
+   "at_exit_final": 158,
+   "prefix": "prefix15_s1",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 10,
+   "out_at_rest": 0,
+   "vial_gain": 14
+  },
+  "r15_a0_s2": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 11
+   },
+   "at_exit_start": 155,
+   "at_exit_final": 157,
+   "prefix": "prefix15_s2",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 11,
+   "out_at_rest": 0,
+   "vial_gain": 18
+  },
+  "r15_a10": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 153,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15_a10_s1": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 226,
+    "return to rest": 10
+   },
+   "at_exit_start": 156,
+   "at_exit_final": 157,
+   "prefix": "prefix15_s1",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 10,
+   "out_at_rest": 0,
+   "vial_gain": 14
+  },
+  "r15_a10_s2": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 11
+   },
+   "at_exit_start": 155,
+   "at_exit_final": 154,
+   "prefix": "prefix15_s2",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 11,
+   "out_at_rest": 0,
+   "vial_gain": 18
+  },
+  "r15_a15": {
+   "kind": "branch",
+   "alpha_deg": 15.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 151,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15_a15_s1": {
+   "kind": "branch",
+   "alpha_deg": 15.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 226,
+    "return to rest": 10
+   },
+   "at_exit_start": 156,
+   "at_exit_final": 157,
+   "prefix": "prefix15_s1",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 10,
+   "out_at_rest": 0,
+   "vial_gain": 14
+  },
+  "r15_a15_s2": {
+   "kind": "branch",
+   "alpha_deg": 15.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 11
+   },
+   "at_exit_start": 155,
+   "at_exit_final": 153,
+   "prefix": "prefix15_s2",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 11,
+   "out_at_rest": 0,
+   "vial_gain": 18
+  },
+  "r15_a5": {
+   "kind": "branch",
+   "alpha_deg": 5.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 152,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15_a5_s1": {
+   "kind": "branch",
+   "alpha_deg": 5.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 226,
+    "return to rest": 10
+   },
+   "at_exit_start": 156,
+   "at_exit_final": 159,
+   "prefix": "prefix15_s1",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 10,
+   "out_at_rest": 0,
+   "vial_gain": 14
+  },
+  "r15_a5_s2": {
+   "kind": "branch",
+   "alpha_deg": 5.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 11
+   },
+   "at_exit_start": 155,
+   "at_exit_final": 157,
+   "prefix": "prefix15_s2",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 11,
+   "out_at_rest": 0,
+   "vial_gain": 18
+  },
+  "r15hold_a0": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "stop": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 154,
+   "prefix": "prefix15",
+   "hold_s": 0.6,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 7,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15retrev_a0_R0.5": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7,
+    "reverse at rest": 1
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 110,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "returnrev",
+   "R_rev": 0.5,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 1,
+   "vial_gain": 22
+  },
+  "r15retrev_a10_R0.25": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 134,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "returnrev",
+   "R_rev": 0.25,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15retrev_a10_R0.5": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 105,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "returnrev",
+   "R_rev": 0.5,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15retrev_a10_R1": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 41,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "returnrev",
+   "R_rev": 1.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15retrev_a10_R2": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "return to rest": 7
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 18,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "returnrev",
+   "R_rev": 2.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 7,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15revdose_a0_R0.5": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "reverse at dose tilt": 6,
+    "return to rest": 2
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 119,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "revdose",
+   "R_rev": 0.5,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 6,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 2,
+   "out_at_rest": 0,
+   "vial_gain": 22
+  },
+  "r15revdose_a10_R0.25": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "reverse at dose tilt": 3,
+    "return to rest": 2
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 136,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "revdose",
+   "R_rev": 0.25,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 3,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 2,
+   "out_at_rest": 0,
+   "vial_gain": 19
+  },
+  "r15revdose_a10_R0.5": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "reverse at dose tilt": 6,
+    "return to rest": 1
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 116,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "revdose",
+   "R_rev": 0.5,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 6,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 1,
+   "out_at_rest": 0,
+   "vial_gain": 21
+  },
+  "r15revdose_a10_R1": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 228,
+    "reverse at dose tilt": 8,
+    "return to rest": 2
+   },
+   "at_exit_start": 150,
+   "at_exit_final": 86,
+   "prefix": "prefix15",
+   "hold_s": 0.0,
+   "protocol": "revdose",
+   "R_rev": 1.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 15.0,
+   "out_reverse_at_dose_tilt": 8,
+   "out_hold_at_dose_tilt": 0,
+   "out_return": 2,
+   "out_at_rest": 0,
+   "vial_gain": 24
+  },
+  "ret_a0": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 139,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "ret_a10": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 132,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "ret_a15": {
+   "kind": "branch",
+   "alpha_deg": 15.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 128,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "ret_a5": {
+   "kind": "branch",
+   "alpha_deg": 5.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 137,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "pat",
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "store_a0": {
+   "kind": "store",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "taps": 1
+   },
+   "at_exit_start": 190,
+   "at_exit_final": 188,
+   "out_taps": 1
+  },
+  "store_a10": {
+   "kind": "store",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {},
+   "at_exit_start": 169,
+   "at_exit_final": 177,
+   "out_taps": 0
+  },
+  "taps_a0": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 138,
+   "prefix": "prefix",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "taps",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "taps_a10": {
+   "kind": "branch",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 130,
+   "prefix": "prefix",
+   "hold_s": 0.0,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "taps",
+   "vib_g": null,
+   "vib_hz": null,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "v2_a0_fwd": {
+   "kind": "v2lap",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "still (open)": 1,
+    "corner 1": 3,
+    "corner 2": 38,
+    "corner 3": 38,
+    "corner 4": 25,
+    "final dwell": 4
+   },
+   "at_exit_start": 186,
+   "at_exit_final": 196,
+   "direction": "fwd",
+   "out_lap": 108,
+   "out_by_corner": [
+    3,
+    38,
+    38,
+    25
+   ]
+  },
+  "v2_a0_fwd_s1": {
+   "kind": "v2lap",
+   "alpha_deg": 0.0,
+   "seed": 1,
+   "exits_by_phase": {
+    "still (open)": 1,
+    "corner 1": 4,
+    "corner 2": 29,
+    "corner 3": 56,
+    "corner 4": 21,
+    "final dwell": 3
+   },
+   "at_exit_start": 183,
+   "at_exit_final": 197,
+   "direction": "fwd",
+   "out_lap": 113,
+   "out_by_corner": [
+    4,
+    29,
+    56,
+    21
+   ]
+  },
+  "v2_a0_rev": {
+   "kind": "v2lap",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "still (open)": 1
+   },
+   "at_exit_start": 186,
+   "at_exit_final": 81,
+   "direction": "rev",
+   "out_lap": 0,
+   "out_by_corner": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "v2_a0_rev_s1": {
+   "kind": "v2lap",
+   "alpha_deg": 0.0,
+   "seed": 1,
+   "exits_by_phase": {
+    "still (open)": 1
+   },
+   "at_exit_start": 183,
+   "at_exit_final": 73,
+   "direction": "rev",
+   "out_lap": 0,
+   "out_by_corner": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "v2_a10_fwd": {
+   "kind": "v2lap",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "corner 1": 4,
+    "corner 2": 17,
+    "corner 3": 23,
+    "corner 4": 27,
+    "final dwell": 3
+   },
+   "at_exit_start": 173,
+   "at_exit_final": 199,
+   "direction": "fwd",
+   "out_lap": 74,
+   "out_by_corner": [
+    4,
+    17,
+    23,
+    27
+   ]
+  },
+  "v2_a10_rev": {
+   "kind": "v2lap",
+   "alpha_deg": 10.0,
+   "seed": 0,
+   "exits_by_phase": {},
+   "at_exit_start": 173,
+   "at_exit_final": 58,
+   "direction": "rev",
+   "out_lap": 0,
+   "out_by_corner": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "vib_a0_s0": {
+   "kind": "branch",
+   "alpha_deg": 0.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 135,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "vib",
+   "vib_g": 1.5,
+   "vib_hz": 25.0,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  },
+  "vib_a5_s0": {
+   "kind": "branch",
+   "alpha_deg": 5.0,
+   "seed": 0,
+   "exits_by_phase": {
+    "dose": 216,
+    "stop": 1
+   },
+   "at_exit_start": 132,
+   "at_exit_final": 135,
+   "protocol": "return",
+   "R_rev": 0.0,
+   "transit": "vib",
+   "vib_g": 1.5,
+   "vib_hz": 25.0,
+   "dose_tilt_world": 30.0,
+   "out_reverse_at_dose_tilt": 0,
+   "out_hold_at_dose_tilt": 1,
+   "out_return": 0,
+   "out_at_rest": 0,
+   "vial_gain": 0
+  }
+ },
+ "summary": {
+  "at_exit_vs_rest_pitch_mg": {
+   "dose at 15 deg, 3 runs | alpha 0": [
+    1393.3591737201455,
+    1429.5503210895,
+    1420.5025342471613
+   ],
+   "dose at 15 deg, 3 runs | alpha 5": [
+    1375.2636000354682,
+    1438.5981079318385,
+    1420.5025342471613
+   ],
+   "dose at 15 deg, 3 runs | alpha 10": [
+    1384.3113868778069,
+    1420.5025342471613,
+    1393.3591737201455
+   ],
+   "dose at 15 deg, 3 runs | alpha 15": [
+    1366.2158131931296,
+    1420.5025342471613,
+    1384.3113868778069
+   ],
+   "dose at 30 deg | alpha 0": [
+    1257.6423710850663
+   ],
+   "dose at 30 deg | alpha 5": [
+    1239.546797400389
+   ],
+   "dose at 30 deg | alpha 10": [
+    1194.307863188696
+   ],
+   "dose at 30 deg | alpha 15": [
+    1158.1167158193416
+   ]
+  },
+  "at_exit_vs_reverse": {
+   "return, then reverse at rest": {
+    "R_rev": [
+     0.0,
+     0.25,
+     0.5,
+     1,
+     2
+    ],
+    "at_exit_mg": [
+     1384.3113868778069,
+     1212.4034368733733,
+     950.0176184455537,
+     370.95926053588283,
+     162.86016316209492
+    ],
+    "extra_dose_grains": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "reverse at 15 deg, then return": {
+    "R_rev": [
+     0.0,
+     0.25,
+     0.5,
+     1
+    ],
+    "at_exit_mg": [
+     1384.3113868778069,
+     1230.4990105580505,
+     1049.5432737112783,
+     778.1096684411201
+    ],
+    "extra_dose_grains": [
+     0,
+     3,
+     6,
+     8
+    ]
+   }
+  },
+  "v2_lap": {
+   "v2_a0_fwd": {
+    "direction": "fwd",
+    "alpha_deg": 0.0,
+    "seed": 0,
+    "out_lap_mg": 977.1609789725695,
+    "out_by_corner_grains": [
+     3,
+     38,
+     38,
+     25
+    ],
+    "at_exit_start": 186,
+    "at_exit_end": 196
+   },
+   "v2_a0_fwd_s1": {
+    "direction": "fwd",
+    "alpha_deg": 0.0,
+    "seed": 1,
+    "out_lap_mg": 1022.3999131842625,
+    "out_by_corner_grains": [
+     4,
+     29,
+     56,
+     21
+    ],
+    "at_exit_start": 183,
+    "at_exit_end": 197
+   },
+   "v2_a10_fwd": {
+    "direction": "fwd",
+    "alpha_deg": 10.0,
+    "seed": 0,
+    "out_lap_mg": 669.5362263330569,
+    "out_by_corner_grains": [
+     4,
+     17,
+     23,
+     27
+    ],
+    "at_exit_start": 173,
+    "at_exit_end": 199
+   },
+   "v2_a0_rev": {
+    "direction": "rev",
+    "alpha_deg": 0.0,
+    "seed": 0,
+    "out_lap_mg": 0.0,
+    "out_by_corner_grains": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "at_exit_start": 186,
+    "at_exit_end": 81
+   },
+   "v2_a0_rev_s1": {
+    "direction": "rev",
+    "alpha_deg": 0.0,
+    "seed": 1,
+    "out_lap_mg": 0.0,
+    "out_by_corner_grains": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "at_exit_start": 183,
+    "at_exit_end": 73
+   },
+   "v2_a10_rev": {
+    "direction": "rev",
+    "alpha_deg": 10.0,
+    "seed": 0,
+    "out_lap_mg": 0.0,
+    "out_by_corner_grains": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "at_exit_start": 173,
+    "at_exit_end": 58
+   }
+  },
+  "paternoster_after_dose": {
+   "avib5_a0": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": 0.0,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 132
+   },
+   "avib5_a10": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": 0.0,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 126
+   },
+   "avib_a0_s0": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 128
+   },
+   "avib_a10_s0": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 123
+   },
+   "avib_a15_s0": {
+    "alpha_deg": 15.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 123
+   },
+   "avib_a5_s0": {
+    "alpha_deg": 5.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 128
+   },
+   "r15_a0": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 154
+   },
+   "r15_a0_s1": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 10,
+    "out_at_rest": 0,
+    "vial_gain": 14,
+    "at_exit_final": 158
+   },
+   "r15_a0_s2": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 11,
+    "out_at_rest": 0,
+    "vial_gain": 18,
+    "at_exit_final": 157
+   },
+   "r15_a10": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 153
+   },
+   "r15_a10_s1": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 10,
+    "out_at_rest": 0,
+    "vial_gain": 14,
+    "at_exit_final": 157
+   },
+   "r15_a10_s2": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 11,
+    "out_at_rest": 0,
+    "vial_gain": 18,
+    "at_exit_final": 154
+   },
+   "r15_a15": {
+    "alpha_deg": 15.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 151
+   },
+   "r15_a15_s1": {
+    "alpha_deg": 15.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 10,
+    "out_at_rest": 0,
+    "vial_gain": 14,
+    "at_exit_final": 157
+   },
+   "r15_a15_s2": {
+    "alpha_deg": 15.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 11,
+    "out_at_rest": 0,
+    "vial_gain": 18,
+    "at_exit_final": 153
+   },
+   "r15_a5": {
+    "alpha_deg": 5.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 152
+   },
+   "r15_a5_s1": {
+    "alpha_deg": 5.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 10,
+    "out_at_rest": 0,
+    "vial_gain": 14,
+    "at_exit_final": 159
+   },
+   "r15_a5_s2": {
+    "alpha_deg": 5.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 11,
+    "out_at_rest": 0,
+    "vial_gain": 18,
+    "at_exit_final": 157
+   },
+   "r15hold_a0": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.6,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 154
+   },
+   "r15retrev_a0_R0.5": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 1,
+    "vial_gain": 22,
+    "at_exit_final": 110
+   },
+   "r15retrev_a10_R0.25": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 134
+   },
+   "r15retrev_a10_R0.5": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 105
+   },
+   "r15retrev_a10_R1": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 41
+   },
+   "r15retrev_a10_R2": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 7,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 18
+   },
+   "r15revdose_a0_R0.5": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 2,
+    "out_at_rest": 0,
+    "vial_gain": 22,
+    "at_exit_final": 119
+   },
+   "r15revdose_a10_R0.25": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 2,
+    "out_at_rest": 0,
+    "vial_gain": 19,
+    "at_exit_final": 136
+   },
+   "r15revdose_a10_R0.5": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 1,
+    "out_at_rest": 0,
+    "vial_gain": 21,
+    "at_exit_final": 116
+   },
+   "r15revdose_a10_R1": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 15.0,
+    "hold_s": 0.0,
+    "out_return": 2,
+    "out_at_rest": 0,
+    "vial_gain": 24,
+    "at_exit_final": 86
+   },
+   "ret_a0": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 139
+   },
+   "ret_a10": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 132
+   },
+   "ret_a15": {
+    "alpha_deg": 15.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 128
+   },
+   "ret_a5": {
+    "alpha_deg": 5.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 137
+   },
+   "taps_a0": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": 0.0,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 138
+   },
+   "taps_a10": {
+    "alpha_deg": 10.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": 0.0,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 130
+   },
+   "vib_a0_s0": {
+    "alpha_deg": 0.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 135
+   },
+   "vib_a5_s0": {
+    "alpha_deg": 5.0,
+    "dose_tilt_world": 30.0,
+    "hold_s": null,
+    "out_return": 0,
+    "out_at_rest": 0,
+    "vial_gain": 0,
+    "at_exit_final": 135
+   }
+  },
+  "storage": {
+   "store_a0": {
+    "kind": "store",
+    "alpha_deg": 0.0,
+    "seed": 0,
+    "exits_by_phase": {
+     "taps": 1
+    },
+    "at_exit_start": 190,
+    "at_exit_final": 188,
+    "out_taps": 1
+   },
+   "store_a10": {
+    "kind": "store",
+    "alpha_deg": 10.0,
+    "seed": 0,
+    "exits_by_phase": {},
+    "at_exit_start": 169,
+    "at_exit_final": 177,
+    "out_taps": 0
+   }
+  }
+ },
+ "m_grain_mg": 9.047786842338606
+}

@@ -1,0 +1,406 @@
+{
+ "_about": "Vendor reads for chain carousel v12's new purchased parts, 2026-11-27. McMaster: family/category tables and the part panels, logged out, in a headed Chromium (Playwright over CDP, Xvfb) whose traffic left through the doser Pi (SOCKS5; the exit network checked as BYU's), throttled to 400 kB/s, real pointer moves and wheel scrolls, pauses between pages. No bot check or block was shown; product-detail pages were not opened (they need a login). Prices are McMaster's list prices that day.",
+ "dowel_3x12": {
+  "vendor": "McMaster-Carr",
+  "part_number": "93600A335",
+  "description": "316 Stainless Steel Dowel Pin, 3mm Diameter, 12mm Long; ISO 2338-m6, dia. tolerance +0.002 to +0.008 mm, double shear and hardness not rated, material certificate (digital)",
+  "pack_qty": 25,
+  "pack_price_usd": 9.73,
+  "panel_price_line": "$9.73 per pack of 25 / $0.39 per piece",
+  "qty_used": 2,
+  "url": "https://www.mcmaster.com/products/dowel-pins/system-of-measurement~metric/diameter~3-mm/length~12-mm/",
+  "read_utc": "2026-11-27T18:38:56Z",
+  "how": "McMaster family table and the part's panel (part number clicked in the table row), logged out, headed Chromium through the doser Pi (SOCKS5), throttled to 400 kB/s",
+  "alternates": [
+   {
+    "part_number": "91585A371",
+    "description": "18-8 Stainless Steel Dowel Pin, 3 mm Diameter, 12 mm Long; ISO 2338-m6, +0.002 to +0.008 mm (the 18-8 that params.py names)",
+    "pack_qty": 50,
+    "pack_price_usd": 15.1,
+    "panel_price_line": "$15.10 per pack of 50 / $0.30 per piece",
+    "read_utc": "2026-11-27T18:39:14Z"
+   },
+   {
+    "part_number": "91595A112",
+    "description": "High-strength alloy steel dowel, 3 x 12 mm, DIN 6325-m6 / ISO 8734, Rockwell C52 (table row)",
+    "pack_qty": 50,
+    "pack_price_usd": 11.34
+   },
+   {
+    "part_number": "97049A108",
+    "description": "Undersized 18-8 dowel, 3 x 12 mm, ISO 2338-h8 (-0.014 to 0 mm), Rockwell B95 (table row)",
+    "pack_qty": 50,
+    "pack_price_usd": 17.84
+   },
+   {
+    "part_number": "98380A128",
+    "description": "416 stainless dowel, 3 x 12 mm, +0.004 to +0.012 mm, Rockwell C36 (table row)",
+    "pack_qty": 5,
+    "pack_price_usd": 10.6
+   }
+  ],
+  "note": "A 3 x 12 mm length exists in stainless (18-8, 316, 416) and hardened steel. 93600A335 (316) is the cheapest pack: $9.73 for 25 against $15.10 for 50 of the 18-8."
+ },
+ "spring_cradle": {
+  "vendor": "McMaster-Carr",
+  "part_number": "9657K284",
+  "description": "Compression Spring, 0.75\" Long, 0.24\" OD, 0.196\" ID (Spring Steel): length_in 0.75\", od_in 0.24\", id_in 0.196\", wire_in 0.022\", compressed_length_at_max_load_in 0.34\", max_load_lb 2.3, rate_lbf_per_in 5.6, end_type Closed and Ground",
+  "pack_qty": 12,
+  "pack_price_usd": 12.74,
+  "panel_price_line": "$12.74 per pack of 12 / $1.06 per piece",
+  "qty_used": 1,
+  "url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~inch/compression-springs-1~~/od~0-24/",
+  "read_utc": "2026-11-27T18:48:35Z",
+  "how": "McMaster family table and the part's panel (part number clicked in the table row), logged out, headed Chromium through the doser Pi (SOCKS5), throttled to 400 kB/s",
+  "requirement": {
+   "rate_n_per_mm": 1.0,
+   "rate_lbf_per_in": 5.71,
+   "free_length_mm": [
+    17,
+    21
+   ],
+   "free_length_target_mm": 19.0,
+   "od_max_mm": 6.3,
+   "id_min_mm": 3.3,
+   "installed_lengths_mm": {
+    "stop_13.0": 13.0,
+    "tight_mesh_12.6": 12.6,
+    "stub_10.6": 10.6,
+    "up_stop_9.4": 9.4
+   },
+   "min_length_mm": 9.4,
+   "forces_drawn_n": {
+    "stop_13.0": 6.0,
+    "tight_mesh_12.6": 6.4,
+    "stub_10.6": 8.4
+   }
+  },
+  "method": "Every row of McMaster's metric 'Compression Springs' table (995 rows) and inch table (1,125 rows) was read by scrolling the table, plus the inch precision (139) and mil. spec. (114) tables and the metric precision table (36, all 9 mm OD or more). Kept: OD <= 6.3 mm, ID >= 3.3 mm, free length 15-24 mm, then ranked on rate, free length and whether the compressed length at max. load reaches 9.4 mm. Forces are rate x (free length - installed length) from the listed rate.",
+  "candidates": [
+   {
+    "part_number": "9657K284",
+    "vendor": "McMaster-Carr",
+    "material_section": "Spring Steel",
+    "system": "inch",
+    "title": "Compression Spring, 0.75\" Long, 0.24\" OD, 0.196\" ID",
+    "listed": {
+     "length_in": "0.75\"",
+     "od_in": "0.24\"",
+     "id_in": "0.196\"",
+     "wire_in": "0.022\"",
+     "compressed_length_at_max_load_in": "0.34\"",
+     "max_load_lb": "2.3",
+     "rate_lbf_per_in": "5.6",
+     "end_type": "Closed and Ground"
+    },
+    "free_length_mm": 19.05,
+    "od_mm": 6.1,
+    "id_mm": 4.98,
+    "wire_mm": 0.56,
+    "rate_n_per_mm": 0.981,
+    "max_load_n": 10.23,
+    "compressed_length_at_max_load_mm": 8.64,
+    "solid_length_mm": null,
+    "solid_length_note": "not listed in McMaster's table or panel",
+    "rate_vs_1_0_n_per_mm_pct": -1.9,
+    "free_length_vs_19_mm": 0.05,
+    "fits_od_le_6_3": true,
+    "fits_id_ge_3_3": true,
+    "force_n_at_installed_lengths": {
+     "stop_13.0": 5.93,
+     "tight_mesh_12.6": 6.33,
+     "stub_10.6": 8.29,
+     "up_stop_9.4": 9.46
+    },
+    "rated_through_9_4_mm": true,
+    "mm_past_max_load_length_at_9_4": 0.0,
+    "pack_qty": 12,
+    "pack_price_usd": 12.74,
+    "panel_price_line": "$12.74 per pack of 12 / $1.06 per piece",
+    "url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~inch/compression-springs-1~~/",
+    "panel_url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~inch/compression-springs-1~~/od~0-24/",
+    "read_utc": "2026-11-27T18:48:35Z",
+    "table_read_utc": "2026-11-27T18:45:33Z",
+    "how": "McMaster family table and the part's panel (part number clicked in the table row), logged out, headed Chromium through the doser Pi (SOCKS5), throttled to 400 kB/s",
+    "note": "Best fit: 0.98 N/mm and 19.05 mm free, 5.9 N at the stop, rated to 8.64 mm so the 9.4 mm up-stop is inside its range. Not stainless (McMaster's 'Spring Steel' section: 'best suited for dry environments since moisture will cause these springs to rust')."
+   },
+   {
+    "part_number": "8969T506",
+    "vendor": "McMaster-Carr",
+    "material_section": "Highly Corrosion-Resistant 316 Stainless Steel",
+    "system": "metric",
+    "title": "316 Stainless Steel Corrosion-Resistant Compression Springs, 17 mm Long, 5.990 mm OD, 4.770 mm ID",
+    "listed": {
+     "length_mm": "17",
+     "od_mm": "5.99",
+     "id_mm": "4.77",
+     "wire_mm": "0.61",
+     "compressed_length_at_max_load_mm": "9.2",
+     "max_load_lb": "1.8",
+     "rate_lbf_per_mm": "0.23",
+     "end_type": "Closed and Ground",
+     "specs_met": "—"
+    },
+    "free_length_mm": 17.0,
+    "od_mm": 5.99,
+    "id_mm": 4.77,
+    "wire_mm": 0.61,
+    "rate_n_per_mm": 1.023,
+    "max_load_n": 8.01,
+    "compressed_length_at_max_load_mm": 9.2,
+    "solid_length_mm": null,
+    "solid_length_note": "not listed in McMaster's table or panel",
+    "rate_vs_1_0_n_per_mm_pct": 2.3,
+    "free_length_vs_19_mm": -2.0,
+    "fits_od_le_6_3": true,
+    "fits_id_ge_3_3": true,
+    "force_n_at_installed_lengths": {
+     "stop_13.0": 4.09,
+     "tight_mesh_12.6": 4.5,
+     "stub_10.6": 6.55,
+     "up_stop_9.4": 7.78
+    },
+    "rated_through_9_4_mm": true,
+    "mm_past_max_load_length_at_9_4": 0.0,
+    "pack_qty": 1,
+    "pack_price_usd": 4.6,
+    "panel_price_line": "$4.60 in the table row; the panel says 'Pack of 1' and gives no per-piece line",
+    "url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~metric/compression-springs-1~~/",
+    "panel_url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~metric/od~5-99-mm/",
+    "read_utc": "2026-11-27T18:43:41Z",
+    "table_read_utc": "2026-11-27T18:42:13Z",
+    "how": "McMaster family table and the part's panel (part number clicked in the table row), logged out, headed Chromium through the doser Pi (SOCKS5), throttled to 400 kB/s",
+    "note": "Best stainless if a lower preload is acceptable: the rate is right (1.02 N/mm) but it is 2 mm short, so 4.1 N at the stop (6.0 drawn) and 6.5 N on a stub; rated to 9.2 mm, so the 9.4 mm up-stop is inside its range. Shimming the seat 2 mm to restore 6 N would take the up-stop to 7.4 mm, past its rating."
+   },
+   {
+    "part_number": "8969T507",
+    "vendor": "McMaster-Carr",
+    "material_section": "Highly Corrosion-Resistant 316 Stainless Steel",
+    "system": "metric",
+    "title": "316 Stainless Steel Corrosion-Resistant Compression Springs, 19 mm Long, 5.990 mm OD, 4.770 mm ID",
+    "listed": {
+     "length_mm": "19",
+     "od_mm": "5.99",
+     "id_mm": "4.77",
+     "wire_mm": "0.61",
+     "compressed_length_at_max_load_mm": "10.3",
+     "max_load_lb": "1.8",
+     "rate_lbf_per_mm": "0.2",
+     "end_type": "Closed and Ground",
+     "specs_met": "—"
+    },
+    "free_length_mm": 19.0,
+    "od_mm": 5.99,
+    "id_mm": 4.77,
+    "wire_mm": 0.61,
+    "rate_n_per_mm": 0.89,
+    "max_load_n": 8.01,
+    "compressed_length_at_max_load_mm": 10.3,
+    "solid_length_mm": null,
+    "solid_length_note": "not listed in McMaster's table or panel",
+    "rate_vs_1_0_n_per_mm_pct": -11.0,
+    "free_length_vs_19_mm": 0.0,
+    "fits_od_le_6_3": true,
+    "fits_id_ge_3_3": true,
+    "force_n_at_installed_lengths": {
+     "stop_13.0": 5.34,
+     "tight_mesh_12.6": 5.69,
+     "stub_10.6": 7.47,
+     "up_stop_9.4": 8.54
+    },
+    "rated_through_9_4_mm": false,
+    "mm_past_max_load_length_at_9_4": 0.9,
+    "pack_qty": 1,
+    "pack_price_usd": 4.6,
+    "panel_price_line": "$4.60 in the table row; the panel says 'Pack of 1' and gives no per-piece line",
+    "url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~metric/compression-springs-1~~/",
+    "panel_url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~metric/od~5-99-mm/",
+    "read_utc": "2026-11-27T18:43:28Z",
+    "table_read_utc": "2026-11-27T18:42:13Z",
+    "how": "McMaster family table and the part's panel (part number clicked in the table row), logged out, headed Chromium through the doser Pi (SOCKS5), throttled to 400 kB/s",
+    "note": "Stainless at the drawn 19 mm free length, 11 % soft: 5.3 N at the stop, 7.5 N on a stub. Its max-load length is 10.3 mm, so the 3.2 mm up-stop (9.4 mm) is 0.9 mm past its rating (8.5 N against 8.0 N max); a 2 mm stub (10.6 mm) is inside it."
+   },
+   {
+    "part_number": "2006N257",
+    "vendor": "McMaster-Carr",
+    "material_section": "Corrosion-Resistant 302 Stainless Steel",
+    "system": "metric",
+    "title": "302 Stainless Steel Corrosion-Resistant Compression Springs, 18.5 mm Long, 5.63 mm OD, 4.37 mm ID",
+    "listed": {
+     "length_mm": "18.5",
+     "od_mm": "5.63",
+     "id_mm": "4.37",
+     "wire_mm": "0.63",
+     "compressed_length_at_max_load_mm": "8.2",
+     "max_load_lb": "2.9",
+     "rate_lbf_per_mm": "0.29",
+     "end_type": "Closed",
+     "specs_met": "DIN 2095"
+    },
+    "free_length_mm": 18.5,
+    "od_mm": 5.63,
+    "id_mm": 4.37,
+    "wire_mm": 0.63,
+    "rate_n_per_mm": 1.29,
+    "max_load_n": 12.9,
+    "compressed_length_at_max_load_mm": 8.2,
+    "solid_length_mm": null,
+    "solid_length_note": "not listed in McMaster's table or panel",
+    "rate_vs_1_0_n_per_mm_pct": 29.0,
+    "free_length_vs_19_mm": -0.5,
+    "fits_od_le_6_3": true,
+    "fits_id_ge_3_3": true,
+    "force_n_at_installed_lengths": {
+     "stop_13.0": 7.09,
+     "tight_mesh_12.6": 7.61,
+     "stub_10.6": 10.19,
+     "up_stop_9.4": 11.74
+    },
+    "rated_through_9_4_mm": true,
+    "mm_past_max_load_length_at_9_4": 0.0,
+    "pack_qty": 5,
+    "pack_price_usd": 15.98,
+    "panel_price_line": "$15.98 per pack of 5 / $3.20 per piece",
+    "url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~metric/compression-springs-1~~/",
+    "panel_url": "https://www.mcmaster.com/products/compression-springs/system-of-measurement~metric/od~5-63-mm/",
+    "read_utc": "2026-11-27T18:44:14Z",
+    "table_read_utc": "2026-11-27T18:42:13Z",
+    "how": "McMaster family table and the part's panel (part number clicked in the table row), logged out, headed Chromium through the doser Pi (SOCKS5), throttled to 400 kB/s",
+    "note": "Stainless rated through the whole travel (8.2 mm at its 12.9 N max), but 29 % stiff and 0.5 mm short: 7.1 N at the stop, 10.2 N on a stub, 11.7 N at the up-stop."
+   }
+  ],
+  "best": {
+   "part_number": "9657K284",
+   "rate_n_per_mm": 0.981,
+   "rate_vs_1_0_pct": -1.9,
+   "free_length_mm": 19.05,
+   "free_length_vs_19_mm": 0.05,
+   "why": "Closest on every count and rated through the 9.4 mm up-stop; spring steel, not stainless."
+  },
+  "best_stainless": {
+   "part_numbers": [
+    "8969T506",
+    "8969T507"
+   ],
+   "why": "No stainless spring matches both 1.0 N/mm and 19 mm free. 8969T506 (316, 1.02 N/mm, 17 mm) stays inside its rating through the up-stop at 4.1 N preload; 8969T507 (316, 0.89 N/mm, 19 mm) gives 5.3 N preload but is 0.9 mm past its max-load length at the up-stop. 2006N257 (302) is rated through the travel but 29 % stiff."
+  },
+  "others_considered": [
+   {
+    "part_number": "9434K38",
+    "row": "0.813\" | 0.24\" | 0.196\" | 0.022\" | — | — | 0.292\" | 2.6 lb. | 5 | Closed and Ground | 5 | 9434K38 | 4.58",
+    "section": "Spring Steel",
+    "why_not": "music-wire steel, 0.813 in (20.65 mm) free, 0.88 N/mm, 0.24 in OD, rated to 7.42 mm: 6.7 N at the stop; $4.58 per 5. A cheaper non-stainless alternative."
+   },
+   {
+    "part_number": "9435K37",
+    "row": "0.813\" | 0.24\" | 0.196\" | 0.022\" | — | — | 0.417\" | 1.7 lb. | 4.4 | Closed and Ground | 5 | 9435K37 | 6.91",
+    "section": "Corrosion-Resistant 302 Stainless Steel",
+    "why_not": "302 stainless, 0.813 in free, 0.77 N/mm (23 % soft), rated only to 10.59 mm (the up-stop is 1.2 mm past it)."
+   },
+   {
+    "part_number": "8969T526",
+    "row": "18.5 | 5.63 | 4.37 | 0.63 | 10.9 | 2.1 | 0.28 | Closed and Ground | — | 1 | 8969T526 | 4.60",
+    "section": "Highly Corrosion-Resistant 316 Stainless Steel",
+    "why_not": "316 stainless, 18.5 mm free, 5.63 OD, 1.25 N/mm, rated only to 10.9 mm."
+   },
+   {
+    "part_number": "1986K64",
+    "row": "0.75\" | 0.24\" | 0.196\" | 0.022\" | — | — | 0.53\" | 1 lb. | 4.9 | Closed | 6 | 1986K64 | 4.29",
+    "section": "Corrosion-Resistant 302 Stainless Steel",
+    "why_not": "302 stainless, 0.75 in free, 0.24 in OD, 0.86 N/mm, but rated only to 13.46 mm (1 lb max)."
+   }
+  ]
+ },
+ "set_screw_m3x6": {
+  "vendor": "McMaster-Carr",
+  "part_number": "92029A103",
+  "description": "Highly Corrosion-Resistant Cup-Tip Set Screw, 316 Stainless Steel, M3 x 0.5 mm Thread, 6 mm Long; 1.5 mm hex drive, Rockwell B80",
+  "pack_qty": 25,
+  "pack_price_usd": 6.04,
+  "panel_price_line": "$6.04 per pack of 25 / $0.24 per piece",
+  "qty_used": 1,
+  "url": "https://www.mcmaster.com/products/set-screws/system-of-measurement~metric/thread-size~m3/length~6-mm/tip-type~cup/",
+  "read_utc": "2026-11-27T18:51:20Z",
+  "how": "McMaster family table and the part's panel (part number clicked in the table row), logged out, headed Chromium through the doser Pi (SOCKS5), throttled to 400 kB/s",
+  "alternates": [
+   {
+    "part_number": "92015A104",
+    "description": "18-8 Stainless Steel Cup-Tip Set Screw, M3 x 0.5 mm Thread, 6 mm Long; 1.5 mm hex drive",
+    "pack_qty": 50,
+    "pack_price_usd": 11.17,
+    "panel_price_line": "$11.17 per pack of 50 / $0.22 per piece",
+    "read_utc": "2026-11-27T18:51:33Z"
+   },
+   {
+    "part_number": "91390A100",
+    "description": "Alloy Steel Cup-Tip Set Screw, M3 x 0.5 mm Thread Size, 6 mm Long; listed as 'Unfinished Alloy Steel', Rockwell C45",
+    "pack_qty": 100,
+    "pack_price_usd": 7.1,
+    "panel_price_line": "$7.10 per pack of 100 / $0.07 per piece",
+    "read_utc": "2026-11-27T18:51:08Z"
+   },
+   {
+    "part_number": "91214A103",
+    "description": "Zinc-plated alloy steel cup-tip set screw, M3 x 6, Rockwell C45 (table row)",
+    "pack_qty": 50,
+    "pack_price_usd": 4.93
+   },
+   {
+    "part_number": "94285A325",
+    "description": "Black-oxide alloy steel serrated-locking cup-tip set screw, M3 x 6 (table row)",
+    "pack_qty": 50,
+    "pack_price_usd": 10.13
+   },
+   {
+    "part_number": "91385A406",
+    "description": "Black-oxide alloy steel cup-tip set screw with nylon-patch threadlocker, M3 x 6 (table row)",
+    "pack_qty": 25,
+    "pack_price_usd": 16.31
+   },
+   {
+    "part_number": "92605A100",
+    "description": "Flat-Tip Set Screw, 18-8 Stainless Steel, M3 x 0.5 mm Thread Size, 6 mm Long (flat tip, not cup: an option if the stop should not dent the printed arm)",
+    "pack_qty": 25,
+    "pack_price_usd": 3.81,
+    "panel_price_line": "$3.81 per pack of 25 / $0.15 per piece",
+    "read_utc": "2026-11-27T18:53:56Z",
+    "url": "https://www.mcmaster.com/products/set-screws/system-of-measurement~metric/thread-size~m3/length~6-mm/tip-type~flat/"
+   }
+  ],
+  "note": "McMaster's M3 x 6 cup-tip filter shows no plain black-oxide alloy-steel cup-point screw: its plain alloy-steel one, 91390A100, is listed as 'Unfinished Alloy Steel'; the black-oxide ones are the serrated (94285A325) and nylon-patch (91385A406) types. 92029A103 (316) is the cheapest stainless pack."
+ },
+ "us5881": {
+  "vendor": "Adafruit",
+  "part_number": "158",
+  "description": "Hall effect sensor - US5881LUA (Product ID 158)",
+  "pack_qty": 1,
+  "pack_price_usd": 2.0,
+  "price_breaks": {
+   "1-9": 2.0,
+   "10-49": 1.75,
+   "50+": 1.5
+  },
+  "stock": "In stock",
+  "url": "https://www.adafruit.com/product/158",
+  "read_utc": "2026-11-27T18:51:45Z",
+  "how": "product page fetched directly from the runner (HTTP 200); price, quantity discounts and stock from the page",
+  "note": "Unchanged from the BoM's $2.00."
+ },
+ "d42_n52": {
+  "vendor": "K&J Magnetics",
+  "part_number": "D42-N52",
+  "description": "1/4 x 1/8 Inch Neodymium Rare Earth Disc Magnet N52 (6.35 x 3.17 mm, axially magnetized, Ni-Cu-Ni, pull force 2.85 lb)",
+  "pack_qty": 1,
+  "pack_price_usd": 0.52,
+  "price_breaks": {
+   "1-49": 0.52,
+   "50-99": 0.5,
+   "100-249": 0.49
+  },
+  "stock": "In Stock",
+  "url": "https://www.kjmagnetics.com/d42-n52-neodymium-disc-magnet",
+  "read_utc": "2026-11-27T18:52:28Z",
+  "how": "the runner's direct fetch got HTTP 403 (a Cloudflare 'Just a moment...' page), so the page was read once in the headed Chromium through the doser Pi, the way fetch_other.py read it on 2026-10-27; no challenge was shown there",
+  "note": "Unchanged from the BoM's $0.52."
+ }
+}

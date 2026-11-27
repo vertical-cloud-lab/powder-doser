@@ -1,0 +1,9 @@
+.cache/
+__pycache__/
+sim/out/**/frames/
+vendor/
+sim/__pycache__/
+sim/out/auger/*.npz
+sim/out/auger/logs/
+test/runs/
+sim/out/pivot_table.npz

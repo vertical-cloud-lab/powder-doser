@@ -1,0 +1,313 @@
+{
+ "geometry": {
+  "m": 1.0,
+  "z": [
+   20,
+   44
+  ],
+  "phi_deg": 20.0,
+  "face_mm": 10.0,
+  "a0_mm": 32.0,
+  "a_dock_mm": 32.1,
+  "gear_x_from_hinge_mm": 83.73,
+  "backlash_at_dock_mm": 0.075,
+  "base_pitch_mm": 2.952,
+  "by_centre_distance": {
+   "32.00": {
+    "phi_op_deg": 20.0,
+    "contact_ratio": 1.644
+   },
+   "32.10": {
+    "phi_op_deg": 20.48,
+    "contact_ratio": 1.546
+   },
+   "32.30": {
+    "phi_op_deg": 21.41,
+    "contact_ratio": 1.357
+   },
+   "32.50": {
+    "phi_op_deg": 22.3,
+    "contact_ratio": 1.175
+   },
+   "32.70": {
+    "phi_op_deg": 23.14,
+    "contact_ratio": 0.999
+   },
+   "33.00": {
+    "phi_op_deg": 24.33,
+    "contact_ratio": 0.747
+   },
+   "33.50": {
+    "phi_op_deg": 26.15,
+    "contact_ratio": 0.35
+   }
+  }
+ },
+ "motor": {
+  "kt_NmA": 0.1055,
+  "holding_Nm": 0.1,
+  "max_torque_Nm_at_0p67A": 0.0707,
+  "max_torque_Nm_at_0p95A": 0.1003,
+  "corner_speed_rev_s": {
+   "12 V, 0.67 A": 7.449999999999999,
+   "12 V, 0.95 A": 4.999999999999999,
+   "24 V, 0.95 A": 13.1
+  },
+  "note": "DRV8825/TIC current limit is the sine amplitude: 0.67 A gives 0.071 N*m; 0.95 A puts 0.67 A rms in each coil and gives the 0.10 N*m holding torque"
+ },
+ "loads": {
+  "running, light (auger 0.005 N*m)": {
+   "pinion_Nm": 0.0023,
+   "Wt_N": 0.227,
+   "Wr_frictionless_N": 0.083,
+   "Wr_max_mu0.1": 0.105,
+   "Wr_max_mu0.2": 0.128,
+   "Wr_max_mu0.3": 0.151
+  },
+  "running, heavy (auger 0.03 N*m)": {
+   "pinion_Nm": 0.0136,
+   "Wt_N": 1.364,
+   "Wr_frictionless_N": 0.496,
+   "Wr_max_mu0.1": 0.633,
+   "Wr_max_mu0.2": 0.769,
+   "Wr_max_mu0.3": 0.905
+  },
+  "stall at 0.67 A": {
+   "pinion_Nm": 0.0707,
+   "Wt_N": 7.071,
+   "Wr_frictionless_N": 2.574,
+   "Wr_max_mu0.1": 3.281,
+   "Wr_max_mu0.2": 3.988,
+   "Wr_max_mu0.3": 4.695
+  },
+  "holding torque (0.95 A)": {
+   "pinion_Nm": 0.1,
+   "Wt_N": 10.0,
+   "Wr_frictionless_N": 3.64,
+   "Wr_max_mu0.1": 4.64,
+   "Wr_max_mu0.2": 5.64,
+   "Wr_max_mu0.3": 6.64
+  }
+ },
+ "stresses": {
+  "1 rev/s, PETG (printed) pinion, 0.10 N*m": {
+   "v_mps": 0.0628,
+   "Kv": 1.021,
+   "Wt_N": 10.0,
+   "bending_pinion_MPa": 3.17,
+   "bending_gear_MPa": 2.56,
+   "contact_MPa": 13.11,
+   "SF_bending_pinion": 3.79,
+   "SF_bending_gear": 4.69,
+   "SF_contact": 2.29
+  },
+  "1 rev/s, steel pinion, 0.10 N*m": {
+   "v_mps": 0.0628,
+   "Kv": 1.021,
+   "Wt_N": 10.0,
+   "bending_pinion_MPa": 3.17,
+   "bending_gear_MPa": 2.56,
+   "contact_MPa": 18.44,
+   "SF_bending_pinion": 63.1,
+   "SF_bending_gear": 4.69,
+   "SF_contact": 1.63
+  },
+  "5 rev/s, PETG (printed) pinion, 0.10 N*m": {
+   "v_mps": 0.3142,
+   "Kv": 1.103,
+   "Wt_N": 10.0,
+   "bending_pinion_MPa": 3.43,
+   "bending_gear_MPa": 2.77,
+   "contact_MPa": 13.63,
+   "SF_bending_pinion": 3.5,
+   "SF_bending_gear": 4.34,
+   "SF_contact": 2.2
+  },
+  "5 rev/s, steel pinion, 0.10 N*m": {
+   "v_mps": 0.3142,
+   "Kv": 1.103,
+   "Wt_N": 10.0,
+   "bending_pinion_MPa": 3.43,
+   "bending_gear_MPa": 2.77,
+   "contact_MPa": 19.17,
+   "SF_bending_pinion": 58.39,
+   "SF_bending_gear": 4.34,
+   "SF_contact": 1.56
+  },
+  "10 rev/s, PETG (printed) pinion, 0.10 N*m": {
+   "v_mps": 0.6283,
+   "Kv": 1.206,
+   "Wt_N": 10.0,
+   "bending_pinion_MPa": 3.75,
+   "bending_gear_MPa": 3.02,
+   "contact_MPa": 14.25,
+   "SF_bending_pinion": 3.2,
+   "SF_bending_gear": 3.97,
+   "SF_contact": 2.11
+  },
+  "10 rev/s, steel pinion, 0.10 N*m": {
+   "v_mps": 0.6283,
+   "Kv": 1.206,
+   "Wt_N": 10.0,
+   "bending_pinion_MPa": 3.75,
+   "bending_gear_MPa": 3.02,
+   "contact_MPa": 20.05,
+   "SF_bending_pinion": 53.4,
+   "SF_bending_gear": 3.97,
+   "SF_contact": 1.5
+  },
+  "15 rev/s, PETG (printed) pinion, 0.10 N*m": {
+   "v_mps": 0.9425,
+   "Kv": 1.309,
+   "Wt_N": 10.0,
+   "bending_pinion_MPa": 4.07,
+   "bending_gear_MPa": 3.28,
+   "contact_MPa": 14.85,
+   "SF_bending_pinion": 2.95,
+   "SF_bending_gear": 3.66,
+   "SF_contact": 2.02
+  },
+  "15 rev/s, steel pinion, 0.10 N*m": {
+   "v_mps": 0.9425,
+   "Kv": 1.309,
+   "Wt_N": 10.0,
+   "bending_pinion_MPa": 4.07,
+   "bending_gear_MPa": 3.28,
+   "contact_MPa": 20.88,
+   "SF_bending_pinion": 49.2,
+   "SF_bending_gear": 3.66,
+   "SF_contact": 1.44
+  }
+ },
+ "preload": {
+  "weight_moment_Nmm": {
+   "0 deg": 95.0,
+   "15 deg": 92.6,
+   "30 deg": 83.8,
+   "45 deg": 69.4,
+   "60 deg": 50.2,
+   "75 deg": 27.6,
+   "90 deg": 3.1
+  },
+  "weight_at_gear_N": {
+   "0 deg": 1.135,
+   "15 deg": 1.106,
+   "30 deg": 1.001,
+   "45 deg": 0.829,
+   "60 deg": 0.6,
+   "75 deg": 0.33,
+   "90 deg": 0.037
+  },
+  "torque_capacity_Nm": {
+   "weight only, empty, mu 0.1": {
+    "0 deg": 0.02396,
+    "30 deg": 0.02114,
+    "45 deg": 0.0175,
+    "60 deg": 0.01266,
+    "90 deg": 0.00079
+   },
+   "weight only, empty, mu 0.3": {
+    "0 deg": 0.01685,
+    "30 deg": 0.01487,
+    "45 deg": 0.0123,
+    "60 deg": 0.0089,
+    "90 deg": 0.00055
+   },
+   "weight only, 60 g of powder, mu 0.1": {
+    "0 deg": 0.04623,
+    "30 deg": 0.03529,
+    "45 deg": 0.02905,
+    "60 deg": 0.02083,
+    "90 deg": 0.00079
+   },
+   "weight only, 60 g of powder, mu 0.3": {
+    "0 deg": 0.0325,
+    "30 deg": 0.02481,
+    "45 deg": 0.02042,
+    "60 deg": 0.01464,
+    "90 deg": 0.00055
+   },
+   "with the magnet (12 N), empty, mu 0.1": {
+    "0 deg": 0.32513,
+    "30 deg": 0.32232,
+    "45 deg": 0.31867,
+    "60 deg": 0.31383,
+    "90 deg": 0.30196
+   },
+   "with the magnet (12 N), empty, mu 0.3": {
+    "0 deg": 0.22858,
+    "30 deg": 0.2266,
+    "45 deg": 0.22404,
+    "60 deg": 0.22064,
+    "90 deg": 0.21229
+   }
+  },
+  "required_magnet_N": {
+   "mu 0.1, holding 0.10 N*m": 5.95,
+   "mu 0.1, stall at 0.67 A": 4.19,
+   "mu 0.2, holding 0.10 N*m": 7.21,
+   "mu 0.2, stall at 0.67 A": 5.09,
+   "mu 0.3, holding 0.10 N*m": 8.47,
+   "mu 0.3, stall at 0.67 A": 5.98
+  },
+  "lift_off_tilt_deg_weight_only": {
+   "running, light (auger 0.005 N*m), mu 0.1, empty": 86.5,
+   "running, light (auger 0.005 N*m), mu 0.1, 60 g": 88.0,
+   "running, light (auger 0.005 N*m), mu 0.3, empty": 84.5,
+   "running, light (auger 0.005 N*m), mu 0.3, 60 g": 86.5,
+   "running, heavy (auger 0.03 N*m), mu 0.1, empty": 57.5,
+   "running, heavy (auger 0.03 N*m), mu 0.1, 60 g": 71.5,
+   "running, heavy (auger 0.03 N*m), mu 0.3, empty": 38.5,
+   "running, heavy (auger 0.03 N*m), mu 0.3, 60 g": 62.5,
+   "stall at 0.67 A, mu 0.1, empty": 0.0,
+   "stall at 0.67 A, mu 0.1, 60 g": 0.0,
+   "stall at 0.67 A, mu 0.3, empty": 0.0,
+   "stall at 0.67 A, mu 0.3, 60 g": 0.0,
+   "holding torque (0.95 A), mu 0.1, empty": 0.0,
+   "holding torque (0.95 A), mu 0.1, 60 g": 0.0,
+   "holding torque (0.95 A), mu 0.3, empty": 0.0,
+   "holding torque (0.95 A), mu 0.3, 60 g": 0.0
+  }
+ },
+ "runaway": {
+  "lift_where_contact_ratio_hits_1_mm": 0.6,
+  "sep_ratio_at": {
+   "0 mm": {
+    "mu 0.0": 0.374,
+    "mu 0.1": 0.474,
+    "mu 0.3": 0.674
+   },
+   "0.3 mm": {
+    "mu 0.0": 0.401,
+    "mu 0.1": 0.501,
+    "mu 0.3": 0.701
+   },
+   "0.6 mm": {
+    "mu 0.0": 0.427,
+    "mu 0.1": 0.527,
+    "mu 0.3": 0.727
+   },
+   "1 mm": {
+    "mu 0.0": 0.46,
+    "mu 0.1": 0.56,
+    "mu 0.3": 0.76
+   },
+   "1.5 mm": {
+    "mu 0.0": 0.499,
+    "mu 0.1": 0.599,
+    "mu 0.3": 0.799
+   }
+  }
+ },
+ "engagement": {
+  "tip_land_pinion_mm": 0.695,
+  "tip_land_gear_mm": 0.767,
+  "circular_pitch_mm": 3.142,
+  "tip_on_tip_fraction": 0.465,
+  "flank_wedge_tangential_per_radial": {
+   "mu 0.1": 1.619,
+   "mu 0.3": 1.084
+  },
+  "note": "the fraction of random pinion phases where a gear tip lands on a pinion tip land; elsewhere the flanks meet and the weight must rotate the auger or the pinion to slide in"
+ }
+}

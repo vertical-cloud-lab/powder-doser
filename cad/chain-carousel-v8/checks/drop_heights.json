@@ -1,0 +1,26 @@
+{
+ "single_doser": {
+  "exit_mm": 241.5,
+  "rim_mm": 156.5,
+  "exit_to_rim": 85.0,
+  "exit_to_beaker_floor": 153.0,
+  "exit_to_pan": 155.0,
+  "estimated": true
+ },
+ "v7": {
+  "exit_mm": 435.6,
+  "rim_mm": 282.0,
+  "exit_to_rim": 153.6,
+  "exit_to_beaker_floor": 201.4,
+  "exit_to_pan": 385.6,
+  "estimated": false
+ },
+ "v8": {
+  "exit_mm": 332.0,
+  "rim_mm": 282.0,
+  "exit_to_rim": 50.0,
+  "exit_to_beaker_floor": 97.8,
+  "exit_to_pan": 282.0,
+  "estimated": false
+ }
+}

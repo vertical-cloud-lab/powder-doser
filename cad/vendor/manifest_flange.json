@@ -1,0 +1,24 @@
+[
+ {
+  "key": "flange_SBPFL202-10_usab",
+  "kind": "screenshot",
+  "file": "files/flange/flange_SBPFL202-10_usab.png",
+  "page": "https://www.usabearingsandbelts.com/m7/SBPFL202-10--5-8-2-bolt-pressed-steel-flanged-bearing-unit-sbpfl202-10.html",
+  "url": "https://www.usabearingsandbelts.com/m7/SBPFL202-10--5-8-2-bolt-pressed-steel-flanged-bearing-unit-sbpfl202-10.html",
+  "sha256": "69128fcfbbd992f9280f4d8de4c82f5bffc3718a48bf76745af882e65a5e51f2",
+  "bytes": 286874,
+  "retrieved": "2026-10-27",
+  "note": "5/8\" 2 Bolt Pressed Steel Flanged Bearing Unit SBPFL202-10 | SBPFL202-10"
+ },
+ {
+  "key": "flange_SBPFL202-10_usab",
+  "kind": "text",
+  "file": "files/flange/flange_SBPFL202-10_usab.txt",
+  "page": "https://www.usabearingsandbelts.com/m7/SBPFL202-10--5-8-2-bolt-pressed-steel-flanged-bearing-unit-sbpfl202-10.html",
+  "url": "https://www.usabearingsandbelts.com/m7/SBPFL202-10--5-8-2-bolt-pressed-steel-flanged-bearing-unit-sbpfl202-10.html",
+  "sha256": "af128b824c289582d2ec28787a949a18050c9d3fff7abbcb25a24932e75a6744",
+  "bytes": 1954,
+  "retrieved": "2026-10-27",
+  "note": "page text (spec table)"
+ }
+]

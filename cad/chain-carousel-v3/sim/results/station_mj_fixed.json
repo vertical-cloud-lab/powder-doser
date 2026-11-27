@@ -1,0 +1,150 @@
+{
+ "capture": [
+  {
+   "off_mm": 0.0,
+   "seated": true,
+   "dock_error_mm": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "dock_error_deg": 0.0,
+   "F_act_peak_N": 4.56,
+   "carriage_pulled_back_mm": 0.0,
+   "carriage_y_end_mm": -0.0,
+   "module_lift_peak_deg": -0.0,
+   "contact_A_N": 2.37,
+   "contact_B_N": 1.01,
+   "contact_C_N": 7.92,
+   "coil_face_N": 0.0,
+   "seat_pulls_N": [
+    3.58,
+    0.72
+   ],
+   "coil_N": 10.59,
+   "coil_gap_mm": 0.15,
+   "wall_force_peak_N": 10.9,
+   "door_open_mm": 6.0,
+   "finger_force_N": 0.649,
+   "ec_lean_deg": -3.309
+  },
+  {
+   "off_mm": 0.5,
+   "seated": true,
+   "dock_error_mm": [
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "dock_error_deg": 0.0,
+   "F_act_peak_N": 4.56,
+   "carriage_pulled_back_mm": 0.2,
+   "carriage_y_end_mm": 0.3,
+   "module_lift_peak_deg": -0.0,
+   "contact_A_N": 2.62,
+   "contact_B_N": 0.91,
+   "contact_C_N": 7.91,
+   "coil_face_N": 0.0,
+   "seat_pulls_N": [
+    3.58,
+    0.72
+   ],
+   "coil_N": 10.59,
+   "coil_gap_mm": 0.15,
+   "wall_force_peak_N": 10.9,
+   "door_open_mm": 6.0,
+   "finger_force_N": 0.65,
+   "ec_lean_deg": -3.306
+  },
+  {
+   "off_mm": 1.0,
+   "seated": false,
+   "dock_error_mm": [
+    0.005,
+    -0.434,
+    -0.39
+   ],
+   "dock_error_deg": 0.397,
+   "F_act_peak_N": 4.89,
+   "carriage_pulled_back_mm": 0.266,
+   "carriage_y_end_mm": 0.734,
+   "module_lift_peak_deg": -0.0,
+   "contact_A_N": 2.24,
+   "contact_B_N": 0.0,
+   "contact_C_N": 4.69,
+   "coil_face_N": 0.0,
+   "seat_pulls_N": [
+    2.05,
+    0.44
+   ],
+   "coil_N": 7.57,
+   "coil_gap_mm": 0.25,
+   "wall_force_peak_N": 10.9,
+   "door_open_mm": 5.21,
+   "finger_force_N": 0.602,
+   "ec_lean_deg": -3.308
+  },
+  {
+   "off_mm": 2.0,
+   "seated": false,
+   "dock_error_mm": [
+    0.304,
+    -1.851,
+    -1.196
+   ],
+   "dock_error_deg": 1.225,
+   "F_act_peak_N": 7.98,
+   "carriage_pulled_back_mm": -0.001,
+   "carriage_y_end_mm": 2.001,
+   "module_lift_peak_deg": 0.236,
+   "contact_A_N": 1.42,
+   "contact_B_N": 0.0,
+   "contact_C_N": 3.54,
+   "coil_face_N": 0.0,
+   "seat_pulls_N": [
+    0.53,
+    0.15
+   ],
+   "coil_N": 4.32,
+   "coil_gap_mm": 0.461,
+   "wall_force_peak_N": 10.9,
+   "door_open_mm": 3.55,
+   "finger_force_N": 0.503,
+   "ec_lean_deg": -3.314
+  },
+  {
+   "off_mm": 3.0,
+   "seated": false,
+   "dock_error_mm": [
+    0.419,
+    -2.884,
+    -1.415
+   ],
+   "dock_error_deg": 1.452,
+   "F_act_peak_N": 8.57,
+   "carriage_pulled_back_mm": 0.004,
+   "carriage_y_end_mm": 2.996,
+   "module_lift_peak_deg": 0.545,
+   "contact_A_N": 1.83,
+   "contact_B_N": 0.0,
+   "contact_C_N": 3.35,
+   "coil_face_N": 0.0,
+   "seat_pulls_N": [
+    0.3,
+    0.11
+   ],
+   "coil_N": 3.8,
+   "coil_gap_mm": 0.518,
+   "wall_force_peak_N": 11.53,
+   "door_open_mm": 3.1,
+   "finger_force_N": 0.476,
+   "ec_lean_deg": -3.306
+  }
+ ],
+ "settings": {
+  "base_dx": 0.0,
+  "swing_preload_Nm": 0.3,
+  "finger_fix": true,
+  "ey_free_mm": 0.0
+ }
+}

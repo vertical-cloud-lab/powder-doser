@@ -1,0 +1,166 @@
+{
+"n": 16,
+"runs": [
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": false,
+"chain_force_max_N": 4.25,
+"tooth_force_max_N": 68.09,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": false,
+"chain_force_max_N": 5.01,
+"tooth_force_max_N": 64.78,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": false,
+"chain_force_max_N": 4.41,
+"tooth_force_max_N": 57.87,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": false,
+"chain_force_max_N": 4.8,
+"tooth_force_max_N": 59.42,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": false,
+"chain_force_max_N": 4.37,
+"tooth_force_max_N": 59.06,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": false,
+"chain_force_max_N": 4.3,
+"tooth_force_max_N": 45.1,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": false,
+"chain_force_max_N": 4.65,
+"tooth_force_max_N": 52.31,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": false,
+"chain_force_max_N": 4.16,
+"tooth_force_max_N": 37.97,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": false,
+"chain_force_max_N": 4.32,
+"tooth_force_max_N": 27.58,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": false,
+"chain_force_max_N": 4.06,
+"tooth_force_max_N": 24.45,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": false,
+"chain_force_max_N": 3.53,
+"tooth_force_max_N": 22.35,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": false,
+"chain_force_max_N": 4.17,
+"tooth_force_max_N": 24.35,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 1.0,
+"spring": false,
+"chain_force_max_N": 4.34,
+"tooth_force_max_N": 2.5,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 1.0,
+"spring": false,
+"chain_force_max_N": 4.31,
+"tooth_force_max_N": 0.53,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 1.0,
+"spring": false,
+"chain_force_max_N": 3.25,
+"tooth_force_max_N": 0.55,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 1.0,
+"spring": false,
+"chain_force_max_N": 3.58,
+"tooth_force_max_N": 0.59,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "held"
+}
+],
+"note": "re-run with the cradle started in tight mesh"
+}

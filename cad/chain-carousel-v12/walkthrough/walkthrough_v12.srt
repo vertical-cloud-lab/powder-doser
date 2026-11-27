@@ -1,0 +1,207 @@
+1
+00:00:00,300 --> 00:00:03,809
+This is the multi-doser chain carousel, version twelve.
+
+2
+00:00:03,809 --> 00:00:16,314
+Thirteen auger dosing modules ride on two roller chains in a vertical loop, and one station, inside the loop, takes each module in turn, tilts it, and doses into a beaker on an analytical balance.
+
+3
+00:00:16,314 --> 00:00:26,714
+Version twelve is version eleven with one change at the station: the small stepper motor that turns each auger, and its pinion, now ride on a spring-loaded cradle.
+
+4
+00:00:26,714 --> 00:00:41,134
+A hall switch on the cradle tells the controller when the pinion is resting on the gear's tips, the controller turns it slowly until it drops into mesh, and the electronics carriage now rests on two guide seats instead of one.
+
+5
+00:00:41,134 --> 00:00:47,960
+Nothing has been built yet, so every number in this video is a prediction from the CAD and the simulations.
+
+6
+00:00:48,860 --> 00:00:52,862
+The frame, the chain loop and the modules are version eleven's.
+
+7
+00:00:52,862 --> 00:01:05,437
+Twenty-twenty extrusion and quarter-inch aluminium side plates carry four corner shafts with thirty-two tooth sprockets, and two number thirty-five chains with an attachment link every eighth pitch.
+
+8
+00:01:05,437 --> 00:01:17,378
+Each module is the lab's mounting plate carried on to the auger's cap, with a printed T-bracket under it, a spring-loaded outlet door, and a latch that holds it upside down on the top run.
+
+9
+00:01:17,378 --> 00:01:26,714
+One more version twelve fix is here: the outlet door's spring tower is now bored out, and the shutter has a round boss the door's rod presses into.
+
+10
+00:01:26,714 --> 00:01:29,508
+In version eleven the rod had nowhere to go.
+
+11
+00:01:30,408 --> 00:01:41,341
+In version eleven, each index slides the next module's forty-four tooth gear sideways into mesh with a twenty-four tooth pinion that was bolted to the electronics carriage.
+
+12
+00:01:41,341 --> 00:01:51,320
+When a gear tooth landed on the tip of a pinion tooth, nothing could give: the module rests on its own carriage and the electronics carriage on its actuator.
+
+13
+00:01:51,320 --> 00:02:00,537
+In the MuJoCo model, with real tooth contact, about one index in four jammed, with the chain driving the tips together at over a hundred newtons.
+
+14
+00:02:01,437 --> 00:02:06,269
+Version twelve hangs the motor and its pinion on a printed cradle.
+
+15
+00:02:06,269 --> 00:02:14,102
+The cradle pivots on two three millimetre dowels, on the side the gears arrive from, level with the pinion.
+
+16
+00:02:14,102 --> 00:02:28,669
+A spring over the motor, about one newton per millimetre, presses the pinion into the gear with six newtons, and an M3 set screw stops it point four millimetres past tight mesh when no gear is there.
+
+17
+00:02:28,669 --> 00:02:35,551
+A US5881 hall switch on the cradle's lug sits just below a magnet in the electronics carriage.
+
+18
+00:02:35,551 --> 00:02:43,896
+The real spring is McMaster's 9657K284: nought point nine eight newtons per millimetre, nineteen millimetres long.
+
+19
+00:02:44,796 --> 00:02:46,220
+Now the worst arrival.
+
+20
+00:02:46,220 --> 00:02:49,002
+A gear tooth lands on a pinion tooth's tip.
+
+21
+00:02:49,002 --> 00:02:58,321
+Instead of jamming, the gear pushes the pinion up about two millimetres against the spring, and the hall switch slides under its magnet: lifted.
+
+22
+00:02:58,321 --> 00:03:09,645
+After every index the controller turns the pinion slowly forward and then back, a quarter turn per second for a fifth of a second each way, so the auger ends where it started.
+
+23
+00:03:09,645 --> 00:03:13,722
+The pinion drops into the next gap and the switch reads seated.
+
+24
+00:03:13,722 --> 00:03:24,011
+If it still reads lifted, a second try runs the other way round, and if that fails too, the controller backs the chain off three millimetres and indexes again.
+
+25
+00:03:24,911 --> 00:03:38,342
+The same MuJoCo model, rebuilt round the cradle, ran five hundred and four indexes over the same tolerance stack, from half a millimetre too near to a millimetre too far, and three clevis stiffnesses.
+
+26
+00:03:38,342 --> 00:03:39,148
+None jammed.
+
+27
+00:03:39,148 --> 00:03:47,140
+With the design as drawn, one in four arrivals landed on the gear's tips, and the first seek cleared every one of them.
+
+28
+00:03:47,140 --> 00:03:50,968
+The switch's reading after the seek was right every time.
+
+29
+00:03:50,968 --> 00:03:55,400
+The peak chain force fell from over a hundred newtons to nineteen.
+
+30
+00:03:55,400 --> 00:04:12,995
+The one case that needed more was dry teeth, with no PTFE lubricant: five arrivals in twelve stayed on the tips through both seeks, every one read as lifted, and backing off and re-indexing cleared 7 of the 13 that needed it; 6 still needed a hand, with no jams.
+
+31
+00:04:13,895 --> 00:04:28,293
+While it doses, the actuator pulls the electronics carriage, the cradle and the module up about the hinge together, and the spring keeps the pinion in tight mesh at every angle, up to ninety degrees, where the module's weight no longer helps.
+
+32
+00:04:28,293 --> 00:04:30,494
+Over the hold cycles no tooth jumped.
+
+33
+00:04:30,494 --> 00:04:45,963
+One thing changed from what we expected: the spring's reaction, about six newtons, is twice the electronics carriage's weight, so with a module in mesh it lifts the carriage off its guide seats, and the rail's lips under the module's T-bracket hold it instead.
+
+34
+00:04:46,863 --> 00:04:49,426
+The cost of a preloaded mesh is friction.
+
+35
+00:04:49,426 --> 00:05:05,308
+When the auger's load is ramped up until something gives, the motor stalls first at every angle, at 47 to 57 newton millimetres on the auger, against version eleven's seventy-seven to ninety, and against the five to thirty the auger is estimated to need.
+
+36
+00:05:05,308 --> 00:05:09,998
+That still leaves a margin of one and a half times over the heavy estimate.
+
+37
+00:05:09,998 --> 00:05:18,251
+If the real auger needs more, a four newton spring gives back about a fifth of the torque, and indexes just as cleanly in the model.
+
+38
+00:05:19,151 --> 00:05:29,926
+Version eleven's electronics carriage rested on the actuator's pin and one guide shoe, both on the actuator's side, so between modules it could roll on the clevis's play.
+
+39
+00:05:29,926 --> 00:05:38,546
+Version twelve adds a second shoe on the far side of the module, in a second funnel seat on a second twenty-twenty beam across the loop.
+
+40
+00:05:38,546 --> 00:05:50,081
+Between modules, with the loosest clevis, it rolls a quarter of a degree instead of one and a third, which keeps the motor a millimetre over the passing plates instead of six tenths.
+
+41
+00:05:50,981 --> 00:06:12,922
+Every part was checked against every other in solid geometry, with anything over half a cubic millimetre counted as a clash: the home pose, the cradle over its whole travel at rest and tilted, the tilt from zero to ninety degrees, a module of chain travel through the station, the swap at the side hatch, the latch cam and the outlet doors.
+
+42
+00:06:12,922 --> 00:06:15,374
+Every check came back with no clashes.
+
+43
+00:06:15,374 --> 00:06:30,216
+The checks also found three things in version eleven's drawings that were hidden by skipped pairs: no slot for the actuator's rod-end tab, the motor's shaft running into the rail block, and the door spring buried in a solid tower.
+
+44
+00:06:30,216 --> 00:06:31,507
+All three are fixed.
+
+45
+00:06:32,407 --> 00:06:39,731
+Every printed part was sliced in Bambu Studio, in PETG, on the H2D's left nozzle or the A1 mini.
+
+46
+00:06:39,731 --> 00:06:44,385
+That is about 85 hours of printing and 1.9 kilograms of PETG.
+
+47
+00:06:44,385 --> 00:06:59,644
+The bill of materials comes to 2,149 dollars, 30 dollars more than version eleven: the dowels, the spring and the set screw were read from McMaster's tables through the lab's Raspberry Pi, logged out.
+
+48
+00:07:00,544 --> 00:07:03,204
+Before building, three things to check.
+
+49
+00:07:03,204 --> 00:07:10,297
+Set the stop with module one in mesh, so the pinion drops point four millimetres when the module leaves.
+
+50
+00:07:10,297 --> 00:07:16,093
+Set the hall switch so it reads lifted between six tenths and one millimetre of lift.
+
+51
+00:07:16,093 --> 00:07:24,413
+And keep the teeth lubricated with dry PTFE: in the model, dry teeth were the one case the seek couldn't clear on its own.
+
+52
+00:07:24,413 --> 00:07:31,846
+The design files, the simulations and this video's sources are on GitHub, and the model is public in Onshape.

@@ -1,0 +1,9 @@
+{
+ "check": "sweep_station",
+ "clashes": [],
+ "step_links": 1,
+ "poses": 9,
+ "direction": -1,
+ "seconds": 232,
+ "scope": "carriages and modules within 2.2 modules of the station vs the parked station and the balance"
+}

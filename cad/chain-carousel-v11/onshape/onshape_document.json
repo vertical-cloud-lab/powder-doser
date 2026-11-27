@@ -1,0 +1,243 @@
+{
+ "documentId": "3e99376a80ac21e730425ec0",
+ "workspaceId": "9e9e05ab391f2d3a16998fca",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "url": "https://cad.onshape.com/documents/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca",
+ "translationId": "6b0960ffe6f711b630048c12",
+ "importedElementIds": [
+  "221839c6b44f21f0d7500d36",
+  "1111be9fcdf230fea75e0c82",
+  "b58c5a8b79b0ea3e98f626ae",
+  "d6f799c1018fced3ca12ae87",
+  "bd89bbbf48e7ec862c231be3",
+  "53e421eb019d75be6172692a",
+  "812695e75c40e9d4561856b3",
+  "189bf5e6f1c9d988d4d4d63d",
+  "f16ea46b3fe9829229b2272f",
+  "13e9cae95531e1bfddcf221c",
+  "65b54769d9acccd3d7243a06",
+  "c787f46e1869a457e5c977d5",
+  "d68c83445066c7b051173837",
+  "bff9e2f41a0804a803f7fc56",
+  "f93d3da00bcd010c2b1110aa",
+  "5a498a9a379fb35cf549fe8e",
+  "74bd7fe5aa93a2bd4fe9afc4",
+  "29617c169d0e370b2936e1d2",
+  "cd46c1a5e6c910443d6daad8"
+ ],
+ "elements": [
+  {
+   "id": "cd46c1a5e6c910443d6daad8",
+   "name": "Chain carousel test rig v11",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "29617c169d0e370b2936e1d2",
+   "name": "09 Modules on the bench",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "74bd7fe5aa93a2bd4fe9afc4",
+   "name": "10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "5a498a9a379fb35cf549fe8e",
+   "name": "12 The balance with its tall draft cage on the bench through the front doorway, the dosing lid in its top, the pillar and beaker; acrylic panels on standoffs, the side hatch (swaps)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "f93d3da00bcd010c2b1110aa",
+   "name": "Outlet door spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "bff9e2f41a0804a803f7fc56",
+   "name": "Outlet door spring 2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d68c83445066c7b051173837",
+   "name": "Latch spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "c787f46e1869a457e5c977d5",
+   "name": "Latch spring 2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "65b54769d9acccd3d7243a06",
+   "name": "Balance draft cage glass (front, back)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "13e9cae95531e1bfddcf221c",
+   "name": "01 Base frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "f16ea46b3fe9829229b2272f",
+   "name": "02 Posts, top frame, and the ladder",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "189bf5e6f1c9d988d4d4d63d",
+   "name": "03 Side plates onto the posts (v11",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "812695e75c40e9d4561856b3",
+   "name": "04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "53e421eb019d75be6172692a",
+   "name": "05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "bd89bbbf48e7ec862c231be3",
+   "name": "06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d6f799c1018fced3ca12ae87",
+   "name": "07 Chains",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "b58c5a8b79b0ea3e98f626ae",
+   "name": "08 Station",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "1111be9fcdf230fea75e0c82",
+   "name": "11 Electronics board",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "221839c6b44f21f0d7500d36",
+   "name": "chain_carousel_rig_v11 parts",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "1c36416fbdbba99cd2c6e101",
+   "name": "Part Studio 1",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "2876bb74d98c61092ea54e23",
+   "name": "Assembly 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ccadadc0c479ce995f069eb9",
+   "name": "BOM : Assembly 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "3f9eb72683b7d98504090307",
+   "name": "chain_carousel_rig_v11.step",
+   "type": "BLOB"
+  },
+  {
+   "id": "7f37ded9156eea29953c40a6",
+   "name": "BOM : 09 Modules on the bench",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "054a8bfaa5c5b1b2ade3b9e9",
+   "name": "BOM : 01 Base frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "491c22d03dd3f4407900b71b",
+   "name": "BOM : 03 Side plates onto the posts (v11",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "06025b3267fcc5d99c95931c",
+   "name": "BOM : 06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a67742ef6d4d339b545cbcd0",
+   "name": "BOM : 04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "8a375cf578a0b354330f7624",
+   "name": "BOM : 12 The balance with its tall draft cage on the bench through the front doorway, the dosing lid in its top, the pillar and beaker; acrylic panels on standoffs, the side hatch (swaps)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d14242bb009569ccd8a42663",
+   "name": "BOM : Latch spring 2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "c7ac4ad5a38960dc4f7a87b8",
+   "name": "BOM : 02 Posts, top frame, and the ladder",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "191fcc6386762e0b2d0dc558",
+   "name": "BOM : 08 Station",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d6f1cd0895c5118d9ecbfbe3",
+   "name": "BOM : 11 Electronics board",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "c6f7cc2b8497a3da44cfbb56",
+   "name": "BOM : Outlet door spring 2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "2015fb533986be62ca62d84e",
+   "name": "BOM : Outlet door spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "4745bd6302dc16f9e6142ed6",
+   "name": "BOM : Chain carousel test rig v11",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "d556abb31b2d50e163bf28ea",
+   "name": "BOM : 05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "553de29aaae1b17f1f2ccfaa",
+   "name": "BOM : 10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "35f1f34f7895c5f578f76907",
+   "name": "BOM : Balance draft cage glass (front, back)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e6d3a4352d033b0d9ef308bb",
+   "name": "BOM : Latch spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "f73d7e4ec51d4f714b23de6e",
+   "name": "BOM : 07 Chains",
+   "type": "BILLOFMATERIALS"
+  }
+ ],
+ "assemblyElementId": "cd46c1a5e6c910443d6daad8",
+ "assemblyUrl": "https://cad.onshape.com/documents/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/e/cd46c1a5e6c910443d6daad8",
+ "version": {
+  "id": "28257ee70931c3141276c784",
+  "name": "v11 rev. 2026-11-27 (CAD fixes)"
+ },
+ "api_calls": 8
+}

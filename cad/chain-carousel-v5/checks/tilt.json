@@ -1,0 +1,52 @@
+{
+ "check": "tilt",
+ "clashes": [
+  {
+   "a": "Lift bar, 8 mm precision steel shaft x 264 mm @tilt45",
+   "b": "Mounting plate v4 (Sam's Oct 13 + auger-side dock, pin keeper) 2",
+   "mm3": 5.83
+  },
+  {
+   "a": "Lift bar, 8 mm precision steel shaft x 264 mm @tilt45",
+   "b": "Mounting plate v4 (Sam's Oct 13 + auger-side dock, pin keeper) 13",
+   "mm3": 86.16
+  },
+  {
+   "a": "Lift bar, 8 mm precision steel shaft x 264 mm @tilt45",
+   "b": "Auger, threaded storage 13",
+   "mm3": 14.73
+  },
+  {
+   "a": "Lift bar, 8 mm precision steel shaft x 264 mm @tilt50",
+   "b": "Mounting plate v4 (Sam's Oct 13 + auger-side dock, pin keeper) 2",
+   "mm3": 160.03
+  },
+  {
+   "a": "Lift bar, 8 mm precision steel shaft x 264 mm @tilt50",
+   "b": "Auger, threaded storage 2",
+   "mm3": 171.66
+  },
+  {
+   "a": "Lift bar, 8 mm precision steel shaft x 264 mm @tilt50",
+   "b": "Mounting plate v4 (Sam's Oct 13 + auger-side dock, pin keeper) 13",
+   "mm3": 252.16
+  },
+  {
+   "a": "Lift bar, 8 mm precision steel shaft x 264 mm @tilt50",
+   "b": "Auger, threaded storage 13",
+   "mm3": 306.44
+  }
+ ],
+ "extra_poses": {
+  "40.0": [],
+  "42.0": [
+   {
+    "a": "Lift bar, 8 mm precision steel shaft x 264 mm",
+    "b": "Mounting plate v4 (Sam's Oct 13 + auger-side dock, pin keeper) 13",
+    "mm3": 4.84
+   }
+  ]
+ },
+ "limit_deg": 40.0,
+ "note": "v5: 0 clashes rising (0-28 mm) and tilting 5-40 deg. The lift bar passes under the neighbouring modules (2 and 13): it touches module 13's plate at 42 deg and both modules at 45 and 50, so v5 tilts to 40 deg at most (v4: 50). The 40 and 42 deg poses were run separately (extra_poses)."
+}
