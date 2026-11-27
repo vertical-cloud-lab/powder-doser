@@ -428,8 +428,10 @@ def _fmt(x, nd=1):
 def write_tables(sr, mr, pdf, mdf) -> None:
     """LaTeX table bodies for the SI (one row per dose)."""
     def setting(r):
-        return (f"{r.bulk_tap}/{r.trim_tap} & {r.bulk_tilt_deg:g} & {r.trickle_tilt_deg:g} & {r.tap_tilt_deg:g} & "
-                f"{r.bulk_rpm:g} & {r.trickle_start_remaining_g:.3f} & {1e3 * r.tolerance_g:g}")
+        def g1(x):
+            return f"{round(x, 1):g}"
+        return (f"{r.bulk_tap}/{r.trim_tap} & {g1(r.bulk_tilt_deg)} & {g1(r.trickle_tilt_deg)} & {g1(r.tap_tilt_deg)} & "
+                f"{round(r.bulk_rpm):d} & {r.trickle_start_remaining_g:.3f} & {g1(1e3 * r.tolerance_g)}")
     lines = []
     for _, r in sr.iterrows():
         lab = r.label.replace("_", r"\_")
