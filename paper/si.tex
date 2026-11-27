@@ -12,6 +12,8 @@
 \usepackage{array}
 \usepackage[super,sort&compress,comma]{natbib}
 \usepackage{hyperref}
+\usepackage{xr}
+\externaldocument[M-]{main}% main-text labels; build main.tex once before si.tex
 \usepackage{mathptmx}
 
 \renewcommand{\thetable}{S\arabic{table}}
@@ -197,7 +199,7 @@ it is one workable order rather than a record of how the test rig was built.}
 
 Fig.~\ref{fgr:nozzles} shows the AI-modelled geared auger and its four
 printed outlet variants, made early in the project. The auger used in the
-tests is the team's later Fusion~360 part, shown as a cut-away in Fig.~1c of the
+tests is the team's later Fusion~360 part, shown as a cut-away in Fig.~\ref*{M-fgr:v2doser}c of the
 main text. Like the Type~4 variant, it ends in a tapered outlet with a 3~mm exit
 hole. Table~\ref{tbl:augercompare} compares it feature by feature with the first
 AI-modelled geared auger. In June 2026 the coding agent also modelled, at our
@@ -216,7 +218,7 @@ the four outlet variants (Types~1--4), which differ in exit constriction and
 chamfer. All are parametric OpenSCAD models (\texttt{cad/auger-geared/} in the
 repository) written by AI coding agents under human review; no conventional CAD
 software was used to design them. The auger used in the tests is the team's
-later Fusion~360 part (main text, Fig.~1c). Its flight is 0.5~mm thick with a
+later Fusion~360 part (main text, Fig.~\ref*{M-fgr:v2doser}c). Its flight is 0.5~mm thick with a
 10.4~mm pitch and covers only the third of the tube nearest the outlet, the tube
 is filled through a screw-on cap rather than through loading slots, and its gear
 has 44 teeth rather than 48 (Table~\ref{tbl:augercompare}).}
@@ -426,7 +428,7 @@ delivered nothing. Values below 0.1~mg are drawn at 0.1~mg, and \dag\ marks runs
 excluded from the dose analysis. Above the dashed lines, no 50~mg or 200~mg dose
 can pass by more than twice the noise. (b, c) Error of each valid 50 and 200~mg dose against the
 noise of its run (named along the top). Light and dark grey zones lie within two
-and one times the noise of a limit. Markers as in Fig.~5 of the main text.}
+and one times the noise of a limit. Markers as in Fig.~\ref*{M-fgr:v2closedloop} of the main text.}
 \label{fgr:noiseact}
 \end{figure}
 
@@ -702,7 +704,7 @@ to be measured.
 \section{Test protocols as recorded}
 \label{sec:protocols}
 
-Table~3 of the main text specifies the eight test protocols in tube angles and
+Table~\ref*{M-tbl:protocols} of the main text specifies the eight test protocols in tube angles and
 auger units. Table~\ref{tbl:protocolrecords} gives the same protocols as the raw
 records store them, and counts the runs and records behind each one, so that a
 reader can match any row of the raw CSV files to its protocol.

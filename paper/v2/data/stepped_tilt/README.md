@@ -17,7 +17,7 @@ manuscript figure and table build from this branch alone.
   the source: `error_pct`, `end_stage` (the stage a completed dose ended in), `dose_completed`
   (status `ok` or `overshoot`), `within_1mg`, `within_5pct` (the paper's ±5% acceptance limit) and
   the plot coordinates (`plot_x_symlog` = sign(e)·log10(1 + |e| / mg)).
-- **`summary.csv`:** one row per powder, final settings only (Table 4 of the manuscript).
+- **`summary.csv`:** one row per powder, final settings only (the repeatability table of the manuscript).
 - **`plot_doses.csv`:** the 103 completed doses, with marker classes, read by `../../steppedtilt.tex`.
 
 Rebuild everything, including `../../figures/steppedtilt.pdf`, with `./build.sh` (gawk and
