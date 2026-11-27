@@ -4,6 +4,6 @@
  "step_links": 1,
  "poses": 9,
  "direction": -1,
- "seconds": 569,
+ "seconds": 331,
  "scope": "v12: carriages and modules within 2.2 modules of the station vs the parked station (EC v12 and its cradle on its stop, 0.4 mm past tight mesh, its lowest; the P16 and its front bar, both guides and beams, the latch cam, the hold-downs), the side plates, the rungs, the NEMA 34, the balance, the pillar and the beaker. The passing gears run through the pinion (by design: in the machine they lift it on its spring)"
 }

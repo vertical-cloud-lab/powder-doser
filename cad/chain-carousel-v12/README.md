@@ -1,327 +1,230 @@
-# Chain carousel v11: 0-90° with the station inside the loop, a straight rail, the door opened by the EC
+# Chain carousel v12: the spring-loaded pinion, its hall switch and seek, and the EC's second seat
 
-**v11 is a variation on [v10](../chain-carousel-v10/README.md)** (the station inside the loop, Sam's favourite so far), and so on
-[v7](../chain-carousel-v7/README.md), which stays the main version. It follows Sam's notes of 2026-11-25
-([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):
+**v12 is [v11](../chain-carousel-v11/README.md) with the spring-loaded pinion that v11's gear study proposed**
+([v11 sim/README.md](../chain-carousel-v11/sim/README.md)). [v7](../chain-carousel-v7/README.md) stays the main version. Sterling's
+request of 2026-11-27 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):
 
-> If the base plates need to be a bit longer, i.e. to give some more room for the rotation in the front, then go ahead and do that.
-> The auger can move a bit as well to get the hinge closer to the plate, or the holes in the plate can be bigger ... The augers still
-> need to be able to go up to 90 degrees. I was assuming this would mean punch a hole through the metal plate so the linear actuator
-> has some more room ... I'm still confused about how the T rail thing works. Give me a profile view. Why is there a ramp? ... for the
-> cap: ... [the EC] can extend all the way down to the dispensing end of the auger ... so it can directly open it ... move the
-> solenoid up to the first third of the auger ... scale it to fit the scale with the higher draft cage (with the beaker sitting on a
-> cylindrical pillar) ... Find a cheap but still good quality chain online, link it here, and apply those dimensions ... just make an
-> open door for the scale ... no need to include wires in the model unless it changes.
+> Go with the spring-loaded pinion. Make v12 from v11 with what your last report proposed:
+> - the NEMA 11 and its pinion on a cradle that pivots in the EC, with a spring pressing the pinion into the gear (about 1 N/mm and 6 N
+>   preload) and a set-screw stop;
+> - a hall switch on the cradle, so the driver knows when the pinion is resting on the gear's tips;
+> - the slow seek after each index (turn the pinion slowly, reversing once), with a second try when the switch still reads "lifted";
+> - a second seat for the EC on the far side of the module, so its body can't roll onto the gear.
+>
+> Then redo every check for v12, and fix anything they find.
 
-Nothing is built. Every number here is a prediction from the CAD.
+Nothing is built. Every number here is a prediction from the CAD and the MuJoCo model.
 
-**Onshape (public):** [Multi-doser chain carousel, test rig v11, rev. 2026-11-27](https://cad.onshape.com/documents/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/e/cd46c1a5e6c910443d6daad8), with the CAD fixes of 2026-11-27
-(ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); 10 API calls on 2026-11-27 in
-[`onshape/api_calls.jsonl`](onshape/api_calls.jsonl): 8 for the import, 1 to rename the first v11 document "SUPERSEDED", 1 to confirm
-the new one is public). The first v11 document ([868943ea](https://cad.onshape.com/documents/868943ea72f58c7a9d6e421e/w/b69337d1a5f8ee47f70e6908/e/951aa82be5a4c3bfe1ed5b08), 2026-11-26, 11 API calls) is kept, renamed
-SUPERSEDED: the API key can't delete documents. It was imported from `step/chain_carousel_rig_v11.step` by
-[`onshape/onshape_build.py`](onshape/onshape_build.py). Earlier versions:
-[v10](https://cad.onshape.com/documents/99bd983c585992043f2eff96/w/7b5725dc5dfb7fe370fa0c71/e/56a319b93daf812d262f5eab),
-[v9](https://cad.onshape.com/documents/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590),
-[v8](https://cad.onshape.com/documents/a093aef97b81fce9ce0f322f/w/7b029051ee0ec62ff198253f/e/7518535395874b79077ff86b),
-[v7 (main)](https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8/e/4802634f69ef3323004d7bf6).
+**Onshape (public):** [**Multi-doser chain carousel, test rig v12, rev. 2026-11-27**](https://cad.onshape.com/documents/fab22582b674da0aa4f55a73/w/fc13e6204b748c1ec907acab/e/890e883cfe283daf84776743)
+(ids in [`onshape/onshape_document.json`](onshape/onshape_document.json)).
+- **Why a revision:** the first v12 import ([918e9cd2](https://cad.onshape.com/documents/918e9cd2e623d78cf67c9972/w/6e5fa1c0246103eb719a8b8b/e/6bb5766b165cba75d7ac02b3)) went in
+  before Bambu Studio's slice found the cradle's defects (Checks). It is renamed SUPERSEDED, pointing at the revision, because the API
+  key can't delete documents.
+- **v11:** its document ([rev. 2026-11-27](https://cad.onshape.com/documents/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/e/cd46c1a5e6c910443d6daad8))
+  is renamed "SUPERSEDED by v12" too.
+- **API calls:** 28 today, all in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl):
+  - two imports (11 and 10 calls);
+  - three renames;
+  - four checks that the documents are public and renamed.
+- [**v7, the main version.**](https://cad.onshape.com/documents/291664f38c67a4672a86f025/w/e67d1b706aa4b873fa8c68e8/e/4802634f69ef3323004d7bf6)
 
-![Overview](renders/v11/overview_v11.gif)
+**Walkthrough video:** [**on YouTube**](https://www.youtube.com/watch?v=abZlIeTuC0A), 7.5 min. It is public, on the BYU Vertical Cloud Lab
+channel, and subscribers weren't notified. The MP4 is also in [`walkthrough/`](walkthrough/walkthrough_v12.mp4), with
+[captions](walkthrough/walkthrough_v12.srt), the [chapters](walkthrough/chapters.txt) and its sources
+([`script_v12.py`](walkthrough/script_v12.py), [`make_walkthrough.py`](walkthrough/make_walkthrough.py)). The narration is Piper's
+offline text-to-speech, in the public-domain LJ Speech voice.
 
-## What changed, and why
+![v12 overview](renders/v12/overview_v12.gif)
 
-| # | Sam asked | v11 | How it works | Clip |
-|---|---|---|---|---|
-| 1 | "The augers still need to be able to go up to 90 degrees ... If the base plates need to be a bit longer, i.e. to give some more room for the rotation in the front, then go ahead" | **The carriages are 40 mm longer** (the chains 345 mm apart instead of 305; each carriage 391 mm over its tongues) and **the hinge is 40 mm further back** (73 mm behind the front chain's centre plane, v10: 33) | On the plate's side everything near the hinge swings forward as the module tilts. In v10 the EC's front reached the front chain's A-1 link at 70°. With the hinge 73 mm back, the module and the EC stand clear at 90°: the nearest approaches are the EC to the carriage's opening edge (2.5 mm), and the solenoid to the carriage (2.5 mm) and its front tab's locknut (3.7 mm) | [tilt90](renders/v11/tilt90_v11.gif) |
-| 1 | "punch a hole through the metal plate so the linear actuator has some more room. If this requires new mounts (i.e. a new bar of 8020 across the outside, or just a 3D-printed mount) then design those" | **A P16-150 (back from v10's P16-100), its base outside the front side plate, through a 22 × 68 mm slot in the plate.** Its rear tab sits in a printed clevis under a **new 2020 bar across the front posts' front faces** (z 620-640, in front of the top bearings) | 0-90° takes 131 mm of travel, more than a P16-100 has. Laid out numerically, no base position inside the front plate gets the module to 90°: the line of pull runs over centre, or the actuator hits the top sprocket. With the base pin 26 mm in front of the plate, the P16-150 runs from 139.2 mm out (rest) to 8.3 mm out (90°). That leaves 10.8 mm short of full extension and 8.3 mm over full retraction, with a lever about the hinge of 30 mm or more. The front acrylic panel moves out to 30 mm standoffs to clear the bar and the P16's housing | [tilt90](renders/v11/tilt90_v11.gif) |
-| 2 | "Why is there a ramp? I was assuming each carriage would just move straight through it ... not lifting if it's not necessary" and "The auger can move a bit as well to get the hinge closer to the plate, or the holes in the plate can be bigger to accommodate the mounting plate" | **No lift.** The rail's lips are level; its ends only flare (2.5 mm sideways and toward the loop, 1.5 mm toward the plate, over 8 mm) to steer a T that arrives a little off line. **The hinge sits 5 mm nearer the carriage plate**, so the mounting plate sinks into the carriage's opening. **The pinion is 24T** (KHK SS1-24 class, v2-v10: 20T) | v10 lifted every module 4° only to bring its 44T gear up to the pinion while keeping the pinion over the passing carriages. With the hinge 5 mm nearer the carriage, the gear pokes 5 mm past the carriage at rest, and a 24T pinion (centre distance 34.25 mm) meets it there. At rest each module sits on its own carriage, its T 0.2 mm over the lips; the lips take it only when the P16 pulls. A 20T pinion would put the NEMA 11's body 0.25 mm off the passing plates; the 24T puts it 2.25 mm off | [rail profile](renders/v11/rail_profile_v11.gif), [rail](renders/v11/rail_v11.gif) |
-| 3 | "if the electronics carriage is already taking up space on the inside, I think it can extend all the way down to the dispensing end of the auger ... so it can directly open it ... Maybe that part can have a ramp ... Keep this part as simple as possible" | **The EC reaches forward over the outlet.** Each shutter (v10's) carries a 1.5 mm stainless rod up its spring's axis and out through the housing's cap to a small printed head. **The EC's front is a ramp slot** whose two wedge lips catch the head and draw it 6 mm toward the loop as the module arrives | No cable, sleeve or guide (v10 had all three). The door is fully open within 7 mm of the station and shut again 16.5 mm out. It is still v4's door: the shutter opens toward the plate, so it stays out of the falling dose | [door](renders/v11/door_v11.gif), [rail profile](renders/v11/rail_profile_v11.gif) (part 3) |
-| 4 | "move the solenoid up to the first third of the auger. That's where we get the most effective taps" | **The solenoid sits over clip 1**, 32 mm behind the exit: 13 % of the auger's length (v10: over clip 2, 156 mm, 62 %) | It stands in a collar in the EC's spine, plunger toward the plate, 1.2 mm off it where clip 1 holds the tube. It turns with the module, so it taps the same spot at every tilt | [solenoid](renders/v11/solenoid_v11.gif) |
-| 5 | "scale it to fit the scale with the higher draft cage (with the beaker sitting on a cylindrical pillar). This means that smaller scales could work on a block without the draft cage, but the draft cage would also be fine" | **The balance keeps its tall draft cage and stands on the bench** (v7's model, its cage 315 mm tall like the lab's HR-100A). **The carousel is 98.5 mm lower** (the bottom run at z 366.5, v10: 465), so the passing 44T gears clear the cage's top by 4 mm. **The beaker sits on a cylindrical pillar** (a printed 40 mm tube) inside the cage; a **dosing lid** with a 24 mm hole replaces the top door | The exit is 33 mm over the beaker's rim (v10 had no cage: 18): 27 mm down to the cage's top (the gear's 23 mm radius and its 4 mm clearance), then the lid and 3 mm under it. A smaller balance can stand on a block with its cage off: the beaker on its pan can then come up to 14 mm under the exit, under the passing tubes. The pillar and beaker take about half of the HR-100A's 102 g | [balance](renders/v11/balance_v11.gif) |
-| 6 | "Find a cheap but still good quality chain online, link it here, and apply those dimensions to the chain in the model" | **[Nitro Chain RC35-1R-10FT](https://www.nitrochain.com/35-roller-chain-10ft), $23.53 per 10 ft roll** (N2 series: heat treated, pre-lubricated, ANSI B29.1; read 2026-11-26), with Nitro's [CL35-A1](https://www.nitrochain.com/35-a1-standard-attachment-connecting-link) links ($2.55) and [CL35](https://www.nitrochain.com/35-standard-connecting-link) connecting links ($0.79) | The model already matched Nitro's published numbers (pitch, bushing, inner width, pin, h2, T, width over the pins). Two things were missing and are now drawn: the 0.518 in width over a connecting link (the A-1 links the carriages bolt to), and the plates' waist (0.75 × h2, scaled off Nitro's drawing, which doesn't give it; v2-v10 drew it shallower). U.S. Tsubaki's RS35 is the premium alternative, at about 4.7 times the price | [chain](renders/v11/chain_nitro_v11.png) |
-| 7 | "for this version, just make an open door for the scale to go into--don't make the whole enclosure for the scale" | **The front acrylic panel has an open doorway, 240 × 330 mm from the bench up**, that the balance slides through. No bay window, no weighing chamber, no granite block | The balance's display sticks out through the doorway; its own cage is its draft shield | [balance](renders/v11/balance_v11.gif) |
-| 8 | "no need to include wires in the model unless it changes. Just keep a hole in the plate so the wires can get out and run down" | **No wires drawn.** The 20 mm grommet hole stays in the front side plate, under the P16's slot | The bundle runs as in v10, along the EC's arm and the P16, out through the grommet | |
+## What changed from v11, and why
 
-| 0-90° with one P16-150 ([MP4](renders/v11/tilt90_v11.mp4)) | The door, opened by the EC's front ramp ([MP4](renders/v11/door_v11.mp4)) |
-|---|---|
-| ![](renders/v11/tilt90_v11.gif) | ![](renders/v11/door_v11.gif) |
-
-| The rail in 3D: straight in, the gear meets the pinion at rest ([MP4](renders/v11/rail_v11.mp4)) | The solenoid over clip 1 ([MP4](renders/v11/solenoid_v11.mp4)) |
-|---|---|
-| ![](renders/v11/rail_v11.gif) | ![](renders/v11/solenoid_v11.gif) |
-
-**The balance with its tall cage, the pillar and the dosing lid** ([MP4](renders/v11/balance_v11.mp4)):
-
-![](renders/v11/balance_v11.gif)
-
-## How the rail works, in profile (Sam's question)
-
-True sections of the CAD ([`rail_profile.py`](rail_profile.py), [MP4](renders/v11/rail_profile_v11.mp4)), with the inside of the
-loop at the top:
-
-![](renders/v11/rail_profile_v11.gif)
-
-1. **Along the travel, through a lip and the T's head.** The module arrives from the right, the way the machine runs. The T's head
-   enters the slot's flared mouth and runs along level lips. Nothing lifts it.
-2. **Across the travel, at the station.** The T's head sits under the EC's ceiling and over the two lips, its stem between them,
-   0.3 mm clear each side. At rest the head is 0.2 mm over the lips: the module rests on its own carriage (hinge pins and latch
-   shelf), and the lips pick it up only when the P16 pulls the EC.
-3. **The door ramp, through the door rod.** This is the one ramp that moves something. Its lips catch the rod's head and draw it
-   6 mm toward the loop, which slides the shutter off the exit.
-
-**Why v10 had a ramp.** In v10 the gear's tip was level with the carriage's inner face at rest. The pinion has to sit over the
-passing carriages, so the gear couldn't reach it without the module turning 4°. That is what the ramps did. v11 moves the hinge
-5 mm nearer the carriage instead, so the gear meets the pinion at rest. The ramps were only there for the mesh, so they're gone;
-the flares stay for alignment.
-
-## How the auger gear engages and lets go without gravity (Sterling, 2026-11-27)
-
-> *"I also need a better explanation for how the auger gear engages and disengages now that it's not gravity keeping contact.
-> Random aside: perhaps a spring or similar could help at some point."*
-
-The full study, with the model, every table and the files, is [`sim/README.md`](sim/README.md): a MuJoCo model of v11's station with
-real tooth contact (the auger's 44T from the lab's STEP, the 24T involute pinion), the chain's index profile, the hinged module on
-its latch shelf, the EC on the P16 with the clevis's give, the guide seat and the T in its slot. 432 indexes in, 15 out, 192 more to
-find what the jams depend on, and 24 station cycles and stall ramps.
-
-**How it works:**
-1. **What sets the mesh.** Nothing presses the gear and the pinion together. The 34.25 mm between their axes is set by where two
-   separate parts sit: the module, on its hinge pins and the latch's shelf (it can swing in, toward the EC, but not out), and the
-   EC, on its guide seat and the P16's pin (the P16 holds its length; it back-drives only above 75 N).
-2. **Engaging, every index.** The NEMA 11's driver is off, so the pinion is free. The gear's teeth first touch the pinion's 12 mm
-   before the station and roll into its gaps over those 12 mm, turning it about 50°, the way a rack turns a pinion.
-3. **Holding, while it doses.** The P16 pulls the EC off its seat, and after 0.2 mm the lips under the T's head pick the module up.
-   From then on the module, the T, the EC and the pinion turn about the hinge as one piece. The teeth's separating force (up to
-   about 3 N at the NEMA 11's stall) pushes the T's head onto the lips, which it is already resting on, so the centre distance can't
-   grow. That holds at 90° too, where the module's weight acts along the auger and helps nothing.
-4. **Letting go, the next index.** The P16 sets the module back on its shelf and the EC on its seat, the driver goes off, and the
-   chain rolls the gear out of the pinion the way it came in.
-
-| One index into the station, as the model sees it ([MP4](renders/v11/mesh_entry_v11.mp4)) | A station cycle, side view: what holds the mesh ([MP4](renders/v11/mesh_hold_v11.mp4)) |
-|---|---|
-| ![](renders/v11/mesh_entry_v11.gif) | ![](renders/v11/mesh_hold_v11.gif) |
-
-**What the simulations found:**
-- **Holding works as drawn.** No tooth jumped in any cycle (0°, 30°, 90°, dosing with the solenoid tapping, the pinion up to 0.5 mm
-  too far or 0.3 mm too near). With the auger's load ramped, the NEMA 11 stalled first every time, at 0.077-0.090 N·m on the auger.
-- **Engaging is the weak moment.** When a gear tooth lands on the tip of a pinion tooth, nothing in v11 can give: the module can't
-  swing out past its shelf, and the EC can't rise off its pin and seat. **1 index in 4 jams at nominal tolerances** (9 of 36), and
-  46 of 180 over −0.3 to +0.5 mm of tolerance, the chain driving the tips together at 109-214 N. Leaving the pinion free, holding
-  it or seeking (2-4 in 12), indexing at 25 or 100 mm/s (4 in 12) and the motor's detent (2-3 in 12) all still jam. As a stopgap for
-  testing, backing the chain off and turning the pinion half a tooth before re-indexing clears 42 of the 46 (7 of the 9 at nominal),
-  if the NEMA 34 is slowed and its current lowered for the last 12 mm so a jam stalls it gently.
-- **At rest, gravity is still in play, on the EC.** Its pin and its shoe both sit on the arm, on one line 36 mm to the side of the
-  pinion, so its body rolls on the clevis's play until the pinion's teeth wedge into the gear's: 34.03-34.36 mm, up to 25 N on the
-  teeth.
-- **The centre distance has a 0.72 mm window:** below 34.00 mm the teeth bind, above 34.72 mm the contact ratio drops below 1.
-
-**Would a spring help? Yes.** Put the NEMA 11 and its pinion on a small cradle that pivots in the EC, a spring pressing the pinion into
-the gear (1 N/mm, about 6 N) past a set-screw stop 0.4 mm beyond tight mesh:
-- **0 jams in 216 indexes** (and 0 in 72 with a 4 N spring), over −0.5 to +1.0 mm of tolerance, at every clevis stiffness, friction,
-  speed and detent tried;
-- the centre distance stays at 34.03-34.25 mm at every tilt, whatever the tolerance stack;
-- still no tooth jumps; the motor stalls first, at 0.056-0.066 N·m on the auger (the preloaded mesh's friction costs about a quarter
-  of the torque at 30 rpm; a 4 N spring 0.066-0.075);
-- about a third of the indexes leave the pinion resting on the gear's tips, lifted on its spring, with nothing forced; a slow turn of
-  the pinion after the index that reverses once (0.25 rev/s, 0.2 s each way) dropped 98 of 99 into mesh (288 indexes, 0 jams). The one
-  left needs a second try; a hall switch on the spring's cradle would tell the driver.
-
-It isn't in v11's CAD. It is the first change I'd make for the next version, together with a second seat for the EC on the far side
-of the module, so the EC's body can't roll onto the gear.
-
-| The spring-loaded pinion, to scale (proposed, not drawn in v11) | Entry outcomes against the tolerance stack |
-|---|---|
-| ![](renders/v11/spring_pinion_v12.png) | ![](sim/out/entry_outcomes.png) |
-
-## 90°: what stopped v10, and what v11 changes
-
-| | v10 | v11 |
+| | v12 | Why |
 |---|---|---|
-| Hinge behind the front chain's centre plane | 33 mm | **73 mm** (carriages 40 mm longer) |
-| First contact | 70°: the EC's front at the station carriage's front A-1 link | **none at 0-90°** |
-| Actuator | P16-100, base on the front side plate's inner face | **P16-150, base outside the front side plate, through a slot** |
-| Travel for the range | 88 mm for 4-65° | **131 mm for 0-90°** |
+| **The cradle** | The NEMA 11 and its 24T pinion ride on a printed cradle ([`parts12.cradle_v12`](parts12.py)). It pivots in the EC on **two 3 x 12 mm 316 dowels** (McMaster 93600A335). The dowels sit along the auger, level with the pinion's axis, 18.5 mm to the side the gears arrive from (Sam −y). The cradle is the old EC motor plate, plus a pivot tube along the motor's −y side, a top bar over the motor and a lug on its +y side | v11 bolted the motor to the EC. When a gear tooth landed on a pinion tooth's tip, nothing could give, and the model jammed about 1 index in 4. With the pivot on the arriving side (a trailing arm), an arriving gear's drag lifts the pinion instead of wedging it |
+| **The spring** | **McMaster 9657K284**: 0.98 N/mm, 19.05 mm free, 6.1 mm OD. It sits on the pinion's line, over the motor between the cradle's top bar and the EC's roof, so its rate and force act 1:1 at the pinion. **5.9 N at the stop, 6.3 N in tight mesh, 8.3 N on a gear's tips**, 9.3 N at the roof's up-stop (3.0 mm of lift; the spring is rated to 8.64 mm) | Sterling: about 1 N/mm and 6 N. No stainless spring matches both; this one is music wire (BoM item 124 lists the stainless options) |
+| **The stop** | An **M3 x 6 flat-point set screw** (McMaster 92605A100) down through an insert in the lug, its tip on the EC's arm. It is set **0.4 mm past tight mesh**: with no gear at the station, the pinion's centre sits 33.6 mm from where the gear's axis comes | With no gear there, the stop keeps the pinion and the NEMA 11 1.6 mm over the passing plates (1.0 mm once the EC settles 0.5 mm into its seats). A flat point, because a cup point would dent the printed arm |
+| **The hall switch** | A **US5881** in a pocket on the lug's +y face. Its magnet (K&J D42-N52) is in a post on the EC, 2.5 mm off the switch and 3.5 mm further into the loop. The switch reads **"lifted" when the pinion rises 0.8 mm** or more over tight mesh. The lug moves 2.1 times as far as the pinion, so the switch slides under the magnet's face. It is on BCM 26 | So the driver knows when the pinion rests on the gear's tips (about 2.0 mm up) instead of in mesh |
+| **The seek** | [`test/chain_rig.py`](test/chain_rig.py) `Rig.seek_mesh()` runs after every index: the pinion turns forward at 0.25 rev/s for 0.2 s, then back for 0.2 s, so the auger ends where it started. If the switch still reads lifted, a **second try** runs back first, then forward. If that fails too, it **backs the chain off 13 mm**, turns the pinion half a tooth, indexes again and seeks once more. Then it stops and says so | The model clears every stub on the first seek with the teeth lubricated. The re-index is for dry teeth (below) |
+| **The second seat** | A second guide shoe on the EC's far side (Sam y −32), in a second funnel seat ([`parts12.guide_hanger_v12`](parts12.py)). The seat hangs from a **second 2020 station beam** at world y +56, the first one's mirror, with an M5 through each side plate into its tapped ends | Between modules the EC sits on both seats. With the loosest clevis it rolls 0.24° instead of 1.32° on v11's one seat. That keeps the NEMA 11 1.0 mm over the passing plates instead of 0.6 |
+| **EC v12** | v11's front half (door ramp, spine, solenoid collar, straight rail). Behind the pinion: the cradle's two pivot bosses, an outer −y rail and a cross bar behind the motor, a roof over the spring with an up-stop pad, the magnet's post, the arm (its inner edge 3 mm further out, for the cradle's swing) and both shoes ([`parts12.ec_v12`](parts12.py)) | |
 
-**The P16-150's extension and lever** (`layout.p16_11_ext`, `layout.p16_11_lever`; the table in [`test/chain_rig.py`](test/chain_rig.py)):
+**Found on the way, in v11's drawings, and fixed.** All three were hidden because the check skipped the pair:
+1. **EC v11's arm had no slot for the P16's rod-end tab.** The tab, 6 mm thick, sat in solid arm between the clevis cheeks. v12 cuts a slot through the arm round the pin for the tab's swing (47-148° about the pin over 0-90°), and pockets for the pin's nut and head.
+2. **The NEMA 11's 20 mm shaft ran 1.5 mm into the EC's rail block**, 4.8 mm past the pinion. v12 cuts the shaft to 15 mm (BoM item 119, ASSEMBLY step 8).
+3. **The outlet door's spring was buried in a solid tower.** v4-v11 drew the tower in front of the shutter solid. The shutter's spring boss stood only 0.35 mm in front of the rod's axis, so the rod had no hole: v11's one "still open" item. v12 bores the tower 3.6 mm and carries its front wall 0.85 mm further forward, so 0.8 mm of wall stays in front of the bore. The shutter's boss is now round, 3.2 mm across on the spring's axis, with a 1.55 mm press fit for the 1/16 in rod. The rod is 0.9 mm longer, 22.7 mm, so it runs the boss's full 2 mm ([`parts12.door_shutter_v12`](parts12.py), [`door_housing_v12`](parts12.py)). The door's parts are no longer skipped against each other, and nothing touches open or shut.
 
-| Tilt | 0° (rest) | 10° | 20° | 30° | 40° | 50° | 60° | 70° | 80° | 90° |
-|---|---|---|---|---|---|---|---|---|---|---|
-| P16 out, of 150 mm | 139.2 | 123.5 | 106.8 | 89.6 | 72.4 | 55.6 | 40.1 | 26.4 | 15.6 | 8.3 |
-| Its lever about the hinge, mm | 87 | 93 | 97 | 99 | 98 | 93 | 84 | 71 | 53 | 30 |
+| The cradle, at rest in tight mesh | A gear tooth on a pinion tooth: the cradle lifts 2 mm |
+|---|---|
+| ![](renders/rig_cradle.png) | ![](renders/rig_cradle_lifted.png) |
 
-The module and the EC at 90° (by a minimum-distance check on the CAD): the EC passes the station carriage's extended opening by
-2.5 mm, and the solenoid passes the carriage by 2.5 mm and its front tab's locknut by 3.7 mm. The mounting plate runs 0.8 mm
-inside the opening's sides, as in v4-v10.
+![The cradle step by step](renders/v12/cradle_v12.gif)
 
-## Auger-to-beaker height
+*[MP4](renders/v12/cradle_v12.mp4). The parts on the cradle; the cradle dropping onto its stop as a module leaves; a tooth landing on a tooth
+(the cradle lifts, the switch reads "lifted"); the seek, after which the pinion drops into the gap. The lift during the index follows
+the model's numbers; the frames are the CAD.*
 
-| From the auger's exit | Single doser | v7 | v9 | v10 | **v11** |
-|---|---|---|---|---|---|
-| to the beaker's rim | about 85 mm (±15) | 154 mm | 32 mm | 18 mm | **33 mm** |
-| to the beaker's floor | about 153 mm | 201 mm | 80 mm | 67 mm | **82 mm** |
-| the balance | HR-100A, cage on | cage on, beaker on a riser | cage off, on a block | cage off, on a block | **tall cage on, on the bench; beaker on a pillar** |
-| what sets it | | the cage's lid under the EC | the EC's door finger | the auger's tube and the deck | the passing gears over the cage's top, and the cage's top frame |
+## How the gear meets the pinion now, step by step
 
-With a smaller balance on a block and its cage off, v11 can bring the rim to 14 mm under the exit: the tube passes 12.5 mm under
-the exit, with 1.5 mm to spare.
+1. **Between modules.** The spring pushes the cradle onto its set screw, 0.4 mm past tight mesh. The EC rests on both guide seats and the P16's pin.
+2. **The index.** The NEMA 34 moves the chain 8 links with the NEMA 11's driver off, so the pinion is free. The arriving gear's teeth first touch the pinion's about 12.9 mm before the station.
+   - In three arrivals out of four, the free pinion turns out of the way and the gear rolls into mesh. It pushes the pinion up 0.4 mm off its stop, into **tight mesh: no backlash, the spring holding it there**, whatever the tolerance stack.
+   - In about one in four, a gear tooth lands on a pinion tooth's tip. The pinion rides up about 2 mm on its spring (8.3 N), and the chain finishes the index at under 19 N. v11's jams drove the tips together at 109-214 N.
+3. **The switch and the seek.** After every index the driver turns the pinion forward and back (0.25 rev/s, 0.2 s each way) and reads the switch. A pinion on the gear's tips drops into the next gap, and the switch reads "seated". The model cleared every such stub on the first seek; the second try and the re-index are there in case.
+4. **Dosing.** The P16 pulls the EC up about the hinge. The rail's lips pick up the module's T, and the EC, the cradle and the module turn together. The spring keeps the pinion in the gear at every angle, including 90°, where the module's weight acts along the auger and helps nothing.
+5. **A jam in the auger.** The NEMA 11 stalls before any tooth jumps, at every angle. The preloaded mesh's friction costs some torque (next section).
+6. **The next index** rolls the gear out of the free pinion (under 5 N of chain force), and the cradle drops back onto its stop.
 
-## One dose
+**One thing that works differently from the proposal: what the second seat does.** The spring pushes the pinion into the gear with about 6 N, and its reaction pushes the EC up with the same force. That is twice the EC's 3 N weight. So with a module in mesh, the EC lifts off **both** seats: 0 N on them at rest in every simulated case. That was true of v11's proposed slide too, whose single seat also carried 0 N. The P16's pin and the rail's lips under the module's T hold the EC instead, at 0-5.5 N. That is fine for the mesh, because the spring sets the centre distance whatever the EC does.
 
-1. **Index.** The NEMA 34 moves both chains 8 links, with the NEMA 11 left free.
-   - The latch cam pulls the arriving module's pin.
-   - The T slides straight into the rail, and the 44T gear slides into mesh with the 24T pinion from the side.
-   - The EC's front ramp draws the door's rod 6 mm and opens the outlet.
-2. **Pull up.** The P16 retracts from 139.2 mm, and the EC and the module turn about the hinge to the dose angle (30° by default:
-   89.6 mm out). The EC's shoe lifts out of its seat.
-3. **Dose.** The NEMA 11 turns the auger; the solenoid taps the plate over clip 1. The dose falls 33 mm from the exit through the
-   lid's hole into the beaker on its pillar. The exit is on the hinge axis, so it doesn't move with the tilt.
-4. **Back.**
-   - Hold 0.5 s, then the P16 extends fully: the module sets down on its carriage, and the shoe re-seats.
-   - Reverse the auger one turn at rest (the leakage study).
-5. **Next index.** The T slides out of the rail's far end, the door shuts, and the latch closes behind it.
+The second seat matters **between modules**, with no gear pushing on the pinion. There it stops the EC rolling on the clevis's play toward the next gear's path. The seats are push-only, so neither can hold the EC down against the spring. A hold-down that the tilt could still swing out of would have to be near the hinge axis, where the EC first moves forward rather than up; v12 doesn't need one.
 
-## 2026-11-27: what slicing, the vendors and the checks found, and what changed
+![The two seats](renders/v12/seats_v12.gif)
 
-Sterling asked for every item the last report left undone. Doing them turned up these, now fixed in the CAD (a "v11" fix, not a new
-version; [VENDOR-CHECK.md](VENDOR-CHECK.md), [`../print/README.md`](../print/README.md#chain-carousel-v11-pr-185), [`sim/`](sim/README.md)):
+*[MP4](renders/v12/seats_v12.mp4): the EC on its two seats; the P16 pulls and both shoes lift out; back down, the funnels steer them home.*
 
-| Found by | What was wrong | Now |
+## What the simulations found
+
+| Question | v11 as drawn | **v12 as drawn** | Where |
+|---|---|---|---|
+| Indexes that jam (12 arrival phases x 6 tolerance offsets, −0.5 to +1.0 mm, x 3 clevis stiffnesses) | about 1 in 4 (46 of 180) | **0 of 216** (0 of 504 with the variants) | [entry](sim/out/entry.json) |
+| Arrivals on the gear's tips | — (they jam) | 53 of 216: the cradle lifts about 2 mm (8.3 N) | [entry](sim/out/entry.json) |
+| Cleared by the first seek | — | **53 of 53**; the second try was needed once in 504 (leading-arm variant) | [entry](sim/out/entry.json) |
+| The switch after the seek | — | **right in 504 of 504** | [entry](sim/out/entry.json) |
+| Peak chain force over an index | 109-214 N in a jam | **18.9 N** | [entry](sim/out/entry.json) |
+| Centre distance after the index (window 34.00-34.72) | 34.03-36.0 | **34.03-34.21 mm** (tight mesh, the spring) | [entry](sim/out/entry.json) |
+| Tooth jumps holding the mesh (0 → 30° → dose → 90° → dose → back → reverse) | 0 | **0** in 8 cycles (clevis 3/10/100 N·m/rad, tolerance −0.3/+0.5/+1.0 mm, 4 N spring, one seat) | [cycle](sim/out/cycle.json) |
+| Stall at the auger (30 rpm, 450 mA), the motor stalling first | 0.083 (0°), 0.090 (30°) N·m | **0.047 (0°), 0.048 (30°, 60°), 0.057 (90°) N·m**, against the 0.005-0.030 the auger is estimated to need | [cycle](sim/out/cycle.json), [plot](sim/out/stall_vs_tilt.png) |
+| Letting go (the next index) | under 6 N | **under 5.0 N** in 16 runs | [exit](sim/out/exit.json) |
+| Dry teeth (μ 0.3) | — | 0 jams; 6 of 36 left on the tips after the seek, the second try and the re-index (all read "lifted") | [dry](sim/out/entry_dry.json) |
+| The parked EC's roll between modules (loosest clevis) | 1.32° on one seat | **0.24° on two seats** | [`mesh12.py`](sim/mesh12.py) |
+
+**The stall: what the spring costs, and the choices.** In tight mesh both flanks of the teeth carry the spring's load, and their friction
+takes torque from the motor. The trailing-arm pivot adds to it: the dose's drive torque presses the pinion harder into the gear (that same
+geometry is what lets an arriving gear lift the pinion). Both alternatives index with 0 jams in 72 runs each:
+
+| Variant | Stall at 0°, 30°, 90° (N·m at the auger) | Entry: arrivals on the tips; ones needing a second try |
 |---|---|---|
-| Slicing EC v11 in Bambu Studio | **The EC was five separate solids.** Its spine ran to the motor plate and ended inside the plate's 22.4 mm hole, so the front (door ramp, solenoid collar, rail) never met the back (motor plate, cheeks, arm); on the way it ran **through the 24T pinion** (652 mm³) and the motor's shaft. The door ramp's lips stopped 0.05 mm short of their walls. The check missed the pinion because it skipped the EC-pinion pair | The spine stops at x 71.5, widens there, and two 4 × 4.5 mm bars run beside the pinion (2.5 mm off its tips) to the motor's cheeks; the lips are 2.3 mm wide (`DOOR11_LIP_W`). One solid; the EC-pinion pair is no longer skipped |
-| The same | **The guide's seat sat inside the EC's arm** (1759 mm³). v11 had lowered the arm to z −20..−30 (the P16's pin at −25) but left the shoe at v10's −38..−31, floating 1 mm over the arm, and the seat is built under the shoe's tip. The check skipped the EC-guide pair | The shoe hangs from a bracket off the arm's back (x 133-145, 36 mm to the side, nose down), and the seat sits behind the arm, 1 mm over the passing plates (the seat can't go under the arm: the plates pass 2 mm below it). The nose is a true 90° cone, 0.35 mm clear of the 90° seat. The pair is checked again |
-| Slicing the door housing | **Its two mounting arms floated 0.3 mm off the rails**, and each 2.2 mm M2 hole was wider than its 1.8 mm arm | The arms run 12.45-16.25 mm either side of the centre line, with the M2 screws (and the plate's inserts) at ±14.35 mm; the plate's channel wall is cut back to ±16.3 mm along them (it is 10 mm thick there). One solid, clear of the plate |
-| Slicing the T-bracket | Its head was a separate solid, 0.01 mm off the stem | The stem runs 0.01 mm into the head |
-| Slicing the latch bolt | v11's STL was the steel dowel fused to the printed carrier | `build.py` exports the carrier with the dowel's 4 mm hole |
-| Slicing the pillar | 53.6 g with its 1.6 mm wall, not the BoM's "about 30 g": half the HR-100A's 102 g before the beaker | 0.85 mm wall (two lines, printed normally): 29.9 g |
-| The swap check, re-run | A whole 391 mm carriage didn't fit out through the 330 mm side hatch (the auger swap was clear) | The hatch is 400 mm wide (`HATCH_SIDE`) |
-| McMaster's grommet table | No grommet with a 3/8 in inside fits a 3/4 in hole in 1/4 in plate | The front plate's hole is 13/16 in, 20.6 mm (`GROMMET11`) |
-| McMaster's chain CAD, through the Pi | The model's plates were all 8.79 high with a 6.59 waist (scaled off Nitro's drawing) | Inner plates 8.79 high with a 7.49 waist; outer plates and connecting links 7.76 high, the outer plates' waist 6.39 |
-| KHK's catalogue | The 24T pinion was to be "bored 5 mm H8"; no module 1 24T comes with a 5 mm bore | KHK SS1-24A (6 mm bore, set screw) on a 5 × 6 mm sleeve |
-| A&D's manual | (assumed) the tall cage's 315 mm | Confirmed as the HR-100A's overall height, to its top door's grips; its frame is about 297 mm (TEST-PLAN T8c) |
+| v12 as drawn (trailing pivot level with the pinion, 6 N) | 0.047, 0.048, 0.057 | 25 % (the 216 as drawn); none |
+| The dowels 10 mm nearer the gear (the drive torque's push cancels) | 0.048, 0.057, 0.057 | 33 % (24 of 72); none |
+| A 4 N spring | 0.056, 0.057, 0.066 | 40 % (29 of 72); none |
+| A leading-arm pivot (on the far side) | 0.066, 0.066, 0.075 | 19 % (14 of 72); 1 |
 
-**Still open:** the door shutter has no hole for its 1.5 mm rod, and a hole on the rod's axis would break out of the shutter's 1.8 mm
-boss (0.4 mm). The rod needs a boss about 3.1 mm across, which means re-laying the housing's tower channel, the spring's axis and the
-cap's hole round it. Until then the rod can only be glued to the boss's face.
+v12 keeps 6 N and the trailing arm, as asked. The margin over the auger's heavy estimate is 1.6x. If T6d measures a running torque
+within half the stall, the 4 N spring is a parts swap (the set screw and the switch need no change).
 
-## The walkthrough video (2026-11-27)
+Details, every table and the model: [`sim/README.md`](sim/README.md).
 
-[`walkthrough/walkthrough_v11.mp4`](walkthrough/walkthrough_v11.mp4) is a narrated tour of v11, made by
-[`walkthrough/make_walkthrough.py`](walkthrough/make_walkthrough.py) from this folder's own clips, stills and simulation plots, with
-the chapters in [`walkthrough/script_v11.py`](walkthrough/script_v11.py). The chapters are: what v11 is, the frame and the chain,
-a module, building it step by step, indexing, how the gear meets the pinion, what holds the mesh, 0-90°, dosing into the balance, the
-checks, printing and buying, and the spring-loaded pinion. The narration is Piper's offline text-to-speech with the public-domain
-LJ Speech voice; the captions are the narration ([`walkthrough_v11.srt`](walkthrough/walkthrough_v11.srt)), and
-[`description.txt`](walkthrough/description.txt) is a YouTube description with the chapters' timestamps. It isn't on YouTube yet: this
-repo's `claude.yml` doesn't pass the upload token ([`../../youtube/README.md`](../../youtube/README.md) has the two steps and the
-one-command upload).
+![Entry outcomes](sim/out/entry_outcomes.png)
+
+![Stall vs tilt](sim/out/stall_vs_tilt.png)
+
+| One index into the station, MuJoCo, real teeth ([MP4](renders/v12/mesh_entry_v12.mp4)) | A dose cycle, side view ([MP4](renders/v12/mesh_hold_v12.mp4)) |
+|---|---|
+| ![](renders/v12/mesh_entry_v12.gif) | ![](renders/v12/mesh_hold_v12.gif) |
 
 ## Checks
 
-These are OCC boolean overlaps between parts; anything over 0.5 mm³ counts as a clash. By-design contacts are skipped by part key
-(v11's are at the end of SKIP in [`check_interference.py`](check_interference.py)). The balance, its pillar and the beaker are in
-every check.
+These are OCC boolean overlaps between parts; anything over 0.5 mm³ counts as a clash. By-design contacts are skipped by part key, and
+v12's are at the end of SKIP in [`check_interference.py`](check_interference.py). The door's parts are no longer skipped against each other.
 
 | Check | What moves | Result |
 |---|---|---|
-| Home ([`checks/home.json`](checks/home.json)) | Every pair of the 829 instances (re-run 2026-11-27 on the fixed CAD: the EC, the guide, the door housing, the T-bracket, the 400 mm side hatch and the chain's plates; the EC-pinion and EC-guide pairs no longer skipped) | **0** |
-| `--tilt11` ([`tilt_a.json`](checks/tilt_a.json), [`tilt_c.json`](checks/tilt_c.json), [`tilt_b.json`](checks/tilt_b.json)) | Module 1, the EC and the P16 (its body swings on its base pin, its rod slides) at 0, 10, 20 ... 80, 85 and 90° against everything else (re-run 2026-11-27 on the fixed CAD) | **0 at every angle** |
-| [`sweep_station.py`](sweep_station.py) ([`checks/sweep_station.json`](checks/sweep_station.json)) | Every carriage and module within 2.2 modules of the station, over one module of travel in 1-link steps (9 poses), each door opened by the EC's ramp as it passes, against the EC, the P16 and its bar, the guide, the beam, the balance, the pillar and the beaker | **0** |
-| `--swap` ([`checks/swap.json`](checks/swap.json)) | Module 4 at the loading position, the side hatch open: its auger pulled 5-140 mm straight off its plate through the hatch (8 poses); then the whole carriage, its two screws backed out 10 mm, slid 10 mm and lifted 0-100 mm in 15 mm steps (8 poses) | **0**: the auger, and the whole carriage out through the 400 mm hatch (the 330 mm one stopped it: below) |
-| `--latch` ([`checks/latch.json`](checks/latch.json)) | The latch cam against every other part while carriage 1 passes it in quarter-link steps over ±3 links (25 poses: the cam's ±18 mm flat and 30° ramps end 25.8 mm out), then with module 1, the EC and the P16 at 10, 20 ... 90° (9 poses) | **0**. Carriage 1's follower overlaps the cam only on the ramps, by at most 1.22 mm³ (a 0.2 mm sliver: the round 3 mm dowel placed by the ramp's straight-line kinematics; v5's 25° ramp gave 0.57), and not at all on the flat |
+| Home ([`checks/home.json`](checks/home.json)) | Every pair of the 841 instances (v11: 829; v12 adds the cradle, its dowels, spring, stop, insert, hall switch and magnet, the second guide, the second beam and its screws) | **0** |
+| `--cradle` ([`checks/cradle.json`](checks/cradle.json)) | The cradle, the NEMA 11, the pinion, the spring, the stop and the hall switch at −0.4 (on the stop), 0, 1, 2 (a stub), 2.6 and 3.0 mm of lift (the roof's pad), at 0, 30 and 90° of tilt (18 poses), against everything | **0** (re-run on the fixed cradle; also 0 at 10, 20, 40 ... 85° in [`cradle_tilts.json`](checks/cradle_tilts.json)) |
+| `--tilt11` ([`tilt_a`](checks/tilt_a.json), [`tilt_b`](checks/tilt_b.json), [`tilt_c`](checks/tilt_c.json)) | Module 1, the EC with its cradle and the P16 at 0, 10, 20 ... 80, 85 and 90° against everything else | **0 at every angle** |
+| [`sweep_station.py`](sweep_station.py) ([`checks/sweep_station.json`](checks/sweep_station.json)) | Every carriage and module within 2.2 modules of the station, one module of travel in 1-link steps (9 poses), against the parked station with the cradle **on its stop** (its lowest), both guides and beams, the balance | **0**. The passing gears run through the pinion by design: in the machine they lift it on its spring |
+| `--swap` ([`checks/swap.json`](checks/swap.json)) | Module 4 at the side hatch: its auger pulled 5-140 mm off its plate, then the whole carriage out (16 poses) | **0** |
+| `--latch` ([`checks/latch.json`](checks/latch.json)) | The latch cam while carriage 1 passes it in quarter-link steps over ±3 links, then module 1 pulled up to 10-90° (34 poses) | **0**. The follower overlaps the cam's ramps by at most 1.22 mm³ (a sliver of the round dowel on the ramp, as in v11) |
+| `--door12` ([`checks/door.json`](checks/door.json), new) | Every module's outlet door (the bored housing, the shutter with its round boss, the rod, its head, the spring) against everything: module 1 at 0-90°, then a module of travel in 1-link steps (15 poses) | **0** |
 
-The first runs found and fixed these:
-- the P16's housing on the top-front bearing's tensioner block (25 mm³): the P16's plane moved from world y −33 to −31;
-- the ladder's upper rungs and their brackets in the back side plate, and the lower rungs' brackets on the posts' foot brackets
-  (the lower carousel brought the back plate's edge down): the rungs moved to z 86 and 214;
-- the latch cam's foot in the back hold-down (1,096 mm³; with the hinge 5 mm nearer the carriage the cam came 5 mm nearer): its web
-  and foot moved beside the hold-down;
-- the T-bracket's foot 1 mm into the rail block (313 mm³): the rail's underside moved to 1 mm over the passing feet;
-- the EC's guide hanger across the B− shaft (80 mm³): the station beam moved from y −60 to −56;
-- the front bar's screws drawn head-inward, into the front panel;
-- at 90° the EC passed the station carriage's opening edge by only 0.5 mm: the opening now runs 2 mm further forward;
-- a whole carriage lifted out at the loading position hit the +y panel beside the 330 mm side hatch (238 mm³ at 75 mm out; v4's lifts
-  of 0, 30 and 100 mm had stepped over the panel): the carriage is 391 mm over its tongues, so the hatch is now 400 mm wide
-  (`HATCH_SIDE`; 4.5 mm clear of the tongues each side, 8.85 mm inside the posts), its door 408 × 238 mm.
+The first runs found and fixed:
+- **EC v12 was two solids:** the up-stop pad stood 0.01 mm off the roof.
+- **The cradle's tube swung into the EC's outer rail** when lifted (72 mm³ at 3.2 mm). The cradle's −y side now stops at −16, and the rail moved 1 mm out.
+- **The cross bar and the arm's extension ran into the first guide's seat block** (633 mm³). They now stop at Sam y 27.5.
+- **The magnet was drawn pointing into the lug.**
+- **Bambu Studio's first slice found three cradle defects** (below, Printing):
+  - the top bar hung on a 0.7 mm strip of the plate;
+  - a 0.31 mm web;
+  - two counterbores broke out of the plate's edges.
+
+  The bar is now 32 mm wide and meets both cheeks. The plate runs up to the bar and out to y 14.5. The web is 1.7 mm, and only the two lower heads are counterbored (1.5 mm, to stay behind the passing gears).
+- The three v11 defects at the top of this README.
+
+## Printing
+
+Every printed part was sliced in Bambu Studio 02.08.02.61's command line, in PETG, and nothing was logged in. Each H2D plate uses its left
+0.4 mm nozzle only. The plates, times and per-part audit are in [`cad/print/README.md`](../print/README.md) and
+[`cad/print/chain-carousel-v12/`](../print/chain-carousel-v12):
+- **21 prints, 84.7 h and 1.94 kg** of PETG.
+  - H2D: 18 prints, 75 h 03 min, 1,766 g.
+  - A1 mini: 3 prints, 9 h 38 min, 170 g.
+  - v11 was 83.0 h and 1.90 kg.
+- **The new parts** are on the H2D plate with EC v12 (3 h 55 min, 78.3 g, tree supports): the cradle and the second guide.
+  - **The cradle slices clean with supports off**, motor plate down: 1 h 08 min, 9.9 g. Its first version didn't (the defects under Checks).
+  - **EC v12 prints on its +y side.** v11's EC printed on its −y side, but that side would now stand only on the second shoe.
+  - The plate needed 25 mm between parts: at the usual 8 mm, the EC's supports ran into the guide.
+- **Every part is one solid and fits its bed.** EC v12 and the door housing need tree supports, as their v11 versions did. The door
+  shutter, with its new round boss, slices clean with supports off.
+
+![Plates](../print/chain-carousel-v12/plates.png)
 
 ## Cost
 
-**$2,118.48, or $1,977.09 without test gear** ([BOM.md](BOM.md)). v10 was $2,352.10 ($2,210.71). Lines marked estimate add up
-to $133.69 (was $473.94 before the vendor check of 2026-11-27, below).
-- **2026-11-27:** every estimated line that a vendor lists was read through the doser Pi ([VENDOR-CHECK.md](VENDOR-CHECK.md)); the total
-  rose $35.17. The 24T pinion (KHK SS1-24A, $15.20) has a 6 mm bore, since no module 1 24T comes with a 5 mm one, so it needs a
-  5 x 6 mm sleeve on the NEMA 11's shaft (item 121). The NEMA 11 and the solenoid now have their own $0 lines (both the single
-  doser's, in the lab).
-- **Removed:** v10's granite block, the bay window and the weighing chamber (two of v10's six acrylic sheets, the cement, the bay
-  door's hinges), the door cables, the P16-100 and its bracket's inserts, half of the M2 screws and inserts (the cable guides').
+**$2,148.71, or $2,007.32 without test gear** ([BOM.md](BOM.md)). v11 was $2,118.48 ($1,977.09); v12 is
+$30.23 more. Lines marked estimate add up to $133.69, the same as v11's.
 - **Added:**
-  - the P16-150 ($90, back from v7-v9);
-  - a second 72 in shaft bar (the shafts are 40 mm longer);
-  - the 24T pinion (estimated);
-  - the front bar's screws and T-nuts, the P16's printed clevis;
-  - the door rods (estimated) and their printed heads;
-  - the beaker's pillar and the dosing lid (from an acrylic offcut);
-  - two spare Nitro CL35 connecting links.
-- **The same:** the NEMA 11, the solenoid, the one LAC, the balance (the lab's), the enclosure's other panels, the wiring lines.
+  - 3 x 12 mm 316 dowels, McMaster 93600A335, $9.73 for 25;
+  - the spring, McMaster 9657K284, $12.74 for 12;
+  - an M3 x 6 flat-point set screw, McMaster 92605A100, $3.81 for 25;
+  - a second US5881 ($2.00) and D42-N52 ($0.52);
+  - the second beam's screws and T-nuts;
+  - the cradle and the second guide (printed).
+- **The same:** everything else. The second 405 mm beam comes from the same 2020 pack (340 + 405 on its last bar).
+- **The new parts' prices were read on 2026-11-27** from McMaster's family tables and part panels. A headed Chromium did the reading,
+  logged out, through the doser Pi ([`checks/vendor_v12.json`](checks/vendor_v12.json)). Adafruit's and K&J's pages were read too.
+  v11's other prices were read through the Pi the same day ([v11 VENDOR-CHECK.md](../chain-carousel-v11/VENDOR-CHECK.md)).
 
 ## Check before building
 
-1. **The P16-150 through the front plate (TEST-PLAN T6).** Print the clevis and check that the P16 swings freely through the slot
-   over 0-90° and that the 30 mm lever at 90° holds the module and EC still (the module's weight is nearly over the hinge there).
-2. **The gear meets the pinion at rest, from the side (T6a): expect jams.** Every index slides a 44T gear into mesh with the
-   stationary pinion over its last 12 mm. The model ([`sim/README.md`](sim/README.md)) jams about 1 index in 4 at nominal tolerances,
-   whether the NEMA 11 is free, held or seeking, because nothing can give when a tooth lands tip-on-tip. Run T6a with the NEMA 34's
-   current turned down so a jam stalls it gently (the model drives the tips together at 109-214 N), and count. If jams come near that
-   rate, the fix is the spring-loaded pinion (above). Measure the centre distance at rest (*34.03-34.36 mm: the EC leans on the gear*)
-   and at 30° (*34.1-34.7*): the window is 34.00-34.72 mm.
-3. **The door rod (T8a).** Check that the door's spring (0.3-0.6 N) shuts it against the rod's friction in the cap's hole, upside
-   down on the top run too, and that the head stays on its rod (glued) after 1000 passes through the ramp.
-4. **The solenoid over clip 1 (T8d):** check that its taps move powder better than v10's over clip 2, as Sam expects.
-5. **The tall cage under the carousel (T8c):** the passing gears clear the cage's top frame by 4 mm. A&D's manual confirms the
-   HR-100A's 315 mm ([VENDOR-CHECK.md](VENDOR-CHECK.md)), but that is to its top door's grips: the fixed top frame is about 297 mm, so
-   with the top door swapped for a lid the carousel could come down 14-18 mm (a drop of about 15-19 mm instead of 33). Its breeze
-   break is a round glass cylinder (156 mm inside) with the pan 86.5 mm up, not the rectangular cage drawn, so its lid is a disc and
-   the pillar is 36.5 mm shorter. The pillar plus the beaker weighs about 50 g.
-6. **Reprints:** every carriage (40 mm longer, the opening longer, the lugs 5 mm shorter), every plate (no motor relief), every
-   door (the rod and head), the latch cam. The shafts are 40 mm longer, so they need two 72 in bars.
-7. v10's open items stand: the latch spring, and which balance the lab uses.
+1. **Set the stop with module 1 at the station** (ASSEMBLY step 8.7). The spring holds the pinion in tight mesh. Turn the set screw down
+   until its tip touches the arm and the dial on the motor just moves, then back it out 1.7 turns. That is 0.85 mm at the lug and
+   0.4 mm at the pinion.
+2. **Set the switch** (step 8.8). It must read "seated" in mesh and "lifted" with 0.6-1.0 mm of lift at the pinion; shim the magnet.
+   In the model, the reading after the seek was right in every index. Before the seek, it read "seated" on 9 stubs when the EC sat
+   1.0 mm farther from the gear than drawn, because the stub then lifts the pinion only 0.77-0.87 mm. The driver always seeks before
+   it reads, so this didn't matter.
+3. **Keep the teeth lubricated** (dry PTFE, BoM item 72). With dry teeth (μ 0.3) the seek alone left 5 of 12 stubs on the tips, all
+   read as "lifted". With the driver's fallback (back off 13 mm, turn half a tooth, re-index, seek), 6 of 36 dry-teeth indexes still stayed on the tips, all read as "lifted", and none jammed ([`sim/README.md`](sim/README.md)). Re-spray the teeth when T6a's log shows re-indexes.
+4. **TEST-PLAN T6a** now counts stubs, seeks and re-indexes over 200 indexes; the prediction is 0 jams and about 1 stub in 4, each
+   cleared by the first seek.
+5. **The stall torque** is lower than v11's (next to last section); T6d measures it against the auger's running torque, which nobody has
+   measured yet.
+6. v11's open items stand: the latch spring (no stock spring fits yet) and the lab's balance's cage.
 
 ## Not done
 
-- **The door shutter's rod** (above): the shutter has no hole for the rod, and its boss is too small for one. Fixing it means
-  re-laying the door housing's tower round a 3.1 mm boss.
-- **The spring-loaded pinion** and a second seat for the EC across the module are proposals from the simulations, not drawn.
-- **Estimated prices left ($133.69):** the clevis pins (no stock 5 mm grooved pin), the 3 × 25 dowels (priced as 3 × 24), the latch
-  spring (no stock spring fits yet), the pinion's sleeve, the interface board's parts, the plywood board and the salt.
-- **The YouTube upload** of the walkthrough ([`walkthrough/`](walkthrough/)): this repo's `claude.yml` doesn't pass the upload
-  token yet ([`../../youtube/README.md`](../../youtube/README.md)).
+- **Nothing was built, printed or bought.** The print times and filament weights are Bambu Studio's estimates.
+- **The model's limits** ([`sim/README.md`](sim/README.md#not-modelled)):
+  - the cradle's dowels have no play or friction;
+  - the spring is linear;
+  - the printed parts are rigid apart from their contacts;
+  - there is no powder;
+  - each case has 12 evenly spaced arrival phases.
+- **What the auger needs is still an estimate** (0.005-0.030 N·m). T6d measures it.
+- **The hall switch's threshold is a design figure.** The switch trips at 0.8 mm of lift at the pinion, set with shims at assembly. Its field against the gap wasn't modelled.
+- **v11's open items stand:**
+  - the latch spring (no stock spring fits the pocket yet);
+  - the lab's balance: its cage, and whether the carousel can come down 14-18 mm with the HR-100A.
 
 ## Files
 
-| File | What |
-|---|---|
-| [`params.py`](params.py) | v10's numbers with v11's at the end; the base changes at the top (`CHAIN_L` 345, `HINGE_X` 73, `HINGE_RAISE11` 5, `Z_RUN` 366.5) and the chain's (`PIN_LEN_CL`, `PLATE_WAIST`) |
-| [`parts11.py`](parts11.py) | The T-bracket and the straight rail, the door rod, head and ramp, EC v11 and the 24T pinion, the P16's clevis, carriage v11, the plate's additions, the tall-cage balance and its lid, the pillar, the latch cam |
-| [`parts.py`](parts.py) | v2's builders; the chain links drawn to Nitro's RC35 (waisted plates, straight connecting-link plates, 0.518 in over a connecting link) |
-| [`layout.py`](layout.py) | v10's layout with v11's station (`_station_v11`, `ec11_frame`, `p16_11_ext`, `p16_11_lever`, `p16_slot11_z`), the balance on the bench and the front doorway |
-| [`check_interference.py`](check_interference.py), [`sweep_station.py`](sweep_station.py) | Home, `--tilt11`, `--swap`, `--latch`, station sweep |
-| [`render.py`](render.py) | The stills (`renders/rig_*.png`: the rig, the station at rest, 30° and 90°, the P16's bar and slot, the rail, the gear and pinion, the door, the solenoid, the latch, the balance, the drop, the side hatch and a swap) and the assembly steps ([`renders/steps/`](renders/steps/), [`renders/assembly_steps.gif`](renders/assembly_steps.gif), in [ASSEMBLY.md](ASSEMBLY.md)) |
-| [`explain11.py`](explain11.py), [`rail_profile.py`](rail_profile.py), [`chain_nitro.py`](chain_nitro.py) | The clips in `renders/v11/` (GIF + MP4 each), the rail's profile view, the chain figure |
-| [`build.py`](build.py) | STEP assembly and components, the printed parts' STLs (`ec11.stl`, `t_bracket.stl`, `door_head11.stl`, `p16_bracket11.stl`, `guide11.stl`, `latch_rail11.stl`, `pillar11.stl`, `mounting_plate_v11.stl`, `carriage.stl`), the DXFs |
-| [`bom.py`](bom.py) / [`BOM.md`](BOM.md) | The BoM |
-| [`TEST-PLAN.md`](TEST-PLAN.md) | v10's tests with the station's rewritten for v11; T6a, T6d and T8c with the simulations' and A&D's numbers (2026-11-27) |
-| [`sim/`](sim/README.md) | The station in MuJoCo with real tooth contact: how the gear engages, holds and lets go; the spring-loaded pinion (2026-11-27) |
-| [`VENDOR-CHECK.md`](VENDOR-CHECK.md), [`checks/vendor_v11.json`](checks/vendor_v11.json) | The vendor check through the doser Pi: A&D's HR-100A drawing, McMaster's chain CAD, every estimated price (2026-11-27) |
-| [`walkthrough/`](walkthrough/) | The narrated walkthrough video, its script, captions, chapters and description (2026-11-27) |
-| [`ec_fix_still.py`](ec_fix_still.py) | `renders/ec11_fixed.png`: EC v11 as fixed, with the pinion, the NEMA 11 and the guide |
-| [`test/chain_rig.py`](test/chain_rig.py) | The Pi driver: one P16-150 (0-90°, `P16_TABLE` from `layout.p16_11_ext`), the 24T pinion's ratio |
-
-To re-run:
-
-```
-pip install cadquery vtk pillow imageio imageio-ffmpeg numpy matplotlib
-python check_interference.py && python check_interference.py --tilt11 && python sweep_station.py
-python check_interference.py --swap && python check_interference.py --latch
-xvfb-run -a python explain11.py overview tilt90 rail door solenoid balance
-xvfb-run -a python render.py --stills
-python rail_profile.py && python chain_nitro.py && python build.py && python bom.py
-```
+- **CAD:** [`parts12.py`](parts12.py) holds the cradle, EC v12, the dowels, the spring, the stop, the hall magnet, the second guide, the NEMA 11 with its cut shaft, and the door's shutter, rod and housing. The layout is in [`layout.py`](layout.py) (`_station_v12`, `cradle12_M`, `State.cradle_lift`), and the numbers are in [`params.py`](params.py) (v12's at the end).
+- **Checks:** [`check_interference.py`](check_interference.py) (`--cradle`, `--door12`, `--tilt11`, `--latch`, `--swap`) and [`sweep_station.py`](sweep_station.py). Results are in [`checks/`](checks).
+- **Simulations:** [`sim/`](sim): [`mesh12.py`](sim/mesh12.py), [`run12.py`](sim/run12.py), [`summarize12.py`](sim/summarize12.py), [`viz12.py`](sim/viz12.py), with results in `out/`.
+- **Clips:** [`explain12.py`](explain12.py) and [`sim/viz12.py`](sim/viz12.py), with output in [`renders/v12/`](renders/v12). Stills are in [`renders/`](renders), and the assembly steps in [ASSEMBLY.md](ASSEMBLY.md).
+- **Pi driver:** [`test/chain_rig.py`](test/chain_rig.py) (`seek_mesh`, `PIN_HALL_CRADLE` 26, `--sim-stub`).
+- **Vendors:** [`checks/vendor_v12.json`](checks/vendor_v12.json): the dowels, the spring and the set screw, read from McMaster's tables through the doser Pi, logged out.
+- **Exports:** [STEP assembly](step/chain_carousel_rig_v12.step), [`stl/`](stl), [`dxf/`](dxf). The side plates gain the second beam's end-screw holes.
+- **Printing:** [`../print/chain-carousel-v12/`](../print/chain-carousel-v12).
+- **Onshape:** [`onshape/`](onshape).
+- **Video:** [`walkthrough/`](walkthrough).

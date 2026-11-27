@@ -61,8 +61,9 @@ CHAPTERS = [
     dict(title="Stall torque against what the auger needs",
          text=("The cost of a preloaded mesh is friction. When the auger's load is ramped up until something gives, the motor stalls "
                "first at every angle, at {STALL_RANGE} newton millimetres on the auger, against version eleven's seventy-seven to ninety, and "
-               "against the five to thirty the auger is estimated to need. Putting the pivot ten millimetres nearer the gear would recover "
-               "about {PIVOT_GAIN} percent of that, at the cost of an occasional second seek; a four newton spring would do the same."),
+               "against the five to thirty the auger is estimated to need. That still leaves a margin of one and a half times over the heavy "
+               "estimate. If the real auger needs more, a four newton spring gives back about a fifth of the torque, and indexes just as "
+               "cleanly in the model."),
          visuals=[dict(path="sim/out/stall_vs_tilt.png")]),
     dict(title="The second seat",
          text=("Version eleven's electronics carriage rested on the actuator's pin and one guide shoe, both on the actuator's side, so between "

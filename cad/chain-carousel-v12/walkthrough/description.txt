@@ -1,0 +1,23 @@
+A walkthrough of the multi-doser chain carousel, version 12: thirteen auger powder-dosing modules on a vertical twin-chain loop, one dosing station inside the loop that tilts each module up to 90 degrees over an analytical balance, and, new in v12, a spring-loaded pinion: the station's NEMA 11 and its 24-tooth pinion ride on a cradle pressed into each auger's gear by a 1 N/mm spring, with a set-screw stop, a hall switch that tells the controller when the pinion is resting on the gear's tips, a slow seek after every index, and a second guide seat for the electronics carriage. Every picture is the design's CAD or a MuJoCo simulation of it with real tooth contact; nothing has been built yet, so every number is a prediction.
+
+Covered: what v12 is, why v11 needed a change (about one index in four jammed in the model), the cradle, a tooth landing on a tooth (the lift, the switch and the seek), what the simulations found (0 jams in 504 indexes), what holds the mesh while it doses, the stall torque against what the auger needs, the second seat, the interference checks, printing and buying, and what to check before building.
+
+Design files, simulations and this video's sources: https://github.com/vertical-cloud-lab/powder-doser/tree/claude/issue-128-20261013-2050/cad/chain-carousel-v12
+Onshape (public): https://cad.onshape.com/documents/fab22582b674da0aa4f55a73/w/fc13e6204b748c1ec907acab/e/890e883cfe283daf84776743
+Discussion: https://github.com/vertical-cloud-lab/powder-doser/pull/185
+
+Narration: Piper text-to-speech, LJ Speech voice (public-domain data), synthesised offline.
+
+Chapters
+0:00 What v12 is
+0:48 The frame, the chain and a module
+1:30 Why version eleven needed a change
+2:01 The spring-loaded cradle
+2:44 A tooth on a tooth: lift, switch, seek
+3:24 What the simulations found
+4:13 What holds the mesh while it doses
+4:46 Stall torque against what the auger needs
+5:18 The second seat
+5:50 Checks
+6:32 Printing and buying
+7:00 Before building

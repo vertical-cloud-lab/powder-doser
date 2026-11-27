@@ -1,5 +1,7 @@
 # Chain carousel v11: 0-90° with the station inside the loop, a straight rail, the door opened by the EC
 
+> **2026-11-27: [v12](../chain-carousel-v12/README.md) supersedes v11.** It is v11 with the spring-loaded pinion proposed below (a cradle, a 1 N/mm spring, a set-screw stop, a hall switch and the seek), the EC's second seat, and three fixes to v11's drawings (the P16's rod-end slot, the NEMA 11's shaft, the door's tower and rod). In its model nothing jams in 504 indexes. v11's Onshape document is renamed SUPERSEDED.
+
 **v11 is a variation on [v10](../chain-carousel-v10/README.md)** (the station inside the loop, Sam's favourite so far), and so on
 [v7](../chain-carousel-v7/README.md), which stays the main version. It follows Sam's notes of 2026-11-25
 ([PR #185](https://github.com/vertical-cloud-lab/powder-doser/pull/185)):
