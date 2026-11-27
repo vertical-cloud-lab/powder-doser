@@ -146,10 +146,19 @@ takes 29 and ≥ 0.95 takes 59, so the paper should report Clopper–Pearson bou
 have to be done. They take about 2–3 days of agent work plus Will's review; Will settled four of the
 decisions on 17 Nov. Close the paused campaign 2 and void its starved doses (D6).
 
-**Minimum version** (drops multi-task and DEM inference from the claims, keeps them as outlook): E0–E3,
-E5, E6. That is about 220 doses in 3 rig days. It is still an *Additive Manufacturing* full-length article
-only if E5–E6 show the doser resolving the sieved and unsieved Al 4047. Otherwise submit as an AM **Methods
-paper** or to *Powder Technology*.
+**Minimum version** (drops multi-task and DEM inference from the claims and keeps them as outlook):
+E0–E3, E5 and E6, as the round-2 mock review also concluded (§4c). The review adds three things:
+- make E3 a **paired, replicated sieved/unsieved Al 4047 comparison**, with the removed or retained
+  fraction measured;
+- repeat one anchor setting on a **second fill or a second day** (8 doses), so that setting effects can be
+  separated from the powder's state;
+- add **one quantitative AM-facing outcome**, either a small E9 (blade-spread layers of the two Al 4047
+  states) or the composition accuracy of atomizer charges against a tolerance.
+
+That is about 220 doses in 3 rig days, or about 175 if the two dose-range blocks per session are dropped
+along with the dose-range claim. It is an *Additive Manufacturing* full-length article only if the sieved
+and unsieved Al 4047 are told apart beyond the measurement scatter. Otherwise submit it as an AM **Methods
+paper** (the review's preferred route for the present data) or to *Powder Technology*.
 
 ### B. Analyses and code
 
@@ -239,6 +248,38 @@ replicates, status) added; Spearman ρ now reported with a bootstrap interval an
 Still open from the minor comments: supplier/lot/storage history in Table 1; label stage-transition masses
 in Fig. 1a; an image or sieve result for the clogged Al 4047; CPU model for the DEM timings; outlet mesh
 resolution and leak checks; units and uncertainty for tap quantum and τ_af in a table.
+
+## 4c. Edison mock review, round 2 (2026-11-27) and what was done with it
+
+Task `1fea381a-1bc8-4018-a5e3-4613e9acd287` on the rewrite (`2cdf739`). Its files are in
+[`mock_review_r2/`](mock_review_r2/), and the full report is
+`mock_review_r2/outputs/mock_peer_review_and_audit.md`.
+
+- **Verdict:** reject as a full research article now; the editor would send it out after E0–E3 and E5–E6.
+  The present data fit the journal's Methods-paper type better.
+- **Numbers reproduced:** the salt medians, the exact p = 0.004, the Hodges–Lehmann and bootstrap
+  intervals, Table S1, the outcome counts and the binomial bounds.
+- **Duplication:** no copied figure or table was found. The shared events (the AlSi10Mg charge, the Al 4047
+  obstruction and clearing) were flagged as the main risk.
+
+| # | Finding | Done in this draft |
+|---|---|---|
+| 1 | Fig. 7b showed ρ = 0.35, n = 12; the text said ρ = 0.87, n = 9 | **Fixed**: the figure now uses the #163 rule (completed 1 g doses only, n = 9) and shows ρ = 0.87 |
+| 2 | "No effect" of the margin is a failure to detect, confounded with drift | **Fixed** in the abstract and §3.2 |
+| 3 | Two "ok" doses settle outside their band; ok ≠ inside the failure limits | **Explained** in §2.3 and the SI captions (scored 2 s after the controller's call) |
+| 4 | "±5% above about 55 mg" is extrapolated | **Reworded**: the 50 mg dose missed by 5.1%; dose-range blocks are needed |
+| 5 | 10 g dose with the firmware fault counted among "all six" | **Stated** in §3.1 |
+| 6 | The 7%, ρ = 0.90 and feed numbers not auditable from the SI | **Fixed**: SI Tables S2 and S4 now list each dose's bulk feed |
+| 7 | Cleared Al 4047 dose: 31 mg/s here vs about 25 mg/s in #97 | **Fixed**: two estimators reported (mean over the bulk stage, slope over its middle), 18–31 mg/s, and 23 mg/s over the whole dose; the bulk-only mode's taper and boost make the settings nominal |
+| 8 | Same events told in both papers (AlSi10Mg 7.993 g; obstruction, reverse turns, clearing) | **Fixed here**: §3.3 cites #97 for the event and the charges and keeps only the feed analysis. **Open**: agree with #97 which paper tells the obstruction story (Sam, Will) |
+| 9 | GP coverage ≠ calibrated, useful uncertainty | **Reworded** (40/42 and 39/42 coverage; wide intervals) |
+| 10 | Comparisons don't show BO beats simpler strategies | **Stated** in the Discussion; a retrospective screen-plus-linear-model baseline is an open analysis |
+| 11 | Fig. 1 marks the humid-air feed factor as measured | **Fixed**: "humid-air test proposed" |
+| 12 | Flight length 84 vs 83 mm; companion title; "every prompt" scope; glove-box observation not attributed; Fig. 6a provenance | **Fixed** |
+| 13 | Table 1 inventory misses the 2 pre-restart doses | **Fixed** |
+| 14 | Freeze the scope and article type | **Open** (Sterling) |
+| 15 | Paired, replicated sieved/unsieved experiment; repeat-fill/day anchor; one AM-facing outcome | **Added** to the minimum version (§4A) |
+| 16 | Tie-aware permutation tests, success-conditioned time, grouped uncertainty across sessions | **Open** analysis, once E1–E3 give independent sessions |
 
 ## 5. Sources mined for this draft
 

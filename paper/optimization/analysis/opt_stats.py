@@ -78,7 +78,13 @@ def bulk_feed(doc: dict) -> dict:
     p = doc.get("parameters_executed") or doc.get("parameters") or {}
     rpm = float(p.get("bulk_rpm") or np.nan)
     rate = dm / dt
+    # second estimator: least-squares slope over the middle 60% of the bulk stage, which leaves out
+    # the start-up gush and the end-of-stage taper (the two disagree most for short or tapering stages)
+    t0 = b.t_s.iloc[0]
+    w = b[(b.t_s >= t0 + 0.2 * dt) & (b.t_s <= t0 + 0.8 * dt)]
+    mid = float(np.polyfit(w.t_s, w.z_g, 1)[0]) * 1e3 if len(w) >= 3 else np.nan
     return {"bulk_s": round(dt, 2), "bulk_dm_g": round(dm, 4), "bulk_rate_mgps": round(rate * 1e3, 2),
+            "bulk_mid_mgps": round(mid, 2) if mid == mid else None,
             "bulk_mg_per_rev": round(rate * 1e3 / (rpm / 60.0), 1) if rpm == rpm and rpm > 0 else None}
 
 
@@ -439,13 +445,14 @@ def write_tables(sr, mr, pdf, mdf) -> None:
     lines = []
     for _, r in sr.iterrows():
         lab = r.label.replace("_", r"\_")
-        lines.append(f"{r.i} & \\texttt{{{lab}}} & {setting(r)} & {r.status} & {_fmt(r.t)} & {_fmt(r.err)} \\\\")
+        lines.append(f"{r.i} & \\texttt{{{lab}}} & {setting(r)} & {r.status} & {_fmt(r.t)} & {_fmt(r.err)} & "
+                     f"{_fmt(r.get('bulk_rate_mgps'))} \\\\")
     (TAB / "si_salt_doses.tex").write_text("\n".join(lines) + "\n")
     lines = []
     for _, r in mr.iterrows():
         lab = r.label.replace("_", r"\_")
         lines.append(f"{r.i} & \\texttt{{{lab}}} & {setting(r)} & {1e3 * r.cutoff_margin_g:.1f} & {r.status} & "
-                     f"{_fmt(r.t)} & {_fmt(r.err)} \\\\")
+                     f"{_fmt(r.t)} & {_fmt(r.err)} & {_fmt(r.get('bulk_rate_mgps'))} \\\\")
     (TAB / "si_margin_doses.tex").write_text("\n".join(lines) + "\n")
     lines = []
     for _, r in pdf.iterrows():
@@ -455,8 +462,9 @@ def write_tables(sr, mr, pdf, mdf) -> None:
     for _, r in mdf.iterrows():
         tgt = "--" if r.target_g is None or (isinstance(r.target_g, float) and not np.isfinite(r.target_g)) else f"{r.target_g:.4f}"
         rate = _fmt(r.get("bulk_rate_mgps"), 1) if "bulk_rate_mgps" in r else "--"
+        mid = _fmt(r.get("bulk_mid_mgps"), 1) if "bulk_mid_mgps" in r else "--"
         lines.append(f"{r.utc.replace('T', ' ')} & {'AlSi10Mg' if r.powder == 'alsi10mg' else 'Al 4047'} & {r['mode']} & "
-                     f"{tgt} & {r.status} & {_fmt(r.t_s)} & {rate} \\\\")
+                     f"{tgt} & {r.status} & {_fmt(r.t_s)} & {rate} & {mid} \\\\")
     (TAB / "si_metal_doses.tex").write_text("\n".join(lines) + "\n")
     print("wrote", TAB)
 

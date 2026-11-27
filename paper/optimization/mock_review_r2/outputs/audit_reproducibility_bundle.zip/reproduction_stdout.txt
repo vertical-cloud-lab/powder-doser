@@ -1,0 +1,163 @@
+     group metric  n  median     mean   min   max         sd
+hand-tuned      t  4  245.15 253.2250 179.8 342.8  67.407041
+hand-tuned      e  4    4.55   4.3750   3.6   4.8   0.543906
+    bo-005      t  8   78.40  84.6500  60.5 114.4  20.112114
+    bo-005      e  8    1.85   1.7875   0.8   2.6   0.564263
+ corner-09      t  8  201.95 215.3875  47.1 385.0 138.514883
+ corner-09      e  8    2.60   2.5250   2.0   2.8   0.276457
+        a          b metric    U  p_exact_untied  p_label_permutation  HL_shift
+   bo-005 hand-tuned      t  0.0        0.004040             0.004040   -165.80
+   bo-005 hand-tuned      e  0.0        0.004040             0.004040     -2.65
+   bo-005  corner-09      t 14.0        0.064957             0.064957   -114.50
+   bo-005  corner-09      e  6.0        0.004662             0.004817     -0.70
+corner-09 hand-tuned      t 14.0        0.808081             0.808081    -59.35
+corner-09 hand-tuned      e  0.0        0.004040             0.004040     -2.00
+{
+  "versions": {
+    "python": "3.13.7 (main, Sep 18 2025, 19:47:49) [Clang 20.1.4 ]",
+    "numpy": "2.4.4",
+    "pandas": "2.3.3",
+    "scipy": "1.17.1"
+  },
+  "bootstrap_intervals": {
+    "hand-tuned_t": [
+      179.8,
+      342.8
+    ],
+    "hand-tuned_e": [
+      3.6,
+      4.8
+    ],
+    "bo-005_t": [
+      68.5,
+      109.6
+    ],
+    "bo-005_e": [
+      1.3,
+      2.3
+    ],
+    "corner-09_t": [
+      99.2,
+      355.9
+    ],
+    "corner-09_e": [
+      2.3,
+      2.8
+    ],
+    "ratio_time_medians": [
+      2.0738177623990777,
+      4.372448979591836
+    ],
+    "HL_bo_minus_baseline_time": {
+      "interval": [
+        -261.8,
+        -104.00000000000001
+      ],
+      "confidence": 0.9515151515151515
+    },
+    "HL_bo_minus_corner_time": {
+      "interval": [
+        -268.0,
+        3.299999999999997
+      ],
+      "confidence": 0.9501165501165502
+    }
+  },
+  "paired": {
+    "n_both_ok": 7,
+    "median_dt": -11.899999999999999,
+    "mean_dt": -56.15714285714285,
+    "wilcoxon_p": 0.578125,
+    "mean_absolute_error_change": 0.21428571428571394,
+    "overshoot_lost": 2,
+    "overshoot_gained": 1,
+    "mcnemar_p": 1.0,
+    "time_rho": 0.4441176470588235,
+    "time_p": 0.08482274417741573,
+    "abs_error_rho": 0.463918028893613,
+    "abs_error_p": 0.07028191374541404,
+    "signed_error_rho": 0.2032402793248209,
+    "signed_error_p": 0.45027997138663767,
+    "all16_exact_signed_rank_signflip_p": 0.87017822265625
+  },
+  "constant_LOO_RMSE": {
+    "time": 133.8202792057702,
+    "abs_error": 19.52151865660869
+  },
+  "factorial_defining_words": {
+    "3": [],
+    "4": [
+      "bulk_taps,trickle_taps,bulk_tilt,delta",
+      "bulk_taps,trickle_taps,trickle_tilt,switch",
+      "bulk_taps,trickle_taps,tap_tilt,rpm",
+      "bulk_taps,bulk_tilt,trickle_tilt,tap_tilt",
+      "bulk_taps,bulk_tilt,rpm,switch",
+      "bulk_taps,trickle_tilt,rpm,delta",
+      "bulk_taps,tap_tilt,switch,delta",
+      "trickle_taps,bulk_tilt,trickle_tilt,rpm",
+      "trickle_taps,bulk_tilt,tap_tilt,switch",
+      "trickle_taps,trickle_tilt,tap_tilt,delta",
+      "trickle_taps,rpm,switch,delta",
+      "bulk_tilt,trickle_tilt,switch,delta",
+      "bulk_tilt,tap_tilt,rpm,delta",
+      "trickle_tilt,tap_tilt,rpm,switch"
+    ]
+  },
+  "recorded_ok_outside_displayed_band": [
+    {
+      "campaign": 1,
+      "index": 20,
+      "label": "center-03",
+      "error": -9.5,
+      "delta": 9.0
+    },
+    {
+      "campaign": 2,
+      "index": 5,
+      "label": "corner-03",
+      "error": -3.1,
+      "delta": 3.0
+    }
+  ],
+  "campaign1_counts": {
+    "ok": 31,
+    "overshoot": 8,
+    "cycle-budget": 3
+  },
+  "campaign2_counts": {
+    "ok": 19,
+    "cycle-budget": 6,
+    "fw-error": 6,
+    "overshoot": 5,
+    "stalled": 5,
+    "not-tared": 2
+  },
+  "time_median_ratio": 3.126913265306122,
+  "execution_sum_seconds": 6650.4,
+  "success_lower_8of8": 0.6876560219336321,
+  "overshoot_upper_0of8": 0.3123439780663678,
+  "outline_power_simulations": [
+    {
+      "n": 8,
+      "m": 8,
+      "ratio": 2,
+      "critical_U": 13,
+      "power": 0.99734
+    },
+    {
+      "n": 8,
+      "m": 8,
+      "ratio": 1.5,
+      "critical_U": 13,
+      "power": 0.80354
+    },
+    {
+      "n": 4,
+      "m": 8,
+      "ratio": 2,
+      "critical_U": 4,
+      "power": 0.957495
+    }
+  ]
+}
+All audit assertions passed. Results: /workspace/review_audit/reproduced

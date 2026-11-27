@@ -58,18 +58,22 @@ Setting & low / high & low & high & low & high & low & high \\
 \end{tabular}
 \end{table}
 
-\footnotesize\setlength{\tabcolsep}{3.5pt}
-\begin{longtable}{@{}rlllllllllrr@{}}
+\scriptsize\setlength{\tabcolsep}{3.2pt}
+\begin{longtable}{@{}rlllllllllrrr@{}}
 \caption{Every dose of campaign~1 (indices 0--41, 29 September 2026) and of the two validation blocks
 (indices 42--59, 6 October 2026). Doses 42 and 43 ran at the recommended settings before a restart of the
 rig and belong to neither block; 44--51 are the \texttt{bo-005} block and 52--59 the \texttt{corner-09}
-block. Error is signed (negative: under the target).}\label{tab:salt}\\
+block. Error is signed (negative: under the target). Outcome is the controller's classification when it
+stopped; the error is scored on the settled reading 2~s later, so a dose can be ``ok'' and settle just outside
+its band (dose 20: $-$9.5~mg at $\pm$9~mg). Feed: mass gained between the first and last reading of the bulk
+stage divided by its duration (mg/s; ``--'' where the bulk stage lasted under 3~s or has no telemetry), the
+quantity behind Fig.~3b and the paired-corner statistics of Section~3.2.}\label{tab:salt}\\
 \toprule
-\# & Label & Taps & Bulk & Trickle & Tap & rpm & Switch & $\delta$ & Outcome & $t$ (s) & $e$ (mg) \\
+\# & Label & Taps & Bulk & Trickle & Tap & rpm & Switch & $\delta$ & Outcome & $t$ (s) & $e$ (mg) & Feed \\
 \midrule
 \endfirsthead
 \toprule
-\# & Label & Taps & Bulk & Trickle & Tap & rpm & Switch & $\delta$ & Outcome & $t$ (s) & $e$ (mg) \\
+\# & Label & Taps & Bulk & Trickle & Tap & rpm & Switch & $\delta$ & Outcome & $t$ (s) & $e$ (mg) & Feed \\
 \midrule
 \endhead
 \tabinput{analysis/results/tables/si_salt_doses.tex}
@@ -94,18 +98,19 @@ Started (UTC) & Target (g) & Outcome & $t$ (s) & $e$ (mg) & Taps \\
 
 \section{Campaign 2 (salt, nine settings)}
 
-\footnotesize\setlength{\tabcolsep}{3.5pt}
-\begin{longtable}{@{}rllllllllrlrr@{}}
+\scriptsize\setlength{\tabcolsep}{3.2pt}
+\begin{longtable}{@{}rllllllllrlrrr@{}}
 \caption{Every dose of campaign~2 (13 and 15 October 2026); ``Margin'' is the hand-over margin of the
 trickle stage. \texttt{not-tared}: the balance had not been tared, nothing was dispensed;
 \texttt{fw-error}: the dose finished but the firmware ran out of memory while reporting it (fixed on 15
-October, from dose 33).}\label{tab:margin}\\
+October, from dose 33). As in Table~\ref{tab:salt}, outcome is the controller's classification and the
+error is scored 2~s later (dose 5: $-$3.1~mg at $\pm$3~mg). Feed as in Table~\ref{tab:salt}.}\label{tab:margin}\\
 \toprule
-\# & Label & Taps & Bulk & Trickle & Tap & rpm & Switch & $\delta$ & Margin & Outcome & $t$ (s) & $e$ (mg) \\
+\# & Label & Taps & Bulk & Trickle & Tap & rpm & Switch & $\delta$ & Margin & Outcome & $t$ (s) & $e$ (mg) & Feed \\
 \midrule
 \endfirsthead
 \toprule
-\# & Label & Taps & Bulk & Trickle & Tap & rpm & Switch & $\delta$ & Margin & Outcome & $t$ (s) & $e$ (mg) \\
+\# & Label & Taps & Bulk & Trickle & Tap & rpm & Switch & $\delta$ & Margin & Outcome & $t$ (s) & $e$ (mg) & Feed \\
 \midrule
 \endhead
 \tabinput{analysis/results/tables/si_margin_doses.tex}
@@ -118,14 +123,21 @@ October, from dose 33).}\label{tab:margin}\\
 \centering
 \caption{Every executor dose and hand-driven session of metal feedstock (29 September to 20 October 2026).
 Target is the mass that dose was asked for; hand-driven sessions (\texttt{manual}) were reverse turns,
-read-backs and stepwise top-ups. The bulk feed (mg/s) is the mass gained between the first and last reading
-of the bulk stage divided by its duration. The charges these doses filled are reported with the hardware
-(Charles et al.).}
+read-backs and stepwise top-ups. Bulk feed, ``mean'': the mass gained between the first and last reading of
+the bulk stage divided by its duration; ``middle'': the least-squares slope over the middle 60\% of the bulk
+stage, which leaves out the start-up and the end-of-stage taper. The two differ most for short or tapering
+stages (the last Al~4047 dose: 30.7 against 17.9~mg/s; 22.9~mg/s over the whole dose). In the bulk-only mode
+of the Al~4047 doses the auger slowed linearly over the last 0.1--0.5~g and sped up again after 3~s without
+flow, so the bulk settings were nominal. The dose of 30 September at 21:21 ran 803~s (369~s of bulk, then 240 tap
+cycles) before it ended at its tap-cycle budget; its executed parameters do not include the 600~s timeout of
+the campaign doses. The charges these doses filled are reported with
+the hardware (Charles et al.).}
 \label{tab:metal}
 \small
-\begin{tabular}{@{}llllrrr@{}}
+\begin{tabular}{@{}llllrrrr@{}}
 \toprule
-Started (UTC) & Powder & Mode & Target (g) & Outcome & $t$ (s) & Bulk feed (mg/s) \\
+ & & & & & & \multicolumn{2}{c}{Bulk feed (mg/s)} \\
+Started (UTC) & Powder & Mode & Target (g) & Outcome & $t$ (s) & mean & middle \\
 \midrule
 \tabinput{analysis/results/tables/si_metal_doses.tex}
 \bottomrule

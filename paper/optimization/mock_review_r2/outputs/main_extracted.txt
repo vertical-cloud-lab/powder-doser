@@ -1,0 +1,1846 @@
+## Page 1
+
+Graphical Abstract
+
+Per-powder Bayesian calibration of an auger doser for alloy feedstock
+preparation, and dosing records as a probe of powder flow
+
+Will Mulberry, Sam Charles, Luke Winters, Carl Robison, Gage Erickson,
+Sterling G. Baird
+
+      Every calibration of a powder doser is also a measurement of the powder
+
+
+       calibrate each powder       same settings, other feedstock         records rank powders
+     s per 0.5 g dose (salt)               bulk feed (mg/s)             mg per revolution
+
+ 350
+
+ 300                                         102                                         102
+
+ 250
+
+ 200                                                                                     101
+ 150                                         101
+
+ 100                                                                                     100
+
+  50
+                                                                                  ρ = -0.84, 12 powders
+   0                                         100                                        10−1
+            hand-         Bayesian                          salt     AlSi10Mg    Al 4047               30     35     40     45     50
+            tuned         optimized                                       unsieved                    angle of repose (°)
+
+## Page 2
+
+Highlights
+
+Per-powder Bayesian calibration of an auger doser for alloy feedstock
+preparation, and dosing records as a probe of powder flow
+
+Will Mulberry, Sam Charles, Luke Winters, Carl Robison, Gage Erickson,
+Sterling G. Baird
+
+
+  • Calibrating an auger powder doser is cast as multi-objective Bayesian
+      optimization
+
+  • Validated settings dosed 0.5 g of salt three times faster than hand-tuned
+     ones
+
+  • The best single screening dose did not repeat; the model’s recommenda-
+      tion did
+
+  • Feed rate at fixed settings flagged oversized particles in an Al 4047
+      feedstock
+
+  • Delivery per revolution ranked 12 powders like their angle of repose
+
+## Page 3
+
+ Per-powder Bayesian calibration of an auger doser for
+   alloy feedstock preparation, and dosing records as a
+                probe of powder flow
+
+    Will Mulberrya, Sam Charlesa, Luke Wintersa, Carl Robisona, Gage
+                      Ericksona, Sterling G. Bairda,b,∗
+
+ aDepartment of Mechanical Engineering, Brigham Young University, Provo, UT, USA
+ bAcceleration Consortium, University of Toronto, 80 St George St, Toronto, ON, M5S
+                                3H6, Canada
+
+
+
+
+Abstract
+
+Alloy development for powder bed fusion and directed energy deposition
+begins by weighing many feedstock powders, and an automated doser must
+be recalibrated for each powder. This work treats calibration of an open-
+source, 3D-printed auger doser as multi-objective Bayesian optimization of
+eight controller settings, minimizing dose time and error, and asks what
+the calibration records reveal about the powder. On sodium chloride, an
+unattended campaign of 42 doses found settings that, repeated eight times a
+week later, dosed 0.5 g in a median of 78 s (95% confidence interval 69–110 s)
+with a median error of 1.8 mg, against 245 s and 4.6 mg for hand-tuned
+settings (exact Mann–Whitney p = 0.004 for both). The best single screening
+dose did not repeat. A second campaign, which also searched the controller’s
+hand-over margin, found no effect of it and was halted when the salt feed
+fell fivefold within one session. Unchanged, the salt settings dosed 8 g of gas-
+atomized AlSi10Mg within 7.2 mg. At the same settings an unsieved Al 4047
+powder from the laboratory’s atomizer fed 13 times more slowly and stalled
+until oversized particles were removed, so the dose record flagged a feedstock
+problem. Across 12 powders, delivery per auger revolution ranked like the
+literature angle of repose (Spearman ρ = −0.84).  [Multi-task calibration
+across metal powders, and contact parameters inferred with a discrete element
+
+
+   ∗Corresponding author.
+    Email address: sterling.baird@byu.edu (Sterling G. Baird)
+
+## Page 4
+
+   model, will be reported here.] Calibration records, which every automated
+   dosing workflow already produces, can therefore double as a low-cost check of
+   feedstock flow.
+
+   Keywords:  powder dosing, feedstock, powder flowability, Bayesian
+   optimization, multi-task learning, discrete element method, self-driving
+   laboratory
+
+
+ 1  1. Introduction
+
+ 2     Alloy development by additive manufacturing (AM) starts with weighing
+ 3  powders. Each candidate composition is made by blending elemental or
+ 4  pre-alloyed powders, either in the bed of a laser powder bed fusion (PBF-LB)
+ 5  machine or in the feeders of a directed energy deposition (DED) system
+ 6  [1, 2, 3, 4, 5, 6], or as a charge that is melted and atomized into a new powder.
+ 7  In a self-driving laboratory (SDL), where a planning algorithm chooses each
+ 8  next composition and robots make and test it [7, 8, 9], that weighing step
+ 9  must be automatic, accurate and fast for every powder the workflow uses
+10  [10, 11, 12, 13]. The same powders must later spread into thin, uniform layers,
+11  and how well they do so depends on the same properties that make them easy
+12  or hard to dose: particle size and shape, cohesion and friction [14, 15, 16, 17].
+13     Measuring those properties is slow and often uninformative. Hall and
+14  Carney funnels report a single flow time and cannot test strongly cohesive
+15  powders, which do not flow through them at all [18, 19]. Shear cells and
+16  powder rheometers give richer data, but each test needs tens of millilitres of
+17  powder, a dedicated instrument and a trained operator [20, 21]. Rotating
+18  drums and spreadability tests come closer to the conditions inside an AM
+19  machine [22, 23, 24, 25], yet different flow tests often rank the same powders
+20  differently, and none of them predicts spreading reliably on its own [18, 19, 24].
+21  For an SDL that cycles through dozens of feedstocks, including small batches
+22  of reactive or expensive powders, a separate characterization campaign for
+23  each powder is rarely affordable.
+24    Powder feeders, by contrast, are characterized all the time, because each
+25 new powder must be calibrated before it can be dosed. In pharmaceutical
+26  manufacturing, the feed factor of a screw feeder, the mass it delivers per screw
+27  revolution, has been predicted from bulk density, compressibility and shear-
+28  cell data [26, 27, 28], and loss-in-weight feeders have standard methods for
+29  measuring how their output varies [29, 30, 31]. If material properties predict
+
+
+                                   2
+
+## Page 5
+
+30  feeder behaviour, the reverse should also hold: a feeder that is driven through
+31  a designed set of conditions, and weighed, measures the powder. Small-scale
+32  dosers make this attractive because the measurement uses milligrams to
+33  grams of powder and happens anyway, every time a new powder is loaded
+34  [32, 33, 34, 35, 36].
+35     Calibration of this kind is an optimization problem with several competing
+36  goals. A dose should be accurate and repeatable, it should be fast, and the
+37  settings should work across the range of doses the workflow needs. Overshoot
+38  cannot be undone, because powder cannot be taken back out of the cup, so
+39  an error in one direction costs more than in the other. Bayesian optimization
+40 (BO) suits such problems. It fits a probabilistic model to the doses made so far
+41  and chooses the next settings with an acquisition function, a rule that scores
+42  candidate settings by their expected gain [37, 38, 39]; it has already tuned
+43 AM processes autonomously [40].  Multi-objective BO finds the trade-off
+44  between goals such as time and error, the Pareto front [41], and priors that
+45  favour a few influential settings make it practical with many settings and
+46  few experiments [42]. Each new powder, however, still starts from scratch.
+47  Multi-task BO treats related problems, here different powders on the same
+48  doser, as tasks of one model, so that data from earlier powders inform the
+49   first doses of a new one [43, 44, 45]. How strongly two powders are related is
+50  then a quantity the model learns, and it is natural to ask whether it reflects
+51  their physical properties.
+52     Physics-based models can answer that question directly. The discrete
+53  element method (DEM) simulates every grain and every contact between
+54  grains [46, 47].  It has been used to predict the output of screw conveyors
+55  [48], and it represents cohesion and rolling friction with contact laws whose
+56  parameters are hard to measure directly [49, 50, 51].  Those parameters
+57  are usually calibrated by matching simulations to bulk tests, which is itself
+58  an inverse problem [52, 53, 54, 55] and is best treated with the statistical
+59  methods developed for calibrating computer models [56, 57].  Dosing of
+60  cohesive powders by a screw feeder in a simplified geometry has been simulated
+61  with DEM, with interparticle friction and cohesion calibrated against the
+62  dosed mass [58], and the closest precedent calibrated DEM parameters of
+63  pharmaceutical powders against several bulk responses extracted from auger
+64  dosing experiments [59, 60], so inferring contact parameters from a doser is
+65  not itself new. What is new here is a doser that optimizes its own settings
+66  for each powder and whose records are then reused as a flow measurement
+67  of AM feedstock. DEM is also the standard tool for studying how powders
+
+                                   3
+
+## Page 6
+
+ 68  spread into AM layers [61, 62, 15, 63], so contact parameters inferred from
+ 69  dosing could be passed on to a spreading model.
+ 70     This work uses an open-source, 3D-printed auger doser whose design,
+ 71  construction and fixed-setting response to 13 powders are reported separately
+ 72  [64]; Section 2.1 repeats the details needed to reproduce the present experi-
+ 73  ments. Four questions are addressed, each with its own evidence. First, can
+ 74  calibration for one powder run unattended as multi-objective BO, and do the
+ 75  recommended settings hold up in repeat doses (Section 3.1)? Second, what
+ 76  limits unattended calibration in practice (Section 3.2)? Third, do settings
+ 77  calibrated on one powder transfer to the metal feedstocks of an alloy workflow,
+ 78  and what do the records say when they do not (Section 3.3)? Fourth, do
+ 79  dosing records rank powders the way standard flow measures do (Section 3.6)?
+ 80  Multi-task calibration across powders (Section 3.4) and the inference of con-
+ 81  tact parameters with a DEM model of the auger (Section 3.5) are set out
+ 82  with their first results and the data still needed. All firmware, campaign and
+ 83  analysis code, dose records and simulation inputs are open [65].
+
+
+ 84  2. Materials and methods
+
+ 85     Sections 2.1 to 2.3 describe the doser, the powders and the dose records.
+ 86  Sections 2.4 to 2.6 describe the two calibration campaigns on salt and the
+ 87  doses of metal feedstock. Sections 2.7 to 2.11 describe the fixed-setting data
+ 88  used for the property correlations, the planned multi-task calibration, the
+ 89 DEM model, the planned characterization of the same powder lots, and the
+ 90  statistics.
+
+ 91  2.1. Doser and dose procedure
+ 92    The doser is one channel of the open-source design in [64, 65]. A one-piece
+ 93  auger, printed in PLA on a Bambu Lab H2D printer with 0.2 mm layers,
+ 94  serves as both reservoir and screw.  Its tube, 21 mm in bore and 250 mm
+ 95  long, holds [58–70 mL; to be measured] of powder, and a single helical flight
+ 96  (0.5 mm thick, 10.4 mm pitch, 8 turns) runs over the last 84 mm before a
+ 97  12 mm conical outlet with a 3 mm exit hole. [The tube used for each dataset
+ 98   is not recorded; record it and measure its as-printed exit hole and core-tip gap.]
+ 99 A NEMA-11 stepper motor (11HS18-0674S, Pololu Tic T500 driver) turns
+100  the auger through a 20:44 gear pair at up to 109 rpm. Two servos tilt the
+101  auger about a hinge near the outlet through a 2:1 gear, and a push–pull
+102  solenoid (JF-0530B, 60 ms pulses) taps the tube to free powder held at the
+
+
+                                    4
+
+## Page 7
+
+103  lip of the outlet. Powder falls through a funnel into a cup on an analytical
+104  balance (A&D HR-100A; 0.1 mg readability, 102 g capacity) that reports
+105  each reading over a serial (RS-232) link. A Raspberry Pi Pico W runs the
+106  dosing firmware (MicroPython; firmware versions are recorded with every
+107  dose), and a Raspberry Pi Zero 2 W next to the rig runs each dose, records it
+108  and uploads the record to a database. All tilts below are angles of the auger
+109  axis above horizontal, and all speeds and revolutions are those of the auger.
+110   A dose has three stages. In the bulk stage the auger turns continuously
+111  at a set tilt and speed, optionally while the solenoid taps at 2 Hz, until the
+112  mass still to go falls to a switch threshold plus a fixed 50 mg allowance for
+113  powder that is still falling. In the trickle stage the auger runs slowly (typically
+114  2–15 rpm) under a proportional–integral controller on the flow rate, which a
+115 Kalman filter estimates from the noisy balance readings. The trickle stops
+116 when the predicted final mass comes within a hand-over margin of the target
+117  (35 mg unless stated); the prediction is the current mass estimate, plus the
+118  afterflow still expected (the flow rate times an afterflow time constant τaf),
+119  plus one standard deviation of the estimate. In the tap stage the auger stops,
+120  the tube moves to a third tilt, and single taps free a few milligrams at a time
+121  until the reading lies within a stopping band of ±δ around the target; when
+122  taps stop freeing powder, the controller turns the auger by a small angle (a
+123  5◦“nudge”) to re-feed the lip. The dose is scored on a balance reading taken
+124  2 s after the last action.
+125    Two rules end a dose early: a dose that exceeds the target by more than
+126  100 mg is aborted, and a dose that uses up its allowance of tap cycles (120) or
+127  nudges (20), or makes no progress for 8 s, ends as a jam. The Kalman filter
+128  models the balance as a first-order lag, a reading that approaches the true
+129  mass with a single time constant. The controller used the datasheet value
+130  of 0.7 s for that constant, whereas drop tests on the rig gave 0.16 s. The
+131  optimized settings absorb this mismatch, but it should be removed before
+132  settings are compared across powders.
+
+133  2.2. Powders
+134    The calibration campaigns used table salt (sodium chloride; food grade,
+135  [supplier and lot]). The metal feedstocks were a gas-atomized AlSi10Mg powder
+136  ([supplier, lot and size grade not recorded]) and an Al 4047 (Al–12 wt% Si)
+137  powder made in the laboratory by ultrasonic atomization and used unsieved
+138  (Table 1). The property correlations of Section 3.6 use the fixed-setting
+139  records of the 12 powders that the companion study dosed with one controller
+
+
+                                    5
+
+## Page 8
+
+    Table 1: Powders and the doses reported in this work. The 12 powders of the property
+     correlations are listed with their literature properties in Table S9.
+
+   Powder                              Doses in this work   Dates (2026)
+
+   NaCl (table salt)                   Campaign  1:  42  29 Sep, 6 Oct
+                                           doses  at  0.5   g,
+                                             plus two validation
+                                            blocks of 8
+                                             Six doses at the rec-  6 and 8 Oct
+                                   ommended settings,
+                                        5 mg to 10 g
+                                   Campaign 2 (nine  13 and 15 Oct
+                                                 settings): 43 doses
+                                             at 0.5 g
+    AlSi10Mg, gas-atomized             One 8 g atomizer  29 Sep
+                                          charge at the salt
+                                                settings
+   Al 4047, laboratory-atomized, unsieved  10   doses    into  30 Sep, 19–20 Oct
+                                          atomizer   charges
+                                            (2  batches),  plus
+                                       5     hand-driven
+                                                sessions
+
+
+140  and one set of settings [64], together with literature and supplier values
+141  of their properties for the material class, each traced to its source in the
+142  repository [65]; seven of the 12 angles of repose are engineering estimates. No
+143  particle-size distribution, density or flow property has yet been measured on
+144  any lot used here. [Measured properties of each lot (Section 2.10) will replace
+145  the literature values.]
+
+146  2.3. Dose records
+147     Every dose writes one machine-readable record with the settings as exe-
+148  cuted, the firmware version, the time spent in each stage, every stop event,
+149  the outcome, and the balance readings: about three per second during the
+150  auger stages and one per tap cycle in the tap stage. Hand-driven steps, such
+151  as reverse turns of the auger used to clear a blocked outlet, were logged as
+152  separate records of the same campaign. The analysis uses a snapshot of all
+153  125 records made between 29 September and 20 October 2026; there are no
+
+
+                                    6
+
+## Page 9
+
+    Table 2: Search space of the salt campaigns (target 0.5 g). The two tap settings are
+     categorical and the rest continuous. Campaign 2 also searched the hand-over margin
+    (0–35 mg), which campaign 1 held at 35 mg. The hand-tuned settings were found by hand
+     for this controller on salt before the campaign; the recommended settings are dose bo-005
+     of campaign 1.
+
+    Setting                            Range    Hand-tuned  Recommended
+
+   Taps during bulk stage                off / 2 Hz       off          2 Hz
+   Taps during trickle stage               off / 2 Hz       off            off
+   Bulk tilt (◦)                          15–40        30            40
+   Bulk speed (rpm)                     20–100        55           100
+    Switch to trickle, mass to go (g)        0.05–0.30       0.25           0.30
+    Trickle tilt (◦)                         10–30        15            10
+   Tap tilt (◦)                            0–15         10            15
+    Stopping band ±δ (mg)                 3–15         5             3
+
+
+154  later calibration records. Each record ends in one of a fixed set of outcomes:
+155  ok (within the stopping band), overshoot (above it), jam (an allowance used
+156  up, or no progress for 8 s; recorded as “cycle-budget” or “stalled”), timeout
+157  (600 s or a session limit), abort (100 mg above the target), or an equipment
+158  error (balance not tared, or a firmware fault), which is flagged separately and
+159  excluded from the comparisons. Spills are flagged by an operator and were
+160  therefore not recorded in unattended runs.
+
+161  2.4. Calibration campaign 1: eight settings on salt
+162     For one powder and one target mass (0.5 g), calibration searches eight
+163  controller settings (Table 2) to minimize two objectives at once: the total time
+164  of a dose, t, and its absolute error, |e|, both measured on the scored balance
+165  reading. The campaign fixed no tolerance in advance: the stopping band δ is
+166  itself one of the searched settings, and the error objective measures where the
+167  dose actually ended. Doses slower than 180 s or more than 20 mg off count
+168  as failures. These two limits form the reference point for the hypervolume,
+169  the area of objective space between that reference point and the best doses
+170  so far, which is the usual single-number summary of a Pareto front. All other
+171  controller parameters, including the controller gains and the 100 mg abort
+172  limit, were frozen at the values of the hand-tuned controller.
+173    The campaign ran in three phases, with four doses at the hand-tuned
+174  settings spread through it as a baseline.  In the first phase, a two-level
+
+
+                                    7
+
+## Page 10
+
+175  fractional factorial screening design of resolution IV (28−4, 16 runs) estimated
+176  the main effect of each setting without confusing it with any two-factor
+177  interaction; each run sits at a corner of the search space. Four centre-point
+178  doses, with every setting at the middle of its range, measured the dose-to-
+179  dose scatter, and two doses ran at the hand-tuned settings. In the second
+180  phase, the afterflow constant was refitted from the 26 stop events recorded so
+181  far (τaf = 0.834 s, the median ratio of afterflow mass to flow rate; a linear
+182  dependence on flow rate was tested and was not significant, t = 1.1), and
+183  the centre point (four doses) and the hand-tuned settings (two doses) were
+184  repeated with the new value. In the third phase, 14 doses were chosen one at
+185  a time in Ax 0.4.3 [66] on BoTorch [67]: two quasi-random (Sobol) points,
+186  then 12 chosen by the model. The hand-tuned baseline therefore consists of
+187  four single doses, two at the initial τaf = 0.30 s and two at the fitted value.
+188    The model was a fully Bayesian Gaussian process (GP) for each objective
+189  with a sparse axis-aligned subspace prior (SAASBO) [42], which assumes that
+190  only a few of the eight settings matter strongly and so suits a search with many
+191  settings and few observations. The acquisition function was the logarithmic
+192  form of the noisy expected hypervolume improvement (qLogNEHVI) [41, 68],
+193  which allows for the noise in each observed dose. Inputs were scaled to the
+194  unit cube and each objective was standardized. The screening and centre-
+195  point doses were given to the model as existing data, so it used all 28 earlier
+196  doses. Doses that jammed were reported to the model at the failure limits
+197  (180 s, 20 mg) or at their measured values if worse, and overshoots at their
+198  measured values. Each suggestion took 1–1.5 min to compute. A preset
+199  deadline stopped the optimization phase after 14 doses, short of the 30–40
+200  planned.
+201    Each dose ran unattended over a remote connection to the rig. The cup was
+202  not emptied during the campaign: it held 20.6 g at the end, against a 45 g limit
+203  set for the session. A restart never repeated a dose, because each dose carries
+204  a unique identifier and its stored result is returned instead. An AI coding
+205  agent (Claude Code, Anthropic) launched and monitored the campaigns and
+206  the validation blocks, and wrote much of the firmware, campaign, analysis and
+207  simulation code, which the authors reviewed. The agent started the campaign
+208  script, watched it and restarted it after interruptions, but the settings of every
+209  dose came from the screening design or the optimizer, not from the agent.
+210  Every prompt and response is public in the repository [65].
+211     Because the observed Pareto front is built from single doses, a point can
+212   lie on it by chance. The recommended settings were therefore taken from the
+
+
+                                    8
+
+## Page 11
+
+213  model’s own Pareto set, computed from its posterior-mean predictions rather
+214  than from the observed doses, and validated a week later (6 October) with a
+215  block of eight repeated doses. A second block of eight tested the screening
+216  dose that lay on the observed front (corner-09). Two further doses at the
+217  recommended settings ran before a restart of the rig on that day and belong
+218  to neither block. On 6 and 8 October six more doses at the recommended
+219  settings, with targets from 5 mg to 10 g, gave a first view of the range of
+220  doses the settings can reach.
+
+221  2.5. Calibration campaign 2: nine settings, including the hand-over margin
+222    The tap stage took most of each dose’s time in campaign 1, and the trickle
+223  handed over to the taps a median 54 mg short of the target. Campaign 2
+224  therefore added the hand-over margin of the trickle (0–35 mg) as a ninth
+225  setting and scored overshoots like jams, at the failure limits, because an
+226  overshoot cannot be undone. It started from the 60 doses of campaign 1 as
+227  existing data, at their 35 mg margin, and re-dosed the 16 screening corners at
+228  a 0 mg margin on 13 October, so that each corner gives a paired comparison of
+229  the two margins. Two check doses at the recommended settings of campaign 1
+230  followed, and then the optimizer (SAASBO with qLogNEHVI, as above, with
+231  one Sobol point). The campaign ran unattended within limits on the cup load
+232  (40 g) and on the number of consecutive stalls or jams (four), and resumed
+233  on 15 October. Three doses on 13 October and three on 15 October ended
+234  with a firmware fault: the dose itself finished, but the microcontroller ran out
+235  of contiguous memory while formatting the result. The fault was fixed during
+236  the session of 15 October (firmware trickle_tap/2026-10-15) and did not
+237  recur. Doses with an equipment error were not given to the model.
+
+238  2.6. Doses of metal feedstock into atomizer charges
+239    The same doser weighed feedstock into the crucibles of the laboratory’s
+240  ultrasonic atomizer, which melts each charge and atomizes it into a new
+241  powder. These doses used the bulk settings of the recommended salt settings
+242  (40◦, 100 rpm, 2 Hz taps) and the afterflow constant fitted on salt, with no
+243  calibration on the metal. The AlSi10Mg charge (8 g requested) ran the full
+244  three-stage dose. The Al 4047 charges (8 g on 30 September; 3.04 g and
+245  6.57 g on 19 and 20 October, targets computed from the weight fractions of a
+246  composition series) ran in a bulk-only mode, in which the dose ends after the
+247  bulk stage and the remainder is topped up. When a dose stalled, the outlet
+248  was cleared remotely by turning the auger backwards at 0◦with bursts of
+
+                                    9
+
+## Page 12
+
+249  taps, or, once, by an operator who removed large particles from the tube by
+250  hand. How these charges were completed, and their final masses, are reported
+251  with the hardware [64]; here only the feed rate in the bulk stage is used, as a
+252  measure of how the powder flowed at fixed settings.
+
+253  2.7. Fixed-setting records used for the property correlations
+254    The companion study ran every powder through the same test protocols
+255  with frozen settings [64]. Three of them are used here. Protocol C turned
+256  the auger through six single revolutions at 30 rpm at each of three tilts (0,
+257  22.5 and 45◦), with a settled balance reading after each revolution, and gives
+258  the delivery per revolution. Protocol D turned it continuously at 15, 45 and
+259  90 rpm at 22.5◦; only its 15 rpm record is used here, for the interruption
+260  fraction below. Protocol G made three closed-loop doses of 1 g with an earlier
+261  three-stage controller whose settings were tuned by hand on salt and frozen for
+262  every powder, and gives a dose error per powder. Delivery at 45◦and the mean
+263  1 g dose error were correlated with literature values of the angle of repose,
+264  moisture content, particle size and Hausner ratio. Two further descriptors
+265  were computed from the same records and are proposed for screening atomized
+266  batches [65]: a gravity-assisted volumetric flow index (delivery per revolution
+267  at 45◦divided by bulk density, normalized to a reference AlSi10Mg powder),
+268  and an interruption fraction (the share of balance increments at 15 rpm that
+269  show no flow), a doser analogue of the cohesive index measured in a rotating
+270 drum [69, 22].
+
+271  2.8. Multi-task calibration across powders (planned)
+272    Each powder is a task, and all tasks share the eight controller settings
+273  and the dose record. A multi-task GP [43, 44] models the objectives of task
+                                                                             (︂                       )︂274  k at settings x with a product kernel K (x, k), (x′, k′) = Bkk′ kx(x, x′), in
+275  which the positive semi-definite matrix B is learned from the data and its
+276  normalized entries are the correlations between powders. Two variants will be
+277  compared. An index kernel learns B freely from the dose data. A descriptor
+278  kernel computes B from each powder’s fixed-setting fingerprint and, where
+279  available, its measured properties, so that a new powder can borrow from
+280  similar ones before its first optimized dose [45]. The model will also take
+281  covariates of the powder’s state, at least the mass dispensed since the tube
+282  was filled and the relative humidity, because campaign 2 showed that the
+283  response drifts with them (Section 3.2).
+
+
+                                   10
+
+## Page 13
+
+284    The objectives will be the time per dose, a one-sided error with a constraint
+285  on the probability of overshoot, which cannot be undone, and the accessible
+286  dose range: the smallest target that the settings deliver within tolerance
+287  with probability at least 0.95. Repeatability will not be optimized; it will
+288  be reported afterwards from blocks of repeated doses, as for campaign 1.
+289  [Constraint thresholds, dose targets and the replicate count of the validation
+290  blocks to be fixed before the multi-task campaigns.]
+291    The benchmark has two parts. In the retrospective part, each completed
+292  single-task campaign is held out in turn, and a statistical model fitted to
+293  its doses (a surrogate) stands in for the rig. Multi-task optimization on the
+294  held-out powder, informed by the other powders, is then compared with
+295  single-task SAASBO, with quasi-random (Sobol) search, with a pooled GP
+296  that ignores task identity, with a descriptor-only model, and with simply
+297  carrying over the best settings of the most similar powder, using the same
+298  initial designs and paired random seeds, and without letting the held-out
+299  data define the best known result. In the prospective part, one new powder,
+300  a freshly atomized batch, is calibrated with the multi-task model. The figure
+301  of merit is the number of doses until the recommended settings reach 90% of
+302  the best hypervolume known for that powder. [Planned campaigns: AlSi10Mg,
+303  sieved Al 4047, and one further alloy feedstock (630 bronze or another laboratory-
+304  atomized alloy), each with about 42 doses, an 8-dose validation block and an
+305  8-dose hand-tuned block.] All doses will be made in air, in a dehumidified
+306  enclosure.
+
+307  2.9. Discrete element model of the auger
+308   A discrete element model of the auger outlet was built in LIGGGHTS-
+309 PUBLIC 3.8 [70, 46]. Grains interact through a Hertz normal contact with
+310  history-dependent tangential friction and an elastic–plastic spring–dashpot
+311  rolling resistance model [51]. Cohesion is added as a simplified Johnson–
+312  Kendall–Roberts (SJKR) term, a pull-off force proportional to the cohesion
+313  energy density and the contact area [49]. For salt, the grains follow a three-
+314  size distribution around a median diameter of 0.425 mm (number fractions
+315  0.3/0.4/0.3 at 0.85, 1 and 1.15 times the median) with a density of 2165 kg m−3,
+316  a literature value for the material class.  Young’s modulus is reduced to
+317  0.2 MPa to allow a time step of 2.1 × 10−5 s, which keeps mean overlaps
+318  below 0.4% of a diameter; Poisson’s ratio is 0.3, the coefficient of restitution
+319  0.5, sliding friction 0.5 between grains and 0.4 against the wall, and rolling
+320  friction 0.3. None of these values was fitted to the dosing data. The geometry
+
+
+                                   11
+
+## Page 14
+
+321  is meshed from the CAD model of the printed auger: the conical outlet
+322  with its 3 mm exit, the solid core whose tip leaves a 1.07 mm annular gap
+323  at the exit, and the lowest 1.5 turns of the flight, filled with about 29,000
+324  grains and topped up from a feed zone. Tilt is applied by rotating gravity,
+325  rotation by turning the auger mesh, and the delivered mass is counted as
+326  grains leave the exit. Each case was run for 0.3–3 revolutions, mostly from
+327  a single random packing. Because the SJKR pull-off force scales with the
+328  contact area, which depends on the softened stiffness, any cohesion energy
+329  density inferred with this model is specific to the simulator and its numerical
+330  stiffness, and comparable across powders only at that fixed stiffness. Adhesion
+331  between particles and the printed PLA wall is a separate parameter that
+332  dosing data alone may not resolve.
+333    To infer effective contact parameters for a powder, the model will be
+334  run over a designed set of cohesion energy densities and sliding and rolling
+335  friction coefficients, with the particle-size distribution fixed at the measured
+336  one, at the tilts and speeds of the fixed-setting protocol. A GP emulator, a
+337  fast statistical stand-in fitted to these runs, then replaces the simulator in a
+338  Bayesian calibration [56, 57]. The calibration returns a posterior distribution
+339  over the contact parameters, the range of values consistent with the measured
+340  response and its scatter, with a discrepancy term for systematic model error.
+341  Dosing data alone may not separate cohesion from friction [52, 53, 60], so
+342  whether each parameter can be recovered on its own will first be checked on
+343  synthetic data. For the finer metal powders, the grain count will be reduced
+344  by coarse-graining, which simulates fewer, larger grains while preserving the
+345  ratio of cohesive to gravitational forces [71]. [Emulator design (number of runs,
+346  parameter ranges) to be fixed after the friction and cohesion sweeps in the rig
+347  geometry.]
+
+348  2.10. Independent powder characterization (planned)
+349    To test whether dosing-derived descriptors and inferred parameters carry
+350  physical meaning, the lots that are dosed will be characterized on samples
+351  from the same jars [72]. In the laboratory: bulk and tapped density and
+352  the Hausner ratio [73]; angle of repose from photographs of a poured pile;
+353  moisture by loss on drying, with temperature and relative humidity logged;
+354  Hall-flow time [74] or, for powders that do not pass the Hall funnel, Carney-
+355  flow time [75], with a purchased funnel set; and the particle-size distribution
+356  from scanning electron micrographs, by sieving, or by laser diffraction [76].
+357  In an outside laboratory: the flow function coefficient ffc from a shear cell
+
+                                   12
+
+## Page 15
+
+358  [77, 20]. Spreadability will be assessed by blade-spreading single layers of
+359  50–100 µm and measuring their areal mass and coverage [24, 25]. [Shear-cell
+360  provider, funnel set and SEM time to be arranged.]
+
+361  2.11. Statistical analysis
+362     Samples are small (4–16 doses per group) and dose times have a long right
+363  tail, so comparisons use exact or resampling methods. Medians are reported
+364  with percentile bootstrap 95% confidence intervals (20,000 resamples). Two
+365  groups are compared with the exact two-sided Mann–Whitney test, with the
+366  Hodges–Lehmann shift and its exact confidence interval, and paired corners
+367  with the exact Wilcoxon signed-rank test and, for counts of overshoots, the
+368  exact McNemar test. A success fraction is bounded with one-sided 95%
+369  Clopper–Pearson limits. Associations between dosing descriptors and powder
+370  properties are Spearman rank correlations, because n ≤12 and many property
+371  values are class estimates; their p-values are not corrected for the 42 predictor–
+372  response pairs examined and are treated as leads rather than findings. The
+373  campaign’s GP model was checked by leave-one-out cross-validation against
+374  three simpler models (Section 3.1; the full mapping to the journal’s checklist
+375  for machine-learning studies is in Table S8). All records, including aborted
+376  and jammed doses, are kept in the analysis; doses with an equipment error
+377  are reported but excluded from comparisons. The scripts that compute every
+378  number in this paper from the dose records are in the repository [65].
+
+
+379  3. Results
+
+380     Sections 3.1 to 3.3 report the two calibration campaigns on salt and the
+381  doses of metal feedstock. Section 3.4 shows the intended form of the multi-
+382  task results, which do not exist yet. Section 3.5 reports the DEM model and
+383  Section 3.6 the comparison with powder properties; within those two sections,
+384  the inference and the same-lot comparisons are placeholders.
+
+385  3.1. Calibration on salt
+386    Campaign 1 ran 42 doses of 0.5 g unattended in 2.3 h (Fig. 2a; every
+387  dose is listed in Table S2). The four doses at the hand-tuned settings took
+388  180–343 s (median 245 s) and ended 3.6–4.8 mg short of the target (median
+389  4.6 mg). Of the 42 doses, 31 ended inside their stopping band, 8 overshot by
+390  21–83 mg and 3 ended in a jam when the allowance of tap cycles ran out.
+
+
+
+                                   13
+
+## Page 16
+
+391    The screening design showed which settings mattered and why (Table S1).
+392  Tapping during the bulk stage cut the average time of successful doses from
+393  185 to 79 s, but five of the eight runs with bulk taps on ended in an overshoot
+394  or a jam, against two of the eight with taps off, presumably because taps free
+395  extra powder after the auger stops. Raising the tap-stage tilt from 0 to 15◦
+396  cut the average time from 223 to 92 s. Switching to the trickle stage earlier,
+397  with 0.30 g rather than 0.05 g to go, cut the mean absolute error from 34
+398  to 11 mg, and two runs at the larger threshold ended in an overshoot or a
+399  jam, against five at the smaller. Six of the eight overshoots were screening
+400  runs, every one at the highest bulk speed, the smallest switch threshold, or
+401  both. Time varied most at a fixed setting: the eight centre-point doses took
+402  24–391 s.
+403     In the third phase, none of the 14 doses beat the best single screening
+404  doses, so the observed hypervolume did not grow. The settings the model
+405  recommended (bo-005, Table 2) had been predicted to take 91 ± 66 s with
+406  a 3 ± 9 mg error, and took 100 s with a 2.4 mg error in the campaign.
+407  Repeated eight times a week later, all eight doses ended inside the 3 mg band,
+408  with a median time of 78 s (range 60–114 s; bootstrap 95% interval of the
+409  median 69–110 s) and a median error of 1.8 mg (1.3–2.3 mg); every dose
+410  ended 0.8–2.6 mg under the target, and the delivered masses had a standard
+411  deviation of 0.56 mg (Fig. 2b). The block’s mean time, 85 s, lay within a
+412  tenth of a predicted standard deviation of the model’s prediction. Against
+413  the four hand-tuned doses, the recommended settings were faster in every
+414  dose (exact Mann–Whitney p = 0.004; Hodges–Lehmann shift −166 s, 95%
+415  interval −262 to −104 s; ratio of medians 3.1, bootstrap 95% interval 2.1–4.4)
+416  and more accurate (p = 0.004). The hand-tuned baseline is weak in two
+417  ways: it has four doses, and two of them ran at the initial afterflow constant.
+418  Against the two hand-tuned doses at the fitted constant alone (median 209 s),
+419  the ratio is 2.7. Eight successes in eight doses bound the probability of a dose
+420  inside the band only from below, at 0.69, and no overshoot in eight bounds
+421  its probability from above at 0.31 (one-sided 95% Clopper–Pearson limits);
+422  showing a success rate of 0.95 would take 59 doses without a failure.
+423    The best single dose of the campaign did not repeat. The screening run
+424  corner-09 had dosed in 52 s with a 0.7 mg error, but eight more doses at its
+425  settings took 47–385 s (median 202 s, 95% interval 99–356 s), depending on
+426 how much powder happened to fall after the bulk stage stopped, and missed
+427  by a median 2.6 mg. The recommended settings were more accurate than
+428  corner-09 (p = 0.005) and probably faster, although the difference in time is
+
+                                   14
+
+## Page 17
+
+429  not significant at this sample size (p = 0.065; Hodges–Lehmann shift −115 s,
+430 95% interval −268 to +3 s), and corner-09 was no faster than hand tuning
+431  (p = 0.81). Picking the best observed dose would have been worse than taking
+432  the model’s recommendation.
+433    Most of the time saved came from the tap stage (Fig. 2c). A hand-tuned
+434  dose spent 152–318 s, 84–93% of its time, tapping out the last 54–66 mg
+435  at 0.6–1.1 mg per tap, whereas at the recommended settings each tap freed
+436  1.5–3.6 mg, consistent with the tube rising from a 10◦trickle tilt to a 15◦
+437  tap tilt instead of dropping to it. The optimizer changed seven of the eight
+438  settings, and all six numeric settings ended at an edge of their search range
+439  (Fig. 2d). Some of these edges are hardware limits, such as the auger speed
+440  near its maximum, and others are choices, such as the 3 mg stopping band;
+441  the rest suggest that the next campaign should search a wider range.
+442     Leave-one-out cross-validation tested how well the campaign’s model
+443  predicts doses it has not seen (Table S6, Fig. S1). For time per dose, no model
+444  predicted held-out doses well. Refitted on the 42 doses, the SAAS GP ranked
+445  them with a Spearman correlation of 0.24 (p = 0.13) and a root-mean-square
+446  error of 129 s, barely below the 134 s of predicting the mean of the other
+447  doses, and a linear model of the eight settings did about as well (ρ = 0.34,
+448  131 s). Fitted to the logarithm of time, the same GP ranked held-out doses
+449  better (ρ = 0.44, p = 0.004). For the error, the linear model ranked held-out
+450  doses best (ρ = 0.54) and the SAAS GP second (ρ = 0.41, p = 0.007); no
+451  model predicted the size of the overshoots. What set the SAAS GP apart was
+452  the calibration of its uncertainty: 95% of held-out doses fell inside its 95%
+453  predictive intervals for time and 93% for error, whereas a standard GP fitted
+454  by maximum a posteriori was overconfident (90% and 71%). Its relevance
+455  weights (Table S7) agreed with the screening design, with bulk speed, the
+456  switch threshold and bulk taps weighing most for time, and bulk taps, then
+457  the switch threshold, for error. Refitted on all 42 doses, it predicted 96 ± 108 s
+458  and 1.1 ± 8.3 mg at the recommended settings (mean ± predictive standard
+459  deviation, including dose-to-dose noise), and all eight validation doses fell
+460  inside both 95% intervals. At this sample size, then, the data do not show
+461  that a flexible model predicts better than a linear one; the benefit of the GP
+462  lay in its calibrated uncertainty, on which the acquisition function and the
+463  recommendation rely.
+464    At the recommended settings, six further doses with targets from 5 mg to
+465  10 g all ended 0.3–2.7 mg under target, inside the 3 mg band, in 25–305 s
+466  (Fig. 4c, Table S3). Because the error is set by the band rather than by the
+
+                                   15
+
+## Page 18
+
+467  target, the relative error fell from 54% at 5 mg to 0.02% at 10 g, so these
+468  settings meet a ±5% tolerance only above about 55 mg. These are single
+469  doses and indicate the accessible dose range only roughly.
+
+470  3.2. What limits unattended calibration: campaign 2
+471    Campaign 2 ran 43 doses on 13 and 15 October (Fig. 3; Table S4). Eight
+472  ended with an equipment error (two before the balance was tared, six with
+473  the firmware fault), leaving 35 usable doses, of which 19 ended inside their
+474  band, 5 overshot, and 11 jammed or stalled.
+475    The hand-over margin made no detectable difference. At a 0 mg margin,
+476  the taps took over a median 32 mg short of the target instead of 54 mg, and
+477  two corners that had needed long tap stages finished much faster (corner-03
+478  in 28 s instead of 227 s, corner-10 in 72 s instead of 352 s). Over the 16
+479  corners as a whole, however, the change was not systematic (Fig. 3a): for
+480  the seven corners that ended inside their band at both margins, the median
+481  change in time was −12 s (exact Wilcoxon p = 0.58), and the error changed
+482  by a mean of 0.2 mg; 6 corners overshot at 35 mg and 5 at 0 mg (exact
+483 McNemar p = 1.0).
+484    The powder changed more than the margin did. In the bulk stage, which
+485  the margin does not affect, the same 16 corners fed a median 7% less on 13
+486  October than on 29 September (exact Wilcoxon p = 0.03), yet they kept their
+487  order: the bulk feed of a corner on one day ranked its feed on the other almost
+488  perfectly (Spearman ρ = 0.90, p < 0.001), whereas dose time and error, which
+489  the trickle and tap stages decide, carried over only weakly (ρ = 0.44 and
+490  0.47, p = 0.08 and 0.07). In the tap stage, the run records show the taps
+491  freeing about 0.2–0.3 mg each on 13 and 15 October, against 1.2–1.7 mg
+492  on 29 September and 6 October. As a result the two check doses at the
+493  recommended settings of campaign 1, which had dosed eight times out of
+494  eight inside 114 s on 6 October, both used up their 120 tap cycles and ran for
+495  more than 400 s. On 15 October the bulk feed at 40◦and 20 rpm fell from a
+496  median of 41 mg/s, the same in the three earlier sessions, to 7.6 mg/s (range
+497  1.0–23 mg/s; Fig. 3b), and the last two doses stalled after delivering 184
+498  and 155 mg, the second at settings that had dosed inside the band minutes
+499  before. The campaign was halted there. The most likely causes are that
+500  the tube was running low or that the salt had caked in the two days since
+501  the previous session; nobody inspected it. Because the loop cannot tell an
+502  empty or caked tube from a jam, those doses were scored as failures of the
+503  settings. The optimizer’s doses therefore mix the effect of the settings with
+
+                                   16
+
+## Page 19
+
+504  that of a drifting powder: seven of them ended inside a 3 mg band, the best
+505  in 72–92 s (Fig. 3c), but none was validated, and the model’s own Pareto set
+506   still consisted of points from campaign 1.
+
+507  3.3. Metal feedstock: transfer of the salt settings, and a feedstock problem
+508    The salt settings transferred to a free-flowing metal powder. Applied
+509  unchanged to gas-atomized AlSi10Mg, with the afterflow constant fitted on
+510  salt, they delivered 7.993 g for an 8 g request (−7.2 mg, −0.09%) in 315 s,
+511  in a single dose that has not been repeated (Table S5). Its bulk stage fed
+512  144 mg/s (86 mg per revolution), 2.4 times the rate measured for salt at the
+513  same settings in the short bulk stages of 0.5 g doses and 1.3 times that of a
+514  1.5 g salt dose (Fig. 4a).
+515    The laboratory’s Al 4047 powder did not transfer. At the same bulk
+516  settings it fed 11 mg/s (6.7 mg per revolution) on 30 September, 13 times
+517  less than AlSi10Mg, and 1.7 mg/s on 19 October, from a tube that may have
+518  been the same one, before the dose stalled (Fig. 4a). Steeper tilts (60 and
+519  75◦) at the highest speed and faster tapping moved almost nothing (0.1 mg
+520  per revolution), whereas about 13 reverse turns at 0◦freed the outlet, after
+521  which it fed 60–80 mg per revolution in either direction for a few turns. The
+522  next day, three doses at the same settings started at progressively lower rates
+523  and decayed within each dose (Fig. 4b): averaged over their bulk stages,
+524  they fed 8.8, 7.6 and 2.4 mg/s. After an operator removed large particles
+525  from the tube by hand, the next dose fed 31 mg/s and finished inside its
+526  band. A blocked outlet that reverse turns can clear, a feed that decays within
+527  and between doses, and a recovery once large particles are removed point to
+528  oversized particles or agglomerates in the unsieved powder bridging at the
+529  3 mm exit. The dose record therefore flagged a feedstock problem before the
+530  powder reached a printer or an atomizer, without any measurement beyond
+531  the calibration itself. [Sieve analysis or micrographs of the removed particles
+532  would confirm the cause.]
+
+533  3.4. Multi-task calibration across powders
+534      [This subsection reports results that do not exist yet; the text below shows the
+535  intended form.] With data from [two] earlier powders, the multi-task model
+536  reached 90% of the best known hypervolume on a held-out powder in [NMT]
+537  doses, against [NST] for single-task optimization and [NSobol] for quasi-random
+538  search (Fig. 5a). Carrying over the best settings of the most similar powder
+539  gave a good first dose, without any dose on the new powder, for free-flowing
+
+
+                                   17
+
+## Page 20
+
+540  powders but [failed for powders that flow like the unsieved Al 4047]. The
+541  learned correlations between powders (Fig. 5b) [grouped the free-flowing metal
+542  and salt powders together], and the descriptor kernel built from fixed-setting
+543  fingerprints [matched the index kernel after one dose on the new powder]. In the
+544  prospective test on a freshly atomized batch, the recommended settings [dosed
+545  0.5 g in X s with Y mg median error after Z doses]. For the accessible-dose-range
+546  objective, the smallest target dosed within tolerance with probability 0.95
+547  was [X mg for AlSi10Mg and Y mg for salt].
+
+548  3.5. A discrete element model of the auger
+549     Without any parameter fitted to dosing data, the DEM model reproduced
+550  the delivery of salt at the centre-point settings of campaign 1: 105 mg per
+551  revolution at 27.5◦and 60 rpm averaged over the run (116 ± 20 mg after
+552  the first quarter revolution), against 105 ± 11 mg measured over eight doses
+553  (Fig. 6a). A second random packing at the same settings gave 102 mg. The
+554  model also reproduced the rise of delivery with tilt, but with larger residuals
+555  at the other settings: 33 against about 28 mg per revolution at 0◦(+18%),
+556  153 against about 195 mg at 45◦(−22%), and 71 against 106–110 mg at 22.5◦
+557  and 90 rpm (−33 to −35%). The measured values at 0◦and 45◦were taken
+558  at 30 rpm and scaled to 60 rpm with a speed exponent that is itself uncertain
+559  [64].
+560    The model is most sensitive to the geometry of the exit and to the grains.
+561 The tip of the auger core sits inside the exit and leaves a 1.07 mm annular
+562  gap, about 2.5 grain diameters, which restricts the flow: moving the tip back
+563  by 0.5, 1 and 2 mm raised delivery from 105 to 112, 224 and 427 mg per
+564  revolution. Reducing the median grain size from 0.425 to 0.35 mm raised it
+565  by 29%. In a smaller 10 mm auger, adding cohesion (20 kJ m−3) cut delivery
+566  from 46.8 to 0.2 mg per revolution, a switch from flow to no flow of the kind
+567  seen between coarse and fine powders of the same material. The narrow exit
+568   is also where the Al 4047 powder blocked (Section 3.3). The model’s cost sets
+569  what can be simulated. The outlet section with 29,000 grains takes 26–30 min
+570  per revolution on one processor core, a full salt-filled auger with 1.1 million
+571  grains about 19 h, and a fine metal powder would need about 109 grains per
+572  auger, so those powders require coarse-graining [71].
+573      [Inference results.] The emulator built from [N] simulations reproduced held-
+574  out simulations within [X%]. Delivery depended most strongly on cohesion at
+575  low tilt and on friction at high tilt (Fig. 6b), so the tilt sweep constrains both.
+
+
+
+                                   18
+
+## Page 21
+
+576  For salt the posterior gave an effective cohesion energy density of [X kJ m−3]
+577  and sliding friction of [Y] (Fig. 6c).
+
+578  3.6. Dosing response and powder properties
+579    Even with literature values in place of measured properties, the fixed-
+580  setting records of the companion study [64] ranked powders the way standard
+581  flow measures do (Fig. 7a). Across 12 powders, delivery at 45◦fell as the
+582  angle of repose rose (Spearman ρ = −0.84, bootstrap 95% interval −0.98 to
+583  −0.50; p = 0.0006, or 0.023 after a Bonferroni correction for the 42 pairs
+584  examined), and the same held at 22.5◦(ρ = −0.77, n = 11). The five powders
+585  with a measured or manufacturer angle of repose ranked correctly on their
+586  own: those at 30–32◦delivered 244–339 mg per revolution and those at 41–45◦
+587  delivered 9–37 mg. The equilibrium moisture content tracked the error of
+588  1 g doses under the hand-tuned controller (ρ = +0.87, n = 9; Fig. 7b):
+589  every powder dosed within 5 mg held less than 0.1 wt% water, and every
+590  hygroscopic biopolymer missed by 33–292 mg. Literature median particle size
+591  did not predict delivery across materials (ρ = +0.26), although the two silicon
+592  grades of the companion study show that it decides flow within one material.
+593 The interruption fraction ranged from 0.13 for AlSi10Mg and 0.26 for salt to
+594  0.81 for carboxymethyl cellulose and 0.96 for sodium alginate; it also followed
+595  the angle of repose (ρ = +0.76, n = 10) while only partly overlapping the
+596  volumetric flow index (ρ = −0.66 between the two), so the two descriptors
+597  are not redundant.
+598     [Comparison with measured properties.] On the same lots, the effective
+599  cohesion inferred from dosing correlated with the shear-cell flow function
+600  coefficient (ρ = [X], Fig. 7c) and with the Hall-flow time of the powders that
+601  passed the funnel ([Y]); [Z] powders did not pass the Hall funnel, but all of
+602  them produced a fixed-setting record. Against blade-spread single layers, [the
+603  interruption fraction ranked the batches like layer coverage].
+
+
+604  4. Discussion
+
+605 What the optimizer contributed. On salt, one unattended session of 2.3 h found
+606  settings that were three times faster than hand tuning, with less than half its
+607  error, and that held up in eight repeats. The optimizer’s 14 doses never beat
+608  the best single screening doses, so its contribution was not a better single dose.
+609  It was the recommendation: a model that averages over noisy doses picked
+610  settings that repeated, whereas the best observed dose, corner-09, was on
+
+
+                                   19
+
+## Page 22
+
+611  the front largely by chance and was no faster than hand tuning when repeated.
+612 The 20 screening doses were well spent: they explained in physical terms why
+613  taps in the bulk stage speed doses up but cause overshoots, and they gave the
+614  model a balanced start. Two lessons follow for the next campaigns. First, time
+615  per dose has a long tail of slow doses (the centre point took 24–391 s), which
+616  a standardized GP on raw time handles poorly; a noise model that allows for
+617  occasional slow doses, or a log transform of time, should be compared in the
+618  retrospective benchmark. Second, the recommended settings sat at the edges
+619  of the search space, so the ranges were set too conservatively.
+
+620 The powder is not a fixed target. Campaign 2 is the more important result
+621  for anyone who wants to run calibration unattended. Two weeks later, the
+622  same settings fed 7% less in the bulk stage, the taps freed about a fifth as
+623 much powder, and the recommended settings of campaign 1, validated eight
+624  times out of eight a week earlier, ran out of tap cycles twice; two days after
+625  that, the feed fell fivefold within one session. The order of the settings in
+626  the bulk stage, however, carried over between sessions almost unchanged
+627  (ρ = 0.90), whereas the endgame did not. What a model can share between
+628  sessions, and between powders, is therefore likely to be the bulk response,
+629  while the tap stage depends on the state of the lip and has to be learned anew
+630  or modelled with covariates. A BO loop that treats every dose as a sample of
+631  a fixed function of the settings will attribute such drift to the settings. Three
+632  measures follow and are built into the plan for the multi-task campaigns:
+633  record the state of the powder with every dose (mass dispensed since the
+634  tube was filled, relative humidity, time since the last session) and give it to
+635  the model as a covariate; start every session with a short reference dose at
+636  known settings, and stop or re-validate when it drifts; and let the loop pause
+637  on a suspected empty or caked tube instead of scoring the dose as a failure.
+638 The firmware fault of campaign 2 is a smaller lesson of the same kind: an
+639  unattended campaign needs equipment errors to be detected and kept out of
+640  the model, as they were here.
+
+641  Dosing records as a check of feedstock. For an alloy workflow, the Al 4047
+642  doses are the clearest case of the doser measuring the powder. At settings that
+643  delivered 144 mg/s of AlSi10Mg, the laboratory’s unsieved powder fed 11 mg/s
+644  or less, decayed within and between doses, and recovered once large particles
+645  were removed. Nothing beyond the dose record was needed to see this, and
+646  the same record flagged it on every batch. Sieving each atomized batch before
+
+
+                                   20
+
+## Page 23
+
+647  use, as is now planned, should remove the cause; a fixed-setting reference
+648  dose of every new batch would then show whether it worked. The rankings of
+649  Fig. 7 point the same way across materials: delivery ranked 12 powders like
+650  their angle of repose, and moisture content, not particle size, tracked dose
+651  error. These agree with studies of pharmaceutical screw feeders, in which
+652  bulk density and cohesion-related properties, rather than size, predicted feed
+653  rate [26, 27, 28, 78]. The literature values are class estimates, however, not
+654  measurements of our lots, and a correlation of ranks across 12 very different
+655  materials shows only that the doser orders powders sensibly. Whether it
+656  can resolve the smaller differences between batches of one alloy (sieved and
+657  unsieved, dry and humid, virgin and reused), which matter most for feedstock
+658  quality control in AM, remains to be shown with measured properties of the
+659  same lots. The fixed-setting record also has two advantages over funnel tests:
+660   it still returns information on cohesive powders, recording a no-flow result
+661  rather than a failed test [18, 79], and it has several dimensions, so it can
+662  separate effects that a single flow time combines.
+
+663 From dosing data to contact parameters. The DEM model reproduced salt
+664  delivery at one setting without calibration and followed its trend with tilt,
+665  which suggests that its geometry and contact laws capture the main mechanis-
+666  m. Its errors at other settings, and its strong sensitivity to the exit gap and
+667  the grain size, mean that inference must start from a measured exit geometry
+668  and a measured particle-size distribution; otherwise those uncertainties will
+669  be absorbed into the inferred cohesion and friction [52, 60]. The inferred
+670  parameters will be effective rather than intrinsic, comparable across powders
+671  only at a fixed numerical stiffness [50]. Static (triboelectric) charging, sus-
+672  pected in noisy readings of carboxymethyl cellulose and seen as salt sticking
+673  to the auger walls in a glove box, is not represented in the model [80]. If these
+674  caveats are respected, the same contact parameters can drive DEM models of
+675  powder spreading, the standard tool for predicting layer quality in PBF-LB
+676  [61, 62, 15, 63].
+
+677  Limits of the present data. The optimization covers one powder at one target
+678  mass, with a hand-tuned baseline of four doses on the campaign day; transfer
+679  to AlSi10Mg rests on one dose. All doses were made in air, and the state of
+680  the powder in the tube was not controlled or recorded. The tap stage sets the
+681  cost of accuracy: at the recommended settings every validation dose landed
+682  inside the 3 mg band, but taps took most of each dose’s time, and the mass a
+
+
+                                   21
+
+## Page 24
+
+683  tap frees falls as the lip of the tube empties and, as campaign 2 showed, from
+684  one session to the next. Tighter tolerances or faster doses therefore need a
+685  smaller and more consistent final increment, for example a smaller outlet or a
+686   refill of the lip between taps, more than a different control law. Which printed
+687  tube produced each dataset was not recorded, and its exit geometry, which
+688  the DEM model shows to matter, was not measured. Finally, every powder
+689  was supplied commercially or made in the laboratory without a recorded lot
+690  analysis.
+
+691  Implications for AM feedstock workflows. In an alloy-discovery workflow the
+692  doser is calibrated on every powder anyway, so the records described here
+693  come at little extra cost in powder or time. Stored with the dose records,
+694  the fixed-setting response, the validated settings and, in time, the inferred
+695  contact parameters of each lot form a feedstock record that can flag a batch
+696  that flows unlike its predecessors, as the unsieved Al 4047 batch was flagged
+697  before it reached an atomizer. [Whether that record predicts spreading and
+698  packing in the powder bed will be tested on blade-spread layers (Section 2.10).]
+
+699  5. Conclusions
+
+700    The calibration of an open-source auger doser was treated as multi-
+701  objective Bayesian optimization, and its records were examined as a mea-
+702  surement of the powder. On salt, an unattended campaign of 42 doses found
+703  settings that dosed 0.5 g in a median of 78 s with a median error of 1.8 mg
+704  over eight repeats, about three times faster than hand-tuned settings, whereas
+705  the best single screening dose did not repeat. A second campaign showed that
+706  the powder’s response drifts between and within sessions enough to defeat an
+707  optimizer that ignores it, so the state of the powder must be recorded and
+708  modelled. The salt settings dosed 8 g of AlSi10Mg within 0.1% in one dose,
+709  while an unsieved laboratory-atomized Al 4047 fed an order of magnitude
+710  more slowly and stalled until oversized particles were removed, which the dose
+711  record alone revealed. Across 12 powders, delivery ranked like the angle of
+712  repose. A DEM model of the auger, with no parameters fitted to dosing data,
+713  reproduced the measured delivery of salt at one setting and its trend with
+714   tilt. [Multi-task calibration across N powders reduced the doses needed for a
+715  new powder by X%, and effective cohesion and friction inferred from dosing data
+716  tracked shear-cell and Hall-flow measurements.] Because every dosing workflow
+717  already calibrates its doser, the records of that calibration can double as a
+718  check of each feedstock at little extra cost.
+
+                                   22
+
+## Page 25
+
+719 CRediT authorship contribution statement
+
+720     [To be completed once the author list is agreed.]
+
+
+721  Declaration of competing interest
+
+722    The authors declare that they have no known competing financial interests
+723  or personal relationships that could have appeared to influence the work
+724  reported in this paper.
+
+
+725 Data availability
+
+726    The dose records (a snapshot of all 125 calibration and production records,
+727  with balance telemetry), the campaign configurations, the analysis and figure
+728  scripts, the firmware, and the DEM inputs are available at https://github.
+729  com/vertical-cloud-lab/powder-doser (directory paper/optimization)
+730  [and in an archived release with DOI 10.5281/zenodo.XXXXXXX, to be deposited
+731  before submission].
+
+
+732 Acknowledgements
+
+733     [Funding and acknowledgements to be added.]
+
+
+734  Declaration of generative AI and AI-assisted technologies in the
+735  manuscript preparation process
+
+736     During the preparation of this work the authors used Claude Code (An-
+737  thropic) in order to draft and revise the text and to write the analysis and
+738  figure scripts, and Edison Scientific in order to search the literature and to
+739  obtain mock reviews of the draft. After using these tools/services, the authors
+740  reviewed and edited the content as needed and take full responsibility for the
+741  content of the published article.
+
+
+742  References
+
+743    [1] M. H. Mosallanejad, B. Niroumand, A. Aversa, A. Saboori, In-situ
+744       alloying in laser-based additive manufacturing processes: A critical
+745      review, Journal of Alloys and Compounds 872 (2021) 159567.  doi:
+746      10.1016/j.jallcom.2021.159567.
+
+
+                                   23
+
+## Page 26
+
+747    [2] M. Moorehead, K. Bertsch, M. Niezgoda, C. Parkin, M. Elbakhshwan,
+748      K. Sridharan, C. Zhang, D. Thoma, A. Couet, High-throughput synthesis
+749       of mo-nb-ta-w high-entropy alloys via additive manufacturing, Materials
+750    & Design 187 (2020) 108358. doi:10.1016/j.matdes.2019.108358.
+
+751    [3] Z. Li, A. Ludwig, A. Savan, H. Springer, D. Raabe, Combinatorial
+752       metallurgical synthesis and processing of high-entropy alloys, Journal of
+753      Materials Research 33 (2018) 3156–3169. doi:10.1557/jmr.2018.214.
+754    URL https://doi.org/10.1557/jmr.2018.214
+
+755    [4] K. S. Vecchio, O. F. Dippo, K. R. Kaufmann, X. Liu, High-throughput
+756      rapid experimental alloy development (ht-read), Acta Materialia 221
+757      (2021) 117352. doi:10.1016/j.actamat.2021.117352.
+758    URL https://doi.org/10.1016/j.actamat.2021.117352
+
+759    [5] S. Mooraj, G. Kim, X. Fan, S. Samuha, Y. Xie, T. Li, J. S. Tiley, Y. Chen,
+760      D. Yu, K. An, P. Hosemann, P. K. Liaw, W. Chen, W. Chen, Additive
+761      manufacturing of defect-free tizrnbta refractory high-entropy alloy with
+762      enhanced elastic isotropy via in-situ alloying of elemental powders, Com-
+763      munications Materials 5 (2024) 14. doi:10.1038/s43246-024-00452-0.
+764    URL https://doi.org/10.1038/s43246-024-00452-0
+
+765    [6] P. Nelaturu, J. R. Hattrick-Simpers, M. Moorehead, V. Jambur, I. Szlu-
+766       farska, A. Couet, D. J. Thoma, Multi-principal element alloy discovery
+767      using directed energy deposition and machine learning, Materials Science
+768     and Engineering: A 891 (2024) 145945. doi:10.1016/j.msea.2023.
+769      145945.
+770    URL https://doi.org/10.1016/j.msea.2023.145945
+
+771    [7] M. Abolhasani, E. Kumacheva, The rise of self-driving labs in chemical
+772     and materials sciences, Nature Synthesis 2 (6) (2023) 483–492. doi:
+773      10.1038/s44160-022-00231-0.
+
+774    [8] G. Tom, S. P. Schmid, S. G. Baird, Y. Cao, K. Darvish, H. Hao, S. Lo,
+775       S. Pablo-García, E. M. Rajaonson, M. Skreta, N. Yoshikawa, S. Corapi,
+776     G. D. Akkoc, F. Strieth-Kalthoff, M. Seifrid, A. Aspuru-Guzik, Self-
+777      driving laboratories for chemistry and materials science, Chemical Re-
+778      views 124 (16) (2024) 9633–9732. doi:10.1021/acs.chemrev.4c00055.
+
+
+
+
+                                   24
+
+## Page 27
+
+779    [9] M. Seifrid, R. Pollice, A. Aguilar-Granda, Z. M. Chan, K. Hotta, C. T.
+780       Ser, J. Vestfrid, T. C. Wu, A. Aspuru-Guzik, Autonomous chemical
+781      experiments: Challenges and perspectives on establishing a self-driving
+782       lab, Accounts of Chemical Research 55 (2022) 2454–2466. doi:10.1021/
+783      acs.accounts.2c00220.
+784    URL https://doi.org/10.1021/acs.accounts.2c00220
+
+785  [10] N. J. Szymanski, B. Rendy, Y. Fei, R. E. Kumar, T. He, D. Milsted, M. J.
+786     McDermott, M. Gallant, E. D. Cubuk, A. Merchant, H. Kim, A. Jain,
+787      C. J. Bartel, K. Persson, Y. Zeng, G. Ceder, An autonomous laboratory
+788       for the accelerated synthesis of inorganic materials, Nature 624 (7990)
+789      (2023) 86–91. doi:10.1038/s41586-023-06734-w.
+
+790  [11] A. M. Lunt, H. Fakhruldeen, G. Pizzuto, L. Longley, A. White, N. Rankin,
+791      R. Clowes, B. Alston, L. Gigli, G. M. Day, A. I. Cooper, S. Y. Chong,
+792      Modular, multi-robot integration of laboratories: an autonomous work-
+793       flow for solid-state chemistry, Chemical Science 15 (7) (2024) 2456–2463.
+794      doi:10.1039/d3sc06206f.
+
+795  [12] Y. Jiang, H. Fakhruldeen, G. Pizzuto, L. Longley, A. He, T. Dai,
+796      R. Clowes, N. Rankin, A. I. Cooper, Autonomous biomimetic solid
+797       dispensing using a dual-arm robotic manipulator, Digital Discovery 2 (6)
+798      (2023) 1733–1744. doi:10.1039/d3dd00075c.
+
+799  [13] P. M. Maffettone, P. Friederich, S. G. Baird, B. Blaiszik, K. A. Brown,
+800       S. I. Campbell, O. A. Cohen, R. L. Davis, I. T. Foster, N. Haghmoradi,
+801     M. Hereld, H. Joress, N. Jung, H.-K. Kwon, G. Pizzuto, J. Rintamaki,
+802      C. Steinmann, L. Torresi, S. Sun, What is missing in autonomous dis-
+803       covery: open challenges for the community, Digital Discovery 2 (2023)
+804      1644–1659, nEEDS MANUAL VERIFICATION: DOI returned non-404
+805      but Crossref metadata unavailable. doi:10.48550/arxiv.2304.11120.
+806    URL https://doi.org/10.48550/arxiv.2304.11120
+
+807  [14] S. Vock, B. Klöden, A. Kirchner, T. Weißgärber, B. Kieback, Powders
+808       for powder bed fusion: a review, Progress in Additive Manufacturing
+809      4 (4) (2019) 383–397. doi:10.1007/s40964-019-00078-6.
+
+810  [15] C. Meier, R. Weissbach, J. Weinberg, W. A. Wall, A. J. Hart, Critical
+811       influences of particle size and adhesion on the powder layer uniformity in
+
+
+
+                                   25
+
+## Page 28
+
+812      metal additive manufacturing, Journal of Materials Processing Technolo-
+813      gy 266 (2019) 484–501. doi:10.1016/j.jmatprotec.2018.10.037.
+
+814  [16] S. E. Brika, M. Letenneur, C. A. Dion, V. Brailovski, Influence of
+815       particle morphology and size distribution on the powder flowability and
+816       laser powder bed fusion manufacturability of ti-6al-4v alloy, Additive
+817      Manufacturing 31 (2020) 100929. doi:10.1016/j.addma.2019.100929.
+
+818  [17] L. Haferkamp, L. Haudenschild, A. Spierings, K. Wegener, K. Riener,
+819       S. Ziegelmeier, G. J. Leichtfried, The influence of particle shape, powder
+820        flowability, and powder layer density on part density in laser powder bed
+821       fusion, Metals 11 (3) (2021) 418. doi:10.3390/met11030418.
+
+822  [18] A. B. Spierings, M. Voegtlin, T. Bauer, K. Wegener, Powder flowabili-
+823      ty characterisation methodology for powder-bed-based metal additive
+824      manufacturing, Progress in Additive Manufacturing 1 (1-2) (2015) 9–20.
+825      doi:10.1007/s40964-015-0001-4.
+
+826  [19] M. Krantz, H. Zhang, J. Zhu, Characterization of powder flow: Static
+827     and dynamic testing, Powder Technology 194 (3) (2009) 239–245. doi:
+828      10.1016/j.powtec.2009.05.001.
+
+829  [20] D. Schulze, Powders and Bulk Solids: Behavior, Characterization, Stor-
+830      age and Flow, Springer International Publishing, 2021. doi:10.1007/
+831      978-3-030-76720-4.
+
+832  [21] R. Freeman, Measuring the flow properties of consolidated, conditioned
+833     and aerated powders — a comparative study using a powder rheometer
+834     and a rotational shear cell, Powder Technology 174 (1-2) (2007) 25–33.
+835      doi:10.1016/j.powtec.2006.10.016.
+
+836  [22] G. Lumay, F. Boschini, K. Traina, S. Bontempi, J.-C. Remy, R. Cloots,
+837      N. Vandewalle, Measuring the flowing properties of powders and grains,
+838     Powder Technology 224 (2012) 19–27. doi:10.1016/j.powtec.2012.
+839      02.015.
+
+840  [23] G. Yablokova, M. Speirs, J. Van Humbeeck, J.-P. Kruth, J. Schrooten,
+841      R. Cloots, F. Boschini, G. Lumay, J. Luyten, Rheological behavior of β-ti
+842     and niti powders produced by atomization for slm production of open
+843      porous orthopedic implants, Powder Technology 283 (2015) 199–209.
+844      doi:10.1016/j.powtec.2015.05.015.
+
+                                   26
+
+## Page 29
+
+845  [24] Z. Snow, R. Martukanitz, S. Joshi, On the development of powder
+846       spreadability metrics and feedstock requirements for powder bed fusion
+847       additive manufacturing, Additive Manufacturing 28 (2019) 78–86. doi:
+848      10.1016/j.addma.2019.04.017.
+
+849  [25] L. Cordova, T. Bor, M. de Smit, M. Campos, T. Tinga, Measuring the
+850       spreadability of pre-treated and moisturized powders for laser powder
+851     bed fusion, Additive Manufacturing 32 (2020) 101082. doi:10.1016/j.
+852      addma.2020.101082.
+
+853  [26] Y. Wang, T. Li, F. J. Muzzio, B. J. Glasser, Predicting feeder performance
+854      based on material flow properties, Powder Technology 308 (2017) 135–148.
+855      doi:10.1016/j.powtec.2016.12.010.
+
+856  [27] F. Tahir, J. Palmer, J. Khoo, J. Holman, I. K. Yadav, G. Reynolds,
+857      E. Meehan, A. Mitchell, G. Bajwa, Development of feed factor prediction
+858      models for loss-in-weight powder feeders, Powder Technology 364 (2020)
+859      1025–1038. doi:10.1016/j.powtec.2019.09.071.
+
+860  [28] B. Bekaert, L. Penne, W. Grymonpré, B. Van Snick, J. Dhondt, J. Boeckx,
+861       J. Vogeleer, T. De Beer, C. Vervaet, V. Vanhoorne, Determination of a
+862       quantitative relationship between material properties, process settings
+863     and screw feeding behavior via multivariate data-analysis, International
+864      Journal of Pharmaceutics 602 (2021) 120603. doi:10.1016/j.ijpharm.
+865      2021.120603.
+
+866  [29] W. E. Engisch, F. J. Muzzio, Method for characterization of loss-in-
+867      weight feeder equipment, Powder Technology 228 (2012) 395–403. doi:
+868      10.1016/j.powtec.2012.05.058.
+
+869  [30] W. E. Engisch, F. J. Muzzio, Feedrate deviations caused by hopper
+870         refill of loss-in-weight feeders, Powder Technology 283 (2015) 389–400.
+871      doi:10.1016/j.powtec.2015.06.001.
+872    URL https://doi.org/10.1016/j.powtec.2015.06.001
+
+873  [31] J. Hanson, Control of a system of loss-in-weight feeders for drug product
+874      continuous manufacturing, Powder Technology 331 (2018) 236–243. doi:
+875      10.1016/j.powtec.2018.03.027.
+876    URL https://doi.org/10.1016/j.powtec.2018.03.027
+
+
+
+                                   27
+
+## Page 30
+
+877  [32] M. Besenhard, E. Faulhammer, S. Fathollahi, G. Reif, V. Calzolari,
+878       S. Biserni, A. Ferrari, S. Lawrence, M. Llusa, J. Khinast, Accuracy
+879       of micro powder dosing via a vibratory sieve–chute system, European
+880      Journal of Pharmaceutics and Biopharmaceutics 94 (2015) 264–272.
+881      doi:10.1016/j.ejpb.2015.04.037.
+882    URL https://doi.org/10.1016/j.ejpb.2015.04.037
+
+883  [33] M. Besenhard, S. Fathollahi, E. Siegmann, E. Slama, E. Faulhammer,
+884       J. Khinast, Micro-feeding and dosing of powders via a small-scale powder
+885     pump, International Journal of Pharmaceutics 519 (1-2) (2017) 314–322.
+886      doi:10.1016/j.ijpharm.2016.12.029.
+
+887  [34] E. Faulhammer, M. Fink, M. Llusa, S. M. Lawrence, S. Biserni, V. Cal-
+888       zolari, J. G. Khinast, Low-dose capsule filling of inhalation products:
+889       Critical material attributes and process parameters, International Journal
+890       of Pharmaceutics 473 (2014) 617–626. doi:10.1016/j.ijpharm.2014.
+891      07.050.
+892    URL https://doi.org/10.1016/j.ijpharm.2014.07.050
+
+893  [35] S. Yang, J. Evans, Metering and dispensing of powder; the quest for
+894     new solid freeforming techniques, Powder Technology 178 (2007) 56–72.
+895      doi:10.1016/j.powtec.2007.04.004.
+896    URL https://doi.org/10.1016/j.powtec.2007.04.004
+
+897  [36] J. Alsenz, Powderpicking: An inexpensive, manual, medium-throughput
+898     method for powder dispensing, Powder Technology 209 (1-3) (2011)
+899      152–157. doi:10.1016/j.powtec.2011.02.014.
+
+900  [37] B. Shahriari, K. Swersky, Z. Wang, R. P. Adams, N. de Freitas, Taking the
+901     human out of the loop: A review of bayesian optimization, Proceedings of
+902      the IEEE 104 (1) (2016) 148–175. doi:10.1109/jproc.2015.2494218.
+
+903  [38] Q. Liang, A. E. Gongora, Z. Ren, A. Tiihonen, Z. Liu, S. Sun, J. R.
+904      Deneault, D. Bash, F. Mekki-Berrada, S. A. Khan, K. Hippalgaonkar,
+905      B. Maruyama, K. A. Brown, J. Fisher III, T. Buonassisi, Benchmarking
+906      the performance of bayesian optimization across multiple experimental
+907      materials science domains, npj Computational Materials 7 (1) (2021).
+908      doi:10.1038/s41524-021-00656-9.
+
+
+
+
+                                   28
+
+## Page 31
+
+909  [39] S. G. Baird, A. R. Falkowski, T. D. Sparks, Honegumi: an interface for
+910       accelerating the adoption of Bayesian optimization in the experimental
+911       sciences, npj Computational Materials 12 (2026) 296. doi:10.1038/
+912      s41524-026-02156-0.
+
+913  [40] J. R. Deneault, J. Chang, J. Myung, D. Hooper, A. Armstrong, M. Pitt,
+914      B. Maruyama, Toward autonomous additive manufacturing: Bayesian
+915      optimization on a 3d printer, MRS Bulletin 46 (7) (2021) 566–575.
+916      doi:10.1557/s43577-021-00051-1.
+
+917  [41] S. Daulton, M. Balandat, E. Bakshy, Parallel Bayesian optimization of
+918      multiple noisy objectives with expected hypervolume improvement, in:
+919      Advances in Neural Information Processing Systems, Vol. 34, 2021, pp.
+920      2187–2200. arXiv:2105.08195.
+
+921  [42] D. Eriksson, M. Jankowiak, High-dimensional Bayesian optimization with
+922       sparse axis-aligned subspaces, in: Proceedings of the Thirty-Seventh Con-
+923       ference on Uncertainty in Artificial Intelligence, Vol. 161 of Proceedings
+924       of Machine Learning Research, 2021, pp. 493–503. arXiv:2103.00349.
+
+925  [43] E. V. Bonilla, K. M. A. Chai, C. K. I. Williams, Multi-task Gaussian
+926      process prediction,  in:  Advances in Neural Information Processing
+927      Systems, Vol. 20, 2008, pp. 153–160.
+928    URL                          https://papers.nips.cc/paper/
+929     3189-multi-task-gaussian-process-prediction
+
+930  [44] K. Swersky, J. Snoek, R. P. Adams, Multi-task Bayesian optimization,
+931        in: Advances in Neural Information Processing Systems, Vol. 26, 2013,
+932      pp. 2004–2012.
+933    URL                          https://papers.nips.cc/paper/
+934     5086-multi-task-bayesian-optimization
+
+935  [45] C. J. Taylor, K. C. Felton, D. Wigh, M. I. Jeraal, R. Grainger, G. Chessari,
+936      C. N. Johnson, A. A. Lapkin, Accelerated chemical reaction optimization
+937      using multi-task learning, ACS Central Science 9 (5) (2023) 957–968.
+938      doi:10.1021/acscentsci.3c00050.
+
+939  [46] P. A. Cundall, O. D. L. Strack, A discrete numerical model for granular
+940       assemblies, Géotechnique 29 (1) (1979) 47–65. doi:10.1680/geot.1979.
+941      29.1.47.
+
+
+                                   29
+
+## Page 32
+
+942  [47] H. Zhu, Z. Zhou, R. Yang, A. Yu, Discrete particle simulation of partic-
+943       ulate systems: A review of major applications and findings, Chemical
+944      Engineering Science 63 (23) (2008) 5728–5770. doi:10.1016/j.ces.
+945      2008.08.006.
+
+946  [48] P. Owen, P. Cleary, Prediction of screw conveyor performance using
+947      the discrete element method (dem), Powder Technology 193 (3) (2009)
+948      274–288. doi:10.1016/j.powtec.2009.03.012.
+
+949  [49] K. L. Johnson, K. Kendall, A. D. Roberts, Surface energy and the
+950      contact of elastic solids, Proceedings of the Royal Society of London. A.
+951      Mathematical and Physical Sciences 324 (1558) (1971) 301–313. doi:
+952      10.1098/rspa.1971.0141.
+
+953  [50] S. C. Thakur, J. P. Morrissey, J. Sun, J. F. Chen, J. Y. Ooi, Microme-
+954       chanical analysis of cohesive granular materials using the discrete element
+955     method with an adhesive elasto-plastic contact model, Granular Matter
+956      16 (3) (2014) 383–400. doi:10.1007/s10035-014-0506-4.
+
+957  [51] J. Ai, J.-F. Chen, J. M. Rotter, J. Y. Ooi, Assessment of rolling resistance
+958      models in discrete element simulations, Powder Technology 206 (3) (2011)
+959      269–282. doi:10.1016/j.powtec.2010.09.030.
+
+960  [52] C. Coetzee, Review: Calibration of the discrete element method, Powder
+961      Technology 310 (2017) 104–142. doi:10.1016/j.powtec.2017.01.015.
+
+962  [53] C. Richter, T. Rößler, G. Kunze, A. Katterfeld, F. Will, Development of
+963      a standard calibration procedure for the dem parameters of cohesionless
+964      bulk materials – part ii: Efficient optimization-based calibration, Powder
+965      Technology 360 (2020) 967–976. doi:10.1016/j.powtec.2019.10.052.
+
+966  [54] L. Benvenuti, C. Kloss, S. Pirker, Identification of dem simulation pa-
+967      rameters by artificial neural networks and bulk experiments, Powder
+968      Technology 291 (2016) 456–465. doi:10.1016/j.powtec.2016.01.003.
+
+969  [55] H. Cheng, T. Shuku, K. Thoeni, P. Tempone, S. Luding, V. Magnanimo,
+970    An iterative bayesian filtering framework for fast and automated cali-
+971      bration of dem models, Computer Methods in Applied Mechanics and
+972      Engineering 350 (2019) 268–294. doi:10.1016/j.cma.2019.01.027.
+
+
+
+                                   30
+
+## Page 33
+
+ 973  [56] M. C. Kennedy, A. O’Hagan, Bayesian calibration of computer models,
+ 974      Journal of the Royal Statistical Society Series B: Statistical Methodology
+ 975      63 (3) (2001) 425–464. doi:10.1111/1467-9868.00294.
+
+ 976  [57] D. Higdon, J. Gattiker, B. Williams, M. Rightley, Computer mod-
+ 977        el calibration using high-dimensional output, Journal of the Ameri-
+ 978      can Statistical Association 103 (482) (2008) 570–583. doi:10.1198/
+ 979      016214507000000888.
+
+ 980  [58] O.  I. Imole, D. Krijgsman, T. Weinhart, V. Magnanimo, B. E.
+ 981     Chávez Montes, M. Ramaioli, S. Luding, Experiments and discrete
+ 982      element simulation of the dosing of cohesive powders in a simplified
+ 983      geometry, Powder Technology 287 (2016) 108–120.  doi:10.1016/j.
+ 984      powtec.2015.07.051.
+
+ 985  [59] B. E. Kassem, N. Salloum, T. Brinz, Y. Heider, B. Markert, A semi-
+ 986     automated dem parameter calibration technique of powders based on
+ 987       different bulk responses extracted from auger dosing experiments, KONA
+ 988     Powder and Particle Journal 38 (0) (2021) 235–250. doi:10.14356/
+ 989      kona.2021010.
+
+ 990  [60] B. El-Kassem, N. Salloum, T. Brinz, Y. Heider, B. Markert, A multi-
+ 991       variate regression parametric study on dem input parameters of free-
+ 992      flowing and cohesive powders with experimental data-based valida-
+ 993       tion, Computational Particle Mechanics 8 (1) (2021) 87–111.  doi:
+ 994      10.1007/s40571-020-00315-8.
+
+ 995  [61] S. Haeri, Optimisation of blade type spreaders for powder bed preparation
+ 996       in additive manufacturing using dem simulations, Powder Technology
+ 997      321 (2017) 94–104. doi:10.1016/j.powtec.2017.08.011.
+
+ 998  [62] W. Nan, M. Pasha, T. Bonakdar, A. Lopez, U. Zafar, S. Nadimi,
+ 999     M. Ghadiri, Jamming during particle spreading in additive manufactur-
+1000       ing, Powder Technology 338 (2018) 253–262. doi:10.1016/j.powtec.
+1001      2018.07.030.
+
+1002  [63] M. Y. Shaheen, A. R. Thornton, S. Luding, T. Weinhart, The influence
+1003       of material and process parameters on powder spreading in additive
+1004      manufacturing, Powder Technology 383 (2021) 564–583. doi:10.1016/
+1005      j.powtec.2021.01.058.
+
+
+                                    31
+
+## Page 34
+
+1006  [64] S. Charles, W. Mulberry, L. Winters, C. Robison, G. Erickson, S. G.
+1007      Baird, An open-source, 3D-printed auger powder doser designed with
+1008       generative artificial intelligence, manuscript in preparation (2026).
+
+1009  [65] Vertical Cloud Lab, powder-doser: an open-source auger powder doser for
+1010       self-driving laboratories, https://github.com/vertical-cloud-lab/
+1011     powder-doser (2026).
+
+1012  [66] Meta Platforms, Inc., Ax: Adaptive experimentation platform, https:
+1013      //ax.dev, version 0.4.3 (2024).
+
+1014  [67] M. Balandat, B. Karrer, D. R. Jiang, S. Daulton, B. Letham, A. G.
+1015      Wilson, E. Bakshy, BoTorch: A framework for efficient Monte-Carlo
+1016      Bayesian optimization, in: Advances in Neural Information Processing
+1017      Systems, Vol. 33, 2020, pp. 21524–21538. arXiv:1910.06403.
+
+1018  [68] S. Ament, S. Daulton, D. Eriksson, M. Balandat, E. Bakshy, Unexpect-
+1019      ed improvements to expected improvement for bayesian optimization,
+1020        in: Advances in Neural Information Processing Systems 36, Neural In-
+1021      formation Processing Systems Foundation, Inc. (NeurIPS), 2023, pp.
+1022      20577–20612. doi:10.52202/075280-0904.
+
+1023  [69] T. R. Brocksieper, T. Grimm, J. T. Sehrt, Investigation of flowability
+1024     and spreadability of metal powders for powder bed fusion additive man-
+1025       ufacturing, Progress in Additive Manufacturing 11 (7) (2026) 6661–6673.
+1026      doi:10.1007/s40964-026-01690-z.
+
+1027  [70] C. Kloss, C. Goniva, A. Hager, S. Amberger, S. Pirker, Models, al-
+1028      gorithms and validation for opensource dem and cfd-dem, Progress in
+1029      Computational Fluid Dynamics, An International Journal 12 (2/3) (2012)
+1030      140. doi:10.1504/pcfd.2012.047457.
+
+1031  [71] S. Girnth, T. Heitkamp, C. Wacker, N. Waldt, G. Klawitter, K. Dröder,
+1032      Dimensionless quantities in discrete element method: powder model
+1033      parameterization for additive manufacturing, Progress in Additive Manu-
+1034       facturing 9 (6) (2024) 1967–1983. doi:10.1007/s40964-023-00543-3.
+
+1035  [72] ASTM International, ASTM F3049-14: Standard guide for characterizing
+1036       properties of metal powders used for additive manufacturing processes,
+1037    ASTM International, West Conshohocken, PA (2014).
+
+
+                                    32
+
+## Page 35
+
+1038  [73] ASTM International, ASTM B527-22: Standard test method for tap
+1039      density of metal powders and compounds, ASTM International, West
+1040      Conshohocken, PA (2022).
+
+1041  [74] ASTM International, ASTM B213-20: Standard test methods for flow
+1042       rate of metal powders using the Hall flowmeter funnel, ASTM Interna-
+1043       tional, West Conshohocken, PA (2020).
+
+1044  [75] ASTM International, ASTM B964-16: Standard test methods for flow
+1045       rate of metal powders using the Carney funnel, ASTM International,
+1046     West Conshohocken, PA (2016).
+
+1047  [76] ASTM International, ASTM B822-20: Standard test method for parti-
+1048       cle size distribution of metal powders and related compounds by light
+1049       scattering, ASTM International, West Conshohocken, PA (2020).
+
+1050  [77] ASTM International, ASTM D7891-24: Standard test method for shear
+1051       testing of powders using the Freeman technology FT4 powder rheometer
+1052      shear cell, ASTM International, West Conshohocken, PA (2024).
+
+1053  [78] N. Bostijn, J. Dhondt, A. Ryckaert, E. Szabó, W. Dhondt, B. Van Snick,
+1054      V. Vanhoorne, C. Vervaet, T. De Beer, A multivariate approach to predict
+1055      the volumetric and gravimetric feeding behavior of a low feed rate feeder
+1056      based on raw material properties, International Journal of Pharmaceutics
+1057      557 (2019) 342–353. doi:10.1016/j.ijpharm.2018.12.066.
+
+1058  [79] L. Marchetti, C. Hulme-Smith, Flowability of steel and tool steel powders:
+1059    A comparison between testing methods, Powder Technology 384 (2021)
+1060      402–413. doi:10.1016/j.powtec.2021.01.074.
+
+1061  [80] E. Galindo, E. R. L. Espiritu, C. Gutierrez, A. N. Alagha, P. Hudon,
+1062     M. Brochu, A method to assess the quality of additive manufacturing
+1063      metal powders using the triboelectric charging concept, Scientific Reports
+1064      14 (1) (2024). doi:10.1038/s41598-024-67295-0.
+
+
+
+
+
+                                    33
+
+## Page 36
+
+ (a)  Cheap: measured on the doser itself                                             measured (13 powders)        proposed
+
+           infer       the                                                      bulk                                                                                                                                                                                                                                                                                                                                                                                    calibration
+                                                     tapped
+                                                                                                                               up
+                                                                           tap                       properties                                                                                                 θ                                            speed
+     of
+  a                                                                   closed
+       new                  Feed factor                 “Ghost dose”                Angle of repose                                                                            properties
+
+           mg per auger revolution at several        transparent doser, outlet closed,             a camera on the pile              powder                 tilts; before and after humid air         tapped: bulk and tapped density                 the doser pours                                           known
+
+
+        (b)  Physics-based ML                              Relational matrix             Powder state
+                                                                              and history
+                surrogate models and                                Hall    PSD    Shear    Tap   Moisture
+           DEM simulations                                                                                    composition, and
+                                             Feed factor                                         how it was handled
+
+                                              Ghost dose
+
+                                            Angle of repose                                      made    dried   reused
+
+                                                  expected       to be tested     same quantity              sieved   stored
+
+ (c)  Standard tests: a separate instrument for each, some only in outside labs
+
+
+
+
+
+    Hall/Carney flow       Particle size (PSD)       Shear cell, ffc        Tapped density           Moisture
+
+    50 g through a funnel       SEM (BSE) images or          flowability under load         graduated cylinder              loss on drying:
+     ASTM B213, B964              laser diffraction         ASTM D6773, D7891           ASTM B527              weigh, dry, reweigh
+
+           in-house              in-house or outside lab             outside lab                    in-house                     in-house
+
+
+Figure 1: Cheap measurements on the doser and the standard powder tests they could
+stand in for. (a) Three measurements made with the doser itself: the feed factor (mg per
+auger revolution) at several tilts, before and after the powder sits in humid air, measured
+so far for 13 powders [64]; a “ghost dose”, in which a transparent doser with its outlet
+closed is tapped while the bulk and tapped fill levels are read; and the angle of repose θ of
+the pile the doser pours, read by a camera. Solid border: measured; dashed: proposed.
+(b) Physics-based machine learning (surrogate models and DEM simulations) learns the
+relational matrix between (a) and (c), with the powder’s composition and handling history
+as extra inputs. Filled dots: links expected when the study was planned; open dots: the
+other pairs, which are tested as well; diamond: the ghost dose measures tapped density
+directly. Side arrows: the two uses, inferring the standard properties of a new powder
+from its doser measurements (down) and using known properties to speed up the doser’s
+calibration (up). (c) The standard tests, each on its own instrument, with the governing
+standard and whether it runs in-house or in an outside laboratory. The renders are
+illustrative; the figure shows no data.
+
+
+
+                                34
+
+## Page 37
+
+    (a)                                                      (b)
+
+
+                hand-tuned settings      centre-point repeats        bo-005 repeated, 8 doses
+                                                                                                 median |error|
+                 screening corners       chosen by the optimizer      corner-09 repeated, 8 doses      4.6 mg    2.6 mg    1.8 mg
+                                                                         400
+                  overshoots, 21–83 mg over
+                                                                         350
+                                                      limits: 180 s, 20 mg                              (s) 300         better 20
+ ↓                                                                                                                                       dose 250
+      (mg) 15                                                                                         per 200150
+          |error| 105                                                                                                                       time 10050
+
+       0                                                                   0
+         0     50    100    150    200    250    300    350    400                  hand-    corner-   bo-005
+                       time per 0.5 g dose (s) ← better                                  tuned     09
+
+
+
+(c)                                         (d)
+
+                                                                                  hand-tuned   recommended (bo-005)
+     500                recommended, 100 s
+                                                                              bulk tilt (°)                                      15–40    (mg)                            hand-tuned, 239 s
+   cup 400                                                              bulk speed (rpm)                                     20–100
+   the 300                                                       switch to trickle (g to go)                                          0.05–0.3
+  in                                                                                     trickle tilt (°)                                      10–30
+     200
+
+                                                                             tap tilt (°)                                      0–15
+     100      powder                                                                   stop within (mg)                                      3–15
+       0
+         0     50    100   150   200   250                             low end of range                      high end of range
+           time since the dose started (s)
+
+
+Figure 2: Campaign 1: multi-objective Bayesian calibration of the doser on salt (target
+0.5 g). (a) Time and absolute error of every dose; triangles at the top mark overshoots
+beyond the 20 mg limit, the dashed lines are the limits that define the hypervolume, and
+the step line is the observed Pareto front. Open markers are the two validation blocks of
+eight doses, run a week later. (b) Time per dose for the hand-tuned settings (4 doses) and
+the two validated settings (8 doses each); bars are medians, and the numbers above give
+the median absolute error. (c) Powder in the cup during a hand-tuned dose and a dose at
+the recommended settings. (d) The six numeric settings, each drawn on its own search
+range, for the hand-tuned and recommended settings.
+
+
+
+
+
+                                35
+
+## Page 38
+
+ (a)    time per 0.5 g dose (s)  (b)     salt bulk feed (mg/s)       (c)  time per dose (s)
+             7 pairs ok at both:                 n=7  n=8  n=4  n=9                13 Oct                 15 Oct: feed collapsed
+           median -12 s, p = 0.58          60
+
+    400                             50                            400
+
+
+                                   40
+    300                                                          300       screening
+                                                                                                  corners      optimizer
+                                   30
+    200                                                          200
+                                   20
+
+    100                                                          100
+                                   10
+
+
+      0                              0                              0
+         35 mg      0 mg                 29   6   13   15              0      10     20     30     40
+         29 Sep     13 Oct                Sep  Oct  Oct  Oct                       dose number
+         hand-over margin             session; 40° tilt, 20 rpm
+                                                                                       ok     overshoot     jam or stall     firmware or tare error
+
+
+Figure 3: Campaign 2, which also searched the trickle’s hand-over margin, and the drift
+that limited it. (a) The 16 screening corners of campaign 1 dosed at a 35 mg margin (29
+September) and again at 0 mg (13 October); lines join the same corner. Markers show the
+outcome: ok (circles), overshoot (triangles), jam or stall (crosses). (b) Salt bulk feed at
+the same bulk settings (40◦, 20 rpm) in the four sessions; bars are medians. (c) Every dose
+of campaign 2 in order, with its outcome; open circles and squares are equipment errors
+(firmware fault, balance not tared). The shading marks the session of 15 October.
+
+
+
+
+
+                                36
+
+## Page 39
+
+  (a) bulk feed (mg/s)                    (b)  delivery rate (mg/s)          (c)  |error| (mg)
+
+                           Al 4047, lab-atomized, unsieved                    AlSi10Mg (8 g request)
+                                                                                       Al 4047, 20 Oct #1           4.0
+  102                                          102              AlAl 4047,4047 after#3  clearing         3.5
+                                                                                                                         stopping band ±3 mg
+                                                                                           3.0
+                                                                                                      305 s          243 s
+  101                                                                                      2.5     25 s     114125s   s
+                                               101
+                                                                                           2.0
+
+                                                                                           1.5
+  100
+                                                                                           1.0
+                                               100
+                                                                                           0.5
+
+ 10−1                                                                                                       111 s                                                                                           0.0
+           salt  salt  AlSi  30  19 20 Oct #2 #3 after         0      100     200     300          10−2  10−1  100   101
+       ×8 ×1 10Mg Sep Oct #1            clear-
+                                                  ing        time since the dose started (s)   target (g); salt, settings bo-005
+      dose; all at 40°, 100 rpm, 2 Hz taps
+
+
+Figure 4: Metal feedstock dosed with the salt settings, and the range of the salt settings.
+(a) Bulk feed, averaged over the bulk stage, at the same bulk settings (40◦, 100 rpm, 2 Hz
+taps): eight 0.5 g salt doses of the validation block, one 1.5 g salt dose, the 8 g AlSi10Mg
+dose, and the Al 4047 doses in time order (30 September; 19 October; 20 October, three
+doses before and one after the tube was cleared of large particles). Short bulk stages read
+low because of the start-up and the balance’s lag. (b) Delivery rate within a dose (mass
+gained over a trailing 6 s window) for AlSi10Mg (bulk stage only) and for three Al 4047
+doses of 20 October. (c) Absolute error of six single salt doses at the recommended settings,
+targets 5 mg to 10 g, with the time of each dose; all ended under the target. The Al 4047
+charges themselves are reported in [64].
+
+
+
+
+
+                                37
+
+## Page 40
+
+(a)   hypervolume, fraction of best known         (b)
+                                                                                                                          1.0
+   1.0                                                               NaCl
+
+                                     target: 90% of best known            Na2SO4                                                0.8
+   0.8
+                                                                 CaLac
+
+                                                                                                                          0.6   0.6          DATA                AlSi10Mg         DATA                                                           correlation
+                                                                                  Si 75–150                                                                                              task
+                                                                                                                          0.4
+   0.4
+                                                                 316L     SYNTHETIC               SYNTHETIC                                                                           learned
+   0.2                           single-task                                             Ti                                                0.2
+                                  multi-task, 3 earlier powders
+                                  multi-task, 8 earlier powders                Al 4047
+   0.0                                                                                                                    0.0
+      0                10                         20
+                                                                                               4047               doses                   on the                      new powder                                                                                  Al                                   30        40                 NaClNa2SO4CaLacAlSi10MgSi75–150 316L  Ti
+
+
+Figure 5: [Placeholder: synthetic data.] Multi-task calibration across powders. (a) Hyper-
+volume reached on a held-out powder against the number of doses on that powder, for
+single-task optimization and for multi-task optimization informed by three or eight earlier
+powders (mean ± one standard deviation over ten replays). (b) Correlations between
+powders learned by the multi-task model. All numbers in this figure are invented to show
+the form of the result.
+
+
+
+
+
+                                38
+
+## Page 41
+
+ (a)     salt delivered (mg/rev)       (b)    sliding friction coefficient     (c)     sliding friction coefficient
+                                              0.8                                       0.8                   posterior for one
+                                                                                                   powder                                                                                                                 from its   200      measured                                                      mg/rev                                                                                                                                                                                        tilt sweep                                                                    195
+                                              0.7                                       0.7
+   175     DEM, no fitted
+              parameters                                                165
+   150                                       0.6                                       0.6
+                                                                    135   125                    DATA          DATA
+                                              0.5                           105   0.5
+   100
+                                                                    75
+    75                                       0.4                                       0.4                                                                    45  SYNTHETIC    50              SYNTHETIC
+                                              0.3                                       0.3
+    25                                                              15
+
+     0                                       0.2                                       0.2
+            0°    22.5°   27.5°   45°            0.00  0.25  0.50  0.75  1.00            0.0   0.2   0.4   0.6   0.8   1.0
+           60    90    60    60         cohesion energy density (norm.)       cohesion energy density (norm.)
+        auger tilt and speed (rpm)
+
+
+Figure 6: Discrete element model of the auger. (a) Salt delivered per revolution, simulated
+with no parameters fitted to dosing data and measured on the rig, at four combinations of
+tilt and speed. At 27.5◦and 60 rpm the measurement is the centre point of campaign 1
+(eight doses, bar: ± one standard deviation); at 22.5◦both simulation and measurement
+are at 90 rpm (bar: range of runs); the 0◦and 45◦measurements were made at 30 rpm
+and scaled to the simulated 60 rpm with the speed exponent of the companion study,
+which is itself uncertain. (b) [Placeholder: synthetic data.] Delivery per revolution against
+effective cohesion and friction from the emulator. (c) [Placeholder: synthetic data.] Posterior
+distribution of the two parameters for one powder given its tilt sweep. Panels (b) and (c)
+show invented numbers to illustrate the form of the result.
+
+
+
+
+
+                                39
+
+## Page 42
+
+(a)     delivered at 45° tilt (mg/rev)  (b)     |error| of 1 g doses (mg)      (c)     shear-cell flow function ffc
+
+             AlSi10Mg
+                                               Spearman ρ = 0.35, n = 12 Na alginate   9
+                                                                                   white rice flour 8
+    102                                    102
+                                                                            7
+                                                                             xanthan                         Na alginate                                           6       DATA
+    101
+                                           101                                  5
+                                                            NaCl
+                                       Si <44 µm                   AlSi10Mg                     4    100                              SYNTHETIC
+                                           100                                  3
+                  brown rice flour
+                                                                            2
+          Spearman ρ = -0.84, n = 12
+   10−1
+          30        40        50           10−2   10−1   100    101                   0.25    0.50    0.75
+    angle of repose, literature value (°) moisture content, literature value (wt%)cohesion inferred from dosing (norm.)
+
+
+Figure 7: Dosing response against powder properties, from the fixed-setting records of [64]
+and literature values for the material class. (a) Delivery per revolution at 45◦tilt and
+30 rpm against the angle of repose (seven of twelve values are engineering estimates); the
+finer silicon grade and brown rice flour are plotted at their means, which are not resolved
+from zero. Blue circles: food-safe stand-ins; orange squares: alloy-relevant powders. (b)
+Absolute error of 1 g closed-loop doses with one hand-tuned controller against moisture
+content. (c) [Placeholder: synthetic data.] Effective cohesion inferred from dosing against
+the shear-cell flow function coefficient measured on the same lots.
+
+
+
+
+
+                                40

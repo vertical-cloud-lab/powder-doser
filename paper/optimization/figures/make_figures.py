@@ -592,8 +592,10 @@ def fig_properties() -> None:
     panel(a, "a", x=-0.32)
 
     # (b) literature moisture content vs error of 1 g closed-loop doses (hand-tuned controller)
+    # the #163 analysis (data/powders/correlation_table.md): doses that ran to completion only, i.e.
+    # without the two no-flow powders and the caked barium chloride (n = 9)
     mo = df.dropna(subset=["moisture_pct", "blockG_mean_err_mg"])
-    mo = mo[mo.blockG_outcome.astype(str).str.lower().ne("nan")]
+    mo = mo[mo.blockG_outcome == "ok"]
     em = mo.blockG_mean_err_mg.abs().clip(lower=0.3)
     mmet = mo.batch.str.startswith("metal")
     for m, colr, mk in ((~mmet, BLUE, "o"), (mmet, ORANGE, "s")):

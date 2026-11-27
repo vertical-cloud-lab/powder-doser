@@ -165,7 +165,9 @@ def artifacts() -> None:
         got = client.fetch_data_from_storage(item["entry_id"])
         if isinstance(got, list):
             got = got[0] if got else None
-        if isinstance(got, Path):
+        if isinstance(got, Path) and got.is_dir():
+            shutil.copytree(got, out_dir / name, dirs_exist_ok=True)
+        elif isinstance(got, Path):
             shutil.copy(got, out_dir / name)
         elif got is not None and hasattr(got, "content"):
             content = got.content
@@ -173,7 +175,9 @@ def artifacts() -> None:
         else:
             print("could not fetch", name)
             continue
-        print("fetched", name, (out_dir / name).stat().st_size)
+        dest = out_dir / name
+        size = sum(f.stat().st_size for f in dest.rglob("*") if f.is_file()) if dest.is_dir() else dest.stat().st_size
+        print("fetched", name, size)
 
 
 if __name__ == "__main__":

@@ -349,6 +349,7 @@
     "bulk_s": 4.61,
     "bulk_dm_g": 0.2982,
     "bulk_rate_mgps": 64.69,
+    "bulk_mid_mgps": 161.71,
     "bulk_mg_per_rev": 38.8
    },
    {
@@ -363,6 +364,7 @@
     "bulk_s": 12.05,
     "bulk_dm_g": 1.3032,
     "bulk_rate_mgps": 108.15,
+    "bulk_mid_mgps": 140.82,
     "bulk_mg_per_rev": 64.9
    },
    {
@@ -407,6 +409,7 @@
     "bulk_s": 4.79,
     "bulk_dm_g": 0.3357,
     "bulk_rate_mgps": 70.08,
+    "bulk_mid_mgps": 151.04,
     "bulk_mg_per_rev": 42.0
    }
   ],
@@ -617,6 +620,7 @@
     "bulk_s": 54.9,
     "bulk_dm_g": 7.8831,
     "bulk_rate_mgps": 143.59,
+    "bulk_mid_mgps": 184.41,
     "bulk_mg_per_rev": 86.2,
     "mean_mg_per_rev": 91.79
    },
@@ -656,6 +660,7 @@
     "bulk_s": 29.26,
     "bulk_dm_g": 0.3257,
     "bulk_rate_mgps": 11.13,
+    "bulk_mid_mgps": 10.27,
     "bulk_mg_per_rev": 6.7,
     "mean_mg_per_rev": 6.85
    },
@@ -678,6 +683,7 @@
     "bulk_s": 51.92,
     "bulk_dm_g": 0.3168,
     "bulk_rate_mgps": 6.1,
+    "bulk_mid_mgps": 5.54,
     "bulk_mg_per_rev": 3.7,
     "mean_mg_per_rev": 5.24
    },
@@ -720,6 +726,7 @@
     "bulk_s": 118.41,
     "bulk_dm_g": 0.2028,
     "bulk_rate_mgps": 1.71,
+    "bulk_mid_mgps": 1.22,
     "bulk_mg_per_rev": 1.0,
     "mean_mg_per_rev": 1.02
    },
@@ -762,6 +769,7 @@
     "bulk_s": 15.68,
     "bulk_dm_g": 0.0024,
     "bulk_rate_mgps": 0.15,
+    "bulk_mid_mgps": 0.1,
     "bulk_mg_per_rev": 0.1,
     "mean_mg_per_rev": 0.09
    },
@@ -784,6 +792,7 @@
     "bulk_s": 40.18,
     "bulk_dm_g": 0.0079,
     "bulk_rate_mgps": 0.2,
+    "bulk_mid_mgps": 0.25,
     "bulk_mg_per_rev": 0.1,
     "mean_mg_per_rev": 0.11
    },
@@ -846,6 +855,7 @@
     "bulk_s": 254.02,
     "bulk_dm_g": 2.2416,
     "bulk_rate_mgps": 8.82,
+    "bulk_mid_mgps": 4.48,
     "bulk_mg_per_rev": 5.3,
     "mean_mg_per_rev": 5.29
    },
@@ -868,6 +878,7 @@
     "bulk_s": 295.42,
     "bulk_dm_g": 2.2429,
     "bulk_rate_mgps": 7.59,
+    "bulk_mid_mgps": 6.01,
     "bulk_mg_per_rev": 4.6,
     "mean_mg_per_rev": 4.55
    },
@@ -890,6 +901,7 @@
     "bulk_s": 162.68,
     "bulk_dm_g": 0.3896,
     "bulk_rate_mgps": 2.39,
+    "bulk_mid_mgps": 2.72,
     "bulk_mg_per_rev": 1.4,
     "mean_mg_per_rev": 1.43
    },
@@ -932,6 +944,7 @@
     "bulk_s": 35.77,
     "bulk_dm_g": 1.0966,
     "bulk_rate_mgps": 30.66,
+    "bulk_mid_mgps": 17.93,
     "bulk_mg_per_rev": 18.4,
     "mean_mg_per_rev": 34.73
    }
