@@ -1,9 +1,9 @@
-A walkthrough of the multi-doser chain carousel, version 11: thirteen auger powder-dosing modules on a vertical twin-chain loop, one dosing station inside the loop that tilts each module up to 90 degrees, and an analytical balance with its draft cage under the station. Every picture is the design's CAD or a simulation of it; nothing has been built yet, so every number is a prediction.
+A walkthrough of the multi-doser chain carousel, version 12: thirteen auger powder-dosing modules on a vertical twin-chain loop, one dosing station inside the loop that tilts each module up to 90 degrees over an analytical balance, and, new in v12, a spring-loaded pinion: the station's NEMA 11 and its 24-tooth pinion ride on a cradle pressed into each auger's gear by a 1 N/mm spring, with a set-screw stop, a hall switch that tells the controller when the pinion is resting on the gear's tips, a slow seek after every index, and a second guide seat for the electronics carriage. Every picture is the design's CAD or a MuJoCo simulation of it with real tooth contact; nothing has been built yet, so every number is a prediction.
 
-Covered: the frame and the chain loop, a module, building it step by step, indexing into the station, how the auger gear meets the pinion and what holds the mesh while it doses (a MuJoCo model with real tooth contact), the 0-90 degree tilt, dosing into the balance, the interference checks, printing and buying, and the next change: a spring-loaded pinion.
+Covered: what v12 is, why v11 needed a change (about one index in four jammed in the model), the cradle, a tooth landing on a tooth (the lift, the switch and the seek), what the simulations found (0 jams in 504 indexes), what holds the mesh while it doses, the stall torque against what the auger needs, the second seat, the interference checks, printing and buying, and what to check before building.
 
-Design files, simulations and this video's sources: https://github.com/vertical-cloud-lab/powder-doser/tree/claude/issue-128-20261013-2050/cad/chain-carousel-v11
-Onshape (public): https://cad.onshape.com/documents/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/e/cd46c1a5e6c910443d6daad8
+Design files, simulations and this video's sources: https://github.com/vertical-cloud-lab/powder-doser/tree/claude/issue-128-20261013-2050/cad/chain-carousel-v12
+Onshape (public): ONSHAPE_URL
 Discussion: https://github.com/vertical-cloud-lab/powder-doser/pull/185
 
 Narration: Piper text-to-speech, LJ Speech voice (public-domain data), synthesised offline.

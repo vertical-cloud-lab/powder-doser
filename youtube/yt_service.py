@@ -1,14 +1,7 @@
 """Authenticated YouTube client for the BYU Vertical Cloud Lab channel.
 
-Copied 2026-11-27 from vertical-cloud-lab/digital-alloy-lab (youtube/yt_service.py), itself
-from vertical-cloud-lab/byu-vcl, which holds generate_youtube_token.py and the OAuth client
-used to mint tokens. powder-doser addition: --no-notify (notifySubscribers=False).
-
-NOT YET WIRED IN THIS REPO: powder-doser's claude.yml does not pass
-YOUTUBE_UPLOAD_TOKEN_PICKLE_B64, so a run here can't upload until a repo secret of that
-name exists and claude.yml's job env has the line
-    YOUTUBE_UPLOAD_TOKEN_PICKLE_B64: ${{ secrets.YOUTUBE_UPLOAD_TOKEN_PICKLE_B64 }}
-(see youtube/README.md).
+Copied from vertical-cloud-lab/byu-vcl (youtube/yt_service.py), which also
+holds generate_youtube_token.py and the OAuth client used to mint tokens.
 Credentials are base64-encoded token.pickle files:
 
     YOUTUBE_UPLOAD_TOKEN_PICKLE_B64  upload + read only. Every @claude run in
@@ -93,7 +86,7 @@ def with_triggering_link(description):
 
 
 def upload_video(path, title, description="", privacy="public", tags=None, category_id="28", access="upload", source_link=True,
-                 notify=True):
+                 notify=False):
     """Resumable upload; returns the new video id.
 
     Defaults to public (sgbaird, 2026-11-19); pass privacy="unlisted" or
@@ -103,6 +96,10 @@ def upload_video(path, title, description="", privacy="public", tags=None, categ
 
     In GitHub Actions, the link to the comment that started the run is
     appended to the description (source_link=False skips it).
+
+    Subscribers are not notified unless notify=True (Sterling, 2026-11-27: public
+    without notifying for a major cut, unlisted for a preliminary or partial one,
+    never private).
     """
     if source_link:
         description = with_triggering_link(description)
@@ -112,7 +109,8 @@ def upload_video(path, title, description="", privacy="public", tags=None, categ
         "status": {"privacyStatus": privacy, "selfDeclaredMadeForKids": False},
     }
     media = MediaFileUpload(path, chunksize=8 * 1024 * 1024, resumable=True)
-    request = youtube.videos().insert(part="snippet,status", body=body, media_body=media, notifySubscribers=notify)
+    request = youtube.videos().insert(part="snippet,status", body=body, media_body=media,
+                                     notifySubscribers=notify)
     response = None
     while response is None:
         status, response = request.next_chunk()
@@ -132,15 +130,13 @@ def main():
     up.add_argument("--no-source-link", action="store_true",
                     help="do not append the link to the GitHub comment that started this run")
     up.add_argument("--privacy", choices=["private", "unlisted", "public"], default="public")
-    up.add_argument("--description-file", default=None, help="read the description from this file instead")
-    up.add_argument("--no-notify", action="store_true", help="don't notify the channel's subscribers")
+    up.add_argument("--notify", action="store_true", help="notify subscribers (off by default)")
     args = parser.parse_args()
     access = "full" if args.full else "upload"
 
     if args.cmd == "upload":
-        desc = open(args.description_file).read() if args.description_file else args.description
-        video_id = upload_video(args.path, args.title, desc, args.privacy, access=access, source_link=not args.no_source_link,
-                                notify=not args.no_notify)
+        video_id = upload_video(args.path, args.title, args.description, args.privacy, access=access,
+                                source_link=not args.no_source_link, notify=args.notify)
         print(f"https://www.youtube.com/watch?v={video_id}")
         return
 

@@ -432,6 +432,13 @@ class Station:
         self.gid = {}
         for n in ("t_head", "t_stem", "plate"):
             self.gid[n] = m.geom(n).id
+        if cfg.cradle:
+            # v12: start the cradle where the spring holds it with a module in mesh (tight mesh, or on its stop when the stack puts the stop
+            # short of it), so a run that starts with the module already at the station (cycle, exit) doesn't start with the teeth overlapping
+            L_ = abs(cfg.piv_dy)
+            q0 = math.asin(max(-0.9, min(cfg.stop_deep, cfg.a_err) / L_))
+            self.d.qpos[self.qa["cradle"]] = q0
+            mujoco.mj_forward(m, self.d)
 
     # ---- probes (mm)
     def pos(self, body):
@@ -600,7 +607,7 @@ def trapezoid(dist: float, v: float, a: float, t: float) -> tuple[float, float]:
 
 # ---------------------------------------------------------------- studies
 def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0, record=False, seek_rev_s=0.25, hold=0.12, post_seek=True,
-          seek_reverse=True, seek_t=0.2, tries=2, reindex=True):
+          seek_reverse=True, seek_t=0.2, tries=2, reindex=True, reindex_held=False):
     """One index into the station: the carriage arrives from Sam -y at the Pi driver's 50 mm/s and 250 mm/s^2, the gear slides into
     mesh with the pinion (the NEMA 11's driver off: the pinion free), the carriage stops at the station, everything settles. The pinion
     starts phase_frac of a pinion pitch off the angle that meshes at the station. Then v12's seek: the driver on, the pinion turned
@@ -671,22 +678,36 @@ def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0,
             if record and i % int(round(1 / 300 / DT)) == 0:
                 frames.append((d.time, d.qpos.copy()))
 
-    def reindex_once():
-        """v12 driver's fallback when the switch still reads lifted after both seeks: the chain backs off 3 mm (the way the module came)
-        and comes back, the NEMA 11 free, so the gear leaves the pinion's tips and re-enters at another phase; then one seek."""
+    def reindex_once(back=13.0):
+        """v12 driver's fallback when the switch still reads lifted after both seeks: the chain backs off `back` mm (past where the tips
+        first touch, 12.9 mm), the pinion turns half a tooth with the driver on, the chain comes back with the NEMA 11 free, then one
+        seek (v11's stopgap, which cleared 42 of its 46 jams). With dry teeth, holding the pinion on the way back (reindex_held) left 10 of
+        36 on the tips against 6 with it free, so the driver leaves it free."""
         S.mode = "free"
         S.w_cmd = 0.0
         y_a = S.chain_y
-        for seg in ((y_a, y_a - 3.0), (y_a - 3.0, y_a)):
-            n2 = int(0.25 / DT)
+
+        def move(y0, y1, T):
+            n2 = int(T / DT)
             for i in range(n2):
                 tt = i / (n2 - 1)
-                S.chain_y = seg[0] + (seg[1] - seg[0]) * (0.5 - 0.5 * math.cos(math.pi * tt))
-                S.chain_v = (seg[1] - seg[0]) * 0.5 * math.pi * math.sin(math.pi * tt) / 0.25
+                S.chain_y = y0 + (y1 - y0) * (0.5 - 0.5 * math.cos(math.pi * tt))
+                S.chain_v = (y1 - y0) * 0.5 * math.pi * math.sin(math.pi * tt) / T
                 S.step()
                 if record and i % int(round(1 / 300 / DT)) == 0:
                     frames.append((d.time, d.qpos.copy()))
-        S.chain_v = 0.0
+            S.chain_v = 0.0
+        move(y_a, y_a - back, 0.5)
+        S.mode = "drive"
+        S.theta_cmd = d.qpos[S.qa["motor"]]
+        S.w_cmd = -2 * math.pi * abs(seek_rev_s)
+        for i in range(int((0.5 / Z1) / abs(seek_rev_s) / DT)):      # half a pinion tooth
+            S.step()
+        S.w_cmd = 0.0
+        S.theta_cmd = d.qpos[S.qa["motor"]]
+        S.mode = "held" if reindex_held else "free"         # held: the gear comes back to a pinion half a tooth off the phase that stubbed
+        move(y_a - back, y_a, 0.5)
+        S.mode = "drive"
         for i in range(int(0.1 / DT)):
             S.step()
         seek(+1)

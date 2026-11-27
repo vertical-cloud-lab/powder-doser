@@ -62,6 +62,22 @@ def robust_table():
     print()
 
 
+def dry_table():
+    D = load("entry_dry")
+    if not D:
+        return
+    print("#### Dry teeth (μ 0.3) with the driver's whole sequence: the seek, the second try, the re-index (13 mm back, half a tooth, back in, a seek)\n")
+    print("| Tolerance stack (mm) | Meshed on arrival | Cleared by the seek | ... by the second try | ... by re-indexing | Left on the tips (switch: lifted) | Jammed |")
+    print("|---|---|---|---|---|---|---|")
+    for e in sorted({r["a_err"] for r in D}):
+        g = [r for r in D if r["a_err"] == e]
+        c = collections.Counter(r["outcome"] for r in g)
+        n = len(g)
+        print(f"| {e:+.2f} | {c['meshed']}/{n} | {c['stub, cleared by the seek']}/{n} | {c['stub, cleared by the second try']}/{n} | "
+              f"{c['stub, cleared by re-indexing']}/{n} | {sum(v for k, v in c.items() if k.startswith('stub left'))}/{n} | **{c['jam']}/{n}** |")
+    print()
+
+
 def exit_table():
     X = load("exit")
     if not X:
@@ -113,5 +129,6 @@ def cycle_tables():
 if __name__ == "__main__":
     entry_tables()
     robust_table()
+    dry_table()
     exit_table()
     cycle_tables()

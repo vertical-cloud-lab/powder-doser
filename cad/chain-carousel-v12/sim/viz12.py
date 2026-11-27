@@ -310,7 +310,7 @@ def outcome_plot():
     E = json.loads((OUT / "entry.json").read_text())["runs"]
     E11 = json.loads((V11_OUT / "entry.json").read_text())["runs"]
     offs = sorted({r["a_err"] for r in E if r.get("label") == "v12"})
-    fig, ax = plt.subplots(figsize=(10.5, 5.0), dpi=120)
+    fig, ax = plt.subplots(figsize=(10.5, 6.0), dpi=120)
     w = 0.38
     cats = [("meshed", "meshed on arrival", "#7fbf7f"), ("stub, cleared by the seek", "on the tips, cleared by the seek", "#f3c46b"),
             ("stub, cleared by the second try", "cleared by the second try", "#e08a2e"), ("stub left", "left on the tips (switch: lifted)", "#9b59b6"),
@@ -329,17 +329,16 @@ def outcome_plot():
             ax.bar(i - w / 2, j, w * 0.95, color=RED, alpha=0.75)
             ax.text(i - w / 2, j + 0.02, f"{j:.0%}", ha="center", fontsize=9, color=RED)
         else:
-            ax.text(i - w / 2, 0.03, "not run\nin v11", ha="center", fontsize=8, color="#777")
+            ax.text(i - w / 2, 0.45, "not run\nin v11", ha="center", fontsize=8, color="#777")
     ax.set_xticks(range(len(offs)))
     ax.set_xticklabels([f"{e:+.2f} mm" for e in offs])
-    ax.set_xlabel("tolerance stack: the EC (its pivot and stop) this far farther from the gear than drawn")
     ax.set_ylabel("share of indexes")
     ax.set_ylim(0, 1.12)
-    ax.legend(loc="upper center", ncol=3, fontsize=8.5, frameon=False, bbox_to_anchor=(0.5, 1.16))
-    ax.text(0.01, 0.02, "left bar: v11 as drawn (its jams, red)\nright bar: v12 (36 indexes per offset: 12 arrival phases x 3 clevis stiffnesses)",
-            transform=ax.transAxes, fontsize=8.5, color="#444")
-    ax.set_title("One index into the station (MuJoCo, real teeth): v11 jams about 1 in 4; v12's cradle and seek, none", fontsize=11, pad=34)
-    fig.tight_layout()
+    ax.legend(loc="lower center", ncol=3, fontsize=8.5, frameon=False, bbox_to_anchor=(0.5, 1.0))
+    ax.set_xlabel("tolerance stack: the EC (its pivot and stop) this far farther from the gear than drawn\n"
+                  "left bar: v11 as drawn (its jams in red); right bar: v12 (36 indexes per offset: 12 arrival phases x 3 clevis stiffnesses)", fontsize=9.5)
+    fig.suptitle("One index into the station (MuJoCo, real teeth): v11 jams about 1 in 4; v12's cradle and seek, none", fontsize=11.5)
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
     fig.savefig(OUT / "entry_outcomes.png")
     plt.close(fig)
 
@@ -349,7 +348,7 @@ def stall_plot():
     groups = [("v11 as drawn (rigid)", dict(cradle=False)), ("v12 as drawn\n(trailing pivot, 6 N)", dict()),
               ("pivot 10 mm\nnearer the gear", dict(piv_dz=10.0)), ("leading pivot", dict(piv_dy=18.5)), ("4 N spring", dict(f_spring=4.0))]
     angles = (0.0, 30.0, 60.0, 90.0)
-    fig, ax = plt.subplots(figsize=(10.5, 4.8), dpi=120)
+    fig, ax = plt.subplots(figsize=(10.5, 5.6), dpi=120)
     w = 0.16
     cols = ["#888888", BLUE, "#5aa0d8", "#9ec9ee", "#d0e6f7"]
     for gi, (lab, cfg) in enumerate(groups):
@@ -363,7 +362,7 @@ def stall_plot():
             if not math.isnan(v):
                 ax.text(ai + (gi - 2) * w, v * 1e3 + 1.0, f"{v * 1e3:.0f}", ha="center", fontsize=7.5)
     ax.axhspan(5, 30, color="#c33", alpha=0.10)
-    ax.text(3.55, 31, "what the auger is estimated\nto need: 5-30 mN m", fontsize=8.5, color="#a22", va="bottom", ha="right")
+    ax.text(1.62, 31, "what the auger is estimated to need: 5-30 mN m", fontsize=8.5, color="#a22", va="bottom", ha="center")
     ax.set_xticks(range(len(angles)))
     ax.set_xticklabels([f"{a:.0f} deg" for a in angles])
     ax.set_ylabel("auger load when the NEMA 11 stalls (mN m)")
@@ -371,9 +370,9 @@ def stall_plot():
     seen = {}
     for hh, ll in zip(h, l):
         seen.setdefault(ll, hh)
-    ax.legend(seen.values(), seen.keys(), fontsize=8.5, ncol=5, loc="upper center", bbox_to_anchor=(0.5, 1.18), frameon=False)
-    ax.set_title("Stall ramps at 30 rpm, 450 mA: the motor stalls before any tooth jumps, in every case", fontsize=11, pad=30)
-    fig.tight_layout()
+    ax.legend(seen.values(), seen.keys(), fontsize=8.5, ncol=5, loc="lower center", bbox_to_anchor=(0.5, 1.0), frameon=False)
+    fig.suptitle("Stall ramps at 30 rpm, 450 mA: the motor stalls before any tooth jumps, in every case", fontsize=11.5)
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
     fig.savefig(OUT / "stall_vs_tilt.png")
     plt.close(fig)
 

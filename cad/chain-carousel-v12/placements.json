@@ -13702,8 +13702,8 @@
 ]
 },
 {
-"key": "ec11",
-"name": "Electronics carriage v11 (printed: the door ramp over the outlet, the solenoid's collar, the straight rail, the motor's cheeks, the arm with the P16's clevis and the guide shoe)",
+"key": "ec12",
+"name": "Electronics carriage v12 (printed: v11's door ramp, solenoid collar and rail; the cradle's pivot bosses, the outer rail and cross bar, the roof over the spring, the arm with the P16's clevis, both guide shoes)",
 "step": 8,
 "M": [
 [
@@ -13733,8 +13733,39 @@
 ]
 },
 {
-"key": "nema11",
-"name": "NEMA 11 11HS18-0674S (auger drive; behind the gear, shaft forward)",
+"key": "cradle12",
+"name": "Pinion cradle v12 (printed: the NEMA 11's plate, the pivot tube, the spring's bar, the lug with the stop and the hall switch)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+73.0
+],
+[
+0.0,
+-1.0,
+0.0,
+4.7625
+],
+[
+0.0,
+0.0,
+-1.0,
+342.15
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "nema11_v12",
+"name": "NEMA 11 11HS18-0674S (auger drive; on the cradle, shaft forward, cut to 15 mm)",
 "step": 8,
 "M": [
 [
@@ -13753,7 +13784,7 @@
 -1.0,
 0.0,
 -0.0,
-376.4
+376.15
 ],
 [
 0.0,
@@ -13765,7 +13796,7 @@
 },
 {
 "key": "pinion24",
-"name": "24T steel pinion (KHK SS1-24 class, module 1; hub faced off, bored 5 mm)",
+"name": "24T steel pinion (KHK SS1-24A, module 1, 6 mm bore, on a 5 x 6 mm sleeve)",
 "step": 8,
 "M": [
 [
@@ -13784,7 +13815,224 @@
 -1.0,
 0.0,
 -0.0,
-376.4
+376.15
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "pivot_dowel12",
+"name": "Pivot dowel 3 x 12 mm, 18-8 stainless (pressed into the EC's boss, free in the cradle)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+157.0
+],
+[
+0.0,
+-1.0,
+0.0,
+23.2625
+],
+[
+0.0,
+0.0,
+-1.0,
+376.15
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "pivot_dowel12",
+"name": "Pivot dowel 3 x 12 mm, 18-8 stainless (pressed into the EC's boss, free in the cradle)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+204.0
+],
+[
+0.0,
+-1.0,
+0.0,
+23.2625
+],
+[
+0.0,
+0.0,
+-1.0,
+376.15
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "spring12_12p6",
+"name": "Pinion spring, 1 N/mm, 19 mm free (at 12.6 mm)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+189.0
+],
+[
+0.0,
+-1.0,
+0.0,
+4.7625
+],
+[
+0.0,
+0.0,
+-1.0,
+406.25
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "set_screw_m3x6",
+"name": "Stop: M3 x 6 cup-point set screw in an M3 insert in the cradle's lug (its tip on the arm)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+181.0
+],
+[
+0.0,
+-1.0,
+0.0,
+-16.2375
+],
+[
+0.0,
+0.0,
+-1.0,
+373.004054
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "insert_m3_short",
+"name": "M3 heat-set insert (the stop's set screw, in the cradle's lug)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+181.0
+],
+[
+0.0,
+-1.0,
+0.0,
+-16.2375
+],
+[
+0.0,
+0.0,
+-1.0,
+382.15
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "hall_switch12",
+"name": "Hall switch US5881 on the cradle's lug (reads 'lifted' when the pinion rides on the gear's tips)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+175.0
+],
+[
+0.0,
+-1.0,
+0.0,
+-21.2375
+],
+[
+0.0,
+0.0,
+-1.0,
+378.15
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "hall_magnet12",
+"name": "Magnet K&J D42-N52 for the cradle's hall switch (pressed into the EC's post)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+175.0
+],
+[
+0.0,
+-1.0,
+0.0,
+-23.7375
+],
+[
+0.0,
+0.0,
+-1.0,
+381.65
 ],
 [
 0.0,
@@ -13796,7 +14044,7 @@
 },
 {
 "key": "solenoid",
-"name": "Solenoid (Adafruit 412; v11: over clip 1, plunger toward the plate)",
+"name": "Solenoid (Adafruit 412; over clip 1, plunger toward the plate)",
 "step": 8,
 "M": [
 [
@@ -14137,7 +14385,7 @@
 },
 {
 "key": "beam10",
-"name": "Station beam inside the loop (2020, side plate to side plate; carries the EC's guide)",
+"name": "Station beam inside the loop (2020, side plate to side plate; carries the EC's first guide)",
 "step": 8,
 "M": [
 [
@@ -14229,8 +14477,132 @@
 ]
 },
 {
+"key": "beam10",
+"name": "Second station beam inside the loop (2020, side plate to side plate; carries the EC's second guide)",
+"step": 8,
+"M": [
+[
+0.0,
+0.0,
+1.0,
+-30.0
+],
+[
+0.0,
+1.0,
+0.0,
+56.0
+],
+[
+-1.0,
+0.0,
+0.0,
+482.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "m5x16_shcs",
+"name": "Beam end screw M5x16 (through the side plate into its tapped end)",
+"step": 8,
+"M": [
+[
+0.0,
+0.0,
+-1.0,
+-36.35
+],
+[
+0.0,
+1.0,
+0.0,
+56.0
+],
+[
+1.0,
+0.0,
+0.0,
+482.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "m5x16_shcs",
+"name": "Beam end screw M5x16 (through the side plate into its tapped end)",
+"step": 8,
+"M": [
+[
+0.0,
+0.0,
+1.0,
+381.35
+],
+[
+0.0,
+1.0,
+0.0,
+56.0
+],
+[
+-1.0,
+0.0,
+0.0,
+482.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
 "key": "guide11",
-"name": "EC guide: funnel seat on a hanger from the station beam (printed; two M5 into T-nuts)",
+"name": "EC guide 1: funnel seat on a hanger from the station beam (printed; two M5 into T-nuts)",
+"step": 8,
+"M": [
+[
+1.0,
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+1.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+1.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0,
+1.0
+]
+]
+},
+{
+"key": "guide12",
+"name": "EC guide 2 (the far side): funnel seat on a hanger from the second beam (printed; two M5 into T-nuts)",
 "step": 8,
 "M": [
 [

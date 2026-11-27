@@ -1,11 +1,11 @@
-"""Build the narrated v11 walkthrough video from the repo's own clips and stills.
+"""Build the narrated v12 walkthrough video from the repo's own clips and stills.
 
 Narration is synthesised offline with Piper (the public-domain LJ Speech voice), so no text leaves the runner. Every chapter's
 pictures come from this repo (renders/, renders/v11/, sim/out/, ../../print/): each is fitted to its narration's length, with a
 chapter bar on top and the narration as a caption at the bottom. Outputs, next to this file:
 
-    walkthrough_v11.mp4     1280 x 720, 30 fps, H.264 + AAC
-    walkthrough_v11.srt     the narration as captions (for YouTube's caption upload)
+    walkthrough_v12.mp4     1280 x 720, 30 fps, H.264 + AAC
+    walkthrough_v12.srt     the narration as captions (for YouTube's caption upload)
     chapters.txt            YouTube chapter timestamps for the description
 
     python make_walkthrough.py --voice /tmp/piper/en_US-ljspeech-high.onnx
@@ -36,7 +36,9 @@ FONT_B = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 FF = imageio_ffmpeg.get_ffmpeg_exe()
 
 sys.path.insert(0, str(HERE))
-from script_v11 import CHAPTERS, TITLE  # noqa: E402
+from script_v12 import CHAPTERS, TITLE  # noqa: E402
+from fill_v12 import fill  # noqa: E402
+CHAPTERS = [dict(ch, text=fill(ch["text"])) for ch in CHAPTERS]
 
 
 def font(sz, bold=False):
@@ -151,7 +153,8 @@ def _source(v: dict, tmp: Path, k: int) -> "Source":
         p = card(v["card"]["title"], v["card"]["lines"], tmp / f"card_{k}_{abs(hash(v['card']['title'])) % 10**8}.png")
         return Source(p)
     path = V11 / v["path"] if not str(v["path"]).startswith("/") else Path(v["path"])
-    crop = v.get("crop_bottom", 100 if "renders/v11/" in str(v["path"]) and str(v["path"]).endswith(".mp4") and "mesh_" not in str(v["path"]) else 0)
+    crop = v.get("crop_bottom", 100 if ("renders/v12/" in str(v["path"]) or "renders/v11/" in str(v["path"])) and str(v["path"]).endswith(".mp4")
+                 and "mesh_" not in str(v["path"]) else 0)
     return Source(path, v.get("start", 0.0), v.get("end"), v.get("loop", False), v.get("speed", 1.0), crop)
 
 
@@ -203,11 +206,11 @@ def srt_time(t: float) -> str:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--voice", default="/tmp/piper/en_US-ljspeech-high.onnx")
-    ap.add_argument("--out", default=str(HERE / "walkthrough_v11.mp4"))
+    ap.add_argument("--out", default=str(HERE / "walkthrough_v12.mp4"))
     ap.add_argument("--only", type=int, default=None, help="render one chapter (1-based) for checking")
     ap.add_argument("--crf", type=int, default=27)
     a = ap.parse_args()
-    tmp = Path(tempfile.mkdtemp(prefix="wt11_"))
+    tmp = Path(tempfile.mkdtemp(prefix="wt12_"))
     chs = CHAPTERS if a.only is None else [CHAPTERS[a.only - 1]]
     n = len(CHAPTERS)
     # 1. narration
@@ -262,7 +265,7 @@ def main():
         (HERE / "chapters.txt").write_text("\n".join(chap_lines) + "\n")
         head = (HERE / "description_head.txt").read_text() if (HERE / "description_head.txt").exists() else ""
         (HERE / "description.txt").write_text(head + "\n".join(chap_lines) + "\n")
-        (HERE / "walkthrough_v11.srt").write_text("\n".join(srt))
+        (HERE / "walkthrough_v12.srt").write_text("\n".join(srt))
         print(f"total {t / 60:.1f} min", flush=True)
     print("wrote", a.out)
 

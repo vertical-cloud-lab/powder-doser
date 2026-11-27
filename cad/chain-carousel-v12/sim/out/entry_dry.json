@@ -1,0 +1,2099 @@
+{
+"n": 36,
+"runs": [
+{
+"phase": 0.0,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.042,
+"tooth_force_max_N": 60.62,
+"tooth_force_2ms_max_N": 32.31,
+"cd_at_stop": 34.047,
+"chain_force_max_N": 6.66,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -39.3,
+"auger_turn_deg": -10.91,
+"ec_roll_max_deg": 0.477,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 17.93,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.43,
+"rest_seats_N": [
+0.97,
+0.79
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.066,
+"end_lift_mm": -0.119,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.047,
+34.042
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.08333333333333333,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.044,
+"tooth_force_max_N": 46.38,
+"tooth_force_2ms_max_N": 34.22,
+"cd_at_stop": 34.05,
+"chain_force_max_N": 6.27,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -39.6,
+"auger_turn_deg": -10.84,
+"ec_roll_max_deg": 0.479,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 17.7,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.41,
+"rest_seats_N": [
+0.99,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.06,
+"end_lift_mm": -0.117,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.05,
+34.044
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.16666666666666666,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.051,
+"tooth_force_max_N": 18.59,
+"tooth_force_2ms_max_N": 13.06,
+"cd_at_stop": 35.858,
+"chain_force_max_N": 7.77,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -36.3,
+"auger_turn_deg": -19.35,
+"ec_roll_max_deg": 0.27,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 17.94,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.47,
+"rest_seats_N": [
+1.03,
+0.72
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.664,
+"end_lift_mm": -0.113,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+false
+],
+"cds": [
+35.858,
+35.857,
+35.857,
+34.051
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "stub, cleared by re-indexing",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.25,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.044,
+"tooth_force_max_N": 56.59,
+"tooth_force_2ms_max_N": 31.04,
+"cd_at_stop": 34.05,
+"chain_force_max_N": 6.33,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -42.3,
+"auger_turn_deg": -10.83,
+"ec_roll_max_deg": 0.48,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 17.72,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.39,
+"rest_seats_N": [
+1.04,
+0.7
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.059,
+"end_lift_mm": -0.116,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.05,
+34.044
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.3333333333333333,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.048,
+"tooth_force_max_N": 52.88,
+"tooth_force_2ms_max_N": 34.16,
+"cd_at_stop": 34.045,
+"chain_force_max_N": 11.93,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -38.7,
+"auger_turn_deg": -10.68,
+"ec_roll_max_deg": 0.459,
+"module_lift_max_deg": 0.0,
+"end_tooth_force_N": 16.93,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.55,
+"rest_seats_N": [
+1.02,
+0.73
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 0.367,
+"end_lift_mm": -0.117,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.045,
+34.048
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.4166666666666667,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.027,
+"tooth_force_max_N": 76.2,
+"tooth_force_2ms_max_N": 46.16,
+"cd_at_stop": 34.122,
+"chain_force_max_N": 5.28,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -36.7,
+"auger_turn_deg": -15.66,
+"ec_roll_max_deg": 0.44,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 19.03,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.25,
+"rest_seats_N": [
+1.04,
+0.71
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.016,
+"end_lift_mm": -0.134,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.122,
+34.027
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.5,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.049,
+"tooth_force_max_N": 66.3,
+"tooth_force_2ms_max_N": 39.45,
+"cd_at_stop": 34.051,
+"chain_force_max_N": 6.52,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -58.6,
+"auger_turn_deg": -10.67,
+"ec_roll_max_deg": 0.484,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 17.29,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.4,
+"rest_seats_N": [
+1.0,
+0.75
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.057,
+"end_lift_mm": -0.111,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.051,
+34.049
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.5833333333333334,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 35.866,
+"tooth_force_max_N": 14.38,
+"tooth_force_2ms_max_N": 13.51,
+"cd_at_stop": 35.878,
+"chain_force_max_N": 7.79,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -19.5,
+"auger_turn_deg": -20.52,
+"ec_roll_max_deg": 0.282,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 9.9,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 5.05,
+"rest_seats_N": [
+1.04,
+0.7
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.672,
+"end_lift_mm": 1.672,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+true
+],
+"cds": [
+35.878,
+35.877,
+35.876,
+35.866
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": false,
+"hall_right": true,
+"outcome": "stub left (the switch reads lifted)",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.6666666666666666,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 35.853,
+"tooth_force_max_N": 14.36,
+"tooth_force_2ms_max_N": 12.96,
+"cd_at_stop": 35.872,
+"chain_force_max_N": 8.18,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -19.1,
+"auger_turn_deg": -20.59,
+"ec_roll_max_deg": 0.28,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 9.88,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 4.98,
+"rest_seats_N": [
+1.0,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.667,
+"end_lift_mm": 1.661,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+true
+],
+"cds": [
+35.872,
+35.871,
+35.871,
+35.853
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": false,
+"hall_right": true,
+"outcome": "stub left (the switch reads lifted)",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.75,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.05,
+"tooth_force_max_N": 59.94,
+"tooth_force_2ms_max_N": 36.2,
+"cd_at_stop": 34.051,
+"chain_force_max_N": 6.55,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -61.0,
+"auger_turn_deg": -10.66,
+"ec_roll_max_deg": 0.485,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 17.27,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.4,
+"rest_seats_N": [
+0.99,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.056,
+"end_lift_mm": -0.111,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.051,
+34.05
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.8333333333333334,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.06,
+"tooth_force_max_N": 28.48,
+"tooth_force_2ms_max_N": 13.55,
+"cd_at_stop": 35.858,
+"chain_force_max_N": 9.31,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -21.0,
+"auger_turn_deg": -19.35,
+"ec_roll_max_deg": 0.274,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 16.97,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.55,
+"rest_seats_N": [
+0.99,
+0.77
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.663,
+"end_lift_mm": -0.103,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+false
+],
+"cds": [
+35.858,
+35.857,
+35.857,
+34.06
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "stub, cleared by re-indexing",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.9166666666666666,
+"mode": "free",
+"a_err": 0.0,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.054,
+"tooth_force_max_N": 36.85,
+"tooth_force_2ms_max_N": 13.64,
+"cd_at_stop": 35.858,
+"chain_force_max_N": 10.5,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -20.9,
+"auger_turn_deg": -19.35,
+"ec_roll_max_deg": 0.273,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 16.54,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.58,
+"rest_seats_N": [
+0.98,
+0.78
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.664,
+"end_lift_mm": -0.111,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+false
+],
+"cds": [
+35.858,
+35.857,
+35.857,
+34.054
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "stub, cleared by re-indexing",
+"cfg": {
+"mu": 0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.0,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 35.857,
+"tooth_force_max_N": 23.29,
+"tooth_force_2ms_max_N": 13.65,
+"cd_at_stop": 35.876,
+"chain_force_max_N": 10.51,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -22.6,
+"auger_turn_deg": -19.63,
+"ec_roll_max_deg": 0.267,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.16,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 5.45,
+"rest_seats_N": [
+0.97,
+0.79
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.981,
+"end_lift_mm": 1.967,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+true
+],
+"cds": [
+35.876,
+35.875,
+35.875,
+35.857
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": false,
+"hall_right": true,
+"outcome": "stub left (the switch reads lifted)",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.08333333333333333,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.026,
+"tooth_force_max_N": 43.62,
+"tooth_force_2ms_max_N": 15.16,
+"cd_at_stop": 35.864,
+"chain_force_max_N": 15.54,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -22.7,
+"auger_turn_deg": -19.47,
+"ec_roll_max_deg": 0.277,
+"module_lift_max_deg": 0.0,
+"end_tooth_force_N": 21.91,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 4.88,
+"rest_seats_N": [
+1.0,
+0.75
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.968,
+"end_lift_mm": 0.125,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+false
+],
+"cds": [
+35.864,
+35.864,
+35.863,
+34.026
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "stub, cleared by re-indexing",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.16666666666666666,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.042,
+"tooth_force_max_N": 44.01,
+"tooth_force_2ms_max_N": 16.04,
+"cd_at_stop": 35.858,
+"chain_force_max_N": 14.46,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -35.4,
+"auger_turn_deg": -19.37,
+"ec_roll_max_deg": 0.263,
+"module_lift_max_deg": 0.0,
+"end_tooth_force_N": 18.06,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.75,
+"rest_seats_N": [
+1.03,
+0.71
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.961,
+"end_lift_mm": 0.179,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+false
+],
+"cds": [
+35.858,
+35.857,
+35.857,
+34.042
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "stub, cleared by re-indexing",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.25,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.031,
+"tooth_force_max_N": 15.71,
+"tooth_force_2ms_max_N": 13.63,
+"cd_at_stop": 35.858,
+"chain_force_max_N": 10.65,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -25.3,
+"auger_turn_deg": -19.38,
+"ec_roll_max_deg": 0.266,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 21.4,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 4.1,
+"rest_seats_N": [
+1.03,
+0.71
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.964,
+"end_lift_mm": 0.154,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+false
+],
+"cds": [
+35.858,
+35.858,
+35.857,
+34.031
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "stub, cleared by re-indexing",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.3333333333333333,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 35.879,
+"tooth_force_max_N": 14.61,
+"tooth_force_2ms_max_N": 14.17,
+"cd_at_stop": 35.875,
+"chain_force_max_N": 6.86,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -22.4,
+"auger_turn_deg": -20.59,
+"ec_roll_max_deg": 0.283,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.19,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 5.41,
+"rest_seats_N": [
+1.03,
+0.72
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.966,
+"end_lift_mm": 1.98,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+true
+],
+"cds": [
+35.875,
+35.874,
+35.873,
+35.879
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": false,
+"hall_right": true,
+"outcome": "stub left (the switch reads lifted)",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.4166666666666667,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.031,
+"tooth_force_max_N": 67.51,
+"tooth_force_2ms_max_N": 28.56,
+"cd_at_stop": 34.044,
+"chain_force_max_N": 7.3,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -43.6,
+"auger_turn_deg": -11.48,
+"ec_roll_max_deg": 0.44,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 19.5,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.62,
+"rest_seats_N": [
+1.04,
+0.71
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 0.204,
+"end_lift_mm": 0.169,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.044,
+34.031
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.5,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.037,
+"tooth_force_max_N": 67.47,
+"tooth_force_2ms_max_N": 31.45,
+"cd_at_stop": 34.045,
+"chain_force_max_N": 7.86,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -56.8,
+"auger_turn_deg": -11.14,
+"ec_roll_max_deg": 0.454,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 18.87,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.7,
+"rest_seats_N": [
+1.0,
+0.75
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 0.212,
+"end_lift_mm": 0.175,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.045,
+34.037
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.5833333333333334,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.028,
+"tooth_force_max_N": 114.43,
+"tooth_force_2ms_max_N": 26.98,
+"cd_at_stop": 34.117,
+"chain_force_max_N": 7.54,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -40.0,
+"auger_turn_deg": -15.41,
+"ec_roll_max_deg": 0.437,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 19.47,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.66,
+"rest_seats_N": [
+1.04,
+0.71
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 0.277,
+"end_lift_mm": 0.167,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.117,
+34.028
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.6666666666666666,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.026,
+"tooth_force_max_N": 72.21,
+"tooth_force_2ms_max_N": 28.14,
+"cd_at_stop": 34.119,
+"chain_force_max_N": 6.7,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -37.3,
+"auger_turn_deg": -16.56,
+"ec_roll_max_deg": 0.418,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 23.62,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.5,
+"rest_seats_N": [
+1.0,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 0.279,
+"end_lift_mm": 0.162,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.119,
+34.026
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.75,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.037,
+"tooth_force_max_N": 68.06,
+"tooth_force_2ms_max_N": 34.23,
+"cd_at_stop": 34.044,
+"chain_force_max_N": 7.95,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -59.1,
+"auger_turn_deg": -11.14,
+"ec_roll_max_deg": 0.456,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 18.9,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 3.7,
+"rest_seats_N": [
+0.98,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 0.214,
+"end_lift_mm": 0.175,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.044,
+34.037
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.8333333333333334,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 35.878,
+"tooth_force_max_N": 14.95,
+"tooth_force_2ms_max_N": 13.6,
+"cd_at_stop": 35.873,
+"chain_force_max_N": 7.58,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -21.4,
+"auger_turn_deg": -20.61,
+"ec_roll_max_deg": 0.284,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.16,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 5.36,
+"rest_seats_N": [
+0.98,
+0.77
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.965,
+"end_lift_mm": 1.978,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+true
+],
+"cds": [
+35.873,
+35.872,
+35.872,
+35.878
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": false,
+"hall_right": true,
+"outcome": "stub left (the switch reads lifted)",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.9166666666666666,
+"mode": "free",
+"a_err": -0.3,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 35.868,
+"tooth_force_max_N": 14.58,
+"tooth_force_2ms_max_N": 14.06,
+"cd_at_stop": 35.863,
+"chain_force_max_N": 7.3,
+"chain_lag_max_mm": 0.002,
+"pinion_turn_deg": -21.7,
+"auger_turn_deg": -20.74,
+"ec_roll_max_deg": 0.288,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.18,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 5.38,
+"rest_seats_N": [
+0.97,
+0.78
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.954,
+"end_lift_mm": 1.969,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+true
+],
+"cds": [
+35.863,
+35.862,
+35.862,
+35.868
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": false,
+"hall_right": true,
+"outcome": "stub left (the switch reads lifted)",
+"cfg": {
+"mu": 0.3,
+"a_err": -0.3
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.0,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.129,
+"tooth_force_max_N": 51.25,
+"tooth_force_2ms_max_N": 15.87,
+"cd_at_stop": 34.127,
+"chain_force_max_N": 3.93,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -31.0,
+"auger_turn_deg": -16.11,
+"ec_roll_max_deg": 0.172,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.94,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.66,
+"rest_seats_N": [
+0.97,
+0.78
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.127,
+34.129
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.08333333333333333,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.08,
+"tooth_force_max_N": 21.25,
+"tooth_force_2ms_max_N": 16.24,
+"cd_at_stop": 34.068,
+"chain_force_max_N": 3.85,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -27.0,
+"auger_turn_deg": -18.33,
+"ec_roll_max_deg": 0.135,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.33,
+"end_seats_N": [
+0.65,
+0.03
+],
+"end_t_force_N": 0.0,
+"rest_seats_N": [
+0.99,
+0.77
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.068,
+34.08
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.16666666666666666,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.127,
+"tooth_force_max_N": 74.61,
+"tooth_force_2ms_max_N": 16.68,
+"cd_at_stop": 34.123,
+"chain_force_max_N": 2.26,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -58.0,
+"auger_turn_deg": -8.57,
+"ec_roll_max_deg": 0.173,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.64,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.66,
+"rest_seats_N": [
+1.02,
+0.73
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.123,
+34.127
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.25,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.08,
+"tooth_force_max_N": 18.14,
+"tooth_force_2ms_max_N": 12.18,
+"cd_at_stop": 35.843,
+"chain_force_max_N": 10.23,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -14.7,
+"auger_turn_deg": -20.95,
+"ec_roll_max_deg": 0.287,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 16.97,
+"end_seats_N": [
+0.32,
+0.0
+],
+"end_t_force_N": 0.28,
+"rest_seats_N": [
+1.05,
+0.69
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.143,
+"end_lift_mm": -0.401,
+"n_seeks": 2,
+"reindexed": false,
+"hall": [
+true,
+true,
+false
+],
+"cds": [
+35.843,
+35.843,
+34.08
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "stub, cleared by the second try",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.3333333333333333,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.115,
+"tooth_force_max_N": 72.87,
+"tooth_force_2ms_max_N": 18.0,
+"cd_at_stop": 34.109,
+"chain_force_max_N": 3.14,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -42.6,
+"auger_turn_deg": -9.1,
+"ec_roll_max_deg": 0.156,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.14,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.65,
+"rest_seats_N": [
+1.02,
+0.73
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.109,
+34.115
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.4166666666666667,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.125,
+"tooth_force_max_N": 15.26,
+"tooth_force_2ms_max_N": 12.76,
+"cd_at_stop": 35.857,
+"chain_force_max_N": 7.36,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -15.9,
+"auger_turn_deg": -19.31,
+"ec_roll_max_deg": 0.274,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 9.44,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.65,
+"rest_seats_N": [
+1.04,
+0.71
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": 1.169,
+"end_lift_mm": -0.401,
+"n_seeks": 3,
+"reindexed": true,
+"hall": [
+true,
+true,
+true,
+false
+],
+"cds": [
+35.857,
+35.857,
+35.857,
+34.125
+],
+"jam": false,
+"meshed": false,
+"stubbed": true,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "stub, cleared by re-indexing",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.5,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.124,
+"tooth_force_max_N": 92.57,
+"tooth_force_2ms_max_N": 16.95,
+"cd_at_stop": 34.121,
+"chain_force_max_N": 2.4,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -63.4,
+"auger_turn_deg": -8.7,
+"ec_roll_max_deg": 0.172,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 9.44,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.65,
+"rest_seats_N": [
+1.0,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.121,
+34.124
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.5833333333333334,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.099,
+"tooth_force_max_N": 83.73,
+"tooth_force_2ms_max_N": 22.07,
+"cd_at_stop": 34.088,
+"chain_force_max_N": 3.78,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -38.0,
+"auger_turn_deg": -9.57,
+"ec_roll_max_deg": 0.136,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.21,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.61,
+"rest_seats_N": [
+1.05,
+0.7
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.088,
+34.099
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.6666666666666666,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.116,
+"tooth_force_max_N": 49.98,
+"tooth_force_2ms_max_N": 20.31,
+"cd_at_stop": 34.111,
+"chain_force_max_N": 2.45,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -38.3,
+"auger_turn_deg": -9.06,
+"ec_roll_max_deg": 0.162,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.95,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.63,
+"rest_seats_N": [
+1.0,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.111,
+34.116
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.75,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.119,
+"tooth_force_max_N": 91.54,
+"tooth_force_2ms_max_N": 17.78,
+"cd_at_stop": 34.118,
+"chain_force_max_N": 2.89,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -65.5,
+"auger_turn_deg": -8.84,
+"ec_roll_max_deg": 0.18,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.15,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.64,
+"rest_seats_N": [
+0.99,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.118,
+34.119
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.8333333333333334,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.07,
+"tooth_force_max_N": 81.26,
+"tooth_force_2ms_max_N": 21.61,
+"cd_at_stop": 34.055,
+"chain_force_max_N": 3.91,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -38.7,
+"auger_turn_deg": -10.7,
+"ec_roll_max_deg": 0.136,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 10.11,
+"end_seats_N": [
+0.65,
+0.08
+],
+"end_t_force_N": 0.0,
+"rest_seats_N": [
+0.99,
+0.76
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.055,
+34.07
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+},
+{
+"phase": 0.9166666666666666,
+"mode": "free",
+"a_err": 0.5,
+"spring": false,
+"cradle": true,
+"piv_dy": -18.5,
+"seats": 2,
+"f_spring": 6.0,
+"stop_deep": 0.4,
+"k_roll": 10.0,
+"drag_mNm": 5.0,
+"cd_end": 34.099,
+"tooth_force_max_N": 82.35,
+"tooth_force_2ms_max_N": 20.77,
+"cd_at_stop": 34.089,
+"chain_force_max_N": 3.12,
+"chain_lag_max_mm": 0.001,
+"pinion_turn_deg": -40.7,
+"auger_turn_deg": -9.57,
+"ec_roll_max_deg": 0.135,
+"module_lift_max_deg": -0.0,
+"end_tooth_force_N": 9.85,
+"end_seats_N": [
+0.0,
+0.0
+],
+"end_t_force_N": 0.62,
+"rest_seats_N": [
+0.98,
+0.77
+],
+"rest_lift_mm": -0.402,
+"lift_max_mm": -0.401,
+"end_lift_mm": -0.401,
+"n_seeks": 1,
+"reindexed": false,
+"hall": [
+false,
+false
+],
+"cds": [
+34.089,
+34.099
+],
+"jam": false,
+"meshed": true,
+"stubbed": false,
+"meshed_after_seek": true,
+"hall_right": true,
+"outcome": "meshed",
+"cfg": {
+"mu": 0.3,
+"a_err": 0.5
+},
+"label": "dry teeth (mu 0.3), with the re-index fallback"
+}
+]
+}

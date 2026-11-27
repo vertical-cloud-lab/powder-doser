@@ -5,8 +5,8 @@
 "phase": 0.0,
 "a_err": -0.3,
 "spring": false,
-"chain_force_max_N": 4.73,
-"tooth_force_max_N": 52.33,
+"chain_force_max_N": 4.25,
+"tooth_force_max_N": 68.09,
 "chain_lag_max_mm": 0.001,
 "k_roll": 3.0,
 "mode": "free"
@@ -15,8 +15,8 @@
 "phase": 0.0,
 "a_err": -0.3,
 "spring": false,
-"chain_force_max_N": 4.79,
-"tooth_force_max_N": 58.45,
+"chain_force_max_N": 5.01,
+"tooth_force_max_N": 64.78,
 "chain_lag_max_mm": 0.001,
 "k_roll": 3.0,
 "mode": "held"
@@ -25,8 +25,8 @@
 "phase": 0.0,
 "a_err": -0.3,
 "spring": false,
-"chain_force_max_N": 4.31,
-"tooth_force_max_N": 69.5,
+"chain_force_max_N": 4.41,
+"tooth_force_max_N": 57.87,
 "chain_lag_max_mm": 0.001,
 "k_roll": 100.0,
 "mode": "free"
@@ -35,9 +35,9 @@
 "phase": 0.0,
 "a_err": -0.3,
 "spring": false,
-"chain_force_max_N": 25.42,
-"tooth_force_max_N": 831.25,
-"chain_lag_max_mm": 0.003,
+"chain_force_max_N": 4.8,
+"tooth_force_max_N": 59.42,
+"chain_lag_max_mm": 0.001,
 "k_roll": 100.0,
 "mode": "held"
 },
@@ -85,8 +85,8 @@
 "phase": 0.0,
 "a_err": 0.5,
 "spring": false,
-"chain_force_max_N": 4.33,
-"tooth_force_max_N": 30.5,
+"chain_force_max_N": 4.32,
+"tooth_force_max_N": 27.58,
 "chain_lag_max_mm": 0.001,
 "k_roll": 3.0,
 "mode": "free"
@@ -95,8 +95,8 @@
 "phase": 0.0,
 "a_err": 0.5,
 "spring": false,
-"chain_force_max_N": 4.36,
-"tooth_force_max_N": 25.18,
+"chain_force_max_N": 4.06,
+"tooth_force_max_N": 24.45,
 "chain_lag_max_mm": 0.001,
 "k_roll": 3.0,
 "mode": "held"
@@ -105,8 +105,8 @@
 "phase": 0.0,
 "a_err": 0.5,
 "spring": false,
-"chain_force_max_N": 3.57,
-"tooth_force_max_N": 29.62,
+"chain_force_max_N": 3.53,
+"tooth_force_max_N": 22.35,
 "chain_lag_max_mm": 0.001,
 "k_roll": 100.0,
 "mode": "free"
@@ -115,8 +115,8 @@
 "phase": 0.0,
 "a_err": 0.5,
 "spring": false,
-"chain_force_max_N": 3.47,
-"tooth_force_max_N": 25.48,
+"chain_force_max_N": 4.17,
+"tooth_force_max_N": 24.35,
 "chain_lag_max_mm": 0.001,
 "k_roll": 100.0,
 "mode": "held"
@@ -125,8 +125,8 @@
 "phase": 0.0,
 "a_err": 1.0,
 "spring": false,
-"chain_force_max_N": 3.98,
-"tooth_force_max_N": 0.66,
+"chain_force_max_N": 4.34,
+"tooth_force_max_N": 2.5,
 "chain_lag_max_mm": 0.001,
 "k_roll": 3.0,
 "mode": "free"
@@ -135,8 +135,8 @@
 "phase": 0.0,
 "a_err": 1.0,
 "spring": false,
-"chain_force_max_N": 4.39,
-"tooth_force_max_N": 0.58,
+"chain_force_max_N": 4.31,
+"tooth_force_max_N": 0.53,
 "chain_lag_max_mm": 0.001,
 "k_roll": 3.0,
 "mode": "held"
@@ -145,21 +145,22 @@
 "phase": 0.0,
 "a_err": 1.0,
 "spring": false,
-"chain_force_max_N": 3.2,
-"tooth_force_max_N": 2.44,
-"chain_lag_max_mm": 0.001,
-"k_roll": 100.0,
-"mode": "free"
-},
-{
-"phase": 0.0,
-"a_err": 1.0,
-"spring": false,
-"chain_force_max_N": 3.56,
+"chain_force_max_N": 3.25,
 "tooth_force_max_N": 0.55,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 1.0,
+"spring": false,
+"chain_force_max_N": 3.58,
+"tooth_force_max_N": 0.59,
 "chain_lag_max_mm": 0.001,
 "k_roll": 100.0,
 "mode": "held"
 }
-]
+],
+"note": "re-run with the cradle started in tight mesh"
 }

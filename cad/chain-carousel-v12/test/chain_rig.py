@@ -147,8 +147,9 @@ NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
 SEEK_REV_S = -0.25                                 # v10 --seek: the pinion's rev/s while the chain moves (Rig.nema11)
 SEEK12_REV_S, SEEK12_T, SEEK12_TRIES = 0.25, 0.2, 2   # v12: the seek after every index: rev/s, s each way, tries (params.SEEK12)
-REINDEX12_MM = 3.0                                 # v12: if the switch still reads lifted after both seeks, back the chain off this far and
-                                                   # come back (the NEMA 11 free), then seek once more (sim/README: dry teeth)
+REINDEX12_MM = 13.0                                # v12: if the switch still reads lifted after both seeks, back the chain off this far (past
+                                                   # where the tips first touch, 12.9 mm), turn the pinion half a tooth, come back with the NEMA 11
+                                                   # free and seek once more (v11's stopgap; sim/README: dry teeth)
 DOSE_HOLD_S = 0.5                                  # at the dose tilt after the auger stops (the tail falls)
 REVERSE_REVS = 1.0                                 # auger revolutions backwards at rest, after the P16 is back fully extended
 
@@ -337,8 +338,10 @@ class Rig:
                      f"cradle switch reads {'LIFTED' if readings[-1] else 'seated'}")
         if readings[-1]:                             # v12 fallback: the gear leaves the pinion's tips and comes back at another phase
             back = round(REINDEX12_MM * self.steps_per_mm())
-            self.say(f"still lifted: back the chain off {REINDEX12_MM:g} mm and index again")
+            self.say(f"still lifted: back the chain off {REINDEX12_MM:g} mm, turn the pinion half a tooth, index again")
             self.move_steps(-back, speed_mm_s=20.0, accel_mm_s2=200.0)
+            self.nema11("held")
+            self._turn(SEEK12_REV_S, (0.5 / 24) / SEEK12_REV_S)     # half of one of the 24T pinion's teeth
             self.move_steps(back, speed_mm_s=20.0, accel_mm_s2=200.0)
             self.nema11("held")
             if self.sim_stub > 0:
