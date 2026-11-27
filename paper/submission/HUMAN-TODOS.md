@@ -1,3 +1,5 @@
+> **Superseded on 27 Nov 2026 by [`STATUS-2026-11-27.md`](STATUS-2026-11-27.md)**, which has the current blockers, owners and dates. Kept for the record.
+
 # Remaining human TODOs, with owners (10 Oct 2026)
 
 Every item a person still has to do before the *Digital Discovery* submission, gathered from

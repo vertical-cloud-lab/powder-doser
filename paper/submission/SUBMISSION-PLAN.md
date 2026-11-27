@@ -1,3 +1,5 @@
+> **Superseded on 27 Nov 2026 by [`STATUS-2026-11-27.md`](STATUS-2026-11-27.md)**, which has the current blockers, owners and dates. Kept for the record.
+
 # Submission plan: *Digital Discovery*, New Hardware Developments collection, due Fri 13 Nov 2026
 
 Target: **submit on Wed 11 Nov**, leaving two working days of buffer before the deadline.
