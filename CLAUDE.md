@@ -249,6 +249,29 @@ GH_TOKEN=$GH_READ_PAT_STAGING gh api "repos/sgbaird/agent-staging/contents/<path
 - Never echo the token or save it in a remote or a commit. If it is unset or returns
   401/403/404, say so and stop; don't rebuild the content some other way.
 
+## YouTube uploads
+
+`YOUTUBE_UPLOAD_TOKEN_PICKLE_B64` (repo secret, job env in `claude.yml`) is a base64
+`token.pickle` for the **BYU Vertical Cloud Lab** channel, the same one byu-vcl and digital-alloy-lab use.
+Its scopes are `youtube.upload` + `youtube.readonly` only: it can upload and list, but cannot delete or edit.
+Use it through `youtube/yt_service.py` (`pip install -r youtube/requirements.txt`):
+
+```bash
+python youtube/yt_service.py                                   # which channel, which scopes
+python youtube/yt_service.py upload walkthrough.mp4 --title "Chain carousel v12 walkthrough"
+python youtube/yt_service.py upload partial.mp4 --title "..." --privacy unlisted
+```
+
+- **Privacy (Sterling's rule):** a major or finished cut goes up **public without notifying subscribers** (the
+  default here); a preliminary or partial one goes up **unlisted**. Never private. Pass `--notify` only when
+  asked.
+- The privacy set at upload sticks. Changing it afterwards, deleting, editing metadata or playlists all need the
+  full-control token, which this repo doesn't have: ask Sterling.
+- In a GitHub Actions run the helper appends `Requested in <link>` to the description (the comment that started
+  the run). `--no-source-link` skips it.
+- Player extraction (`yt-dlp`) is bot-blocked from Actions runners; fetch archive video from a Pi.
+- Never decode, print or commit the token.
+
 ## Zenodo
 
 `ZENODO_API_TOKEN` and `ZENODO_SANDBOX_API_TOKEN` can upload *and* publish; `ZENODO_BASE_URL` and `ZENODO_SANDBOX_BASE_URL` end in `/api`. Publishing mints a permanent DOI that only Zenodo support can remove, so test on the sandbox and publish only when asked. `zenodo_client`'s `ensure_zenodo` reads both tokens from env as named: [example](https://github.com/sparks-baird/matsci-opt-benchmarks/blob/c58cd80/notebooks/crabnet_hyperparameter/1.3-sgb-zenodo-upload.ipynb).
