@@ -3,7 +3,7 @@ A walkthrough of the multi-doser chain carousel, version 12: thirteen auger powd
 Covered: what v12 is, why v11 needed a change (about one index in four jammed in the model), the cradle, a tooth landing on a tooth (the lift, the switch and the seek), what the simulations found (0 jams in 504 indexes), what holds the mesh while it doses, the stall torque against what the auger needs, the second seat, the interference checks, printing and buying, and what to check before building.
 
 Design files, simulations and this video's sources: https://github.com/vertical-cloud-lab/powder-doser/tree/claude/issue-128-20261013-2050/cad/chain-carousel-v12
-Onshape (public): ONSHAPE_URL
+Onshape (public): https://cad.onshape.com/documents/fab22582b674da0aa4f55a73/w/fc13e6204b748c1ec907acab/e/890e883cfe283daf84776743
 Discussion: https://github.com/vertical-cloud-lab/powder-doser/pull/185
 
 Narration: Piper text-to-speech, LJ Speech voice (public-domain data), synthesised offline.

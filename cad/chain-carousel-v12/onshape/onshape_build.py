@@ -25,7 +25,8 @@ DOC_JSON = HERE / "onshape_document.json"
 RENDERS = ROOT / "renders" / "onshape"
 COMPANY_NAME = "Vertical Cloud Lab"
 DOC_NAME_0 = "Multi-doser chain carousel - test rig v12, spring-loaded pinion on a cradle, hall switch, second EC seat (#128)"
-DOC_NAME = DOC_NAME_0
+DOC_NAME = DOC_NAME_0 + ", rev. 2026-11-27"   # the cradle fixed after Bambu Studio's slice (README, Checks)
+FIRST_V12 = HERE / "onshape_document_first.json"
 V11_NAME = ("Multi-doser chain carousel - test rig v11, 0-90 deg with the station inside the loop, straight rail, tall-cage balance (#128), "
             "rev. 2026-11-27")
 DESCRIPTION = ("v12 (2026-11-27): v11 rev. 2026-11-27 with the spring-loaded pinion its gear study proposed: the NEMA 11 and its 24T pinion on a "
@@ -79,7 +80,7 @@ FRONT_ISO = "0.743,-0.669,0,0,0.339,0.376,0.862,0,-0.577,-0.641,0.507,0"
 
 
 def create() -> dict:
-    c = Onshape(budget=45, run="create-document-v12")
+    c = Onshape(budget=45, run="create-document-v12-rev")
     cid = company_id(c)
     doc = c.post("/documents", json={"name": DOC_NAME, "ownerId": cid, "ownerType": 1, "isPublic": True,
                                      "description": DESCRIPTION})
@@ -104,7 +105,7 @@ def create() -> dict:
                 print("->", shaded(c, rec, name, view), flush=True)
             except RuntimeError as e:
                 print("view", name, "failed:", str(e)[:200])
-    v = c.post(f"/documents/d/{did}/versions", json={"documentId": did, "name": "v12",
+    v = c.post(f"/documents/d/{did}/versions", json={"documentId": did, "name": "v12 rev. 2026-11-27",
                                                       "description": "Import from cad/chain-carousel-v12 (#128, PR #185): the spring-loaded pinion"})
     rec["version"] = {"id": v["id"], "name": v["name"]}
     rec["api_calls"] = c.calls
@@ -133,14 +134,30 @@ def views() -> None:
         print("->", shaded(c, rec, name, view))
 
 
+def supersede_first_v12(new: dict) -> None:
+    """Rename v12's first document (imported before the cradle fix) SUPERSEDED, pointing at the revision."""
+    old = json.loads(FIRST_V12.read_text())
+    c = Onshape(budget=2, run="supersede-v12-first")
+    c.post(f"/documents/{old['documentId']}", json={
+        "name": f"{DOC_NAME_0} - SUPERSEDED, see {new['documentId'][:8]}",
+        "description": f"Superseded by {new['url']}: the same rig with the cradle fixed after Bambu Studio's slice (its top bar 32 mm wide "
+                       "to meet both cheeks, the motor plate up to the bar, a 1.7 mm web, the lower heads' counterbores). Kept because the "
+                       "API key cannot delete documents."})
+    old["superseded_by"] = new["url"]
+    FIRST_V12.write_text(json.dumps(old, indent=1))
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["create", "views"])
     ap.add_argument("--supersede", type=Path, help="earlier onshape_document*.json to mark superseded")
+    ap.add_argument("--supersede-first-v12", action="store_true", help="rename v12's first document SUPERSEDED")
     a = ap.parse_args()
     if a.cmd == "create":
         rec = create()
         if a.supersede:
             supersede(a.supersede, rec)
+        if a.supersede_first_v12:
+            supersede_first_v12(rec)
     else:
         views()

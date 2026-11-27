@@ -12,3 +12,17 @@
 {"run": "supersede-v11", "n": 1, "method": "POST", "path": "/documents/3e99376a80ac21e730425ec0", "status": 200, "utc": "2026-11-27T19:15:26Z"}
 {"run": "confirm-public-v12", "n": 1, "method": "GET", "path": "/documents/918e9cd2e623d78cf67c9972", "status": 200, "utc": "2026-11-27T19:15:37Z"}
 {"run": "confirm-public-v12", "n": 2, "method": "GET", "path": "/documents/3e99376a80ac21e730425ec0", "status": 200, "utc": "2026-11-27T19:15:37Z"}
+{"run": "create-document-v12-rev", "n": 1, "method": "GET", "path": "/companies", "status": 200, "utc": "2026-11-27T20:01:09Z"}
+{"run": "create-document-v12-rev", "n": 2, "method": "POST", "path": "/documents", "status": 200, "utc": "2026-11-27T20:01:09Z"}
+{"run": "create-document-v12-rev", "n": 3, "method": "POST", "path": "/blobelements/d/fab22582b674da0aa4f55a73/w/fc13e6204b748c1ec907acab", "status": 200, "utc": "2026-11-27T20:01:13Z"}
+{"run": "create-document-v12-rev", "n": 4, "method": "GET", "path": "/translations/6b09e189ecefab8114082ef6", "status": 200, "utc": "2026-11-27T20:02:43Z"}
+{"run": "create-document-v12-rev", "n": 5, "method": "GET", "path": "/translations/6b09e189ecefab8114082ef6", "status": 200, "utc": "2026-11-27T20:03:43Z"}
+{"run": "create-document-v12-rev", "n": 6, "method": "GET", "path": "/translations/6b09e189ecefab8114082ef6", "status": 200, "utc": "2026-11-27T20:04:43Z"}
+{"run": "create-document-v12-rev", "n": 7, "method": "GET", "path": "/documents/d/fab22582b674da0aa4f55a73/w/fc13e6204b748c1ec907acab/elements", "status": 200, "utc": "2026-11-27T20:04:43Z"}
+{"run": "create-document-v12-rev", "n": 8, "method": "GET", "path": "/assemblies/d/fab22582b674da0aa4f55a73/w/fc13e6204b748c1ec907acab/e/890e883cfe283daf84776743/shadedviews", "status": 200, "utc": "2026-11-27T20:04:46Z"}
+{"run": "create-document-v12-rev", "n": 9, "method": "GET", "path": "/assemblies/d/fab22582b674da0aa4f55a73/w/fc13e6204b748c1ec907acab/e/890e883cfe283daf84776743/shadedviews", "status": 200, "utc": "2026-11-27T20:04:48Z"}
+{"run": "create-document-v12-rev", "n": 10, "method": "POST", "path": "/documents/d/fab22582b674da0aa4f55a73/versions", "status": 200, "utc": "2026-11-27T20:04:49Z"}
+{"run": "supersede-v12-first", "n": 1, "method": "POST", "path": "/documents/918e9cd2e623d78cf67c9972", "status": 200, "utc": "2026-11-27T20:04:49Z"}
+{"run": "confirm-public-v12-rev", "n": 1, "method": "GET", "path": "/documents/fab22582b674da0aa4f55a73", "status": 200, "utc": "2026-11-27T20:04:53Z"}
+{"run": "confirm-public-v12-rev", "n": 2, "method": "GET", "path": "/documents/918e9cd2e623d78cf67c9972", "status": 200, "utc": "2026-11-27T20:04:53Z"}
+{"run": "supersede-v11-point-at-rev", "n": 1, "method": "POST", "path": "/documents/3e99376a80ac21e730425ec0", "status": 200, "utc": "2026-11-27T20:05:01Z"}

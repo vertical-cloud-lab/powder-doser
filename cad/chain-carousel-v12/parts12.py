@@ -42,12 +42,17 @@ def cradle_v12() -> cq.Workplane:
       on its +y face."""
     p0, p1 = CRADLE12_PLATE_X
     zc = PINION12_Z
-    # the plate: the motor's square (z -49..-20.25) from the pivot boss's side to y 14; above z -32 it runs on out to the lug
-    plate = _box(p0, p1, -16.0, 14.0, zc - 15.0, zc + 13.75)            # -y edge at -16 over the tube: lifted, it swings toward the EC's rail
+    # the plate: the motor's square from the pivot boss's side to y 14.5, from the top bar's far face (z -51.5) down to z -20.0; above
+    # z -32 it runs on out to the lug. 2026-11-27 (Bambu Studio, v12's first slice): the plate stopped at z -49 and y 14, so the top bar
+    # hung on a 0.7 mm strip of it and two counterbores broke out of its edges
+    tx0_, tx1_, hw_, zn_, zf_ = CRADLE12_TOP
+    plate = _box(p0, p1, -16.0, 14.5, zf_, zc + 14.0)                   # -y edge at -16 over the tube: lifted, it swings toward the EC's rail
     plate = plate.union(_box(p0, p1, 13.9, CRADLE12_LUG[3], CRADLE12_LUG[5], CRADLE12_LUG[4]))
     plate = plate.cut(_cyl_x(11.2, p0 - 1.0, p1 + 1.0, 0.0, zc))                     # the motor's 22 mm boss
     for (y, z) in NEMA11_SCREWS:
-        plate = plate.cut(_cyl_x(1.45, p0 - 1.0, p1 + 1.0, y, z)).cut(_cyl_x(2.4, p0 - 1.0, p0 + 0.6, y, z))   # M2.5, head counterbore 0.6
+        plate = plate.cut(_cyl_x(1.45, p0 - 1.0, p1 + 1.0, y, z))                   # M2.5 clearance
+        if z > zc:   # the two lower heads counterbored 1.5 mm, so they stay 0.5 mm behind the passing 44T gears' back face (x 88.4)
+            plate = plate.cut(_cyl_x(2.3, p0 - 1.0, p0 + 1.5, y, z))
     t0, t1 = CRADLE12_TUBE
     tube = _box(t0, t1, PY - 3.5, PY + 3.5, PZ - 3.5, PZ + 3.5).edges("|X").fillet(1.5)
     # the tube is solid only at its two bosses (where the dowels run), hollow-free between them: a 7 x 7 bar
@@ -57,7 +62,7 @@ def cradle_v12() -> cq.Workplane:
     lug = _box(lx0, lx1, ly0, ly1, lzf, lzn)
     # the top bar's two cheeks down the motor's sides to the tube (-y) and the lug (+y) at the plate's back, x 93.5-97.5
     web_m = _box(p1 - 0.01, p1 + 4.0, -16.0, -14.3, zf, PZ + 3.5)
-    web_p = _box(p1 - 0.01, p1 + 4.0, 14.3, ly0 + 0.01, zf, lzn)
+    web_p = _box(p1 - 0.01, p1 + 4.0, 14.3, 16.0, zf, lzn)                 # 2026-11-27: was 0.31 mm thick (y 14.3-14.61)
     c = plate.union(tube).union(top).union(lug).union(web_m).union(web_p)
     # back: a ring of the top bar's far end down the -y side to the tube's back boss (stiffens the tube)
     c = c.union(_box(tx1 - 4.0, tx1, -16.0, -14.3, zf, PZ + 3.5))
@@ -168,7 +173,8 @@ def ec_v12(sy_p16: float) -> cq.Workplane:
     body = body.cut(_cyl(SPRING12_OD / 2 + 0.3, 2.0, SPRING12_X, 0.0, rzn - 2.0))            # the spring's pocket in the roof
     # up-stop: a pad under the roof over the top bar's +y half, CRADLE12_LIFT at the pinion before it touches (the bar rises 26.5/18.5 as much)
     tzf = CRADLE12_TOP[4]
-    lift_y8 = CRADLE12_LIFT * (8.0 - PY) / (0.0 - PY)
+    lift_y8 = 3.2 * (8.0 - PY) / (0.0 - PY)       # the pad as first drawn (for 3.2 mm at y 8); with the top bar widened to +-16 its corner
+                                                 # meets the pad at 3.0 mm of lift at the pinion (CRADLE12_LIFT, measured by bisection)
     body = body.union(_box(rx1 - 6.0, rx1, 4.0, 9.0, rzn - 0.01, tzf - lift_y8 - 0.2))   # 2026-11-27: rzn + 0.01 left it 0.01 mm off the roof (a second solid)
     # the switch's magnet post: a block off the +y post, the magnet's 6.4 mm hole along y, its face MAGNET12_GAP off the lug's +y face
     hx, hy, hz = HALL12_XYZ

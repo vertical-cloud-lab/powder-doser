@@ -396,9 +396,9 @@ def tilt10(angles=(4, 10, 20, 30, 40, 50, 60, 65, 70, 75, 80), tag: str = "tilt"
     return hits
 
 
-def cradle(lifts=(-0.4, 0.0, 1.0, 2.0, 2.6, 3.2), angles=(0.0, 30.0, 90.0)) -> list:
-    """v12: the pinion's cradle over its whole travel (on its stop, in tight mesh, lifted 1, 2 (a tip-on-tip stub), 2.6 and 3.2 mm, the
-    roof's pad) at rest and with the module pulled up to 30 and 90 deg: the cradle, the NEMA 11, the pinion, the spring, the stop's set
+def cradle(lifts=(-0.4, 0.0, 1.0, 2.0, 2.6, 3.0), angles=(0.0, 30.0, 90.0)) -> list:
+    """v12: the pinion's cradle over its whole travel (on its stop, in tight mesh, lifted 1, 2 (a tip-on-tip stub), 2.6 and 3.0 mm, where
+    the roof's pad meets the top bar) at rest and with the module pulled up to 30 and 90 deg: the cradle, the NEMA 11, the pinion, the spring, the stop's set
     screw and insert and the hall switch against everything else (the EC included, its pivot bosses, rail, roof, magnet post and arm)."""
     hits = []
     movers = ("cradle12", "nema11_v12", "pinion24", "set_screw_m3x6", "insert_m3_short", "hall_switch12")

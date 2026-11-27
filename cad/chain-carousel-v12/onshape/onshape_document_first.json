@@ -1,0 +1,321 @@
+{
+ "documentId": "918e9cd2e623d78cf67c9972",
+ "workspaceId": "6e5fa1c0246103eb719a8b8b",
+ "owner": "Vertical Cloud Lab",
+ "public": true,
+ "url": "https://cad.onshape.com/documents/918e9cd2e623d78cf67c9972/w/6e5fa1c0246103eb719a8b8b",
+ "translationId": "6b09d5baba1c375a05b42305",
+ "importedElementIds": [
+  "a37bbd071b4e7216908fadba",
+  "e76dfddc80268ae503ffe89a",
+  "821c4cea3056fac57605be10",
+  "91cef8f9d18c6fc4468ce23b",
+  "c1aef4825bc0b17e3a6cad4b",
+  "42fddddb3de5440610d833ae",
+  "c55f0b55e904b879e33b2584",
+  "6469e44d6d4e3dcb9c769445",
+  "d1a273b6ed1a18347544f69c",
+  "642f407ef519a7590dc6f152",
+  "0658da63f9d8185b62098a7d",
+  "66011c9b2741053af8f3d755",
+  "a2b3f66df796709037bff714",
+  "c99b72abfea8cdd5a9bbb22b",
+  "ecd4de4632926e1859e5150a",
+  "3dc3d29ff2b713e2835f532c",
+  "76b836014a8e2a602df39bd6",
+  "2fcc68c6bdb9eb06137094b3",
+  "bdb037193aa457a2ef38b0b7",
+  "6faeb84375c98434f681f8a0",
+  "297a52065d31c6cc6b45bd09",
+  "033344dd1da2310a5c266aed",
+  "b8767ab1a39a88b530a562f2",
+  "20496cd5c6c27b2d56e0a060",
+  "99413b242f91986a03f96813",
+  "6bb5766b165cba75d7ac02b3"
+ ],
+ "elements": [
+  {
+   "id": "6bb5766b165cba75d7ac02b3",
+   "name": "Chain carousel test rig v12",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "99413b242f91986a03f96813",
+   "name": "04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "20496cd5c6c27b2d56e0a060",
+   "name": "06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "b8767ab1a39a88b530a562f2",
+   "name": "08 Station",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "033344dd1da2310a5c266aed",
+   "name": "09 Modules on the bench",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "297a52065d31c6cc6b45bd09",
+   "name": "10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "6faeb84375c98434f681f8a0",
+   "name": "12 The balance with its tall draft cage on the bench through the front doorway, the dosing lid in its top, the pillar and beaker; acrylic panels on standoffs, the side hatch (swaps)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "bdb037193aa457a2ef38b0b7",
+   "name": "Bearing locknut 1-4-20 (nylon insert)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "2fcc68c6bdb9eb06137094b3",
+   "name": "Jack screw locknut M5 (trapped, nylon insert)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "76b836014a8e2a602df39bd6",
+   "name": "Pinion spring, 1 N-mm, 19 mm free (at 12.6 mm)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "3dc3d29ff2b713e2835f532c",
+   "name": "Actuonix P16-150-22-12-P (pulls the EC and module up, 0-90 deg; pot feedback)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "ecd4de4632926e1859e5150a",
+   "name": "Actuonix P16-150 rod",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "c99b72abfea8cdd5a9bbb22b",
+   "name": "M3 locknut (P16 base pin)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "a2b3f66df796709037bff714",
+   "name": "Outlet door spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "66011c9b2741053af8f3d755",
+   "name": "Outlet door spring 2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "0658da63f9d8185b62098a7d",
+   "name": "Latch spring 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "642f407ef519a7590dc6f152",
+   "name": "Tab locknut M3 (in the hook) 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "d1a273b6ed1a18347544f69c",
+   "name": "Latch spring 2",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "6469e44d6d4e3dcb9c769445",
+   "name": "Balance draft cage glass (front, back)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "c55f0b55e904b879e33b2584",
+   "name": "01 Base frame",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "42fddddb3de5440610d833ae",
+   "name": "02 Posts, top frame, and the ladder",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "c1aef4825bc0b17e3a6cad4b",
+   "name": "03 Side plates onto the posts (v11",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "91cef8f9d18c6fc4468ce23b",
+   "name": "05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "821c4cea3056fac57605be10",
+   "name": "07 Chains",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "e76dfddc80268ae503ffe89a",
+   "name": "11 Electronics board",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "a37bbd071b4e7216908fadba",
+   "name": "chain_carousel_rig_v12 parts",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "329f71edce37ac6f332945b3",
+   "name": "Part Studio 1",
+   "type": "PARTSTUDIO"
+  },
+  {
+   "id": "3e010d26fe769d3b6a15e792",
+   "name": "Assembly 1",
+   "type": "ASSEMBLY"
+  },
+  {
+   "id": "de4bdb21dd39cec1c232f4aa",
+   "name": "BOM : Assembly 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e929721e5143262ae64571d3",
+   "name": "chain_carousel_rig_v12.step",
+   "type": "BLOB"
+  },
+  {
+   "id": "72f97f26413c03a737b65f5c",
+   "name": "BOM : 04 Flange bearings and top-shaft tensioners on the side plates",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "fb425abb68117156ad3daa8e",
+   "name": "BOM : Pinion spring, 1 N-mm, 19 mm free (at 12.6 mm)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a30ed0aad598871b0d048254",
+   "name": "BOM : 12 The balance with its tall draft cage on the bench through the front doorway, the dosing lid in its top, the pillar and beaker; acrylic panels on standoffs, the side hatch (swaps)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a36eabae8b0483243facbecb",
+   "name": "BOM : 03 Side plates onto the posts (v11",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "4b8eb124b92f54f3e3b7f229",
+   "name": "BOM : 05 Corner shafts with their sprockets (back set screws loose)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "b550d49bf56596d6bfe565c9",
+   "name": "BOM : 09 Modules on the bench",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "1d7b7ea0ded57f56a5b32f36",
+   "name": "BOM : Balance draft cage glass (front, back)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "e28403b02b207baf0bf3686d",
+   "name": "BOM : Actuonix P16-150-22-12-P (pulls the EC and module up, 0-90 deg; pot feedback)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "15dfa04fe3e09bd31ce8d043",
+   "name": "BOM : Jack screw locknut M5 (trapped, nylon insert)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "a20fcfd89d0b3d6be3363728",
+   "name": "BOM : 06 NEMA 34 on the back plate, 15T sprockets, drive chain",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "0220c88b64c14f3774dc6e1f",
+   "name": "BOM : Latch spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "4ec7eebb48aacf5cd66716f0",
+   "name": "BOM : Bearing locknut 1-4-20 (nylon insert)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "923afd9f8d5fff60c57a300e",
+   "name": "BOM : 02 Posts, top frame, and the ladder",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "50fa7a0627c49123ed3ef04b",
+   "name": "BOM : Chain carousel test rig v12",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "365bcae5c2fba22bd8425666",
+   "name": "BOM : 08 Station",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "794504c56d6e0e623426aa6a",
+   "name": "BOM : 11 Electronics board",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "c8961998ba70ca632e09c56f",
+   "name": "BOM : Actuonix P16-150 rod",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "88571e1615069c5b452fc688",
+   "name": "BOM : Outlet door spring 2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "603bc8531775117c44722e7d",
+   "name": "BOM : Outlet door spring 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "cd22832b660c89d70d61ec6f",
+   "name": "BOM : Tab locknut M3 (in the hook) 1",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "8656b8292b8b26e258eda55e",
+   "name": "BOM : M3 locknut (P16 base pin)",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "f395114443dfe78f7a1e9f18",
+   "name": "BOM : 01 Base frame",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "9e2c184cdc662c645b15d24f",
+   "name": "BOM : 07 Chains",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "efc66fd91c476a1d4074b1bc",
+   "name": "BOM : Latch spring 2",
+   "type": "BILLOFMATERIALS"
+  },
+  {
+   "id": "40a5eaa094a0a36d5a7a0ea8",
+   "name": "BOM : 10 Carriages onto the chain at the loading position, one index at a time; phase and tension",
+   "type": "BILLOFMATERIALS"
+  }
+ ],
+ "assemblyElementId": "6bb5766b165cba75d7ac02b3",
+ "assemblyUrl": "https://cad.onshape.com/documents/918e9cd2e623d78cf67c9972/w/6e5fa1c0246103eb719a8b8b/e/6bb5766b165cba75d7ac02b3",
+ "version": {
+  "id": "ae6cac26f0592d7d64c15f87",
+  "name": "v12"
+ },
+ "api_calls": 11,
+ "superseded_by": "https://cad.onshape.com/documents/fab22582b674da0aa4f55a73/w/fc13e6204b748c1ec907acab"
+}

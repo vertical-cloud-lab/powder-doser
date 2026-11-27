@@ -242,7 +242,7 @@ ITEMS = [
      f"{MC}/products/dowel-pins/", 9.73, f"{MCV}: $9.73 per pack of 25", (8,), "Station"),
     (124, None, 1, "Compression spring for the cradle, 0.75 in (19.05 mm) free, 0.24 in (6.10 mm) OD, 0.196 in (4.98 mm) ID, 0.022 in "
      "music-wire, 5.6 lbf/in (0.98 N/mm), rated to 2.3 lb (10.2 N) at 8.64 mm; pack of 12 (1 used + spares). On the pinion's line over "
-     "the motor: 5.9 N at the stop, 6.3 N in tight mesh, 8.3 N on a gear's tips, 9.5 N at the up-stop (9.8 mm). No stainless spring "
+     "the motor: 5.9 N at the stop, 6.3 N in tight mesh, 8.3 N on a gear's tips, 9.3 N at the up-stop (3.0 mm of lift, 9.6 mm long). No stainless spring "
      "matches 1 N/mm and 19 mm: 316 8969T506 is 1.02 N/mm but 17 mm free (4.1 N at the stop)", "McMaster-Carr", "9657K284",
      f"{MC}/products/compression-springs/", 12.74, f"{MCV}: $12.74 per pack of 12", (8,), "Station"),
     (125, ("set_screw_m3x6",), None, "M3 x 6 flat-point set screw, 18-8 stainless, 1.5 mm hex, pack of 25 (1 used): the cradle's stop, "
