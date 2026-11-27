@@ -78,6 +78,15 @@ def main() -> None:
             pass
         if k == "door_shutter":                     # flat on the bed
             s = s.rotate((0, 0, 0), (0, 1, 0), 90)
+        if k == "latch_bolt":                       # 2026-11-27: the printed carrier only, with the steel dowel's 4 mm hole 2 mm deep
+            import parts6 as P6                     # (latch_bolt_v7 fuses the dowel to the carrier for the assembly; Bambu Studio found it)
+            import parts7 as P7
+            from parts6 import _cyl_x
+            d, _, zp = P6.LATCH6_PIN
+            tip = P6.KEEPER6_X[1] - P6.LATCH6_ENGAGE
+            c0 = P7.LATCH7_CARRIER[0]
+            s = P7.latch_bolt_v7().cut(_cyl_x(d / 2, tip - 1.0, c0 + 2.0, P6.LATCH_Y6, zp)).solids().vals()
+            s = max(s, key=lambda x: x.Volume())   # the carrier (drop the dowel's cut-off stub)
         bb = s.BoundingBox()
         s = s.translate((0, 0, -bb.zmin))
         cq.exporters.export(cq.Workplane("XY").add(s), str(HERE / "stl" / f"{PRINTED_REF.get(k, k)}.stl"), tolerance=0.02, angularTolerance=0.1)

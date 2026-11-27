@@ -5,8 +5,10 @@
                                             #   all 13 carriages together pass every point of the loop
     python check_interference.py --tilt     # station: electronics carriage rising (approach), then module +
                                             #   carriage + actuator tilting to the hinge's travel limit
-    python check_interference.py --latch    # v5: the station's latch rail against everything while carriages pass it, the EC rises and tilts
-    python check_interference.py --swap     # loading position: a carriage's screws out, slid 10 mm, lifted out past the side tabs
+    python check_interference.py --latch    # v11: the station's latch cam against everything while carriage 1 passes it (+-3 links), then
+                                            #   with module 1 pulled up to 10, 20 ... 90 deg; each follower's sliver on the cam
+    python check_interference.py --swap     # loading position (module 4 at home, side hatch open): the auger pulled straight off its
+                                            #   plate through the hatch, then a carriage's screws out, slid 10 mm, lifted out
     python check_interference.py --scale    # v5: the HR-202i (and, as a second check, the lab's HR-100A) at the dose point, against
                                             #   everything; the station parked, then docked and tilted to 30 and 50 deg
 
@@ -157,9 +159,12 @@ SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pini
         # each other and the bar to the posts; the guide shoe parked in its seat; the door rod pressed into the shutter, through the
         # housing's cap and the spring, its head pressed on and riding on the EC's door ramp; the beaker's pillar on the pan, the
         # beaker in its socket and the balance's own parts; the front panel on its standoffs, butted to the sides and top
-        ("ec11", "nema11"), ("ec11", "pinion24"), ("ec11", "solenoid"), ("nema11", "pinion24"), ("auger", "pinion24"),
+        # 2026-11-27: ("ec11", "pinion24") and ("ec11", "guide11") are no longer skipped: skipping them hid the EC's spine running through the
+        # pinion (652 mm3) and the guide's seat inside the EC's arm (1759 mm3), both found by slicing the EC in Bambu Studio and now fixed.
+        # ("ec11", "nema11") stays: the motor is bolted flat to the EC's plate (4.3 mm3 where the faces meet).
+        ("ec11", "nema11"), ("ec11", "solenoid"), ("nema11", "pinion24"), ("auger", "pinion24"),
         ("p16_bracket11", "actuator_body"), ("p16_bracket11", "clevis_screw"), ("p16_bracket11", "nut_m3_clevis"), ("p16_bracket11", "bar11"),
-        ("ec11", "actuator_rod"), ("ec11", "ec_pin_screw"), ("ec11", "nut_m3_clevis"), ("guide11", "beam10"), ("ec11", "guide11"),
+        ("ec11", "actuator_rod"), ("ec11", "ec_pin_screw"), ("ec11", "nut_m3_clevis"), ("guide11", "beam10"),
         ("bar11", "ext_post"), ("bar11", "m5x35_shcs"), ("m5x35_shcs", "ext_post"), ("bar11", "corner_bracket"),
         ("standoff_front11", "ext_post"), ("standoff_front11", "panel_front_door11"), ("standoff_front11", "ext_x"), ("standoff_front11", "ext_y"),
         ("panel_front_door11", "panel_side"), ("panel_front_door11", "panel_side_hatch"), ("panel_top", "panel_front_door11"),
@@ -286,23 +291,30 @@ def sweep(step: float = 0.5) -> list:
     return hits
 
 
-def latch(step: float = 0.25, span: float = 2.5) -> list:
-    """v5, 2026-11-10: the station's latch rail, moved to the followers' -x side so that it pushes them open, against every
-    other part while a carriage passes it (quarter-link steps over +-span links, station parked), then with the EC rising and
-    the module tilting at the station. Also reports how much each follower overlaps the rail's cam, a by-design contact that
-    the other checks skip: it should stay a sliver (the round follower on the 25 deg ramp), never a block."""
+LATCH_CAM = "latch_rail11"          # v11: v10's cam, its web and foot beside the back hold-down (layout._station_v11)
+
+
+def latch(step: float = 0.25, span: float = 3.0, angles=(10, 20, 30, 40, 50, 60, 70, 80, 90)) -> list:
+    """v11 (v5's check, 2026-11-10, adapted): the station's latch cam (LATCH_CAM) against every other part, first while carriage 1
+    passes it in quarter-link steps over +-span links with the station at rest (tilt 0, the EC on its guide), then with module 1
+    pulled up at the station to each of `angles` (the EC and the P16-150 with it). v11 has no parked/docked drop (v5's ext poses):
+    the EC is inside the loop and only turns with the module. The span is 3 links (28.6 mm) because v10's cam is longer than v5's:
+    its +-18 mm flat and 30 deg ramps end at +-25.8 mm (2.7 links), plus the follower's 1.5 mm radius. Also reports how much each
+    follower overlaps the cam, a by-design contact the other checks skip: it should stay a sliver (the round follower on the
+    ramp, positioned by layout.latch_open's straight-line ramp), never a block."""
     hits, contact = [], []
-    poses = [(-span + i * step, 0.0, 0.0) for i in range(int(round(2 * span / step)) + 1)]
-    poses += [(0.0, e, 0.0) for e in (14.0, PARK_DROP)] + [(0.0, PARK_DROP, a) for a in (10.0, 20.0, 30.0, 40.0)]
-    for s, e, a in poses:
-        st = L.State(shift=s, ext=e, tilt=a, magnet_on=a > 0, enclosure=False)
+    poses = [(round(-span + i * step, 4), 0.0) for i in range(int(round(2 * span / step)) + 1)] + [(0.0, float(a)) for a in angles]
+    for s, a in poses:
+        st = L.State(shift=s, tilt=a, enclosure=False)
         pl = L.placements(st)
-        rail = [p for p in pl if p.key == "latch_rail"]
-        objs = objects(rail) + objects([p for p in pl if p.key != "latch_rail"])
+        cam = [p for p in pl if p.key == LATCH_CAM]
+        assert len(cam) == 1, f"expected one {LATCH_CAM}, found {len(cam)}"
+        rest = [p for p in pl if p.key != LATCH_CAM]
+        objs = objects(cam) + objects(rest)
         h = overlaps(objs, [(0, j) for j in range(1, len(objs))])
-        hits += [(f"{x} @shift {s:+.2f}, ext {e:.0f}, tilt {a:.0f}", y, v) for x, y, v in h]
+        hits += [(f"{x} @shift {s:+.2f}, tilt {a:.0f}", y, v) for x, y, v in h]
         rb = objs[0][2].BoundingBox()
-        for k, nm, sh, M in objs[1:]:
+        for p, (k, nm, sh, M) in zip(rest, objs[1:]):
             if k != "latch_follower":
                 continue
             b = sh.BoundingBox()
@@ -310,9 +322,9 @@ def latch(step: float = 0.25, span: float = 2.5) -> list:
                 continue
             v = objs[0][2].intersect(sh).Volume()
             if v > 1e-4:
-                contact.append({"shift": s, "follower": nm, "mm3": round(v, 3)})
-        print(f"  shift {s:+5.2f}, ext {e:4.1f}, tilt {a:4.1f}: {len(h)} clash(es)", flush=True)
-    _report("latch", hits, {"poses": len(poses), "step_links": step, "span_links": span,
+                contact.append({"shift": s, "tilt": a, "follower": nm, "bolt_open_mm": round(L.latch_open(p.module, st), 2), "mm3": round(v, 3)})
+        print(f"  shift {s:+5.2f}, tilt {a:4.1f}: {len(h)} clash(es)", flush=True)
+    _report("latch", hits, {"poses": len(poses), "step_links": step, "span_links": span, "tilts": list(angles), "cam": LATCH_CAM,
                             "follower_on_cam": contact, "follower_on_cam_max_mm3": max((c["mm3"] for c in contact), default=0.0)})
     return hits
 
@@ -368,13 +380,18 @@ def tilt10(angles=(4, 10, 20, 30, 40, 50, 60, 65, 70, 75, 80), tag: str = "tilt"
     return hits
 
 
+SWAP_AUGER_OUT = (5.0, 15.0, 30.0, 45.0, 60.0, 80.0, 100.0, 140.0)       # mm off the plate: the auger crosses the +y panel at 43-92
+SWAP_LIFT = (0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 100.0)               # v11: 15 mm steps; v4's 0, 30, 100 jumped over the panel
+
+
 def swap() -> list:
     """v4: at the loading position (+y side, module 4 at home), the side hatch open, the auger pulled straight off its plate
     (out of the loop, through the hatch) in steps, against everything else; then the carriage's own removal as v3 (screws
-    out, slid 10 mm, lifted out) for completeness."""
+    out, slid 10 mm, lifted out) for completeness. v11: the lifts in 15 mm steps (SWAP_LIFT). The carriage (32.6 mm deep) crosses
+    the +y panel's 3 mm between lifts of 58 and 94 mm, which v4's 0, 30 and 100 mm stepped over."""
     hits = []
     k = 3
-    for ao in (5.0, 15.0, 30.0, 60.0, 100.0, 140.0):
+    for ao in SWAP_AUGER_OUT:
         st = L.State(out_auger=k, auger_out=ao, hatch_side=HATCH_OPEN_DEG)
         pl = L.placements(st)
         mv = [p for p in pl if p.module == k and p.key in ("auger", "auger_cap")]
@@ -387,7 +404,7 @@ def swap() -> list:
         hits += [(f"{a} @auger_out{ao:g}", b, x) for a, b, x in h]
         print(f"  auger out {ao:5.1f}: {len(h)} clash(es)", flush=True)
     so = SCREW_OUT
-    for so_, sl, lf in [(so, HOOK_SLIDE, 0.0), (so, HOOK_SLIDE, 30.0), (so, HOOK_SLIDE, 100.0)]:
+    for so_, sl, lf in [(so, HOOK_SLIDE, lift) for lift in SWAP_LIFT]:
         st = L.State(out_carriage=k, screws_out=so_, out_slide=sl, out_lift=lf, hatch_side=HATCH_OPEN_DEG)
         pl = L.placements(st)
         mv = [p for p in pl if p.module == k]
@@ -399,7 +416,8 @@ def swap() -> list:
         h = overlaps(objs, pairs)
         hits += [(f"{a} @carriage slide{sl:g}/lift{lf:g}", b, x) for a, b, x in h]
         print(f"  carriage slide {sl:4.1f} lift {lf:5.1f}: {len(h)} clash(es)", flush=True)
-    _report("swap", hits)
+    _report("swap", hits, {"module": k + 1, "slot": L.LOAD_SLOT, "hatch_side_deg": HATCH_OPEN_DEG, "auger_out_mm": list(SWAP_AUGER_OUT),
+                           "carriage": {"screws_out_mm": so, "slide_mm": HOOK_SLIDE, "lift_mm": list(SWAP_LIFT)}})
     return hits
 
 

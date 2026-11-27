@@ -1,0 +1,566 @@
+{
+ "_about": "Vendor facts and prices for v11, read 2026-11-27 (VENDOR-CHECK.md). McMaster and Amazon pages: headed Chromium through the doser Pi (residential IP), logged out, real pointer moves, pauses between pages.",
+ "hr100a": {
+  "status": "done",
+  "source": "A&D, HR-AZ / HR-A series instruction manual (1WMPD4002375), section 23 'External Dimensions', printed page 79 (PDF page 81); same drawing as section 25, p.94, of the colour edition 1WMPD4002375C",
+  "url": "https://www.aandd.jp/products/manual/balances/hr-az_hr-a_manual.pdf",
+  "url_colour_edition": "https://www.aandd.jp/products/manual/balances/1WMPD4002375C_HR-AZ_HR-A_color.pdf",
+  "sha256": {
+   "hr-az_hr-a_manual.pdf": "7cde75bde2a1165db8186a29bbb29464c51b4dba483adb2a34a2fbdc25b192c2",
+   "1WMPD4002375C_HR-AZ_HR-A_color.pdf": "b220a8b127813bb2b213871fd2daf66f9e11a3dfd9ffe9f8663e887481f1dc66"
+  },
+  "models_on_the_drawing": "HR-100A, HR-150A, HR-250A, HR-251A, HR-100AZ, HR-150AZ, HR-250AZ, HR-251AZ (one outline)",
+  "printed_dimensions_mm": {
+   "overall_height_with_breeze_break": 315,
+   "base_width": 198,
+   "base_depth": 253,
+   "base_depth_note": "61.5 + 191.5 (front edge to the underhook line, then to the back)",
+   "depth_with_top_door_open_max": 294,
+   "plus_at_back": 6,
+   "top_door_open_left_from_centre": 270,
+   "top_door_open_right_from_centre": 105,
+   "pan_diameter": 90,
+   "pan_height_over_bench": 86.5,
+   "breeze_break_inside_diameter": 156,
+   "breeze_break_shape": "round (cylindrical glass), not rectangular",
+   "breeze_break_inside_height_over_pan": 198,
+   "underhook": "192 from the front edge, 3 off the centre line",
+   "inside_dimension_112_side_view": "112 (marked 'inside dimension', drawn across the side view at the pan)",
+   "dimension_162_front_view": "162 (front view, under the base; unlabelled, likely the feet's span)"
+  },
+  "what_315_is_measured_to": "the top of the top door's two grips (the tallest feature); measured off the PDF's vector lines, scale 1.500 mm per pt, checked against the printed 315 and 86.5",
+  "scaled_heights_mm": {
+   "breeze_break_top_frame_top": 297,
+   "top_door_upper_surface": 301,
+   "knob_on_top_door": 311,
+   "top_door_grips": 315,
+   "glass_cylinder_wall_top": 281,
+   "top_frame_width_front_view": 185
+  },
+  "v11_BAL11_TOP_315": "confirmed as the HR-100A's overall height (A&D's printed figure). It is the grips' top, not the frame's: the fixed top frame is about 297 mm and the top door's surface about 301 (scaled). With the top door replaced by a dosing lid (v11), the balance's own top is about 297-301 mm, so 315 is about 14-18 mm conservative. The HR-100A's breeze break is round (156 ID), unlike v11's drawn rectangular cage; its pan is at 86.5 mm (v11 draws v7's 50)",
+  "brochure_cross_check": "A&D's HR-AZ/HR-A brochure and Rice Lake's listing: 198 (W) x 294 (D) x 315 (H) mm (web search, 2026-11-27)",
+  "how_read": "PDF downloaded directly from the runner (aandd.jp served it; no bot check), read with PyMuPDF; dimension lines measured from the page's vector drawing",
+  "read": "2026-11-27"
+ },
+ "chain_waist": {
+  "status": "done",
+  "answer": "McMaster's #35 chain CAD has waisted (figure-eight) plates, and its inner and outer plates differ. Inner (roller-link) plates: 8.81 mm high at the ends, waist 7.49 mm at mid-pitch (0.85 x height). Outer (pin-link) plates: 7.76 mm high, waist 6.39 mm (0.82 x their height; 0.73 x 8.79). Both waists are one concave arc of R 13.08 mm (dia. 26.16) per edge. v11 draws every plate 8.79 high with a 6.59 waist (0.75 x 8.79): McMaster's inner plates have 0.9 mm more waist than that, its outer plates 0.2 mm less and are 1.0 mm lower overall",
+  "source": "McMaster-Carr 6261K172 (Roller Chain, Single Strand, ANSI Number 35, 3/8 in Pitch, steel, $5.07 per ft), 3-D STEP for a 1 ft length (McMaster drawing number 6261K291, 32 pitches), and 6261K191 (connecting link) 3-D STEP; the 2-D PDFs dimension only pitch 0.375, roller (bushing) 0.200, pin 0.141, roller width 0.188, plate thickness 0.050 and the connecting link's width 0.500 in, not the plate height or waist",
+  "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/roller-chain-and-links-3~~/",
+  "files_sha256": {
+   "6261K172.step (6261K291_Roller Chain.STEP)": "f6587063e0a44b8bac71ee6565c5058091f1b6f6a3d007df1f5569cfaa55a3c3",
+   "6261K172.pdf": "997b1dc7a76fa00a2381013aa717b4de874ae46dc616c633e3e90342a7418f37",
+   "6261K191.step": "7f8675ad35de1d12f0759810a056561e573b228996e3c5c65ed103e83da3a08d",
+   "6261K191.pdf": "6ac1152dc8c51066f2c4330e18b7a5a9729832769c75331a288988e6342921fb"
+  },
+  "method": "STEP loaded with cadquery; each plate solid sliced across its length every 1/24 of it (0.002 mm slabs), the section's extent across the plate's height read at each station; hole and arc diameters from the cylindrical faces. The 1 ft STEP has 145 solids: 32 outer plates, 32 inner plates, 32 pins, 32 rollers, 17 bushings (as McMaster modelled them)",
+  "measured_mm": {
+   "inner_plate": {
+    "height_at_ends": 8.814,
+    "waist_mid_pitch": 7.492,
+    "length_over_ends": 18.339,
+    "end_radius": 4.407,
+    "thickness": 1.27,
+    "hole_dia": 4.656,
+    "waist_arc_dia": 26.159,
+    "profile_from_middle": {
+     "0.000": 7.492,
+     "0.764": 7.537,
+     "1.528": 7.671,
+     "2.292": 7.897,
+     "3.056": 8.216,
+     "3.821": 8.611,
+     "4.585": 8.807
+    }
+   },
+   "outer_plate": {
+    "height_at_ends": 7.756,
+    "waist_mid_pitch": 6.391,
+    "length_over_ends": 17.281,
+    "end_radius": 3.878,
+    "thickness": 1.27,
+    "hole_dia": 3.581,
+    "waist_arc_dia": 26.159,
+    "profile_from_middle": {
+     "0.000": 6.391,
+     "0.720": 6.431,
+     "1.440": 6.55,
+     "2.160": 6.751,
+     "2.880": 7.034,
+     "3.600": 7.402,
+     "4.320": 7.706
+    }
+   },
+   "connecting_link_clip_plate": {
+    "height": 7.756,
+    "waist": "none (straight edges)",
+    "thickness": 1.27,
+    "hole_dia": 3.581
+   },
+   "pin": {
+    "dia": 3.581,
+    "length_chain": 11.836,
+    "length_connecting_link": 12.7
+   },
+   "bushing": {
+    "od": 4.656,
+    "id": 3.581,
+    "length": 7.303
+   },
+   "roller_or_bushing_od": {
+    "od": 5.08,
+    "length": 4.763
+   },
+   "pitch": 9.525,
+   "width_over_connecting_link_pins": 12.7
+  },
+  "v11_params": {
+   "PLATE_H": 8.79,
+   "PLATE_WAIST": 6.59,
+   "PLATE_T": 1.27,
+   "PIN_LEN": 12.4,
+   "PIN_LEN_CL": 13.16,
+   "CHAIN_PIN_D": 3.58,
+   "BUSH_D": 5.08
+  },
+  "comparison": "Pitch, pin dia. (3.58), bushing (5.08), plate thickness (1.27) and the inner plate's height (8.81 vs 8.79) agree with v11. McMaster's model differs on the outer plates (7.76 high, not 8.79), the waists (7.49 inner, 6.39 outer, not 6.59 for both) and the pin lengths (11.84, and 12.70 over a connecting link, against Nitro's 12.40 and 13.16). McMaster's CAD is McMaster's own model of its chain, not Nitro's; Nitro publishes no waist",
+  "how_read": "headed Chromium through the doser Pi, logged out: the family table page, the part number clicked in the table, a 1 ft length picked in its panel, then the panel's CAD menu (3-D STEP, 2-D PDF). McMaster's product-detail pages (https://www.mcmaster.com/6261K172/) now answer 'Log in to view Product Detail' to a logged-out browser; the table and its panels do not",
+  "read": "2026-11-27"
+ },
+ "chain_mcmaster": {
+  "status": "done",
+  "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/roller-chain-and-links-3~~/",
+  "chain": {
+   "pn": "6261K172",
+   "what": "Roller Chain, Single Strand, ANSI Number 35, 3/8 in pitch, steel, 0.200 in roller (bushing), 3/16 in roller width, 560 lb working load",
+   "price_per_ft": 5.07,
+   "price_10ft": 50.7,
+   "how": "10 ft picked in the part's panel: '$50.70 each'"
+  },
+  "connecting_link": {
+   "pn": "6261K191",
+   "price": 1.96
+  },
+  "adding_link": {
+   "pn": "6261K241",
+   "price": 1.4
+  },
+  "offset_link": {
+   "pn": "6261K261",
+   "price": 3.76
+  },
+  "a1_attachment_connecting_link": {
+   "pn": "7321K1",
+   "price": 3.13,
+   "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/attachment-roller-chain-links-2~~/"
+  },
+  "a1_attachment_adding_link": {
+   "pn": "7321K2",
+   "price": 2.3
+  },
+  "sa1_attachment_connecting_link": {
+   "pn": "7321K31",
+   "price": 3.13
+  },
+  "corrosion_resistant_coated_chain": {
+   "pn": "7210K1",
+   "price_per_ft": 7.49
+  },
+  "stainless_304_chain": {
+   "pn": "6264K84",
+   "price_per_ft": 21.7
+  },
+  "vs_nitro": "Nitro RC35-1R-10FT is $23.53 per 10 ft (v11's pick, read 2026-11-26); McMaster's 10 ft is $50.70 (2.2x). Nitro's CL35-A1 $2.55 vs McMaster's A-1 connecting link 7321K1 $3.13; Nitro's CL35 $0.79 vs McMaster's 6261K191 $1.96",
+  "how_read": "headed Chromium through the doser Pi, logged out (family tables and part panels)",
+  "read": "2026-11-27"
+ },
+ "chain_amazon": {
+  "status": "done",
+  "search": "https://www.amazon.com/s?k=35+roller+chain+10+feet (typed into Amazon's search box)",
+  "listings": [
+   {
+    "brand": "PGN Bearings",
+    "title": "PGN #35 Carbon Steel Roller Chain - 10 Ft + 2 Free Links - 319 Links",
+    "asin": "B07NM75SBB",
+    "url": "https://www.amazon.com/dp/B07NM75SBB",
+    "price": 18.43,
+    "rating": 4.6,
+    "ratings": 1585,
+    "note": "100+ bought in past month; listing: pitch 3/8, roller 0.2 in, plate 0.05 in, carbon steel, ANSI; model PGN-RC-#35/10FT"
+   },
+   {
+    "brand": "AZSSMUK (manufacturer DAOE)",
+    "title": "#35 Roller Chain -10 Feet 40Mn Carbon Steel Material with 2 Connecting Link ... 320 Links (35-10FT)",
+    "asin": "B079L77YM4",
+    "url": "https://www.amazon.com/dp/B079L77YM4",
+    "price": 16.99,
+    "rating": 4.4,
+    "ratings": 1086,
+    "note": "Amazon's Choice (Overall Pick), #1 in Power Transmission Roller Chains; listing: P 0.375, roller 0.2, inner width 0.188, pin 0.141, plate 0.05 in, ANSI B29.1, 2,100 lbf tensile"
+   },
+   {
+    "brand": "Jeremywell",
+    "title": "#35 Roller Chain 10 Feet (319 Links) + 2 Master Links ...",
+    "asin": "B018WFTJCY",
+    "url": "https://www.amazon.com/dp/B018WFTJCY",
+    "price": 18.25,
+    "rating": 4.5,
+    "ratings": 642,
+    "note": "heat-treated pins, plates and rollers (listing); 2,100 lb average tensile; 0.221 lb/ft; model 35-10FT-2CL"
+   }
+  ],
+  "also_seen": [
+   {
+    "title": "#35 Chain 10 ft, 320 Links, Chain Breaker and 5 Master Links",
+    "asin": "B083JVS632",
+    "price": 27.99,
+    "rating": 4.5,
+    "ratings": 542
+   },
+   {
+    "title": "CHR #35 Roller Chain - 10FT, 319 Links + 2 connecting links",
+    "asin": "B0D87CKVR8",
+    "price": 19.99,
+    "rating": 4.5,
+    "ratings": 32
+   },
+   {
+    "title": "#35 SS Stainless Steel Roller Chain 10 Feet + 2 Master Links",
+    "asin": "B06XXVBJV5",
+    "price": 49.45,
+    "rating": 4.4,
+    "ratings": 29
+   }
+  ],
+  "vs_nitro": "Nitro RC35-1R-10FT $23.53 (heat treated, pre-lubricated, ANSI B29.1, publishes P, b1, d1, d2, L, h2, T). The three Amazon listings are $5-7 cheaper with 600-1,600 ratings, but none names its maker's standard beyond 'ANSI' or publishes h2 or the plate profile, so v11's choice of Nitro (dimensions published) stands",
+  "how_read": "headed Chromium through the doser Pi, logged out: amazon.com home page, the query typed into the search box, the results scrolled with the wheel, then each listing's page (no bot check or CAPTCHA appeared)",
+  "read": "2026-11-27"
+ },
+ "prices": {
+  "status": "done",
+  "read": "2026-11-27",
+  "items": [
+   {
+    "bom_item": 66,
+    "what": "24T pinion, module 1, steel (KHK)",
+    "vendor": "KHK USA",
+    "pn": "SS1-24A",
+    "url": "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-24a",
+    "price": 15.2,
+    "pack": "each (1-9; $14.66 at 10-24)",
+    "stock": "8 on hand, 154 factory direct",
+    "note": "6 mm finished bore, M4 set screw, hub 20 x 10, face 10, total 20, S45C black oxide, 55 g",
+    "how": "headed Chromium through the doser Pi (KHK fills its prices by script)"
+   },
+   {
+    "bom_item": 66,
+    "what": "24T pinion, module 1, steel (KHK, plain bore)",
+    "vendor": "KHK USA",
+    "pn": "SS1-24",
+    "url": "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-24",
+    "price": 13.9,
+    "pack": "each (1-9)",
+    "stock": "8 on hand, 369 factory direct",
+    "note": "8 mm plain bore (stock bore; bores can only be enlarged), hub 20 x 10, 52 g",
+    "how": "headed Chromium through the doser Pi"
+   },
+   {
+    "bom_item": 66,
+    "what": "24T pinion, module 1, steel (KHK, 8 mm finished)",
+    "vendor": "KHK USA",
+    "pn": "SS1-24B",
+    "url": "https://catalog.khkgears.us/item/spur-gears/spur-gears-ss/ss1-24b",
+    "price": null,
+    "note": "8 mm finished bore with set screw (spec read from the page's HTML; price not read)",
+    "how": "fetched from the runner directly (the site served it)"
+   },
+   {
+    "bom_item": 66,
+    "what": "24T pinion alternative: McMaster metric spur gear, module 1, 24T, 20 deg, black-oxide 1045 steel, 10 mm face, hub 20 x 10",
+    "vendor": "McMaster-Carr",
+    "pn": "2664N354",
+    "url": "https://www.mcmaster.com/2664N354/",
+    "price": 15.22,
+    "pack": "each",
+    "note": "6 mm round bore with set screw; 2664N355 is the 8 mm bore, $15.17. No 5 mm bore at 24T (2664N353 is 20T with 5 mm, $14.41)",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)"
+   },
+   {
+    "bom_item": 116,
+    "what": "Door rods: tight-tolerance 316 stainless rod, 1/16 in (1.59 mm, +-0.0005 in), 1 ft long",
+    "vendor": "McMaster-Carr",
+    "pn": "8936K35",
+    "url": "https://www.mcmaster.com/8936K35/",
+    "price": 9.88,
+    "pack": "1 ft",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/stainless-steel-rods/tight-tolerance-highly-corrosion-resistant-316-stainless-steel-rods~~/",
+    "note": "no 1.5 mm: the family's metric sizes start at 2 mm (2959N14, 1 ft, $12.08); 13 rods of 21.8 mm = 283 mm fit in 1 ft"
+   },
+   {
+    "bom_item": 90,
+    "what": "Nylon spacers for M5, 10 mm OD: 6 mm (side panels, 12), 25 mm (93657A093), 30 mm (front, 6; back, 6: the CAD's back standoffs are 25.6 mm, labelled 10 x 30)",
+    "vendor": "McMaster-Carr",
+    "pn": "93657A075 / 93657A093 / 93657A272",
+    "url": "https://www.mcmaster.com/products/93657a/system-of-measurement~metric/",
+    "price": {
+     "93657A075 (6 mm)": [
+      1.08,
+      0.89
+     ],
+     "93657A093 (25 mm)": [
+      1.78,
+      1.46
+     ],
+     "93657A272 (30 mm)": [
+      2.29,
+      1.87
+     ]
+    },
+    "pack": "each: [1-9, 10 or more]",
+    "note": "bom.py prices 12 x 6 mm + 12 x 30 mm at the 10-or-more prices: $33.12",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel) (tiers from each part's panel)"
+   },
+   {
+    "bom_item": 101,
+    "what": "Shoulder screw, 18-8, 4 mm x 20 mm shoulder, M3 x 0.5, 5 mm thread",
+    "vendor": "McMaster-Carr",
+    "pn": "90265A124",
+    "url": "https://www.mcmaster.com/90265A124/",
+    "price": 6.06,
+    "pack": "each (1-4); $5.19 at 5 or more",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/90265a/shoulder-diameter~4-mm/",
+    "note": "the CAD places a 4 x 20 (layout: 'Shoulder screw 4 x 20 mm'); the BoM text says 4 x 14, which 18-8 doesn't list (316: 90269A207, $8.25). Item 43's 4 x 16 (90265A123) is now $4.72 (BoM: $4.40)"
+   },
+   {
+    "bom_item": 86,
+    "what": "Dowel pin, 4 x 12 mm, hardened alloy steel, DIN 6325-m6 / ISO 8734, Rockwell C52",
+    "vendor": "McMaster-Carr",
+    "pn": "91595A155",
+    "url": "https://www.mcmaster.com/91595A155/",
+    "price": 13.49,
+    "pack": "pack of 50",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/91595a/diameter~4-mm/"
+   },
+   {
+    "bom_item": 87,
+    "what": "Dowel pin, 3 x 25 mm: not listed",
+    "vendor": "McMaster-Carr",
+    "pn": "91595A130 (3 x 24) / 91595A387 (3 x 26)",
+    "url": "https://www.mcmaster.com/products/91595a/diameter~3-mm/",
+    "price": {
+     "91595A130 (3 x 24)": 15.61,
+     "91595A387 (3 x 26)": 7.81
+    },
+    "pack": "50 / 25",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "note": "bom.py keeps the line an estimate, priced at the 3 x 24"
+   },
+   {
+    "bom_item": 28,
+    "what": "Clevis pin, 5 mm, ring groove: none at McMaster",
+    "vendor": "McMaster-Carr",
+    "pn": null,
+    "url": "https://www.mcmaster.com/products/clevis-pins/clevis-pins-with-retaining-ring-groove-1~~/",
+    "price": null,
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "note": "grooved (92735A, with rings): 4, 6, 8, 10, 12 mm (4 x 16 usable 92735A317 $4.33 each; 6 x 18 92735A131 $4.88 per 5); headless grooved: 3, 4, 6, 8, 10, 12 mm. Line stays an estimate"
+   },
+   {
+    "bom_item": 115,
+    "what": "M5 x 35 socket head screw, 18-8, partially threaded",
+    "vendor": "McMaster-Carr",
+    "pn": "91292A193",
+    "url": "https://www.mcmaster.com/91292A193/",
+    "price": 8.59,
+    "pack": "pack of 25",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/91292a/system-of-measurement~metric/"
+   },
+   {
+    "bom_item": 35,
+    "what": "M5 x 30 socket head screw, 18-8, partially threaded (was BelMetric, estimate)",
+    "vendor": "McMaster-Carr",
+    "pn": "91292A192",
+    "url": "https://www.mcmaster.com/91292A192/",
+    "price": 12.78,
+    "pack": "pack of 50",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)"
+   },
+   {
+    "bom_item": 107,
+    "what": "M3 x 6 socket head screw, 18-8",
+    "vendor": "McMaster-Carr",
+    "pn": "91292A111",
+    "url": "https://www.mcmaster.com/91292A111/",
+    "price": 11.58,
+    "pack": "pack of 100",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)"
+   },
+   {
+    "bom_item": 91,
+    "what": "M5 x 16 button head screw, 18-8 (was BelMetric, estimate)",
+    "vendor": "McMaster-Carr",
+    "pn": "92095A212",
+    "url": "https://www.mcmaster.com/92095A212/",
+    "price": 12.34,
+    "pack": "pack of 50",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/92095a/system-of-measurement~metric/"
+   },
+   {
+    "bom_item": 72,
+    "what": "Dry PTFE lubricant: Sprayon LU 708 High Performance Dry-Film Lubricant, PTFE, 10 oz aerosol",
+    "vendor": "McMaster-Carr",
+    "pn": "1130K15",
+    "url": "https://www.mcmaster.com/1130K15/",
+    "price": 14.7,
+    "pack": "each",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/dry-lubricants/",
+    "note": "also: DuPont Non-Stick Dry-Film (boron nitride) 8710T874 $13.74; a PTFE + ceramic 11 oz aerosol 2170N11 $11.61"
+   },
+   {
+    "bom_item": 110,
+    "what": "Grommet, EPDM, for a 13/16 in hole in 1/4 in material, 1/2 in ID, 1-1/16 in flange",
+    "vendor": "McMaster-Carr",
+    "pn": "11113N147",
+    "url": "https://www.mcmaster.com/11113N147/",
+    "price": 10.83,
+    "pack": "pack of 25",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/9600k/",
+    "note": "no listed grommet takes a 3/4 in hole in 1/4 in plate with a 3/8 in ID (11113N138 does with a 1/4 in ID, $21.67/25); SBR 9600K921 is the same size, $13.33/50"
+   },
+   {
+    "bom_item": 111,
+    "what": "Expandable wire sleeving, 1/4 in ID, 7/16 in expanded, 10 ft",
+    "vendor": "McMaster-Carr",
+    "pn": "9284K612",
+    "url": "https://www.mcmaster.com/9284K612/",
+    "price": 2.31,
+    "pack": "10 ft",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/expandable-sleeving/expandable-wire-sleeving~~/"
+   },
+   {
+    "bom_item": 112,
+    "what": "Cable ties, nylon, 4 in, 18 lb, for bundles to 7/8 in",
+    "vendor": "McMaster-Carr",
+    "pn": "7130K12",
+    "url": "https://www.mcmaster.com/7130K12/",
+    "price": 3.53,
+    "pack": "pack of 100",
+    "how": "headed Chromium through the doser Pi, logged out (McMaster family table / part panel)",
+    "page": "https://www.mcmaster.com/products/cable-ties/cable-ties-1~/cable-ties-3~~/",
+    "note": "UV resistant: 7130K52, $3.59"
+   },
+   {
+    "bom_item": 23,
+    "what": "6061-T651 aluminum plate, 1/4 x 24 x 36 in",
+    "vendor": "FixSupply",
+    "pn": "SHT-6061-0.25X24-36",
+    "url": "https://www.fixsupply.com/1248-24-36-6061-aluminum-plate-t651-1-4-thick-x-24-wide-x-36-long",
+    "price": 188.3,
+    "pack": "each",
+    "stock": "in stock",
+    "how": "fetched from the runner directly (the site served it)"
+   },
+   {
+    "bom_item": 108,
+    "what": "CNC Kitchen heat-set inserts, M3 x 3 short, 100 pcs",
+    "vendor": "West3D",
+    "pn": "WES3495M3X",
+    "url": "https://west3d.com/products/cnc-kitchen-heat-set-inserts-various-sizes?variant=46784419561684",
+    "price": 14.99,
+    "pack": "100",
+    "stock": "in stock",
+    "how": "fetched from the runner directly (the site served it)"
+   },
+   {
+    "bom_item": 73,
+    "what": "Pololu DRV8825 carrier, high current",
+    "vendor": "Pololu",
+    "pn": "2133",
+    "url": "https://www.pololu.com/product/2133",
+    "price": 15.95,
+    "stock": "in stock",
+    "how": "fetched from the runner directly (the site served it)"
+   },
+   {
+    "bom_item": 74,
+    "what": "Adafruit DRV8871 breakout",
+    "vendor": "Adafruit",
+    "pn": "3190",
+    "url": "https://www.adafruit.com/product/3190",
+    "price": 7.5,
+    "stock": "in stock",
+    "how": "fetched from the runner directly (the site served it)"
+   },
+   {
+    "bom_item": 55,
+    "what": "Raspberry Pi Zero 2 W",
+    "vendor": "Adafruit",
+    "pn": "5291",
+    "url": "https://www.adafruit.com/product/5291",
+    "price": 19.05,
+    "stock": "out of stock",
+    "how": "fetched from the runner directly (the site served it)"
+   },
+   {
+    "bom_item": 56,
+    "what": "74AHCT125 quad level shifter (the chip only)",
+    "vendor": "Adafruit",
+    "pn": "1787",
+    "url": "https://www.adafruit.com/product/1787",
+    "price": 1.5,
+    "stock": "out of stock",
+    "how": "fetched from the runner directly (the site served it)"
+   },
+   {
+    "bom_item": 95,
+    "what": "SparkFun Transceiver Breakout - MAX3232",
+    "vendor": "SparkFun",
+    "pn": "BOB-11189",
+    "url": "https://www.sparkfun.com/sparkfun-transceiver-breakout-max3232.html",
+    "price": 7.26,
+    "how": "fetched from the runner directly (the site served it)"
+   },
+   {
+    "bom_item": null,
+    "what": "Small push-pull solenoid, 12 VDC (placed in the CAD as 'solenoid', no BoM line)",
+    "vendor": "Adafruit",
+    "pn": "412",
+    "url": "https://www.adafruit.com/product/412",
+    "price": 7.5,
+    "stock": "in stock",
+    "how": "fetched from the runner directly (the site served it)"
+   }
+  ]
+ },
+ "bom_totals": {
+  "before": {
+   "total": 2083.31,
+   "without_test": 1941.92,
+   "estimated": 473.94,
+   "estimated_lines": 24
+  },
+  "after": {
+   "total": 2114.48,
+   "without_test": 1973.09,
+   "estimated": 129.69,
+   "estimated_lines": 6,
+   "still_estimates": [
+    28,
+    56,
+    58,
+    65,
+    87,
+    88
+   ]
+  },
+  "how": "python bom.py (2026-11-27)"
+ }
+}

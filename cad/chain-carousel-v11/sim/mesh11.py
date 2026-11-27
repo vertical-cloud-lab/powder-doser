@@ -58,7 +58,8 @@ GEO = dict(
     p16_pin=(96.0, 35.7625, -25.0),          # params.P16_11_PIN on the EC's arm (Sam y = layout.SY_P16_11)
     p16_ext_rest=139.22,                     # layout.p16_11_ext(0): 10.8 mm short of full extension
     act_retracted=197.4,
-    shoe_tip=(115.0, 35.7625, -31.0),        # layout.SHOE11_TIP: the 90 deg nose's tip; the seat's apex is 0.5 further (+z)
+    shoe_tip=(139.0, 36.0, -24.5),           # layout.SHOE11_TIP: the 90 deg nose's tip; the seat's apex is 0.5 further (+z). 2026-11-27: behind
+                                             # the arm on its bracket (was (115, 35.76, -31), where the guide's seat block sat inside the arm)
     seat_gap=0.5,                            # params.GUIDE11_SEAT_GAP
     pinion_axis_z=-34.25,                    # params.PINION11_Z: centre distance 34.25 (44T + 24T at module 1 is 34.0)
     pinion_face=(78.3, 88.3),                # params.PINION11_X0 + 10
@@ -76,7 +77,7 @@ A0 = R1 + R2                                 # 34.0: zero-backlash centre distan
 
 # masses (g, mm): printed PETG at 1.27 g/cm3 x a solid fraction, STL volumes from stl/*.stl (trimesh)
 EC_PARTS = [  # (g, x, y, z)
-    (45.0 * 1.27 * 0.80, 81.8, 7.2, -36.7),  # ec11.stl, 45.0 cm3 (printed: Sam z = -19 - z_stl)
+    (45.07 * 1.27 * 0.80, 83.0, 8.0, -32.7),  # EC v11's CAD, 45.07 cm3, its centroid (2026-11-27, after the spine, bars and shoe bracket fixes)
     (180.0, 115.0, 0.0, -34.25),             # NEMA 11 11HS18-0674S (0.18 kg, SPECS.md), body x 93.5-137 on the pinion's axis
     (34.0, 83.3, 0.0, -34.25),               # 24T steel pinion, OD 26 x 10, 5 mm bore
     (35.0, 32.0, 0.0, -40.0),                # solenoid over clip 1 (Adafruit 412 class)

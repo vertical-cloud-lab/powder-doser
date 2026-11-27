@@ -362,7 +362,7 @@ def plate_additions_v10() -> tuple[cq.Workplane, cq.Workplane]:
     add = slab.union(clip).union(cradle).union(keeper)
     cut = _cyl_x(LATCH6_PIN[0] / 2 + 0.1, k1 - LATCH6_ENGAGE - 0.5, k1 + 0.1, LATCH_Y6, LATCH6_PIN[2])
     for sy in (-1, 1):
-        cut = cut.union(_cyl(1.6, 4.0, 18.5, sy * 13.7, -17.0))
+        cut = cut.union(_cyl(1.6, 4.0, 18.5, sy * 14.35, -17.0))   # v11, 2026-11-27: the door housing's M2 inserts at |y| 14.35 (was 13.7)
     for x in T10_SCREW_X:                                       # the T-bracket's inserts
         cut = cut.union(_cyl(2.0, 5.0, x, 0.0, -18.1))
     m0, m1, mh, md = MOTOR10_RELIEF

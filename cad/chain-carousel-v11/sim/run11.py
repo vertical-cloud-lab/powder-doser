@@ -49,6 +49,7 @@ def _cycle(args):
 
 
 def pool_map(fn, jobs, n=2):
+    n = int(__import__("os").environ.get("RUN11_PROCS", n))
     with mp.get_context("fork").Pool(n) as P:
         return P.map(fn, jobs)
 

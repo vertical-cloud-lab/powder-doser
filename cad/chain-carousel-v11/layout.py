@@ -858,7 +858,7 @@ def placements(state: State | float | None = None) -> list[Placement]:
         sk = "door_spring_open" if dz > 0.5 else "door_spring"
         add(Placement(sk, f"Outlet door spring {k + 1}", Ms @ T(None, (P3.DOOR_SPRING_X, 0.0, -DOOR_SPRING_SEAT)), 9, STEEL, "modules", out_dir, k))
         for sy in (-1, 1):
-            add(Placement("m2x8_shcs", f"Door housing screw M2x8 {k + 1}", Ms @ T(None, (18.5, sy * 13.7, -8.0)), 9, DARK, "modules", out_dir, k))
+            add(Placement("m2x8_shcs", f"Door housing screw M2x8 {k + 1}", Ms @ T(None, (18.5, sy * P4.DOOR_M2_Y11, -8.0)), 9, DARK, "modules", out_dir, k))
         spin = st.spin if on_station else 0.0
         Ma = Ms @ AUGER_IN_SAM @ T(Rz(spin))
         if k == st.out_auger:

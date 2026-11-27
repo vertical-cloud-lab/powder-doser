@@ -121,6 +121,50 @@
   "title": "Metals / Steel / High-Strength 1045 Carbon Steel Rods",
   "url": "https://www.mcmaster.com/5615N15/"
  },
+ "6261K172": {
+  "note": "v11 vendor check: read from the family table and the part's panel, logged out, through the doser Pi (the product page asks for a login); STEP and 2-D PDF for a 1 ft length from the panel's CAD menu",
+  "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/roller-chain-and-links-3~~/",
+  "pn": "6261K172",
+  "price": "$5.07 per ft.; $50.70 for a 10 ft. length",
+  "read": "2026-11-27",
+  "specs": {
+   "Adding link": "6261K241, $1.40",
+   "Adding-and-connecting link": "6261K261, $3.76",
+   "Connecting link": "6261K191, $1.96",
+   "Pitch": "3/8\"",
+   "Roller Dia.": "0.200\"",
+   "Roller Wd.": "3/16\"",
+   "Std.": "ANSI",
+   "Trade No.": "35",
+   "Working Load, lb.": "560"
+  },
+  "step": {
+   "file": "files/mcmaster/6261K172.step",
+   "note": "McMaster drawing 6261K291 (1 ft. length, 32 pitches)"
+  },
+  "title": "Roller Chain, Single Strand, ANSI Number 35, 3/8\" Pitch (steel)",
+  "url": "https://www.mcmaster.com/6261K172/"
+ },
+ "6261K191": {
+  "note": "v11 vendor check: from the family table and the part's panel, logged out, through the doser Pi; specs from McMaster's 2-D PDF",
+  "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/roller-chain-and-links-3~~/",
+  "pn": "6261K191",
+  "price": "$1.96 each",
+  "read": "2026-11-27",
+  "specs": {
+   "For Roller Diameter": "0.200\"",
+   "Pin Diameter": "0.141\"",
+   "Pitch": "0.375\"",
+   "Plate Thickness": "0.050\"",
+   "Roller Width": "0.188\"",
+   "Width": "0.500\""
+  },
+  "step": {
+   "file": "files/mcmaster/6261K191.step"
+  },
+  "title": "Connecting Link for ANSI Number 35 Single Strand Roller Chain",
+  "url": "https://www.mcmaster.com/6261K191/"
+ },
  "6408K14": {
   "drawing_error": "no download link",
   "pn": "6408K14",

@@ -1,11 +1,15 @@
-"""Renders and animations of the chain-carousel test rig v4 (VTK, offscreen under xvfb-run).
+"""Renders and animations of the chain-carousel test rig (VTK, offscreen under xvfb-run). v11 uses the stills and the step images; the
+movie, the feature clips and the scale fit below are still v4's (v11's clips are explain11.py, rail_profile.py and chain_nitro.py).
 
-    xvfb-run -a python render.py --stills      # hero views, feature close-ups, one image per assembly step + the steps GIF
-    xvfb-run -a python render.py --movie       # assembly from scratch, modules onto carriages, carriages onto the chain
+    xvfb-run -a python render.py --stills      # v11's stills (renders/rig_*.png: still_views()), then one image per assembly step
+                                               #   (renders/steps/step_NN.png) and renders/assembly_steps.gif
+    xvfb-run -a python render.py --stills --only rig_iso,rig_tilt90    # just these stills
+    xvfb-run -a python render.py --steps       # only the assembly steps and the GIF (--steps 8,12: just those steps, no GIF)
+    xvfb-run -a python render.py --quick       # rig_iso only
+    xvfb-run -a python render.py --movie       # v4: assembly from scratch, modules onto carriages, carriages onto the chain
                                                #   one index at a time, a lap, the station cycle, the hatches, a swap
                                                #   -> renders/chain_carousel_v4.mp4 and .gif
-    xvfb-run -a python render.py --features    # one short GIF + MP4 per new feature (renders/features/)
-    xvfb-run -a python render.py --quick       # hero iso only
+    xvfb-run -a python render.py --features    # v4: one short GIF + MP4 per new feature (renders/features/)
 
 Each unique part is tessellated once (.cache/); every placement is an actor whose matrix is updated per frame from
 layout.placements(state), so the animation shows the real chain kinematics (polygonal action included) and the
@@ -74,12 +78,15 @@ def default_opacity(p) -> float:
         return 0.40
     if p.key in ("hr100a_glass", "beaker"):
         return 0.25
+    if p.key in BAL11_SEE:                 # v11: the tall cage's glass, its doors and the dosing lid, so the pillar and beaker show
+        return 0.2
     return 1.0
 
 
-OUTLINED = ("panel_", "hatch_", "hr100a_body", "hr100a_glass", "bay9_", "baffle9_", "deck9", "bay10_", "baffle10_", "deck10_")
+BAL11_SEE = ("bal11_glass", "bal11_door_left", "bal11_door_right", "bal11_lid")
+OUTLINED = ("panel_", "hatch_", "hr100a_body", "hr100a_glass", "bay9_", "baffle9_", "deck9", "bay10_", "baffle10_", "deck10_") + BAL11_SEE
 TINT = {"hr100a_body": (0.50, 0.56, 0.68), "hr100a_glass": (0.55, 0.75, 0.90)}
-for _k in ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side", "panel_front_bay",
+for _k in ("panel_side", "panel_side_hatch", "panel_front_hatch", "panel_back", "panel_top", "hatch_front", "hatch_side", "panel_front_bay", "panel_front_door11",
            "bay9_front", "bay9_top", "bay9_side_p", "bay9_side_m", "bay9_door", "baffle9_side_p", "baffle9_side_m", "baffle9_back", "deck9",
            "bay10_front", "bay10_top", "bay10_side_p", "bay10_side_m", "baffle10_side_p", "baffle10_side_m", "baffle10_back", "deck10_front",
            "deck10_riser", "deck10_back"):
@@ -240,13 +247,25 @@ def caption(img: Image.Image, title: str, sub: str = "", corner: str = "") -> Im
 
 
 def caption_lines(img: Image.Image, title: str, lines: list[str] = ()) -> Image.Image:
-    """Title and the step's BoM lines on a white band above the render."""
-    band = 70 + 30 * len(lines) + 12
+    """Title (wrapped to the image's width: v11's step titles are long) and the step's BoM lines on a white band above the render."""
+    ft = font(34)
+    meas = ImageDraw.Draw(img)
+    tl, cur = [], ""
+    for w in title.split():
+        t = f"{cur} {w}".strip()
+        if cur and meas.textlength(t, font=ft) > img.width - 56:
+            tl.append(cur)
+            cur = w
+        else:
+            cur = t
+    tl.append(cur)
+    band = 70 + 42 * (len(tl) - 1) + 30 * len(lines) + 12
     out = Image.new("RGB", (img.width, img.height + band), (255, 255, 255))
     out.paste(img, (0, band))
     d = ImageDraw.Draw(out)
-    d.text((28, 18), title, fill=(20, 20, 20), font=font(34))
-    y = 66
+    for i, t in enumerate(tl):
+        d.text((28, 18 + 42 * i), t, fill=(20, 20, 20), font=ft)
+    y = 66 + 42 * (len(tl) - 1)
     for ln in lines:
         d.text((30, y), ln, fill=(70, 70, 70), font=font(22))
         y += 30
@@ -254,10 +273,14 @@ def caption_lines(img: Image.Image, title: str, lines: list[str] = ()) -> Image.
     return out
 
 
+P16_OUTSIDE11 = ("bar11", "m5x35_shcs", "p16_bracket11", "grommet10")   # v11: the front bar, the P16's clevis, the grommet in the plate
+
+
 def front_open(p: L.Placement) -> bool:
-    """Hide the front side plate, everything bolted outside it and the enclosure, to look straight at the front chain loop."""
+    """Hide the front side plate, everything bolted outside it and the enclosure, to look straight at the front chain loop. v11: the
+    P16-150 (its base is outside the plate, its rod inside), its clevis, the front bar and the grommet go as a whole, so nothing floats."""
     return (p.key == "side_plate_front" or (p.M[0, 3] < -30.5 and p.key not in ("ext_x", "foot", "board_panel") and p.group not in ("scale",))
-            or (p.key == "m5x12_bhcs" and p.M[0, 3] < -29.0) or p.group in ("enclosure", "scale"))
+            or (p.key == "m5x12_bhcs" and p.M[0, 3] < -29.0) or p.group in ("enclosure", "scale", "station_act") or p.key in P16_OUTSIDE11)
 
 
 def no_enclosure(p: L.Placement) -> bool:
@@ -333,79 +356,150 @@ def hidden(pl, fn) -> set:
     return {k for k, p in keyed(pl) if fn(p)} if fn else set()
 
 
-# ---------------------------------------------------------------- stills
-def stills(quick: bool = False) -> None:
+# ---------------------------------------------------------------- stills (v11)
+HERO11 = ((172.0, 0.0, 385.0), (-0.9, -1.0, 0.55), 2100)                 # the whole rig from the front left, above
+LOOP11 = ((150.0, 0.0, 505.0), (-1.0, -0.42, 0.22), 1450)                # the front chain loop (front plate hidden)
+BACK11 = ((400.0, 130.0, 300.0), (1.0, 0.75, 0.45), 2350)                # the back: the NEMA 34, the drive chain, the board behind
+LOAD11 = ((172.0, 140.0, float(L.load_frame()[2, 3]) - 5.0), (0.35, 1.0, 0.35), 1100)    # the loading position, from +y
+HATCH11 = ((172.0, 150.0, float(L.load_frame()[2, 3]) - 60.0), (0.25, 1.0, 0.3), 1550)   # the side hatch, from +y
+STEP8_11 = ((140.0, 5.0, 450.0), (-0.35, -1.0, 0.05), 1150)             # the station inside the loop, from -y under the beam (no carriages yet)
+STEP1_11 = ((172.0, 0.0, 60.0), (-0.9, -1.0, 0.75), 1350)               # the base frame on the bench
+STEP11_11 = ((600.0, 180.0, 150.0), (0.45, 1.0, 0.8), 1700)             # the electronics board behind the rig
+DROP11 = ((73.4, 4.8, 300.0), (-0.25, -1.0, 0.08), 340)                 # the exit, the dosing lid and the beaker on its pillar
+
+
+def latch_cut11(p: L.Placement) -> bool:
+    """v6's latch close-up (explain6.latch) for v11: carriage 1 with its plate and latch, the cam, the chain and the frame; the augers, the
+    EC and the P16, the back plate (behind the cam), the NEMA 34, the drive, the balance and the other carriages go."""
+    return (p.group in ("enclosure", "elec", "scale", "station_ec", "station_act", "drive") or p.key in ("auger", "auger_cap", "side_plate_back", "nema34")
+            or (p.module not in (-1, 0) and p.group in ("modules", "carriages")))
+
+
+def _wide(cam, f: float = 1.25):
+    """explain11's cameras are framed for its 1280 x 574 viewport; a still is 1600 x 1000 (narrower for its height): step back."""
+    return (cam[0], cam[1], cam[2] * f)
+
+
+def still_views() -> list:
+    """v11's stills: (name, state, camera, hide, title, sub, opacity). The cut-aways, close-up cameras and see-through parts are
+    explain11's (the clips in renders/v11/), so each still shows the same parts its clip does."""
+    import explain11 as X                   # lazily: explain11 imports this module
+    from params import LATCH10_RAMP_DEG, LATCH_RAIL_FLAT, LATCH_Y6, SOL11_X
+    op = X.opac
+    no_elec = lambda p: p.group == "elec"                                                          # noqa: E731
+    p16_cut = lambda p: p.group in ("enclosure", "elec", "scale") or (p.module >= 0 and p.module != 0)   # noqa: E731
+    e0, e30, e90 = (L.p16_11_ext(a) for a in (0.0, 30.0, 90.0))
+    gear_cut = lambda p: X.close_cut(p) or p.key in ("solenoid", "door_head11", "door_rod11")    # noqa: E731
+    # the latch from the front (its follower is 35 mm in front of the back plate), carriage 1 and its plate see-through
+    LATCH11 = (tuple(L.to_world(L.sam_frame(L.station_frame(), 0.0), (262.0, LATCH_Y6, -6.0))), (-1.0, -0.5, -0.3), 190)
+    ghost_latch = lambda pl: {k: 0.35 for k, p in keyed(pl) if p.module == 0 and p.key in ("carriage", "sam_mounting_plate")}   # noqa: E731
+    ramp_end = LATCH_RAIL_FLAT + LATCH_TRAVEL / math.tan(math.radians(LATCH10_RAMP_DEG))     # 25.8 mm: where a follower meets the cam
+    S0 = dict(enclosure=False)
+    before = -RUN_DIRECTION                 # a positive shift: carriage 1 still on its way in (the machine runs -1)
+    return [
+        ("rig_iso", L.State(), HERO11, no_elec, "Chain carousel v11: the station inside the loop (0-90 deg), the carousel lowered over a tall-cage balance",
+         "13 modules outside the loop; the acrylic enclosure with the balance's open doorway in front; the side hatch (+y) for swaps", op),
+        ("rig_open", L.State(**S0), HERO11, no_elec, "v11 without its enclosure: module 1 at the station under EC v11; the P16-150 through the front plate",
+         "carriages 40 mm longer (chains 345 mm apart); the balance with its tall cage on the bench, the beaker on a pillar", op),
+        ("rig_loop", L.State(), LOOP11, lambda p: front_open(p) or no_elec(p), "Front chain loop (the front plate, the P16 and the enclosure hidden)",
+         "13 carriages on two Nitro RC35 chains, 345 mm apart, their modules outside the loop; 32T sprockets on four shafts", op),
+        ("rig_station", L.State(**S0), _wide(X.CAM_SIDE), X.near_cut, "Station at rest: EC v11 on module 1, inside the loop; the module rests on its own carriage",
+         f"the P16-150 fully out ({e0:.1f} of 150 mm) from its clevis outside the front plate (the beam and the EC's guide cut away)", op),
+        ("rig_tilt30", L.State(tilt=30.0, **S0), _wide(X.CAM_SIDE_HI), X.near_cut, "Dosing at 30 deg: the P16 pulls the EC and module 1 up about the hinge",
+         f"P16 {e30:.1f} of 150 mm out; the exit is on the hinge axis, so it doesn't move", op),
+        ("rig_tilt90", L.State(tilt=90.0, **S0), _wide(X.CAM_SIDE_HI), X.near_cut, "90 deg: the hinge 73 mm behind the front chain leaves the module and the EC room",
+         f"P16 {e90:.1f} of 150 mm out; the EC passes the carriage's opening by 2.5 mm, the solenoid the carriage by 2.5 mm", op),
+        ("rig_p16", L.State(**S0), _wide(X.CAM_FRONT, 1.45), p16_cut, "Outside the front plate: the P16-150's clevis under a new 2020 bar across the front posts",
+         "two M5 into T-nuts in the bar; the P16 through a 22 x 68 mm slot in the front side plate; the grommet hole under it",
+         lambda pl: op(pl, {"side_plate_front": 0.6})),
+        ("rig_rail", L.State(**S0), _wide(X.CAM_RAIL), X.close_cut, "The straight rail: the plate's T-bracket in the EC's slot (level lips, flared ends; no lift)",
+         "at rest the T's head is 0.2 mm over the lips: the module sits on its carriage, the lips take it only when the P16 pulls",
+         lambda pl: op(pl, {"ec11": 0.6})),
+        ("rig_gear", L.State(**S0), _wide(X.CAM_GEAR), gear_cut, "The 44T gear meets the 24T pinion at rest (the EC see-through)",
+         "the hinge is 5 mm nearer the carriage, so the gear pokes past it; centre distance 34.25 mm",
+         lambda pl: op(pl, {"ec11": 0.35, "sam_mounting_plate": 0.5, "t_bracket": 0.6, "door_housing": 0.5})),
+        ("rig_door_open", L.State(**S0), _wide(X.CAM_DOOR), X.close_cut, "Outlet door open: the EC's front ramp holds the rod's head 6 mm toward the loop",
+         "a 1.5 mm stainless rod from the shutter up the spring's axis, through the housing's cap, to a printed head; no cable",
+         lambda pl: op(pl, {"ec11": 0.7})),
+        ("rig_door_closed", L.State(shift=before * 3.0, **S0), _wide(X.CAM_DOOR), X.close_cut,
+         "Outlet door shut: module 1 three links before the station, its head not yet in the ramp",
+         "the spring holds the shutter over the 3 mm exit; the door is fully open within 7 mm of the station",
+         lambda pl: op(pl, {"ec11": 0.7})),
+        ("rig_solenoid", L.State(**S0), _wide(X.CAM_SOL), X.close_cut, f"The solenoid over clip 1, {SOL11_X:.0f} mm behind the exit (the auger's first third)",
+         "in a collar in the EC's spine, its plunger 1.2 mm off the plate; it turns with the module, so it taps the same spot at every tilt",
+         lambda pl: op(pl, {"ec11": 0.5})),
+        ("rig_latch", L.State(**S0), LATCH11, latch_cut11, f"Plate latch at the station: the cam holds carriage 1's bolt {LATCH_TRAVEL:g} mm back, its pin out of the keeper",
+         f"the cam on an arm from the back side plate (hidden), its +-{LATCH_RAIL_FLAT:.0f} mm flat and {LATCH10_RAMP_DEG:.0f} deg ramps; carriage 1 and its plate see-through, the augers hidden", ghost_latch),
+        ("rig_latch_closed", L.State(shift=before * 4.0, **S0), LATCH11, latch_cut11, "Half an index before the station: carriage 1's bolt is home, its pin in the keeper",
+         f"its follower meets the cam's ramp {ramp_end:.1f} mm from the station; carriage 1 and its plate see-through, the augers hidden", ghost_latch),
+        ("rig_balance", L.State(), _wide(X.CAM_BAL, 1.15), lambda p: no_elec(p) or p.key == "panel_side",
+         "The balance with its tall draft cage (315 mm) on the bench, through the front panel's open doorway",
+         "the carousel is 98.5 mm lower than v10's: the passing 44T gears clear the cage's top by 4 mm; no bay window, no chamber",
+         lambda pl: op(pl, {"panel_front_door11": 0.25, "panel_side_hatch": 0.12, "panel_top": 0.1, "panel_back": 0.1, "beaker": 1.0})),
+        ("rig_drop", L.State(tilt=30.0, **S0), DROP11, X.near_cut,
+         f"The dose falls {X.DROP:.0f} mm from the exit through the dosing lid's 24 mm hole into the beaker",
+         "the lid sits in the cage's top frame in place of the top door; the beaker stands on a printed 40 mm pillar on the pan",
+         lambda pl: op(pl, {"bal11_frame": 0.16, "beaker": 1.0})),   # opaque: translucent, it is lost behind the cage glass (6 peels)
+        ("rig_side_hatch", L.State(hatch_side=HATCH_OPEN_DEG), HATCH11, no_elec, "The side hatch (+y) open: swaps at the loading position",
+         "3 mm acrylic on standoffs outside the 2020 frame; the front has an open doorway for the balance instead of a hatch", op),
+        ("rig_load", L.State(out_auger=3, auger_out=120.0, hatch_side=HATCH_OPEN_DEG), LOAD11, no_elec,
+         "Swap through the side hatch: module 4's auger comes straight off its plate",
+         "the side tabs take the pull, not the chain; the door, plate and carriage stay on the chain (check_interference.py --swap)", op),
+        ("rig_side_tabs", L.State(), (TAB, (-0.6, 1.0, -0.2), 240), front_open, "Side tab at the loading position: its foot 1 mm outside the tongue", "", op),
+        ("rig_back_iso", L.State(), BACK11, None, "Back: the NEMA 34 inside the frame drives the bottom +y shaft; the electronics board behind",
+         "", op),
+    ]
+
+
+def stills(quick: bool = False, only: tuple = ()) -> None:
+    """v11's stills -> renders/rig_*.png (`only`: just these names); then the assembly steps (renders/steps/, assembly_steps.gif)."""
     OUT.mkdir(exist_ok=True)
     v = View()
-    tf = L.frame_dose_tilt(TILT_DOSE_WORLD)
-    views = [("rig_iso", L.State(), HERO, None,
-              "Chain carousel v4: the augers outside the loop, in the acrylic enclosure; the HR-100A where it has to stand")]
-    if not quick:
-        views += [
-            ("rig_open", L.State(enclosure=False), HERO, None, "v4 without its enclosure: 13 modules on the outside of the loop, module 1 docked at the station"),
-            ("rig_loop", L.State(), LOOP, front_open, "Front chain loop (front plate and enclosure hidden)"),
-            ("rig_station", L.State(), STATION, station_cut, "Station docked: EC v4 reaches round the auger to the plate's kinematic dock",
-             ghost_cradle),
-            ("rig_parked", L.State(ext=0.0), STATION, station_cut, "Station parked: EC v4 sits in its guide cradle 28 mm under its dock, clear of the passing augers",
-             ghost_cradle),
-            ("rig_tilt30", L.State(tilt=tf), STATION_TILT, station_cut, f"Dosing at {TILT_DOSE_WORLD:.0f} deg: module and EC tilt up through the carriage's opening"),
-            ("rig_tilt50", L.State(tilt=50.0), ((H[0] + 70, H[1], H[2] + 80), (-0.35, -1.0, 0.2), 950), station_cut,
-             "Module 1 at 50 deg, v4's limit (by 55 deg its cap would reach the top run)"),
-            ("rig_dock", L.State(magnet_on=True), DOCK, dock_cut,
-             "Kinematic dock on the auger's side: plate balls in the EC's cone and vee, its ball C on a steel washer (plate see-through)", ghost_plate),
-            ("rig_dock_open", L.State(ext=8.0), DOCK, dock_cut, "Kinematic dock, 12 mm before seating: the arms reach past the auger", ghost_plate),
-            ("rig_cradle", L.State(ext=0.0), CRADLE, station_cut, "Guide: the parked EC on its own cone-vee-flat seat in the cradle (cradle see-through)",
-             ghost_cradle),
-            ("rig_door_open", L.State(), DOOR, dock_cut, "Outlet door open: the EC's finger holds the shutter 6 mm toward the plate"),
-            ("rig_door_closed", L.State(ext=0.0), DOOR, dock_cut, "Outlet door closed: the spring holds the shutter over the 3 mm exit"),
-            ("rig_latch", L.State(), LATCH, latch_cut, "Plate latch v4: a pin in the keeper's hole, drawn back by the station's rail"),
-            ("rig_latch_rail", L.State(), LATCH_BELOW, latch_cut, "Latch rail and tube rest at the station: the module rests on its tube while its latch is open"),
-            ("rig_latch_closed", L.State(shift=RUN_DIRECTION * 4.0, ext=0.0), LATCH, latch_cut,
-             "Plate latch half an index from the station: the bolt is home over the keeper"),
-            ("rig_hatches", L.State(hatch_front=HATCH_OPEN_DEG, hatch_side=HATCH_OPEN_DEG), ((200, 40, 420), (-0.75, 1.0, 0.45), 2000), None,
-             "Enclosure: the front hatch (the scale) and the side hatch (swaps) open"),
-            ("rig_load", L.State(out_auger=3, auger_out=120.0, hatch_side=HATCH_OPEN_DEG), LOADC,
-             None, "Swap through the side hatch: the auger comes straight off its plate; the side tabs take the pull"),
-            ("rig_side_tabs", L.State(), (TAB, (-0.6, 1.0, -0.2), 160), front_open, "Side tab at the loading position: its foot 1 mm outside the tongue"),
-            ("rig_scale", L.State(ext=0.0), SCALE, lambda p: p.group == "enclosure", "The HR-100A where it has to stand: its breeze break would hold the guide, the EC and the P16"),
-            ("rig_back_iso", L.State(), ((230, 0, 420), (1.0, 0.75, 0.45), 1900), None, "Back: the NEMA 34 inside the frame drives the bottom +y shaft"),
-        ]
-    for item in views:
-        name, st, cam, hide_fn, title = item[:5]
-        op_fn = item[5] if len(item) > 5 else None
+    views = still_views()
+    if quick:
+        views = views[:1]
+    elif only:
+        views = [x for x in views if x[0] in only]
+    for name, st, cam, hide_fn, title, sub, op_fn in views:
         pl = L.placements(st)
         v.show(pl, hide=hidden(pl, hide_fn), opacity=op_fn(pl) if op_fn else None)
         v.camera(*cam)
-        caption(v.image(), title).save(OUT / f"{name}.png")
+        caption(v.image(), title, sub, "chain carousel v11 · PR #185").save(OUT / f"{name}.png")
         print("  wrote", name, flush=True)
-    if quick:
+    if quick or only:
         return
     step_images(v)
 
 
-def step_images(v: View) -> None:
+def step_images(v: View | None = None, only: tuple = ()) -> None:
+    """One image per layout.STEPS step (renders/steps/step_NN.png) and renders/assembly_steps.gif: the parts of earlier steps pale, the
+    step's own parts in colour, lifted along the way they go in (Placement.explode), with the step's BoM lines (bom.step_lines) above."""
     import bom
+    v = v or View()
     items = bom.step_lines()
     STEP = OUT / "steps"
-    STEP.mkdir(exist_ok=True)
-    pl = L.placements(L.State(ext=0.0))
-    cams = {1: HERO, 2: HERO, 3: HERO, 4: ((150, 0, 470), (-0.9, -1.0, 0.45), 1700), 5: LOOP, 6: ((330, 50, 300), (1.0, 0.85, 0.3), 950),
-            7: LOOP, 8: ((H[0] + 50, H[1], H[2] - 90), (-0.6, -1.0, 0.25), 760), 9: LOOP, 10: LOOP,
-            11: ((450, 150, 200), (0.45, 1.0, 0.8), 1900), 12: HERO}
+    STEP.mkdir(parents=True, exist_ok=True)
+    pl = L.placements(L.State())
+    cams = {1: STEP1_11, 2: HERO11, 3: HERO11, 4: ((172.0, 0.0, 530.0), (-0.9, -1.0, 0.45), 1750), 5: LOOP11, 6: ((380.0, 60.0, 360.0), (1.0, 0.85, 0.3), 1200),
+            7: LOOP11, 8: STEP8_11, 9: LOOP11, 10: LOOP11, 11: STEP11_11, 12: HERO11}
     frames = []
-    for s in range(1, 13):
+    for s in sorted(L.STEPS):
         cur = [p for p in pl if p.step <= s]
         hide = hidden(cur, (lambda p: p.step < s and front_open(p))) if s in (5, 7, 9, 10) else set()
-        if s == 8:
-            hide |= hidden(cur, lambda p: p.group == "enclosure")
+        if s == 8:                          # the -y side of the frame, between the camera and the station inside the loop
+            hide |= hidden(cur, lambda p: p.step < s and p.group == "frame" and p.key != "ext_y" and p.M[1, 3] < -100.0)
         colors = {k: tuple(0.55 + 0.45 * c for c in p.color) for k, p in keyed(cur) if p.step < s}
         offs = {k: np.asarray(p.explode, float) for k, p in keyed(cur) if p.step == s}
+        if only and s not in only:
+            continue
         v.show(cur, colors=colors, offsets=offs, hide=hide)
         v.camera(*cams[s])
         img = caption_lines(v.image(), f"Step {s}. {L.STEPS[s]}", items.get(s, [])[:14])
         img.save(STEP / f"step_{s:02d}.png")
         frames.append(img)
         print("  step", s, flush=True)
+    if only:
+        return
     small = [f.convert("P", palette=Image.ADAPTIVE, colors=128).resize((960, int(960 * f.height / f.width))) for f in frames]
     small[0].save(OUT / "assembly_steps.gif", save_all=True, append_images=small[1:], duration=2200, loop=0, optimize=True)
 
@@ -937,6 +1031,8 @@ def main():
     ap.add_argument("--features", nargs="?", const="all", default=None)
     ap.add_argument("--fast", action="store_true", help="half-length movie (for checking)")
     ap.add_argument("--scale-fit", action="store_true")
+    ap.add_argument("--steps", nargs="?", const="all", default=None, help="v11: only the assembly-step images (renders/steps/), or e.g. --steps 8,12")
+    ap.add_argument("--only", default="", help="v11: with --stills, only these stills, e.g. --only rig_iso,rig_tilt90")
     a = ap.parse_args()
     if a.scale_fit:
         scale_fit()
@@ -944,8 +1040,10 @@ def main():
         movie(a.fast)
     elif a.features:
         features("" if a.features == "all" else a.features)
+    elif a.steps:
+        step_images(only=() if a.steps == "all" else tuple(int(s) for s in a.steps.split(",") if s))
     else:
-        stills(quick=a.quick)
+        stills(quick=a.quick, only=tuple(s for s in a.only.split(",") if s))
 
 
 if __name__ == "__main__":

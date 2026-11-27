@@ -73,8 +73,9 @@ def fit(img: Image.Image, box_w: int, box_h: int, bg=(255, 255, 255)) -> Image.I
 class Source:
     """A still (held) or a clip (mp4/gif, played at its own rate, then held on its last frame or looped)."""
 
-    def __init__(self, path: Path, start: float = 0.0, end: float | None = None, loop: bool = False, speed: float = 1.0):
+    def __init__(self, path: Path, start: float = 0.0, end: float | None = None, loop: bool = False, speed: float = 1.0, crop_bottom: int = 0):
         self.path = Path(path)
+        self.crop_bottom = crop_bottom
         self.still = self.path.suffix.lower() in (".png", ".jpg", ".jpeg")
         self.frames = []
         if self.still:
@@ -91,7 +92,10 @@ class Source:
                     continue
                 if end is not None and t > end:
                     break
-                self.frames.append(Image.fromarray(np.asarray(fr)[..., :3]))
+                arr = np.asarray(fr)[..., :3]
+                if crop_bottom:
+                    arr = arr[: arr.shape[0] - crop_bottom]          # drop the clip's own caption box (the narration's caption replaces it)
+                self.frames.append(Image.fromarray(arr))
             r.close()
         self.loop = loop
 
@@ -147,7 +151,8 @@ def _source(v: dict, tmp: Path, k: int) -> "Source":
         p = card(v["card"]["title"], v["card"]["lines"], tmp / f"card_{k}_{abs(hash(v['card']['title'])) % 10**8}.png")
         return Source(p)
     path = V11 / v["path"] if not str(v["path"]).startswith("/") else Path(v["path"])
-    return Source(path, v.get("start", 0.0), v.get("end"), v.get("loop", False), v.get("speed", 1.0))
+    crop = v.get("crop_bottom", 100 if "renders/v11/" in str(v["path"]) and str(v["path"]).endswith(".mp4") and "mesh_" not in str(v["path"]) else 0)
+    return Source(path, v.get("start", 0.0), v.get("end"), v.get("loop", False), v.get("speed", 1.0), crop)
 
 
 def chapter_frames(ch: dict, dur: float, idx: int, n: int, tmp: Path = Path(tempfile.gettempdir())):

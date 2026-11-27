@@ -27,6 +27,14 @@ CHAPTERS = [
                "it. The plate hangs on two hinge pins on its carriage's outer face, and a spring latch at its back end holds it, even upside "
                "down on the top run."),
          visuals=[dict(path="renders/steps/step_09.png"), dict(path="renders/rig_load.png"), dict(path="renders/rig_latch_closed.png")]),
+    dict(title="Building it, step by step",
+         text=("Building it takes twelve steps. One: the base frame, a U of extrusion round the balance, on levelling feet. Two: the posts, the "
+               "top frame and the ladder rungs. Three: the aluminium side plates, the front one with the actuator's slot. Four: the flange "
+               "bearings and the top shafts' tensioners. Five: the four corner shafts with their sprockets. Six: the NEMA thirty-four and its "
+               "drive chain. Seven: the two chains, each with thirteen attachment links. Eight: the station, with its beam, guide, electronics "
+               "carriage, actuator and latch cam. Nine: each module, built on the bench. Ten: the carriages onto the chains, one index at a "
+               "time. Eleven: the electronics board. And twelve: the balance, through the front doorway, and the acrylic panels."),
+         visuals=[dict(path=f"renders/steps/step_{k:02d}.png") for k in range(1, 13)]),
     dict(title="Indexing into the station",
          text=("To dose, the NEMA thirty-four moves both chains eight links, one module. As the carriage arrives, a fixed cam draws its "
                "latch pin back, so the module is free to tilt inward. Its T-bracket slides straight into the electronics carriage's rail, "
@@ -69,11 +77,32 @@ CHAPTERS = [
                "found clears the outlet without spilling."),
          visuals=[dict(path="renders/v11/solenoid_v11.mp4"), dict(path="renders/v11/balance_v11.mp4", weight=1.5), dict(path="renders/rig_drop.png")]),
     dict(title="Checks",
-         text="",
-         visuals=[]),
+         text=("Every pose is checked for interference with exact solid booleans, counting anything over half a cubic millimetre: all "
+               "eight hundred and twenty-nine parts at home, the tilt from zero to ninety degrees, every module passing the station, the "
+               "latch cam as carriages pass it, and the swap at the side hatch. This round found three real problems. The longer version "
+               "eleven carriages no longer came out whole through the side hatch, so the hatch is now four hundred millimetres wide. And two "
+               "clashes had been hidden because the check skipped those pairs of parts: the electronics carriage's spine ran through the "
+               "pinion, and the guide's seat sat inside the carriage's arm. Both are fixed, those pairs are checked again, and every check "
+               "now comes out clean."),
+         visuals=[dict(card=dict(title="Interference checks (OCC booleans, over 0.5 mm\u00b3 counts)",
+                                 lines=["Home: every pair of 829 parts: 0",
+                                        "Tilt 0-90\u00b0 with the P16 and the EC: 0 at every angle",
+                                        "Every module passing the station, 1-link steps: 0",
+                                        "Latch cam, carriages passing \u00b13 links, then 10-90\u00b0: 0",
+                                        "Swap at the side hatch: 0 (the hatch widened to 400 mm)",
+                                        "Fixed: the EC's spine ran through the pinion; the guide's seat sat inside the EC's arm"])),
+                  dict(path="renders/rig_gear.png"), dict(path="renders/rig_side_hatch.png")]),
     dict(title="Printing and buying",
-         text="",
-         visuals=[]),
+         text=("Every printed part is sliced in Bambu Studio, in PETG at two tenths of a millimetre layers, with the three hundred and "
+               "ninety-one millimetre carriage laid diagonally on the H2D's bed, on supports. Slicing found two parts that came apart into "
+               "separate solids in the CAD, the electronics carriage and the outlet door's housing, plus a T-bracket whose head floated "
+               "and a beaker pillar twice the weight the parts list said. All four are fixed. The vendors' pages were read through the "
+               "lab's Raspberry Pi this time, in a real browser with mouse movements, because McMaster and Amazon block datacenter "
+               "addresses. That confirmed the balance's height from A and D's manual, measured the chain plates from McMaster's own CAD, "
+               "and replaced the estimated prices with real part numbers. The pinion, for one, only comes with a six millimetre bore, so "
+               "it needs a sleeve on the motor's five millimetre shaft."),
+         visuals=[dict(path="../print/chain-carousel-v11/plates/carriage_toolpath.png"), dict(path="../print/chain-carousel-v11/plates/ec11_toolpath.png"),
+                  dict(path="../print/chain-carousel-v11/plates/mounting_plates_5_toolpath.png"), dict(path="renders/v11/chain_nitro_v11.png")]),
     dict(title="Next: a spring-loaded pinion",
          text=("The simulations point to one change above all: a spring. Put the NEMA eleven and its pinion on a small "
                "carrier that pivots in the electronics carriage, with a spring pressing the pinion into the gear with about six newtons, past "

@@ -25,7 +25,7 @@ import numpy as np                            # noqa: E402
 
 import parts as PT                            # noqa: E402
 from params import (A1_C, A1_HOLE_C, A1_HOLE_D, A1_TAB_L, A1_X, BUSH_D, CHAIN_PIN_D, INNER_W, OUTER_W, P, PIN_LEN, PIN_LEN_CL,  # noqa: E402
-                    PLATE_H, PLATE_T, PLATE_WAIST, W_IN)
+                    PLATE_H, PLATE_H_OUT, PLATE_T, PLATE_WAIST, PLATE_WAIST_OUT, W_IN)
 
 OUT = Path(__file__).resolve().parent / "renders" / "v11"
 OUT.mkdir(parents=True, exist_ok=True)
@@ -85,8 +85,8 @@ def main():
     a1x.annotate("", xy=(P / 2 - P / 2, -PLATE_H / 2), xytext=(-P / 2, PLATE_H / 2), arrowprops=dict(arrowstyle="-", lw=0.0))
     a1x.annotate("", xy=(3 * P + 7.0, -PLATE_H / 2), xytext=(3 * P + 7.0, PLATE_H / 2), arrowprops=dict(arrowstyle="<->", lw=0.8))
     a1x.text(3 * P + 7.6, -6.0, f'h2 0.346" ({PLATE_H:.2f})', ha="center", va="center", fontsize=8.5)
-    a1x.annotate(f"waist {PLATE_WAIST:.2f} mm (0.75 h2, scaled off\nNitro's drawing; v2-v10 drew 7.69)", xy=(P * 1.5, PLATE_WAIST / 2), xytext=(P * 0.6, 8.6), fontsize=8.5,
-                 arrowprops=dict(arrowstyle="->", lw=0.8))
+    a1x.annotate(f"inner plates: waist {PLATE_WAIST:.2f}; outer plates {PLATE_H_OUT:.2f} high,\nwaist {PLATE_WAIST_OUT:.2f} (McMaster 6261K172's CAD, read\nthrough the Pi 2026-11-27; Nitro publishes neither)",
+                 xy=(P * 1.5, PLATE_WAIST / 2), xytext=(-9.2, 7.6), fontsize=7.6, arrowprops=dict(arrowstyle="->", lw=0.8))
     a1x.annotate("A-1 tab, bent along the pins\n(seen end on here)", xy=(3 * P, A1_C), xytext=(2.0 * P, 10.4), fontsize=8.5, arrowprops=dict(arrowstyle="->", lw=0.8))
     for i, nm in enumerate(("outer", "inner", "outer", "A-1 (connecting)")):
         a1x.text(i * P, -4.9, nm, ha="center", fontsize=7.5, color=(0.25, 0.25, 0.3))
@@ -111,11 +111,11 @@ def main():
             ("Bushing diameter (#35 has no rollers)", '0.200" (5.08)', "5.08", "5.08"),
             ("Width between inner plates, b1", '3/16" (4.78)', "4.78", "4.78"),
             ("Pin diameter, d2", '0.141" (3.58)', "3.58", "3.58"),
-            ("Plate height, h2 (inner and outer alike)", '0.346" (8.79)', "8.79", "8.79"),
+            ("Plate height, h2 (inner / outer)", '0.346" (8.79), one value', "8.79 / 8.79", f"8.79 / {PLATE_H_OUT:.2f} (McMaster's CAD)"),
             ("Plate thickness, T", '0.050" (1.27)', "1.27", "1.27"),
             ("Width over riveted pins, L", '0.488" (12.40)', "12.40", "12.40"),
             ("Width over a connecting link (CL35, CL35-A1)", '0.518" (13.16)', "12.40 (as riveted)", "13.16"),
-            ("Plates' outline", "waisted (figure-8); connecting link's plates straight", "waisted 7.69, all plates", "waisted 6.59; CL plates straight"),
+            ("Plates' waist (inner / outer)", "waisted (figure-8), not dimensioned; CL plates straight", "7.69, all plates", f"{PLATE_WAIST:.2f} / {PLATE_WAIST_OUT:.2f}; CL straight"),
             ("A-1 tab: S / C / X / N / hole", '0.250 / 0.375 / 0.562 / 0.312 / 0.133"', "same", "same")]
     tb = a3x.table(cellText=rows[1:], colLabels=rows[0], loc="upper left", cellLoc="left", colWidths=[0.30, 0.31, 0.17, 0.22])
     tb.auto_set_font_size(False)

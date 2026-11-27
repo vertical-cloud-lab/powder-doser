@@ -72,15 +72,22 @@ def _door_body(sign: float) -> cq.Workplane:
     return h.mirror("XY") if sign < 0 else h
 
 
+DOOR_M2_Y11 = 14.35                    # v11: the door housing's M2 screws and the plate's inserts (|y|; v3-v10: 13.7)
+
+
 def door_housing_v4() -> cq.Workplane:
     """The door housing turned over (the shutter now slides toward the plate to open, and its push strip runs out past the
     auger to where EC v4's finger meets it), on v3's two mounting arms beside the tube to the plate's top face (M2 x 8)."""
     h = _door_body(-1.0)
     xl = P3.DOOR_XF - 1.6
+    # v11, 2026-11-27 (Bambu Studio found the housing in five pieces): the arms were at |y| 12.8-14.6, 0.3 mm off the rails (|y| <= 12.5),
+    # and each 2.2 mm M2 hole (at |y| 13.7) was wider than its 1.8 mm arm, so it cut the arm in two. The arms now run |y| 12.45-16.25
+    # (into the rails), with the M2 holes at |y| 14.35 (0.8 mm of wall each side); the plate's channel wall is cut back to |y| 16.3 over
+    # x 15-22 to make room, and its M2 inserts move to |y| 14.35 (parts10.plate_additions_v10, parts11.plate_additions_v11)
     for sy in (-1, 1):
-        ya, yb = (12.8, 14.6) if sy > 0 else (-14.6, -12.8)
+        ya, yb = (12.45, 16.25) if sy > 0 else (-16.25, -12.45)
         h = h.union(_box(xl, 22.0, ya, yb, -13.0, -8.0))
-        h = h.cut(_cyl(1.1, 6.0, 18.5, sy * 13.7, -13.5))
+        h = h.cut(_cyl(1.1, 6.0, 18.5, sy * DOOR_M2_Y11, -13.5))
     return h
 
 

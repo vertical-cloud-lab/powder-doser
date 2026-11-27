@@ -22,6 +22,50 @@
   "note": ""
  },
  {
+  "key": "6261K172",
+  "kind": "drawing",
+  "file": "files/mcmaster/6261K172.pdf",
+  "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/roller-chain-and-links-3~~/",
+  "url": "https://www.mcmaster.com/mvD/Library/CAD2/20260118/A2F92AD5/6261K291_Roller%20Chain.PDF",
+  "sha256": "997b1dc7a76fa00a2381013aa717b4de874ae46dc616c633e3e90342a7418f37",
+  "bytes": 132769,
+  "retrieved": "2026-11-27",
+  "note": "v11 vendor check 2026-11-27: from the family table's panel, logged out"
+ },
+ {
+  "key": "6261K172",
+  "kind": "step",
+  "file": "files/mcmaster/6261K172.step",
+  "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/roller-chain-and-links-3~~/",
+  "url": "https://www.mcmaster.com/mvD/Library/CAD2/20261107/874CE324/6261K291_Roller%20Chain.STEP",
+  "sha256": "f6587063e0a44b8bac71ee6565c5058091f1b6f6a3d007df1f5569cfaa55a3c3",
+  "bytes": 8364025,
+  "retrieved": "2026-11-27",
+  "note": "v11 vendor check 2026-11-27: from the family table's panel, logged out"
+ },
+ {
+  "key": "6261K191",
+  "kind": "drawing",
+  "file": "files/mcmaster/6261K191.pdf",
+  "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/roller-chain-and-links-3~~/",
+  "url": "https://www.mcmaster.com/mvD/Library/CAD2/20260118/4D6BF7CA/6261K191_Connecting%20Link%20for%20ANSI%20Number%2035%20Single%20Strand%20Roller%20Chain.PDF",
+  "sha256": "6ac1152dc8c51066f2c4330e18b7a5a9729832769c75331a288988e6342921fb",
+  "bytes": 125362,
+  "retrieved": "2026-11-27",
+  "note": "v11 vendor check 2026-11-27: from the family table's panel, logged out"
+ },
+ {
+  "key": "6261K191",
+  "kind": "step",
+  "file": "files/mcmaster/6261K191.step",
+  "page": "https://www.mcmaster.com/products/roller-chain/roller-chain-trade-number~35/roller-chain-and-links-3~~/",
+  "url": "https://www.mcmaster.com/mvD/Library/CAD2/20261107/2F1A9CCE/6261K191_Connecting%20Link%20for%20ANSI%20Number%2035%20Single%20Strand%20Roller%20Chain.STEP",
+  "sha256": "7f8675ad35de1d12f0759810a056561e573b228996e3c5c65ed103e83da3a08d",
+  "bytes": 430469,
+  "retrieved": "2026-11-27",
+  "note": "v11 vendor check 2026-11-27: from the family table's panel, logged out"
+ },
+ {
   "key": "6408K147",
   "kind": "drawing",
   "file": "files/mcmaster/6408K147.pdf",

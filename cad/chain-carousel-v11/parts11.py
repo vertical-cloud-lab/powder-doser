@@ -40,7 +40,7 @@ def t_bracket_v11() -> cq.Workplane:
     s0, s1 = T11_STEM_X
     h0, h1 = T11_HEAD_X
     zu, zt = T11_HEAD_Z
-    stem = _box(s0, s1, -T11_HY, T11_HY, zu + 0.01, -18.0 - t + 0.01)
+    stem = _box(s0, s1, -T11_HY, T11_HY, zu - 0.01, -18.0 - t + 0.01)   # 2026-11-27: zu - 0.01 (was + 0.01: the head a separate solid)
     head = _box(h0, h1, -T11_HY, T11_HY, zt, zu).edges("|X").chamfer(0.8).edges("|Z").chamfer(1.5)
     b = foot.union(stem).union(head)
     for x in T11_SCREW_X:
@@ -163,7 +163,14 @@ def ec_v11(sy_p16: float) -> cq.Workplane:
     x0 = EC11_FRONT
     hw = EC11_HW
     zn, zf = EC11_SPINE_Z
-    body = _box(x0, NEMA11_11_X, -hw, hw, zf, zn)
+    # 2026-11-27: the spine used to run to the motor plate (x 93.5) and ended inside its 22.4 mm hole, so the front (ramp, collar, rail)
+    # and the back (plate, cheeks, arm) never met, and on the way it ran through the 24T pinion (652 mm3) and the motor's shaft (found by
+    # slicing in Bambu Studio; the check skipped those pairs). It now stops at x 71.5, widens there, and two 4 x 4.5 mm bars run beside
+    # the pinion (2.5 mm off its tips) to the cheeks.
+    body = _box(x0, 71.5, -hw, hw, zf, zn)
+    body = body.union(_box(69.5, 71.5, -19.5, 19.5, zf, zn))
+    for s_ in (-1, 1):
+        body = body.union(_box(69.5, 89.91, *sorted((s_ * 15.5, s_ * 19.5)), zf, zn))
     body = body.union(door_ramp_v11())
     # solenoid collar over clip 1: the frame (14 along x, 17 across) from z SOL11_TIP - 8 to that - 29.7
     sx = SOL11_X
@@ -199,15 +206,22 @@ def ec_v11(sy_p16: float) -> cq.Workplane:
     body = body.cut(cq.Workplane("XZ").center(px, pz).circle(2.05).extrude(30.0, both=True).translate((0, sy_p16, 0)))
     sx0, sx1, tip, top = SHOE11
     nd, nh = SHOE10_NOSE
-    shoe = _box(sx0, sx1, sy_p16 - 5.0, sy_p16 + 5.0, top, tip - nh)
-    nose = cq.Workplane("XY").add(cq.Solid.makeCone(nd / 2, 0.8, nh, cq.Vector((sx0 + sx1) / 2, sy_p16, tip - nh), cq.Vector(0, 0, 1)))
-    body = body.union(shoe).union(nose)
+    sy = SHOE11_Y
+    bx0, bx1, bz0, bz1 = SHOE11_BRACKET
+    bracket = _box(bx0, bx1, sy - 5.0, sy + 5.0, bz0, bz1)
+    riser = _box(bx0, a1, sy - 5.0, sy + 5.0, bz1 - 0.1, azf + 0.01)        # the bracket onto the arm's far face
+    shoe = _box(sx0, sx1, sy - 5.0, sy + 5.0, top, tip - nh)
+    # a true 90 deg cone (tip radius nd/2 - nh = 0.5; was 0.8, a 43 deg cone that sank 0.3 mm into the guide's 45 deg seat): with its tip
+    # GUIDE10_SEAT_GAP (0.5) over the seat's apex its flanks are 0.35 mm clear of the seat's
+    nose = cq.Workplane("XY").add(cq.Solid.makeCone(nd / 2, nd / 2 - nh, nh, cq.Vector((sx0 + sx1) / 2, sy, tip - nh), cq.Vector(0, 0, 1)))
+    body = body.union(bracket).union(riser).union(shoe).union(nose)
     return body.clean()
 
 
 def ec11_shoe_tip(sy_p16: float) -> tuple:
+    """The guide shoe's nose tip, Sam's frame at rest (2026-11-27: at SHOE11_Y behind the arm; sy_p16 is no longer used)."""
     sx0, sx1, tip, _ = SHOE11
-    return ((sx0 + sx1) / 2, sy_p16, tip)
+    return ((sx0 + sx1) / 2, SHOE11_Y, tip)
 
 
 def pinion_24t() -> cq.Workplane:
@@ -263,6 +277,10 @@ def plate_additions_v11() -> tuple[cq.Workplane, cq.Workplane]:
     cut = cut.cut(relief)
     for x in T11_SCREW_X:
         cut = cut.union(_cyl(2.0, 5.0, x, 0.0, -18.1))
+    # 2026-11-27: the channel wall beside the door housing's arms cut back to |y| 16.3 along the arms (x 4.8-22, z -13 to -8; the wall is
+    # 10 mm thick there, |y| 15-25, so 8.7 mm stays), so the arms can run to |y| 16.25 round their M2 screws (parts4.door_housing_v4)
+    for sy in (-1, 1):
+        cut = cut.union(_box(4.8, 22.01, *sorted((sy * 14.9, sy * 16.3)), -13.01, -7.99))
     return add, cut
 
 

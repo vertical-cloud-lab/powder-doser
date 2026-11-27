@@ -61,6 +61,16 @@ PIN_LEN = 0.488 * 25.4                     # 12.40: Nitro's overall width L, riv
 # are its product page's (P, b1, d1, d2, L, h2) and its size chart's (T); two more from Nitro, applied here:
 PIN_LEN_CL = 0.518 * 25.4                  # 13.16: width over a connecting link (CL35, and the CL35-A1 the carriages bolt to), Nitro's CL35 page
 PLATE_WAIST = 0.75 * PLATE_H               # 6.59: the plates' waist, scaled off Nitro's RC35 drawing (not published; v2-v10 drew 7.69)
+# 2026-11-27 (Sterling: "Do all of your 'not done' items"; v11's README listed this waist as assumed): McMaster's own 3-D CAD for its #35
+# chain, 6261K172 (and the 6261K191 connecting link), read logged out through the doser Pi and measured with cadquery
+# (checks/vendor_v11.json, VENDOR-CHECK.md). Its inner (roller-link) plates are 8.81 high with a 7.49 waist; its outer (pin-link) plates
+# and its connecting link's plates are lower, 7.76, the outer plates with a 6.39 waist and the connecting link's straight; each waist one
+# R 13.08 arc. Nitro publishes neither the waist nor a separate outer-plate height, so v11 now draws McMaster's (Tsubaki's RS35 table
+# likewise lists a lower pin-link plate). Pitch, pins, bushings and Nitro's pin lengths are unchanged.
+PLATE_WAIST = 7.49                         # inner plates' waist (was 6.59)
+PLATE_H_OUT = 7.76                         # outer plates' and connecting links' height (was PLATE_H, 8.79)
+PLATE_WAIST_OUT = 6.39                     # outer plates' waist
+PLATE_WAIST_R = 13.08                      # the waist arc's radius, both plates
 
 # A-1 attachment connecting link (bent tab, one hole): Nitro CL35-A1, which
 # matches Tsubaki's RS35 A-1 table: S = 0.250 in pitch line -> tab face,
@@ -411,7 +421,10 @@ PAD_U0_V3 = 15.5                     # pads at |u| 15.5-23.5: the EC's base and 
 SIDE_TAB_FOOT_GAP = 4.0              # side tab foot outside the tongue (v4 makes it 1 mm: the auger pull goes through it)
 HATCH_FRONT = (300.0, 330.0)         # v5: front hatch (y width, z height), centred on the station, from the bench up: the
                                      # HR-202i's display pokes out under the door, and a hand reaches its side doors (v4: 180 x 230)
-HATCH_SIDE = (330.0, 230.0)          # side hatch on +y (x width, z height), centred on the loading position
+HATCH_SIDE = (400.0, 230.0)          # side hatch on +y (x width, z height), centred on the loading position. v11 (2026-11-27): 400 mm
+                                     # (v3-v10: 330), so a whole carriage (391 mm over its tongues, x -23..368) lifts out through it 4.5 mm
+                                     # clear each side (check_interference.py --swap); the opening (x -27.5..372.5) stays 8.85 mm inside
+                                     # the posts' faces and 13.85 mm from the standoffs; the door is 408 x 238
 HATCH_OPEN_DEG = 110.0
 
 # --- 6. the scale: A&D HR-100A (the lab's balance: 102 g x 0.1 mg), from A&D's manual (HR-A/HR-AZ manual section 22) ------
@@ -773,7 +786,8 @@ DOOR11_LIP_T = 2.2                   # the ramp's lips, between the cap and the 
 DOOR11_RAMP_FLAT = 4.0               # the lips' flat, +- about the station: the door is fully open while |offset| < 4 + 3 (head half width)
 DOOR11_RAMP = 10.0                   # each ramp's length along y
 DOOR11_SLOT = 2.5                    # the gap between the two lips (x), for the rod
-DOOR11_LIP_W = 2.2                   # each lip's width (x)
+DOOR11_LIP_W = 2.3                   # each lip's width (x). 2026-11-27: was 2.2, which left the lips 0.05 mm short of the channel's walls
+                                     # (two floating solids, found by slicing the EC in Bambu Studio); 2.3 runs them 0.05 mm into the walls
 # --- 3. EC v11 ---------------------------------------------------------------------------------------------------------------
 PINION11_T = 24                      # 24T steel pinion (KHK SS1-24 class): centre distance 34.25 (44T + 24T at module 1, +0.25), so the NEMA 11's
                                      # body (28 mm square on the pinion's axis) clears the passing plates by 2.25 mm with no lift (a 20T put it 0.25 mm off)
@@ -797,7 +811,13 @@ P16_11_B = (-62.0, 612.0)            # world (x, z) of the P16's base pin: in fr
                                      # lever about the hinge 87 mm at rest and 30 mm or more all the way; its line passes 514 mm or higher over
                                      # the front chain plane (the B- sprocket tops out at 461 there)
 EC11_ARM = (90.0, 126.0, 14.5, 46.0, -20.0, -30.0)    # the arm out to the P16 and the guide shoe on the world -y side: x0, x1, y0, y1, z near, z far
-SHOE11 = (108.0, 122.0, -31.0, -38.0)  # the guide shoe on the arm: x0, x1, nose tip z, top z
+SHOE11 = (133.0, 145.0, -24.5, -31.6)  # the guide shoe: x0, x1, nose tip z, top z. 2026-11-27: moved behind the arm. v11 had lowered the arm to
+                                     # z -20..-30 (the P16's pin at -25) but left the shoe at v10's -38..-31, so it floated 1 mm over the arm and
+                                     # the guide's seat block, built under its tip, sat inside the arm (1759 mm3; the check skipped the pair). The
+                                     # seat can't go under the arm (the passing plates are 2 mm below it), so the shoe now hangs from a bracket off
+                                     # the arm's back (SHOE11_BRACKET), nose down, and the seat block sits behind the arm, 1 mm over the plates
+SHOE11_Y = 36.0                      # its Sam y (near the P16's plane, 35.8)
+SHOE11_BRACKET = (120.0, 147.0, -35.0, -31.5)  # the bracket from the arm's back to the shoe: x0, x1, z0, z1 (a riser joins it to the arm's far face)
 TILT_MAX_V11 = 90.0
 # --- 4. the P16 through the front side plate, its base on a bar across the front posts ------------------------------------------
 P16SLOT11_Y = (-41.5, -19.5)         # the front side plate's slot for the P16 (world y): its housing (20 wide, y -41..-21) passes with 0.5-1.5 mm
@@ -815,14 +835,15 @@ GUIDE11_SEAT_GAP = 0.5
 BAL11_CAGE_H = 254.0                 # the chamber's height over the pan: v7's model 4 mm taller, so the cage is 315 mm tall (the lab's HR-100A's height)
 BAL11_TOP = HR2_PAN_TOP + BAL11_CAGE_H + BAL7_GLASS + BAL7_FRAME   # 315: the cage's top frame
 BAL11_GEAR_CLEAR = 4.0               # the passing 44T gears (23 mm under the exit) over the cage's top frame
-PILLAR11 = (40.0, 1.6)               # the beaker's pillar: OD, wall (printed PETG tube with a socket for the beaker on top)
+PILLAR11 = (40.0, 0.85)              # the beaker's pillar: OD, wall (printed PETG tube with a socket for the beaker on top). 2026-11-27: wall 1.6 ->
+                                     # 0.85 (two 0.42 mm lines): Bambu Studio put the 1.6 mm wall at 53.6 g, half the HR-100A's 102 g; 0.85 slices to 29.9 g
 LID11_T = 3.0                        # the dosing lid, set into the top frame's opening (the top door slid out), flush with the frame's top
 LID11_HOLE = 24.0                    # its hole under the exit
 BEAKER11_UNDER_LID = 3.0             # the beaker's rim this far under the lid
 # --- 7. the front panel's doorway for the balance (no bay window, no weighing chamber) -------------------------------------------
 DOOR_BAL11 = (240.0, 330.0)          # the opening (y width, z height), from the bench up, centred on the station
 # --- 8. wiring: not drawn (Sam: "no need to include wires in the model unless it changes"); the grommet hole stays in the front plate
-GROMMET11 = (20.0, 26.0)
+GROMMET11 = (20.6, 26.0)            # 2026-11-27: 13/16 in hole (was 20): no grommet with a 3/8 in inside fits a 3/4 in hole in 1/4 in plate
 # --- 9. what the lower carousel (Z_RUN 366.5) moved: the ladder's rungs (they carry nothing in v11 but tie the posts, Sam: "I love the
 # ladder rungs") go under the back plate's new bottom edge (226.5) and over the posts' foot brackets; the latch cam's foot narrows
 RUNG11_LOW_ZC = 86.0                 # world: the lower rungs (their brackets under them, over the posts' foot brackets at z 35-55)

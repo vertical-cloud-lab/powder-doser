@@ -23,17 +23,18 @@ import vendor_other  # noqa: E402  (StepperOnline's NEMA 34 STEP, as the paterno
 
 
 # ---------------------------------------------------------------- chain
-def _plate(t: float, hole_d: float, straight: bool = False) -> cq.Workplane:
-    """Figure-8 link plate in the XY plane, pins at x = +-P/2, z in [0, t]."""
-    r = PLATE_H / 2
-    body = (cq.Workplane("XY").rect(P, PLATE_H).extrude(t)
+def _plate(t: float, hole_d: float, straight: bool = False, h: float = PLATE_H, waist_h: float = PLATE_WAIST) -> cq.Workplane:
+    """Figure-8 link plate in the XY plane, pins at x = +-P/2, z in [0, t]: h high over its round ends, waist_h at mid-pitch, each
+    waist one PLATE_WAIST_R arc (v11, 2026-11-27: McMaster 6261K172's CAD; inner plates h PLATE_H, waist PLATE_WAIST; outer plates
+    PLATE_H_OUT, PLATE_WAIST_OUT)."""
+    r = h / 2
+    body = (cq.Workplane("XY").rect(P, h).extrude(t)
             .union(cq.Workplane("XY").pushPoints([(-P / 2, 0), (P / 2, 0)]).circle(r).extrude(t)))
-    if straight:                                          # v11: a connecting link's cover plate, or the A-1's tab plate (Nitro's photos)
+    if straight:                                          # v11: a connecting link's cover plate, or the A-1's tab plate (straight, as McMaster's 6261K191)
         return body.faces(">Z").workplane().pushPoints([(-P / 2, 0), (P / 2, 0)]).hole(hole_d)
-    waist = 4.2
-    d = (PLATE_H - PLATE_WAIST) / 2                       # v11: 1.1 mm each side (Nitro's RC35 drawing, 0.75 of h2); was 0.55
-    cut = (cq.Workplane("XY").pushPoints([(0, r + waist - d), (0, -(r + waist - d))])
-           .circle(waist).extrude(t))
+    R = PLATE_WAIST_R
+    cut = (cq.Workplane("XY").pushPoints([(0, waist_h / 2 + R), (0, -(waist_h / 2 + R))])
+           .circle(R).extrude(t))
     return body.cut(cut).faces(">Z").workplane().pushPoints([(-P / 2, 0), (P / 2, 0)]).hole(hole_d)
 
 
@@ -52,8 +53,8 @@ def chain_outer_link(clip: bool = False) -> cq.Workplane:
     """Two outer plates and two pins. clip=True makes it a connecting link (v11, Nitro CL35 / CL35-A1): straight-sided plates, pins
     0.518 in over the clip (L_CL), and a spring clip on the -z plate (the A-1 tab is on the +z plate)."""
     z0 = OUTER_GAP / 2
-    top = _plate(PLATE_T, CHAIN_PIN_D, straight=clip).translate((0, 0, z0))
-    bot = _plate(PLATE_T, CHAIN_PIN_D, straight=clip).translate((0, 0, -z0 - PLATE_T))
+    top = _plate(PLATE_T, CHAIN_PIN_D, straight=clip, h=PLATE_H_OUT, waist_h=PLATE_WAIST_OUT).translate((0, 0, z0))
+    bot = _plate(PLATE_T, CHAIN_PIN_D, straight=clip, h=PLATE_H_OUT, waist_h=PLATE_WAIST_OUT).translate((0, 0, -z0 - PLATE_T))
     pl = PIN_LEN_CL if clip else PIN_LEN
     pins = (cq.Workplane("XY").pushPoints([(-P / 2, 0), (P / 2, 0)]).circle(CHAIN_PIN_D / 2)
             .extrude(pl).translate((0, 0, -PIN_LEN / 2 - (pl - PIN_LEN))))
@@ -73,8 +74,8 @@ def chain_a1_link() -> cq.Workplane:
     loop the tab lies on the outside of the loop with its hole radial."""
     link = chain_outer_link(clip=True)
     z_top = OUTER_GAP / 2 + PLATE_T                       # outer face of the +z plate
-    web = (cq.Workplane("XY").center(0, (PLATE_H / 2 - 1 + A1_C) / 2)
-           .rect(A1_TAB_L, A1_C - PLATE_H / 2 + 1).extrude(PLATE_T).translate((0, 0, z_top - PLATE_T)))
+    web = (cq.Workplane("XY").center(0, (PLATE_H_OUT / 2 - 1 + A1_C) / 2)
+           .rect(A1_TAB_L, A1_C - PLATE_H_OUT / 2 + 1).extrude(PLATE_T).translate((0, 0, z_top - PLATE_T)))
     tab = (cq.Workplane("XY").center(0, A1_C - PLATE_T / 2).rect(A1_TAB_L, PLATE_T)
            .extrude(A1_X - (z_top - PLATE_T)).translate((0, 0, z_top - PLATE_T)))
     tab = tab.edges("|Y and >Z").fillet(A1_TAB_L / 2 - 0.01)

@@ -207,11 +207,14 @@ def write_assembly(rs: list[dict]) -> None:
     for r in rs:
         for s in map(int, r["steps"].split(",")):
             by_step.setdefault(s, []).append(r)
-    out = ["# Assembly: chain-carousel test rig v11 (the step texts are layout.STEPS; v11 has no step renders yet)", "",
-           "Twelve steps in build order, then the test set-up. In each render the parts from earlier steps are "
+    out = ["# Assembly: chain-carousel test rig v11", "",
+           "Twelve steps in build order, then the test set-up. Each step's title is `layout.STEPS` and its render is v11's CAD "
+           "(`xvfb-run -a python render.py --steps` writes `renders/steps/step_NN.png`): the parts from earlier steps are "
            "pale, and the step's new parts are in colour, lifted along the way they go in. The table under each "
-           "render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). The animation "
-           "([MP4](renders/chain_carousel_v4.mp4)) shows the same sequence moving.", "",
+           "render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). "
+           "[`renders/assembly_steps.gif`](renders/assembly_steps.gif) runs through the twelve renders. The written "
+           "instructions under each table are carried over from v4 and not yet rewritten for v11 (v11's station, module "
+           "and balance are in the step titles, the BoM lines and the [README](README.md)).", "",
            "Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop or band saw for "
            "the 2020 and the shafts, soldering iron, heat-set insert tip, e-clip pliers, feeler gauges.", ""]
     for s, title in L.STEPS.items():
