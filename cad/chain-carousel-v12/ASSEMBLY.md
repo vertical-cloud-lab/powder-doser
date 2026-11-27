@@ -1,6 +1,6 @@
-# Assembly: chain-carousel test rig v11
+# Assembly: chain-carousel test rig v12
 
-Twelve steps in build order, then the test set-up. Each step's title is `layout.STEPS` and its render is v11's CAD (`xvfb-run -a python render.py --steps` writes `renders/steps/step_NN.png`): the parts from earlier steps are pale, and the step's new parts are in colour, lifted along the way they go in. The table under each render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). [`renders/assembly_steps.gif`](renders/assembly_steps.gif) runs through the twelve renders. The written instructions under each table are v11's (rewritten 2026-11-27).
+Twelve steps in build order, then the test set-up. Each step's title is `layout.STEPS` and its render is v12's CAD (`xvfb-run -a python render.py --steps` writes `renders/steps/step_NN.png`): the parts from earlier steps are pale, and the step's new parts are in colour, lifted along the way they go in. The table under each render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). [`renders/assembly_steps.gif`](renders/assembly_steps.gif) runs through the twelve renders. The written instructions under each table are v11's (rewritten 2026-11-27) with v12's changes: steps 1 and 3 (the second station beam), 8 (the pinion's cradle, EC v12, setting the stop and the switch) and 9 (the door's rod into the shutter's new boss).
 
 Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop or band saw for the 2020 and the shafts, soldering iron, heat-set insert tip, e-clip pliers, feeler gauges.
 
@@ -10,16 +10,16 @@ Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop o
 
 | # | Qty | Part |
 |---|---|---|
-| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack. v11: 4 posts of 697.5 mm (one bar each; the carousel is 98.5 mm lower), 4 long rails of 457.7 mm (2 per bar), 4 rungs of 417.7 mm (2 per bar), 3 cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar (340 + 405 on one bar, 340 + 380 on another, 340 on the last; tap the beam's ends M5): ten bars, one pack |
+| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack. v11: 4 posts of 697.5 mm (one bar each; the carousel is 98.5 mm lower), 4 long rails of 457.7 mm (2 per bar), 4 rungs of 417.7 mm (2 per bar), 3 cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar (340 + 405 on one bar, 340 + 380 on another, 340 on the last; tap the beam's ends M5); v12: the second 405 mm station beam goes on the last bar (340 + 405), so still ten bars, one pack |
 | 19 | 26 | 2020 90-degree corner bracket (+2 spare; v10: v7's two cross bars and their 8 are gone) |
-| 20 | 56 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock). v11: 24 corner brackets x 2, the EC's guide hanger to the station beam (2), the P16's clevis to the front bar (2), 4 spare |
-| 21 | 78 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots) |
+| 20 | 58 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock). v11: 24 corner brackets x 2, the EC's guide hanger to the station beam (2), the P16's clevis to the front bar (2), 4 spare; v12: the second guide's hanger to the second beam (2) |
+| 21 | 80 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots; v12: 2 for the second guide's hanger in the second beam's bottom slot) |
 | 22 | 4 | Leveling foot, M6 x 40 stud, into a T-nut in the base rail |
 | 25 | 1 | Loctite 243 (blue, medium strength) for T-nut screws, set screws and the tensioner blocks' screws; Loctite 222 (purple, low strength) where a part is meant to come apart |
 
 Cut the 2020 from one VEVOR 10-pack (BoM item 18): four posts of 697.5 mm, four long rails of 457.7 mm, four rungs of
-417.7 mm, three cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar. Square every cut, and tap both ends of the
-station beam M5.
+417.7 mm, three cross rails of 340 mm, the two 405 mm station beams (v12: the second carries the EC's second guide) and the
+380 mm front bar. Square every cut, and tap both ends of both station beams M5.
 
 The base is a U that the balance stands inside: lay two long rails on the bench and join them at the back with a cross rail (two
 corner brackets each corner, M5 x 10 into drop-in T-nuts, blue Loctite on every screw that goes into a T-nut). Leave the front open:
@@ -31,11 +31,11 @@ the balance slides in there. Screw the four levelling feet up into T-nuts in the
 
 | # | Qty | Part |
 |---|---|---|
-| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack. v11: 4 posts of 697.5 mm (one bar each; the carousel is 98.5 mm lower), 4 long rails of 457.7 mm (2 per bar), 4 rungs of 417.7 mm (2 per bar), 3 cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar (340 + 405 on one bar, 340 + 380 on another, 340 on the last; tap the beam's ends M5): ten bars, one pack |
+| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack. v11: 4 posts of 697.5 mm (one bar each; the carousel is 98.5 mm lower), 4 long rails of 457.7 mm (2 per bar), 4 rungs of 417.7 mm (2 per bar), 3 cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar (340 + 405 on one bar, 340 + 380 on another, 340 on the last; tap the beam's ends M5); v12: the second 405 mm station beam goes on the last bar (340 + 405), so still ten bars, one pack |
 | 19 | 26 | 2020 90-degree corner bracket (+2 spare; v10: v7's two cross bars and their 8 are gone) |
-| 20 | 56 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock). v11: 24 corner brackets x 2, the EC's guide hanger to the station beam (2), the P16's clevis to the front bar (2), 4 spare |
-| 21 | 78 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots) |
-| 32 | 1 | M5 x 16 socket head screw, 18-8, pack of 100 (10 used: hold-downs and side tabs, through the side plates, 8; v10: one through each side plate into the station beam's tapped ends, 2), with blue threadlocker |
+| 20 | 58 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock). v11: 24 corner brackets x 2, the EC's guide hanger to the station beam (2), the P16's clevis to the front bar (2), 4 spare; v12: the second guide's hanger to the second beam (2) |
+| 21 | 80 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots; v12: 2 for the second guide's hanger in the second beam's bottom slot) |
+| 32 | 1 | M5 x 16 socket head screw, 18-8, pack of 100 (12 used: hold-downs and side tabs, through the side plates, 8; v10: one through each side plate into the station beam's tapped ends, 2; v12: the same for the second beam, 2), with blue threadlocker |
 
 Stand a post on each corner of the base and bracket it to the long rail and, at the back, to the cross rail. Put the top
 frame on the posts the same way: two long rails and two cross rails. Square the box by its diagonals (equal within 1 mm) and tighten.
@@ -50,13 +50,13 @@ the upper rungs' tops sit 2.5 mm under the back side plate's lower edge. Nothing
 
 | # | Qty | Part |
 |---|---|---|
-| 21 | 78 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots) |
+| 21 | 80 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots; v12: 2 for the second guide's hanger in the second beam's bottom slot) |
 | 23 | 2 | Side plates, 1/4 in 6061: front 380 x 375 mm, back 380 x 485 mm (v4's frame is 136 mm wider than v3's), both from one 24 x 36 in plate; cut and drilled from dxf/ (BYU shop, or SendCutSend: price on upload) |
 | 24 | 1 | M5 x 12 button head screw, 18-8, pack of 50 (v11: 22 used: side plates to the posts' T-nuts 20, the latch cam 2), with blue threadlocker |
 
 Have the two side plates cut and drilled from 1/4 in 6061 (`dxf/side_plate_front.dxf`, `dxf/side_plate_back.dxf`). v11's front
-plate has the P16's 22 x 68 mm slot and, under it, the 13/16 in (20.6 mm) hole for the wiring grommet; both plates have the station
-beam's end-screw hole. Tap the M5 holes under the top bearing slots.
+plate has the P16's 22 x 68 mm slot and, under it, the 13/16 in (20.6 mm) hole for the wiring grommet; both plates have the two station
+beams' end-screw holes (v12: the second at y +56). Tap the M5 holes under the top bearing slots.
 
 Bolt each plate to the inner faces of its two posts with M5 x 12 button heads into drop-in T-nuts (blue Loctite). The chains end up
 345 mm apart, centre plane to centre plane, 30 mm inside each plate.
@@ -143,22 +143,22 @@ connecting link, 13 per chain, the tabs pointing toward the other chain. Number 
 Wrap each chain round its four sprockets with the tabs on the outside of the loop and close it with its 13th A-1 link, each spring
 clip's closed end pointing the way the chain travels (the bottom run toward -y). The chains hang slack until step 10.
 
-## Step 8. Station: hold-downs, hall switches; the station beam inside the loop and the EC's guide on it; the front bar across the front posts and the P16-150's clevis under it; EC v11 (door ramp, solenoid over clip 1, straight rail, NEMA 11 and 24T pinion, the arm) on the P16's rod end, through the front plate's slot; the latch cam; the side tabs
+## Step 8. Station: hold-downs, hall switches; the two station beams inside the loop and the EC's two guides on them; the front bar across the front posts and the P16-150's clevis under it; EC v12 (door ramp, solenoid over clip 1, straight rail, the pinion's cradle with the NEMA 11, the 24T pinion, its spring, stop and hall switch, the arm, two shoes) on the P16's rod end, through the front plate's slot; the latch cam; the side tabs
 
 ![Step 8](renders/steps/step_08.png)
 
 | # | Qty | Part |
 |---|---|---|
-| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack. v11: 4 posts of 697.5 mm (one bar each; the carousel is 98.5 mm lower), 4 long rails of 457.7 mm (2 per bar), 4 rungs of 417.7 mm (2 per bar), 3 cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar (340 + 405 on one bar, 340 + 380 on another, 340 on the last; tap the beam's ends M5): ten bars, one pack |
+| 18 | 1 | 2020 T-slot extrusion, 10 x 1000 mm pack. v11: 4 posts of 697.5 mm (one bar each; the carousel is 98.5 mm lower), 4 long rails of 457.7 mm (2 per bar), 4 rungs of 417.7 mm (2 per bar), 3 cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar (340 + 405 on one bar, 340 + 380 on another, 340 on the last; tap the beam's ends M5); v12: the second 405 mm station beam goes on the last bar (340 + 405), so still ten bars, one pack |
 | 19 | 26 | 2020 90-degree corner bracket (+2 spare; v10: v7's two cross bars and their 8 are gone) |
-| 20 | 56 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock). v11: 24 corner brackets x 2, the EC's guide hanger to the station beam (2), the P16's clevis to the front bar (2), 4 spare |
-| 21 | 78 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots) |
+| 20 | 58 | M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock). v11: 24 corner brackets x 2, the EC's guide hanger to the station beam (2), the P16's clevis to the front bar (2), 4 spare; v12: the second guide's hanger to the second beam (2) |
+| 21 | 80 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots; v12: 2 for the second guide's hanger in the second beam's bottom slot) |
 | 24 | 1 | M5 x 12 button head screw, 18-8, pack of 50 (v11: 22 used: side plates to the posts' T-nuts 20, the latch cam 2), with blue threadlocker |
-| 32 | 1 | M5 x 16 socket head screw, 18-8, pack of 100 (10 used: hold-downs and side tabs, through the side plates, 8; v10: one through each side plate into the station beam's tapped ends, 2), with blue threadlocker |
+| 32 | 1 | M5 x 16 socket head screw, 18-8, pack of 100 (12 used: hold-downs and side tabs, through the side plates, 8; v10: one through each side plate into the station beam's tapped ends, 2; v12: the same for the second beam, 2), with blue threadlocker |
 | 33 | 1 | M5 brass heat-set insert, 5.7 mm long, 6.4 mm hole, pack of 25 (hold-downs and side tabs) |
 | 115 | 2 | M5 x 35 socket head screw (v11: the front bar to the front posts, through the bar into a T-nut in each post's front slot), with blue threadlocker |
 | 37 | 6 | Hold-downs (2) and tensioner blocks (4), PETG |
-| 38 | 6 | Station and enclosure parts, PETG. v11: the P16's base clevis (a flange under the front bar on two M5 into T-nuts, two cheeks round the P16's rear tab), the EC's guide hanger (v10's, from the station beam, now at y -56), the latch cam (v10's, its web and foot moved beside the back hold-down), 2 side tabs, the side hatch's turn button |
+| 38 | 7 | Station and enclosure parts, PETG. v11: the P16's base clevis (a flange under the front bar on two M5 into T-nuts, two cheeks round the P16's rear tab), the EC's guide hanger (v10's, from the station beam, now at y -56), v12: the second guide's hanger (its seat under the EC's far shoe, from the second beam at y +56), the latch cam (v10's, its web and foot moved beside the back hold-down), 2 side tabs, the side hatch's turn button |
 | 40 | 1 | Actuonix P16-150-22-12-P linear actuator: 150 mm stroke, potentiometer feedback, 46 mm/s, 50 N, 10 N side load, 197.4 mm closed hole to hole, 20 % duty cycle (datasheet rev B; modelled from Actuonix's STEP). v11: the only actuator, back from v10's P16-100 because 0-90 deg needs 131 mm of travel: its rear tab in a clevis under the front bar, outside the front side plate (26 mm in front of it), through a slot in the plate, its rod end on the EC's arm. Fully out between doses (139.2 of 150 mm), it retracts to 8.3 mm at 90 deg; its lever about the hinge is 87 mm at rest and 30 mm or more all the way |
 | 41 | 1 | Actuonix LAC linear actuator control board (closed-loop position from the pot; USB, RC, PWM or 0-3.3 V in). v7-v10: one, for the one P16 (v6: three) |
 | 42 | 1 | 12 V supply for the LAC and actuator |
@@ -167,11 +167,15 @@ clip's closed end pointing the way the chain travels (the bottom run toward -y).
 | 102 | 1 | PTFE washer for M4, 4.3 x 9 x 0.8 mm, pack of 50: v10: 2 used, either side of the P16's rod-end tab in the clevis on the EC's arm |
 | 66 | 1 | Steel spur gear, module 1, 24T, 20 deg, 10 mm face, 6 mm bore with an M4 set screw (KHK SS1-24A; v2-v10: SS1-20A). v11: 24T so the 44T gear meets it at rest with the NEMA 11's body 2.25 mm off the passing plates (centre distance 34.25 mm). No stock module 1 24T comes with a 5 mm bore, so it goes on the NEMA 11's 5 mm shaft over a 5 x 6 mm sleeve (item 121). Face the hub off; Loctite 638 on the sleeve |
 | 121 | 1 | Shaft sleeve for the 24T pinion: 6 mm OD x 0.5 mm wall brass tube (5 mm bore for the NEMA 11's shaft), a 10 mm length slotted lengthwise under the pinion's M4 set screw, Loctite 638 (2026-11-27: no stock module 1 24T has a 5 mm bore) |
-| 119 | 1 | NEMA 11 stepper StepperOnline 11HS18-0674S (the auger's drive on EC v11; the single doser's, in the lab) |
+| 119 | 1 | NEMA 11 stepper StepperOnline 11HS18-0674S (the auger's drive, on the cradle; the single doser's, in the lab). v12: cut its 5 mm shaft to 15 mm (from 20), so it ends at the pinion's front face instead of 4.8 mm past it, in the EC's rail block (v11's CAD had the same overlap, hidden by a skipped pair) |
 | 120 | 1 | Solenoid, small push-pull, 12 V (Adafruit 412): the tap, over clip 1 on EC v11 (the single doser's, in the lab) |
 | 72 | 1 | Dry PTFE lubricant spray (pinion and gear teeth; keeps the separating force near 0.47 x the tangential load; v10: also the EC's T-slot and ramps and its door ramp, where the T-brackets and the door tabs slide) |
-| 77 | 1 | Electronics carriage v11 (new), PETG: inside the loop on the plate's side of the module, 1 mm or more over the passing plates, carriages and T-brackets: the door ramp at its front, over the outlet (two wedge lips that catch each door rod's head and draw it 6 mm); a spine back to the motor; the solenoid's collar over clip 1 (plunger toward the plate); the rail block with the straight T-slot (level lips, ends flared 2.5 mm); the motor plate and two cheeks round the NEMA 11 (behind the gear, shaft forward to the 24T pinion) with a strap; an arm out to the -y side with the P16's rod-end clevis and the guide shoe |
-| 53 | 2 | Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME |
+| 77 | 1 | Electronics carriage v12 (new), PETG: v11's front half (the door ramp over the outlet, the spine, the solenoid's collar over clip 1, the straight T-slot); behind the pinion, the cradle's two pivot bosses (the dowels pressed in), an outer -y rail and a cross bar behind the motor, a roof over the cradle's spring with an up-stop pad, the hall switch's magnet post, the arm out to the -y side with the P16's rod-end clevis (v12: a slot for the rod-end tab and pockets for the pin's nut and head) and the first guide shoe, and a second guide shoe on the far side of the module |
+| 122 | 1 | Pinion cradle v12 (new), PETG: the NEMA 11's plate (its face bolts on with the motor's own four M2.5 screws, as on v11's EC), a pivot tube along the motor's -y side on the two dowels (3.1 mm bores), a top bar over the motor with the spring's seat, and a lug on the motor's +y side with the stop's M3 insert and the hall switch's pocket |
+| 123 | 2 | Pivot dowel pin, 3 mm x 12 mm, 316 stainless, ISO 2338-m6, pack of 25 (2 used: the cradle's pivots, pressed into the EC's 2.95 mm bosses, free in the cradle's 3.1 mm bores) |
+| 124 | 1 | Compression spring for the cradle, 0.75 in (19.05 mm) free, 0.24 in (6.10 mm) OD, 0.196 in (4.98 mm) ID, 0.022 in music-wire, 5.6 lbf/in (0.98 N/mm), rated to 2.3 lb (10.2 N) at 8.64 mm; pack of 12 (1 used + spares). On the pinion's line over the motor: 5.9 N at the stop, 6.3 N in tight mesh, 8.3 N on a gear's tips, 9.5 N at the up-stop (9.8 mm). No stainless spring matches 1 N/mm and 19 mm: 316 8969T506 is 1.02 N/mm but 17 mm free (4.1 N at the stop) |
+| 125 | 1 | M3 x 6 flat-point set screw, 18-8 stainless, 1.5 mm hex, pack of 25 (1 used): the cradle's stop, down through an M3 insert in its lug (item 108) onto the EC's arm (flat, so it doesn't dent the printed arm; a cup point would); set 0.4 mm past tight mesh with module 1 at the station (ASSEMBLY step 8.7), Loctite 222 |
+| 53 | 3 | Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME; v12: the cradle's (reads 'lifted' when the pinion rests on the gear's tips; BCM 26) |
 | 110 | 1 | Rubber grommet for a 3/4 in (20 mm) hole in 1/4 in plate, about 3/8 in inside: the station's cable bundle out through the front side plate; a pack, 1 used |
 | 111 | 1 | Expandable braided sleeving, PET, 1/4 in (expands to about 3/8 in), 10 ft: the 7 mm bundle (the NEMA 11's 4 leads, the solenoid's 2, the P16's 5) from the EC along its arm and the P16, through the grommet and outside to the board, about 2.3 m |
 | 112 | 1 | Nylon cable ties, 4 in, pack of 100: the bundle along the EC's arm and the P16's body, and outside down the -y front post and along the base rail |
@@ -182,17 +186,33 @@ The station is inside the loop, over the bottom run:
 1. **Hold-downs and switches:** melt two M5 inserts into each printed hold-down, push a US5881 hall switch into each lip's pocket
    (INDEX front, HOME back), and screw them to the plates' inner faces (M5 x 16, blue Loctite). The side tabs go on at the loading
    position the same way.
-2. **The station beam:** the 405 mm 2020 from the front side plate to the back one, an M5 x 16 through each plate into its tapped
-   ends. The printed guide hangs from its bottom slot (two M5 x 10 into T-nuts): its seat is the cone the EC's shoe parks in.
+2. **The station beams:** two 405 mm 2020s from the front side plate to the back one, at y -56 and (v12) y +56, an M5 x 16 through
+   each plate into their tapped ends. A printed guide hangs from each one's bottom slot (two M5 x 10 into T-nuts): guide 1 (`guide11`)
+   on the -56 beam, guide 2 (`guide12`, v12) on the +56 beam. Their seats are the cones the EC's two shoes park in.
 3. **The front bar and the P16:** the 380 mm 2020 across the front posts' front faces, an M5 x 35 through it into a T-nut in each
    post's front slot (blue Loctite). The printed clevis hangs from its bottom slot (two M5 x 10). The P16-150's rear tab goes in the
    clevis on the 4 x 16 shoulder screw and an M3 nylock; its rod runs back through the front plate's slot.
-4. **EC v11** (print `stl/ec11.stl`, on its side, with supports): bolt the NEMA 11 to its plate, shaft forward. The KHK SS1-24A
-   pinion (hub faced off) goes on the motor's 5 mm shaft over a slotted 5 x 6 mm brass sleeve, its M4 set screw through the slot,
-   Loctite 638. The solenoid goes in its collar over clip 1, plunger toward the plate. Pin the EC's arm to the P16's rod end on the
-   4 x 20 shoulder screw, a PTFE washer each side of the rod's tab, and an M3 nylock.
-5. **Set the P16** fully out (139.2 of its 150 mm) so the EC's shoe sits in the guide's seat with the EC level.
-6. **The latch cam** on the back side plate (two M5 x 12 through the plate).
+4. **The pinion's cradle (v12)** (print `stl/cradle12.stl`): melt an M3 insert into the lug from its top, and push the US5881 into
+   the pocket on the lug's +y face, branded face out, its leads up the slot. Cut the NEMA 11's 5 mm shaft to 15 mm (from 20), so it
+   ends at the pinion's front face. Bolt the motor's face to the cradle's plate with its four M2.5 screws, shaft forward. The KHK
+   SS1-24A pinion (hub faced off) goes on the shaft over a slotted 5 x 6 mm brass sleeve, its M4 set screw through the slot, Loctite
+   638. Thread the M3 x 6 cup-point set screw into the lug's insert from the top until its tip just shows under the lug.
+5. **EC v12** (print `stl/ec12.stl`, on its side, with supports): press the K&J D42-N52 into the magnet post beside the lug's pocket
+   (south pole toward the switch: the US5881 switches on a south pole). Set the cradle between the EC's two pivot bosses and press a
+   3 x 12 mm dowel through each EC boss into the cradle's bore (2.95 mm in the EC, a press fit; 3.1 mm in the cradle, free). The
+   cradle must swing freely; if it doesn't, ream its bores 3.1. Drop the spring (1 N/mm, about 19 mm free) onto the cradle's peg
+   and compress it into the roof's pocket as the cradle goes in. The solenoid goes in its collar over clip 1, plunger toward the
+   plate. Pin the EC's arm to the P16's rod end on the 4 x 20 shoulder screw (its tab in the arm's slot, a PTFE washer each side, the
+   nut in its pocket), and an M3 nylock.
+6. **Set the P16** fully out (139.2 of its 150 mm) so both shoes sit in their seats with the EC level.
+7. **Set the stop (v12), with module 1 at the station** (the spring holds the pinion in tight mesh: no backlash when you rock the
+   auger by hand), a dial indicator on the motor's top: turn the set screw down until its tip touches the EC's arm and the dial just
+   starts to move, then back it out 1.7 turns (0.85 mm at the lug, which moves 2.1 times as far as the pinion: 0.4 mm at the pinion).
+   Loctite 222. Index module 1 away: the dial shows the cradle dropping 0.4 mm onto the stop.
+8. **Set the switch:** with module 1 in mesh the switch must read "seated" (`chain_rig.py` logs `hall_before`); lift the pinion
+   0.8 mm with a feeler gauge under the lug's stop and it must read "lifted". Shim the magnet in its post (or bend the switch's legs)
+   until it switches between 0.6 and 1.0 mm.
+9. **The latch cam** on the back side plate (two M5 x 12 through the plate).
 
 ## Step 9. Modules on the bench: plate v11 with its T-bracket, the auger into clips 1 and 2 and onto the cap saddle, the outlet door with its rod and head; plate pinned onto a carriage's outer face, latch bolt over the keeper
 
@@ -215,12 +235,13 @@ The station is inside the loop, over the bottom run:
 
 Build each module on the bench (13):
 
-1. Print the mounting plate v11 (5 per H2D plate). Melt in the two M3 inserts for the T-bracket and the two M2 inserts for the door
+1. Print the mounting plate (v11's, 5 per H2D plate). Melt in the two M3 inserts for the T-bracket and the two M2 inserts for the door
    housing, flush with the underside.
 2. Screw the T-bracket on (two M3 x 6). Its chamfered head finds the EC's slot.
-3. The outlet door: the spring in the housing's pocket, the shutter over the exit, the housing on with two M2 x 8. The rod runs up the
-   spring's axis and out through the cap's 1.8 mm hole to its printed head (pressed on and glued). **Open item:** the shutter has no
-   hole for the rod yet, so glue the rod to the shutter's boss for now (README, "Not done").
+3. The outlet door (v12: print the bored housing and the shutter with its round boss): press the 1/16 in 316 rod (22.7 mm) 2 mm into
+   the shutter's boss (its 1.55 mm hole), slide the spring over the rod into the housing's bored tower, the shutter into its grooves over
+   the exit, and the housing on with two M2 x 8. The rod runs up the spring's axis and out through the cap's 1.8 mm hole to its printed
+   head (pressed on and glued). v4-v11 drew the tower solid and the shutter's boss too small for the rod; v12 fixes both.
 4. Snap the auger into clips 1 and 2, its cap on the saddle, and check it pulls straight out of the clips.
 5. Pin the plate to a carriage's outer face on its two 5 mm clevis pins (e-clips). Fit the latch bolt (its 4 x 12 dowel pressed into
    the printed carrier) with its spring in the carriage's latch housing, so the pin sits in the plate's keeper.
@@ -237,7 +258,7 @@ Build each module on the bench (13):
 | 86 | 1 | Latch bolt v7: a 4 x 12 mm hardened 52100 dowel (tip at Sam's x 248, 4 mm into the keeper's hole on the plate's back end, 2 mm into the carrier) pressed into a printed PETG carrier with the rest shelf (stl/latch_bolt.stl), one per carriage. v7: the carrier is 8 mm long (v6: 12) so the spring has room behind it, and the shelf reaches 7 mm over the keeper (v6: 8): 2.5 mm under it at the cam's 4.5 mm, clear by 1 mm at the 8 mm hand release. Dowels pack of 50: 13 used; McMaster's 4 mm 91595A family read so far has 8, 14, 22, 24 and 38 mm, not 12 |
 | 87 | 1 | Dowel pin, hardened 52100 alloy steel, 3 x 25 mm (v6: shorter, its tip clears the NEMA 34 under the bottom run), pack of 25: 16 used (13 + 3 spare); the 3 x 40 pack (91595A142) is the verified price |
 | 88 | 16 | Latch spring. v7: 3 mm OD, about 14 mm free, about 0.3 N/mm, solid under 3.5 mm: 11.5 mm long closed (0.75 N), 7.0 at the cam's 4.5 mm (2.1 N), 3.5 at the 8 mm hand release (3.2 N, 75 % of its free length). TO SELECT: the 3 mm OD stainless springs read from McMaster so far (8969T21, 8969T261: 15 mm free) stop at 7.3-8.2 mm at their maximum load, so neither reaches the cam's 7.0; if none does, drop the hand release (the cam alone needs 50 %). 16: 13 + 3 spare |
-| 54 | 14 | Neodymium disc magnet D42-N52, 1/4 x 1/8 in (13 index + 1 home; v10: none in the plates, which have no dock posts) |
+| 54 | 15 | Neodymium disc magnet D42-N52, 1/4 x 1/8 in (13 index + 1 home; v10: none in the plates, which have no dock posts; v12: + 1 in the EC's post for the cradle's switch) |
 
 At the loading position (the +y side, behind the side hatch), with the auger facing out: hold the carriage beside the two
 A-1 tabs, 10 mm up from position, push it in until it touches the tabs, slide it 10 mm down so the printed hooks
@@ -282,7 +303,7 @@ the base rail to the board. The hall switches run along the plates. `test/chain_
 
 | # | Qty | Part |
 |---|---|---|
-| 38 | 6 | Station and enclosure parts, PETG. v11: the P16's base clevis (a flange under the front bar on two M5 into T-nuts, two cheeks round the P16's rear tab), the EC's guide hanger (v10's, from the station beam, now at y -56), the latch cam (v10's, its web and foot moved beside the back hold-down), 2 side tabs, the side hatch's turn button |
+| 38 | 7 | Station and enclosure parts, PETG. v11: the P16's base clevis (a flange under the front bar on two M5 into T-nuts, two cheeks round the P16's rear tab), the EC's guide hanger (v10's, from the station beam, now at y -56), v12: the second guide's hanger (its seat under the EC's far shoe, from the second beam at y +56), the latch cam (v10's, its web and foot moved beside the back hold-down), 2 side tabs, the side hatch's turn button |
 | 89 | 4 | Clear cast acrylic sheet, 1/8 in (-0.025/+0.015 in), 24 x 48 in, scratch and UV resistant: the two side panels (481.7 x 751.5 mm), the front (398 x 751.5, with the balance's open doorway, 240 x 330 from the bench up) and the back, one per sheet; the top (519 x 398), the side hatch's door and the balance's dosing lid come out of the offcuts. v11: no bay window or weighing chamber, and the walls are 98.5 mm shorter |
 | 90 | 1 | Nylon spacers for M5, 10 mm OD: 12 x 6 mm (93657A075, $0.89 each; the side panels) and 12 x 25-30 mm (93657A093 family, $1.78 each; the back panel past the drive sprocket, and v11's front panel, which stands 30 mm off the front posts to clear the front bar and the P16's housing) |
 | 91 | 30 | M5 x 16 button head screw + T-nut (item 21) per standoff (panels to the frame), with blue threadlocker |

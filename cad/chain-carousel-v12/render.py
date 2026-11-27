@@ -449,7 +449,7 @@ def still_views() -> list:
         ("rig_side_tabs", L.State(), (TAB, (-0.6, 1.0, -0.2), 240), front_open, "Side tab at the loading position: its foot 1 mm outside the tongue", "", op),
         ("rig_cradle", L.State(**S0), (X12.CAM_CR2[0], X12.CAM_CR2[1], X12.CAM_CR2[2] * 1.15), X12.close_cut,
          "v12: the NEMA 11 and its 24T pinion on a spring-loaded cradle (the EC see-through)",
-         "two 3 mm dowels on the side the gears arrive from; a 1 N/mm spring over the motor (6 N at the stop); an M3 set-screw stop on the arm; a US5881 on the cradle's lug",
+         "two 3 mm dowels on the side the gears arrive from; a 1 N/mm spring (6 N at the stop); a set-screw stop; a hall switch on the lug",
          lambda pl: op(pl, {"ec12": 0.32})),
         ("rig_cradle_lifted", L.State(cradle_lift=2.0, **S0), (X12.CAM_CR2[0], X12.CAM_CR2[1], X12.CAM_CR2[2] * 1.15), X12.close_cut,
          "v12: a gear tooth on a pinion tooth lifts the cradle 2 mm on its spring (8.4 N) instead of jamming",
@@ -474,7 +474,7 @@ def stills(quick: bool = False, only: tuple = ()) -> None:
         pl = L.placements(st)
         v.show(pl, hide=hidden(pl, hide_fn), opacity=op_fn(pl) if op_fn else None)
         v.camera(*cam)
-        caption(v.image(), title, sub, "chain carousel v11 · PR #185").save(OUT / f"{name}.png")
+        caption(v.image(), title, sub, "chain carousel v12 · PR #185").save(OUT / f"{name}.png")
         print("  wrote", name, flush=True)
     if quick or only:
         return

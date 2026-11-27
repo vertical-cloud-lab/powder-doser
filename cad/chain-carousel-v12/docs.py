@@ -106,12 +106,13 @@ clip's closed end pointing the way the chain travels (the bottom run toward -y).
 9. **The latch cam** on the back side plate (two M5 x 12 through the plate).""",
     9: """Build each module on the bench (13):
 
-1. Print the mounting plate v11 (5 per H2D plate). Melt in the two M3 inserts for the T-bracket and the two M2 inserts for the door
+1. Print the mounting plate (v11's, 5 per H2D plate). Melt in the two M3 inserts for the T-bracket and the two M2 inserts for the door
    housing, flush with the underside.
 2. Screw the T-bracket on (two M3 x 6). Its chamfered head finds the EC's slot.
-3. The outlet door: the spring in the housing's pocket, the shutter over the exit, the housing on with two M2 x 8. The rod runs up the
-   spring's axis and out through the cap's 1.8 mm hole to its printed head (pressed on and glued). **Open item:** the shutter has no
-   hole for the rod yet, so glue the rod to the shutter's boss for now (README, "Not done").
+3. The outlet door (v12: print the bored housing and the shutter with its round boss): press the 1/16 in 316 rod (22.7 mm) 2 mm into
+   the shutter's boss (its 1.55 mm hole), slide the spring over the rod into the housing's bored tower, the shutter into its grooves over
+   the exit, and the housing on with two M2 x 8. The rod runs up the spring's axis and out through the cap's 1.8 mm hole to its printed
+   head (pressed on and glued). v4-v11 drew the tower solid and the shutter's boss too small for the rod; v12 fixes both.
 4. Snap the auger into clips 1 and 2, its cap on the saddle, and check it pulls straight out of the clips.
 5. Pin the plate to a carriage's outer face on its two 5 mm clevis pins (e-clips). Fit the latch bolt (its 4 x 12 dowel pressed into
    the printed carrier) with its spring in the carriage's latch housing, so the pin sits in the plate's keeper.""",
@@ -144,17 +145,19 @@ CATS = ("Chain", "Shafts", "Drive", "Frame", "Fasteners", "Printed", "Station", 
 def write_bom(rs: list[dict]) -> None:
     rs = sorted(rs, key=lambda r: (CATS.index(r["category"]), r["item"]))
     t = bom.totals(rs)
-    lines = ["# Bill of materials: chain-carousel test rig v11", "",
+    lines = ["# Bill of materials: chain-carousel test rig v12", "",
              "Every line is a real, orderable part (or one of the lab's own). Quantities of modelled parts are "
              "counted from the CAD (`layout.placements()`). Prices are USD on the date shown on each line and will "
-             "drift. **Step** is the assembly step that uses the line (`layout.STEPS`; v11's step 8 is the station inside the loop: the "
-             "EC, the P16-150 through the front side plate and its clevis on the front bar, the guide hanger on the station beam; step 12 "
+             "drift. **Step** is the assembly step that uses the line (`layout.STEPS`; v12's step 8 is the station inside the loop: "
+             "EC v12 with the pinion's spring-loaded cradle, the P16-150 through the front side plate and its clevis on the front bar, the "
+             "two guide hangers on the two station beams; step 12 "
              "is the balance with its tall draft cage on the bench, its dosing lid and the beaker's pillar, and the enclosure with the "
              "front doorway). `bom.csv` has the same data.", "",
              f"**Total ${t['total']:,.2f}; rig without test gear ${t['without_test']:,.2f}.** Lines marked estimate "
              f"add up to ${t['estimated']:,.2f}. The NEMA 34, the CL86T, the 13 augers (#134's batch "
-             "of 16), the electronics carriage's NEMA 11 and solenoid, and the balance are already in the lab and count as $0 (EC v11's "
-             "body is new, item 77).", "",
+             "of 16), the electronics carriage's NEMA 11 and solenoid, and the balance are already in the lab and count as $0 (EC v12's "
+             "body is new, item 77, and its cradle, item 122). v12's new parts (items 122-125) were priced on 2026-11-27 from McMaster's "
+             "tables through the doser Pi ([checks/vendor_v12.json](checks/vendor_v12.json)).", "",
              "| # | Qty | Part | Vendor | Part no. | Unit | Ext. | Step |", "|---|---|---|---|---|---|---|---|"]
     cat = None
     for r in rs:
@@ -176,13 +179,14 @@ def write_assembly(rs: list[dict]) -> None:
     for r in rs:
         for s in map(int, r["steps"].split(",")):
             by_step.setdefault(s, []).append(r)
-    out = ["# Assembly: chain-carousel test rig v11", "",
-           "Twelve steps in build order, then the test set-up. Each step's title is `layout.STEPS` and its render is v11's CAD "
+    out = ["# Assembly: chain-carousel test rig v12", "",
+           "Twelve steps in build order, then the test set-up. Each step's title is `layout.STEPS` and its render is v12's CAD "
            "(`xvfb-run -a python render.py --steps` writes `renders/steps/step_NN.png`): the parts from earlier steps are "
            "pale, and the step's new parts are in colour, lifted along the way they go in. The table under each "
            "render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). "
            "[`renders/assembly_steps.gif`](renders/assembly_steps.gif) runs through the twelve renders. The written "
-           "instructions under each table are v11's (rewritten 2026-11-27).", "",
+           "instructions under each table are v11's (rewritten 2026-11-27) with v12's changes: steps 1 and 3 (the second station "
+           "beam), 8 (the pinion's cradle, EC v12, setting the stop and the switch) and 9 (the door's rod into the shutter's new boss).", "",
            "Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop or band saw for "
            "the 2020 and the shafts, soldering iron, heat-set insert tip, e-clip pliers, feeler gauges.", ""]
     for s, title in L.STEPS.items():
