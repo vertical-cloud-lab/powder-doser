@@ -130,7 +130,7 @@ takes 29 and ≥ 0.95 takes 59, so the paper should report Clopper–Pearson bou
 | # | What | Doses | Rig time | Powder | Who | Why it is needed |
 |---|---|---|---|---|---|---|
 | E0 | Bench reset and hardware state: record the tube ID; measure the exit bore and core-tip gap; drawdown test for the working fill; calibration weight; T/RH sensor | — | ½ day | salt | **Will** (bench), **Sterling** (buy the sensor and weight) | Reproducibility (journal rule); the DEM shows a 1 mm tip shift doubles delivery; campaign 2 failed on an emptying tube |
-| E1 | **Salt session** with the fixed code (C1–C9): screen 22, BO 20, validation 8 + hand-tuned 8, dose range 8 × 0.05 g + 8 × 5 g | ≈74 | 1 day | ≈70 g handled | **Will + Claude** | Matched baseline (removes the τ confound); re-validates `bo-005` on a fresh fill after its 13 Oct failure; dose range; drift check |
+| E1 | **Salt session** with the fixed code (C1–C9): screen 22, BO 20, validation 8 + hand-tuned 8 + 8 at the screen-plus-linear-model pick (the `bo-005` corner with a 30° trickle tilt; `analysis/linear_screen_baseline.py`), dose range 8 × 0.05 g + 8 × 5 g | ≈82 | 1 day | ≈75 g handled | **Will + Claude** | Matched baseline (removes the τ confound); re-validates `bo-005` on a fresh fill after its 13 Oct failure; tests whether BO beat the simpler screen-plus-linear-model strategy (ML checklist item 5); dose range; drift check |
 | E2 | **AlSi10Mg session**, same design; the 8-dose baseline is the salt `bo-005` settings (transfer) | ≈74 | 1 day | ≈70 g | **Will + Claude** | Second powder; the AM feedstock; tests transfer properly (now one dose) |
 | E3 | **Sieved Al 4047 session**, same design, plus the opening fingerprint on the unsieved batch | ≈74 + 20 min | 1 day | ≈70 g sieved | **Will** (sieving), **Claude** | Third powder; the lab's own feedstock; within-alloy batch comparison (editor and reviewers asked for it) |
 | E4 | **Prospective multi-task session** on a fourth feedstock (630 bronze, Al 6063 or a custom alloy; 28 Oct list): 12 multi-task BO doses, validation 8, baseline 8, opening fingerprint | ≈30 | ½ day | ≈40 g | **Sterling** (choose and obtain the powder), **Will + Claude** | The multi-task claim; without it, drop "multi-task" from the scope |
@@ -140,7 +140,7 @@ takes 29 and ≥ 0.95 takes 59, so the paper should report Clopper–Pearson bou
 | E8 | DEM friction × cohesion design for salt (≈30 parameter sets × 3 tilts), emulator, Bayesian calibration | — | ≈45–90 CPU-h + 2–3 days of code | — | **Claude** (needs E0 geometry and the salt PSD from E5) | Inference on one powder (proof of concept) |
 | E9 | Blade-spread single layers of 3–4 Al 4047 batches (sieved, unsieved, dried, humid) | — | 1–2 days | 5–10 g per layer | **Will** (CubXL or printer with a wiper) | Only if the spreadability sentence stays; otherwise cut it from the abstract and discussion |
 
-**Total new rig work for the full scope: about 250 doses in 4 rig days (E1–E4), ½ day of bench reset, and
+**Total new rig work for the full scope: about 260 doses in 4 rig days (E1–E4), ½ day of bench reset, and
 1–2 days of characterization.** Before E1 the code changes C1–C9 and decisions D1–D7 in
 [`READINESS.md`](https://github.com/vertical-cloud-lab/powder-doser/blob/claude/physics-sims-20261031/docs/physics-simulations/runs/campaign-as-data/READINESS.md)
 have to be done. They take about 2–3 days of agent work plus Will's review; Will settled four of the

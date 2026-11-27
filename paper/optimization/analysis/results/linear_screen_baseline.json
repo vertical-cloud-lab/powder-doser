@@ -1,0 +1,327 @@
+{
+ "n_doses": 28,
+ "coef_log_t": {
+  "intercept": 5.62389117273869,
+  "bulk_tap": -0.8971606567394811,
+  "trim_tap": -0.45690695662786773,
+  "bulk_tilt_deg": -0.8774288874506809,
+  "trickle_tilt_deg": 0.03330730349323299,
+  "tap_tilt_deg": -0.5852392321869924,
+  "bulk_rpm": -0.9134365024471153,
+  "trickle_start_remaining_g": 1.3862385660281134,
+  "tolerance_g": -0.44391442316060575
+ },
+ "coef_abs": {
+  "intercept": 18.872394243767907,
+  "bulk_tap": 14.282442653977167,
+  "trim_tap": 13.95744265397718,
+  "bulk_tilt_deg": 0.8672786730113988,
+  "trickle_tilt_deg": -7.539446682528524,
+  "tap_tilt_deg": -8.776202211647643,
+  "bulk_rpm": 7.20951332936786,
+  "trickle_start_remaining_g": -21.20816398096577,
+  "tolerance_g": 12.494904423295296
+ },
+ "pareto_corners": [
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "hi",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "lo",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "hi"
+   },
+   "pred_t_s": 4.3,
+   "pred_abs_mg": 58.91
+  },
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "hi",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "hi"
+   },
+   "pred_t_s": 4.4,
+   "pred_abs_mg": 51.37
+  },
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "hi",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "lo",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 6.6,
+   "pred_abs_mg": 46.41
+  },
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "lo",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "hi"
+   },
+   "pred_t_s": 6.7,
+   "pred_abs_mg": 44.95
+  },
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "hi",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 6.9,
+   "pred_abs_mg": 38.87
+  },
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "hi"
+   },
+   "pred_t_s": 7.0,
+   "pred_abs_mg": 37.41
+  },
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "lo",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 10.5,
+   "pred_abs_mg": 32.46
+  },
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 10.8,
+   "pred_abs_mg": 24.92
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "hi",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 16.8,
+   "pred_abs_mg": 24.59
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "hi"
+   },
+   "pred_t_s": 17.1,
+   "pred_abs_mg": 23.13
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "lo",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 25.7,
+   "pred_abs_mg": 18.17
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 26.6,
+   "pred_abs_mg": 10.63
+  },
+  {
+   "corner": {
+    "bulk_tap": "hi",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "hi",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 43.4,
+   "pred_abs_mg": 3.71
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "lo",
+    "trickle_start_remaining_g": "lo",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 66.3,
+   "pred_abs_mg": 3.42
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "hi",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "hi",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 67.4,
+   "pred_abs_mg": 3.38
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "hi",
+    "tolerance_g": "hi"
+   },
+   "pred_t_s": 68.3,
+   "pred_abs_mg": 1.92
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "lo",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "hi",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 102.9,
+   "pred_abs_mg": -3.04
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "hi",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 106.4,
+   "pred_abs_mg": -10.57
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "lo",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "hi",
+    "trickle_start_remaining_g": "hi",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 255.9,
+   "pred_abs_mg": -11.44
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "hi",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "lo",
+    "trickle_start_remaining_g": "hi",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 265.3,
+   "pred_abs_mg": -17.78
+  },
+  {
+   "corner": {
+    "bulk_tap": "lo",
+    "trim_tap": "lo",
+    "bulk_tilt_deg": "lo",
+    "trickle_tilt_deg": "hi",
+    "tap_tilt_deg": "hi",
+    "bulk_rpm": "lo",
+    "trickle_start_remaining_g": "hi",
+    "tolerance_g": "lo"
+   },
+   "pred_t_s": 637.9,
+   "pred_abs_mg": -18.65
+  }
+ ],
+ "bo005_corner_on_pareto": false,
+ "bo005_corner_pred": {
+  "t_s": 42.0,
+  "abs_mg": 11.25
+ },
+ "bo005_exactly_at_corner": true
+}
