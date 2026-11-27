@@ -260,66 +260,200 @@ def fig_salt_campaign() -> None:
     d.set_yticks([])
     d.spines["left"].set_visible(False)
     d.text(-0.78, 1.06, "(d)", transform=d.transAxes, fontweight="bold", fontsize=9, va="bottom")
-    save(fig, "fig3_salt_campaign")
+    save(fig, "fig2_salt_campaign")
 
 
-# ---------------------------------------------------------- powders, real
-def fig_powders() -> None:
-    df = pd.read_csv(DATA / "powders" / "versatility_data.csv")
-    flows = df[df.flows].sort_values("mg_per_turn")
-    nof = df[~df.flows]
-    order = list(nof.name) + list(flows.name)
-    y = {n: k for k, n in enumerate(order)}
-    fig, (a, b) = plt.subplots(1, 2, figsize=(DOUBLE, 3.1), sharey=True,
-                               gridspec_kw=dict(wspace=0.08, width_ratios=[1.15, 1]))
-    col = {"research": ORANGE, "surrogate": BLUE}
-    mk = {"research": "s", "surrogate": "o"}
-    a.axhspan(-0.6, len(nof) - 0.4, color=BAND, lw=0, zorder=0)
-    a.text(12, len(nof) / 2 - 0.5, "no measurable flow", color=INK2, fontsize=7, va="center", style="italic")
-    for _, r in flows.iterrows():
-        a.errorbar(r.mg_per_turn, y[r["name"]], xerr=r.se_mg, fmt=mk[r.track], ms=5, color=col[r.track],
-                   ecolor=INK2, elinewidth=0.6, capsize=1.5, markeredgecolor="white", markeredgewidth=0.6,
-                   zorder=3)
-    a.set_xscale("log")
-    a.set_xlim(6, 400)
-    a.set_xticks([10, 30, 100, 300], ["10", "30", "100", "300"])
-    a.set_yticks(range(len(order)), order)
-    a.set_xlabel("powder delivered per auger revolution (mg/rev)\n30 rpm, 22.5° tilt, fixed settings")
-    a.grid(axis="x", color=GRID, lw=0.6, zorder=0)
-    a.annotate("", xy=(231, len(order) - 0.2), xytext=(9.6, len(order) - 0.2),
-               arrowprops=dict(arrowstyle="<|-|>", color=INK2, lw=0.7, shrinkA=0, shrinkB=0))
-    a.text(47, len(order) + 0.05, "24-fold range", ha="center", va="bottom", fontsize=7, color=INK)
-    a.set_ylim(-0.6, len(order) + 0.6)
-    a.text(0.99, 0.02, "research-relevant", color=ORANGE, transform=a.transAxes, ha="right", fontsize=7)
-    a.text(0.99, 0.09, "food-safe stand-in", color=BLUE, transform=a.transAxes, ha="right", fontsize=7)
-    panel(a, "a", x=-0.47)
+# --------------------------------------------- second salt campaign (margin)
+RES = ROOT / "analysis" / "results"
+SNAP = DATA / "opt_trials" / "opt_trials_20260929-20261020.jsonl"
+ST_STYLE = {"ok": (BLUE, "o", True), "overshoot": (ORANGE, "^", True), "cycle-budget": (INK, "X", True),
+            "stalled": (INK, "X", True), "timeout": (INK, "X", True), "fw-error": (MUTED, "o", False),
+            "not-tared": (MUTED, "s", False)}
 
-    b.axvspan(0.95, 1.05, color="#e6f4e6", lw=0, zorder=0)
-    b.axvline(1.0, color=INK2, lw=0.6)
-    for _, r in df.iterrows():
-        yy = y[r["name"]]
-        if r.doses_1g == 0 or pd.isna(r.min_delivered_g):
-            b.text(0.52, yy, "not dosed at 1 g", va="center", fontsize=6.5, color=MUTED, style="italic")
-            continue
-        if r.max_delivered_g < 0.5:
-            b.text(0.52, yy, f"delivered < {r.max_delivered_g * 1e3 + 0.5:.0f} mg", va="center", fontsize=6.5,
-                   color=MUTED, style="italic")
-            b.text(1.12, yy, f"{r.within_5pct_1g}/{r.doses_1g}", va="center", fontsize=6.5, color=INK2)
-            continue
-        lo, hi = r.min_delivered_g, r.max_delivered_g
-        inside = r.within_5pct_1g == r.doses_1g
-        b.plot([lo, hi], [yy, yy], color=col[r.track], lw=2.2, solid_capstyle="round", zorder=3)
-        b.plot([lo, hi], [yy, yy], mk[r.track], ms=4, color=col[r.track] if inside else "white",
-               markeredgecolor=col[r.track], markeredgewidth=0.8, zorder=4)
-        b.text(1.12, yy, f"{r.within_5pct_1g}/{r.doses_1g}", va="center", fontsize=6.5, color=INK2)
-    b.text(1.12, len(order) + 0.05, "within ±5%", va="bottom", fontsize=6.5, color=INK2)
-    b.set_xlim(0.5, 1.22)
-    b.set_xlabel("delivered mass for a 1 g request (g)\nclosed loop; band = ±5%")
-    b.grid(axis="x", color=GRID, lw=0.6, zorder=0)
-    b.tick_params(axis="y", length=0)
-    panel(b, "b", x=-0.04)
-    save(fig, "fig2_powders")
 
+def _status_marker(ax, x, y, status, s=22, z=3):
+    col, mk, filled = ST_STYLE.get(status, (MUTED, "o", False))
+    ax.scatter([x], [y], s=s, marker=mk, c=col if filled else "white", edgecolors=col if not filled else "white",
+               linewidths=0.7 if not filled else 0.5, zorder=z)
+
+
+def snap_docs() -> dict:
+    return {d["trial_uuid"]: d for d in (json.loads(l) for l in open(SNAP))}
+
+
+def snap_trace(doc: dict):
+    tel = doc["telemetry"]
+    cols = tel["header"].split(",")
+    rows = [dict(zip(cols, r.split(","))) for r in tel["rows"]]
+    t = np.array([float(r["t_s"]) for r in rows])
+    m = np.array([float(r["z_g"]) if r["z_g"] not in ("", None) else np.nan for r in rows])
+    ph = [r["phase"] for r in rows]
+    i0 = next(i for i, p in enumerate(ph) if p == "bulk")
+    return t[i0:] - t[i0], m[i0:] - (m[i0] if np.isfinite(m[i0]) else 0.0)
+
+
+def fig_margin_campaign() -> None:
+    st = json.load(open(RES / "stats.json"))
+    pairs = pd.read_csv(RES / "paired_corners_margin.csv")
+    mr = pd.read_csv(RES / "doses_margin_20261013.csv")
+    feed = pd.read_csv(RES / "feed_40deg_20rpm.csv")
+    fig = plt.figure(figsize=(DOUBLE, 2.75))
+    gs = fig.add_gridspec(1, 3, width_ratios=[0.8, 0.8, 1.45], wspace=0.55)
+    a, b, c = (fig.add_subplot(gs[0, k]) for k in range(3))
+
+    # (a) the same 16 screening corners at a 35 mg margin (29 Sep) and a 0 mg margin (13 Oct)
+    for _, r in pairs.iterrows():
+        a.plot([0, 1], [r.t_35, r.t_0], color=GRID if not (r.status_35 == r.status_0 == "ok") else "#b9cfee",
+               lw=0.8, zorder=1)
+        _status_marker(a, 0, r.t_35, r.status_35)
+        _status_marker(a, 1, r.t_0, r.status_0)
+    P = st["margin"]["pairs"]
+    a.set_xticks([0, 1], ["35 mg\n29 Sep", "0 mg\n13 Oct"])
+    a.set_xlim(-0.35, 1.35)
+    a.set_ylim(0, 520)
+    a.set_yticks([0, 100, 200, 300, 400])
+    ylabel_top(a, "time per 0.5 g dose (s)")
+    a.set_xlabel("hand-over margin")
+    a.text(0.5, 0.97, f"{P['n_both_ok']} pairs ok at both:\nmedian {P['dt_median_s']:+.0f} s, "
+           f"p = {P['wilcoxon_time']['p']:.2f}", transform=a.transAxes, ha="center", va="top", fontsize=6.0,
+           color=INK2)
+    panel(a, "a", x=-0.42)
+
+    # (b) bulk feed of salt at 40 deg, 20 rpm, by session (one auger fill since 29 Sep)
+    dates = sorted(feed.date.unique())
+    lab = {"2026-09-29": "29\nSep", "2026-10-06": "6\nOct", "2026-10-13": "13\nOct", "2026-10-15": "15\nOct"}
+    for k, d_ in enumerate(dates):
+        v = feed[feed.date == d_].bulk_rate_mgps.values
+        xs = k + np.linspace(-0.13, 0.13, len(v))
+        col = ORANGE if d_ == "2026-10-15" else BLUE
+        b.scatter(xs, v, s=12, c=col, edgecolors="white", linewidths=0.4, zorder=3)
+        med = np.median(v)
+        b.plot([k - 0.25, k + 0.25], [med, med], color=INK, lw=1.0, zorder=4)
+        b.text(k, 61, f"n={len(v)}", ha="center", fontsize=6.0, color=INK2)
+    b.set_xticks(range(len(dates)), [lab.get(d_, d_) for d_ in dates], fontsize=6.5)
+    b.set_ylim(0, 66)
+    b.set_xlim(-0.6, len(dates) - 0.4)
+    ylabel_top(b, "salt bulk feed (mg/s)")
+    b.set_xlabel("session; 40° tilt, 20 rpm")
+    panel(b, "b", x=-0.42)
+
+    # (c) every dose of the margin campaign, in order
+    day = mr.date.values
+    brk = int(np.argmax(day == "2026-10-15"))
+    c.axvspan(brk - 0.5, len(mr) - 0.5, color="#fbeee8", lw=0, zorder=0)
+    c.text(brk + 0.3, 500, "15 Oct: feed collapsed", fontsize=6.3, color=ORANGE, va="bottom")
+    c.text(0.3, 500, "13 Oct", fontsize=6.3, color=INK2, va="bottom")
+    for _, r in mr.iterrows():
+        _status_marker(c, r.i, min(r.t, 470), r.status, s=18)
+    c.axvline(17.5, color=MUTED, lw=0.6, ls=(0, (3, 2)))
+    c.text(8.5, 250, "screening\ncorners", ha="center", fontsize=6.3, color=INK2)
+    c.text(18.2, 250, "optimizer", ha="left", fontsize=6.3, color=INK2)
+    c.set_xlim(-1, len(mr))
+    c.set_ylim(0, 530)
+    c.set_yticks([0, 100, 200, 300, 400])
+    c.set_xlabel("dose number")
+    ylabel_top(c, "time per dose (s)")
+    # legend for status markers
+    hand = []
+    for name, labx in (("ok", "ok"), ("overshoot", "overshoot"), ("stalled", "jam or stall"),
+                       ("fw-error", "firmware or tare error")):
+        col, mk, filled = ST_STYLE[name]
+        hand.append(plt.Line2D([], [], ls="", marker=mk, ms=4.5, mfc=col if filled else "white", mec=col if not filled
+                               else "white", mew=0.6, label=labx))
+    c.legend(handles=hand, loc="upper left", bbox_to_anchor=(0.0, -0.22), ncol=4, frameon=False, fontsize=6.3,
+             handletextpad=0.2, columnspacing=0.8)
+    panel(c, "c", x=-0.16)
+    save(fig, "fig3_margin_campaign")
+
+
+# ------------------------------------------------ metal feedstock: flow signal
+def _rate_trace(doc: dict, win: float = 6.0):
+    """Delivery rate (mg/s) against time: mass gained over a trailing window of `win` s."""
+    t, m = snap_trace(doc)
+    ok = np.isfinite(m)
+    t, m = t[ok], m[ok]
+    tt = np.arange(win, t[-1], 1.0)
+    r = (np.interp(tt, t, m) - np.interp(tt - win, t, m)) / win * 1e3
+    return tt, np.clip(r, 0.05, None)
+
+
+def fig_metal_feedstock() -> None:
+    docs = snap_docs()
+    met = pd.read_csv(RES / "doses_metal_feedstock.csv")
+    sal = pd.read_csv(RES / "doses_salt_20260929.csv")
+    prod = pd.read_csv(RES / "doses_production_salt.csv")
+    fig = plt.figure(figsize=(DOUBLE, 2.9))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1.35, 1.0, 0.85], wspace=0.38)
+    a, b, d = (fig.add_subplot(gs[0, k]) for k in range(3))
+
+    # (a) bulk feed at the recommended bulk settings (40 deg, 100 rpm, 2 Hz taps), dose by dose
+    items = []
+    vb = sal[sal.group == "val-bo"].bulk_rate_mgps.dropna().values
+    items.append(("salt\n×8", vb, BLUE, "o"))
+    p15 = prod[prod.target_g == 1.5].bulk_rate_mgps.values
+    items.append(("salt\n×1", p15, BLUE, "o"))
+    al = met[met.powder == "alsi10mg"].bulk_rate_mgps.values
+    items.append(("AlSi\n10Mg", al, ORANGE, "s"))
+    a47 = met[met.powder.str.startswith("al4047") & (met["mode"] == "production")].dropna(subset=["bulk_rate_mgps"])
+    lab47 = {"2026-09-30T21:21": "30\nSep", "2026-10-19T23:24": "19\nOct", "2026-10-20T01:20": "60°\n*",
+             "2026-10-20T01:23": "75°\n*", "2026-10-20T21:07": "20 Oct\n#1", "2026-10-20T21:30": "#2",
+             "2026-10-20T21:36": "#3", "2026-10-20T22:15": "after\nclear-\ning"}
+    for _, r in a47.iterrows():
+        if r.utc == "2026-09-30T21:50" or r.bulk_tilt != 40.0:
+            continue  # the 0.32 g bulk-only top-up, and the two unclog tries at 60 and 75 deg
+        items.append((lab47.get(r.utc, r.utc[5:10]), np.array([r.bulk_rate_mgps]), "#8c5a2b", "D"))
+    for k, (lab_, v, col, mk) in enumerate(items):
+        xs = k + (np.linspace(-0.15, 0.15, len(v)) if len(v) > 1 else np.zeros(1))
+        a.scatter(xs, v, s=14 if len(v) > 1 else 20, c=col, marker=mk, edgecolors="white", linewidths=0.4,
+                  zorder=3)
+    a.set_yscale("log")
+    a.set_ylim(0.08, 500)
+    a.set_xticks(range(len(items)), [i[0] for i in items], fontsize=6.0)
+    a.set_xlim(-0.6, len(items) - 0.4)
+    a.axvspan(2.5, len(items) - 0.4, color="#f6efe8", lw=0, zorder=0)
+    a.text(2.75, 280, "Al 4047, lab-atomized, unsieved", fontsize=6.0, color="#8c5a2b", va="center")
+    ylabel_top(a, "bulk feed (mg/s)")
+    a.set_xlabel("dose; all at 40°, 100 rpm, 2 Hz taps")
+    panel(a, "a", x=-0.13)
+
+    # (b) delivery rate within a dose: steady for AlSi10Mg, decaying for Al 4047 until it was cleared
+    sets = [("alsi10mg", "AlSi10Mg (8 g request)", ORANGE, "-"),
+            ("2026-10-20T21:07", "Al 4047, 20 Oct #1", "#8c5a2b", "-"),
+            ("2026-10-20T21:36", "Al 4047, #3", "#c9a27e", "-"),
+            ("2026-10-20T22:15", "Al 4047 after clearing", "#8c5a2b", (0, (2.5, 1.2)))]
+    for key, lab_, col, ls in sets:
+        if key == "alsi10mg":
+            doc = next(d_ for d_ in docs.values() if d_["powder_id"] == "alsi10mg")
+        else:
+            doc = next(d_ for d_ in docs.values() if d_["started_utc"][:16] == key and d_["mode"] == "production")
+        tt, rr = _rate_trace(doc)
+        keep = tt <= (54 if key == "alsi10mg" else 400)
+        b.plot(tt[keep], rr[keep], color=col, lw=1.0, ls=ls, label=lab_)
+    b.set_yscale("log")
+    b.set_ylim(0.3, 400)
+    b.set_xlim(0, 300)
+    b.set_xlabel("time since the dose started (s)")
+    ylabel_top(b, "delivery rate (mg/s)")
+    b.legend(loc="upper right", frameon=False, fontsize=5.8, handlelength=1.6)
+    panel(b, "b", x=-0.2)
+
+    # (c) one setting, many targets: salt at bo-005's settings, 5 mg to 10 g (one dose each)
+    ps = prod.sort_values("target_g")
+    d.scatter(ps.target_g, ps.err_mg.abs(), s=22, c=BLUE, edgecolors="white", linewidths=0.6, zorder=3)
+    for _, r in ps.iterrows():
+        below = r.target_g < 0.01 or abs(r.err_mg) < 1
+        dx = 12 if r.target_g < 0.01 else 0
+        d.annotate(f"{r.t_s:.0f} s", (r.target_g, abs(r.err_mg)), xytext=(dx, -10 if below else 5),
+                   textcoords="offset points", fontsize=5.8, color=INK2, ha="center")
+    d.axhline(3.0, color=INK2, lw=0.6, ls=(0, (3, 2)))
+    d.text(19, 3.12, "stopping band ±3 mg", fontsize=5.8, color=INK2, va="bottom", ha="right")
+    d.set_xscale("log")
+    d.set_xlim(0.003, 20)
+    d.set_ylim(0, 4.4)
+    d.set_xlabel("target (g); salt, settings bo-005")
+    ylabel_top(d, "|error| (mg)")
+    panel(d, "c", x=-0.22)
+    save(fig, "fig4_metal_feedstock")
 
 # ------------------------------------------------- multi-task, synthetic
 def fig_multitask_placeholder() -> None:
@@ -362,7 +496,7 @@ def fig_multitask_placeholder() -> None:
     cb.outline.set_visible(False)
     synthetic(b)
     panel(b, "b", x=-0.42)
-    save(fig, "fig4_multitask_placeholder")
+    save(fig, "fig5_multitask_placeholder")
 
 
 # --------------------------------------------------------- DEM, mixed
@@ -414,7 +548,7 @@ def fig_dem() -> None:
     c.text(0.52, 0.72, "posterior for one\npowder from its\ntilt sweep", fontsize=6.5, color=INK2)
     synthetic(c)
     panel(c, "c", x=-0.3)
-    save(fig, "fig5_dem")
+    save(fig, "fig6_dem")
 
 
 # ------------------------------- property links: (a, b) real, (c) synthetic
@@ -457,22 +591,27 @@ def fig_properties() -> None:
            fontsize=6.5, color=INK)
     panel(a, "a", x=-0.32)
 
-    # (b) tilt response of each conveying powder: the "fingerprint"
-    tilts = np.array([0.0, 22.5, 45.0])
-    hi = {"alsi10mg": ORANGE, "salt": BLUE, "carboxymethyl-cellulose": AQUA}
-    for _, r in df[df.conveys].iterrows():
-        yv = np.array([r.ff0_mg_per_rev, r.ff45_mg_per_rev, r.ff90_mg_per_rev]).clip(min=0.1)
-        colr = hi.get(r.powder_id, "#c9c7c1")
-        b.plot(tilts, yv, "-o", ms=2.5, color=colr, lw=1.0 if r.powder_id in hi else 0.7,
-               zorder=3 if r.powder_id in hi else 2)
-        if r.powder_id in hi:
-            b.text(46.5, yv[-1], SHORT[r.powder_id], color=INK, fontsize=6.3, va="center")
+    # (b) literature moisture content vs error of 1 g closed-loop doses (hand-tuned controller)
+    mo = df.dropna(subset=["moisture_pct", "blockG_mean_err_mg"])
+    mo = mo[mo.blockG_outcome.astype(str).str.lower().ne("nan")]
+    em = mo.blockG_mean_err_mg.abs().clip(lower=0.3)
+    mmet = mo.batch.str.startswith("metal")
+    for m, colr, mk in ((~mmet, BLUE, "o"), (mmet, ORANGE, "s")):
+        b.scatter(mo.loc[m, "moisture_pct"].clip(lower=0.01), em[m], s=22, c=colr, marker=mk,
+                  edgecolors="white", linewidths=0.6, zorder=3)
+    rho_m, _ = spearmanr(mo.moisture_pct, em)
+    for _, r in mo.iterrows():
+        if r.powder_id in ("xanthan-gum", "sodium-alginate", "alsi10mg", "salt", "white-rice-flour"):
+            b.annotate(SHORT[r.powder_id], (max(r.moisture_pct, 0.01), max(abs(r.blockG_mean_err_mg), 0.3)),
+                       xytext=(4, 2), textcoords="offset points", fontsize=6.3, color=INK2)
+    b.set_xscale("log")
     b.set_yscale("log")
-    b.set_ylim(0.3, 800)
-    b.set_xlim(-2, 62)
-    b.set_xticks([0, 22.5, 45], ["0", "22.5", "45"])
-    b.set_xlabel("auger tilt (°), 30 rpm")
-    ylabel_top(b, "delivered (mg/rev)")
+    b.set_xlim(0.006, 40)
+    b.set_ylim(0.2, 800)
+    b.set_xlabel("moisture content, literature value (wt%)")
+    ylabel_top(b, "|error| of 1 g doses (mg)")
+    b.text(0.04, 0.90, f"Spearman ρ = {rho_m:.2f}, n = {len(mo)}", transform=b.transAxes, ha="left",
+           va="bottom", fontsize=6.5, color=INK)
     panel(b, "b", x=-0.32)
 
     # (c) synthetic: what the paper will test
@@ -485,7 +624,7 @@ def fig_properties() -> None:
     ylabel_top(c, "shear-cell flow function $ff_c$")
     synthetic(c)
     panel(c, "c", x=-0.32)
-    save(fig, "fig6_properties")
+    save(fig, "fig7_properties")
 
 
 # ------------------------------------------------- overview schematic
@@ -499,51 +638,6 @@ def box(ax, xy, w, h, text, fc, ec=MUTED, fs=7, bold=False):
 def arrow(ax, p, q, col=INK2, dashed=False):
     ax.add_patch(FancyArrowPatch(p, q, transform=ax.transAxes, arrowstyle="-|>", mutation_scale=8,
                                  color=col, lw=0.8, ls=(0, (3, 2)) if dashed else "-"))
-
-
-def fig_overview() -> None:
-    df = salt_doses()
-    tr = trace(df[df.label == RECOMMENDED].uuid.iloc[0])
-    fig = plt.figure(figsize=(DOUBLE, 3.5))
-    a = fig.add_axes([0.06, 0.16, 0.36, 0.70])
-    stage_col = {"bulk": "#dbe8fa", "trickle": "#eef4fd", "tap": "#f6f5f1"}
-    for p, (t0, t1) in tr["stage"].items():
-        a.axvspan(t0, t1, color=stage_col[p], lw=0, zorder=0)
-        a.text((t0 + t1) / 2, 545, p, ha="center", va="bottom", fontsize=6.5, color=INK2)
-    a.plot(tr["t"], tr["m"], color=BLUE, lw=1.1, drawstyle="steps-post", zorder=3)
-    a.axhline(500, color=INK2, lw=0.6, ls=(0, (3, 2)))
-    a.set_xlim(0, tr["t"][-1] + 2)
-    a.set_ylim(0, 600)
-    a.set_xlabel("time (s)")
-    ylabel_top(a, "powder in the cup (mg)")
-    a.text(0.98, 0.30, "tilt, speed and\ntap settings per stage\nare the search space",
-           transform=a.transAxes, ha="right", fontsize=6.5, color=INK2)
-    panel(a, "a", x=-0.14, y=1.07)
-
-    s = fig.add_axes([0.47, 0.02, 0.53, 0.94])
-    s.axis("off")
-    box(s, (0.02, 0.70), 0.25, 0.20, "auger doser\non a 0.1 mg\nbalance", BLUE_L, bold=True)
-    box(s, (0.36, 0.70), 0.28, 0.20, "dose record\ntime, error,\ntaps, mg/rev", "#ffffff")
-    box(s, (0.72, 0.70), 0.26, 0.20, "multi-objective\nBO per powder\n(Sec. 3.2)", BLUE_L)
-    box(s, (0.72, 0.38), 0.26, 0.20, "multi-task BO\nacross powders\n(Sec. 3.3)", "#ffffff", ec=ORANGE)
-    box(s, (0.36, 0.38), 0.28, 0.20, "DEM twin of\nthe auger\n(Sec. 3.4)", BLUE_L)
-    box(s, (0.02, 0.38), 0.25, 0.20, "effective cohesion\nand friction", "#ffffff", ec=ORANGE)
-    box(s, (0.02, 0.06), 0.25, 0.20, "Hall flow,\nshear cell, PSD", "#ffffff", ec=ORANGE)
-    box(s, (0.36, 0.06), 0.62, 0.20, "spreading and packing in AM\n(Sec. 3.5, outlook)", "#ffffff", ec=ORANGE)
-    arrow(s, (0.27, 0.80), (0.36, 0.80))
-    arrow(s, (0.64, 0.80), (0.72, 0.80))
-    arrow(s, (0.86, 0.70), (0.86, 0.58), dashed=True)
-    arrow(s, (0.50, 0.70), (0.50, 0.58))
-    arrow(s, (0.36, 0.48), (0.27, 0.48), dashed=True)
-    arrow(s, (0.135, 0.38), (0.135, 0.26), dashed=True)
-    arrow(s, (0.27, 0.16), (0.36, 0.16), dashed=True)
-    s.text(0.86, 0.94, "", transform=s.transAxes)
-    s.text(0.0, 0.97, "(b)", fontweight="bold", fontsize=9, transform=s.transAxes, va="bottom")
-    s.text(0.98, 0.985, "blue / solid: done    orange / dashed: in progress",
-           ha="right", va="bottom", fontsize=6.5, color=INK2, transform=s.transAxes)
-    s.set_xlim(0, 1)
-    s.set_ylim(0, 1)
-    save(fig, "fig1_overview")
 
 
 def fig_graphical_abstract() -> None:
@@ -566,9 +660,9 @@ def fig_graphical_abstract() -> None:
 
 
 if __name__ == "__main__":
-    fig_overview()
-    fig_powders()
     fig_salt_campaign()
+    fig_margin_campaign()
+    fig_metal_feedstock()
     fig_multitask_placeholder()
     fig_dem()
     fig_properties()
