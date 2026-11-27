@@ -19,6 +19,7 @@ Status: **done** = in the draft now; **open** = someone has to act (owner in bra
 | Figures in-line with the text for review | **done** (the `elsarticle` preprint option floats them; check placement in the final build) |
 | Figures also as separate files, 300 dpi minimum for halftones (1063 px single column, 2244 px full page) | **done** for PNG at 300 dpi; vector PDFs also in `figures/` |
 | Sections numbered 1, 1.1, ...; cross-references by number | **done** |
+| References checked | **done**: 80 cited; of the 91 bibliography entries, 79 match Crossref or arXiv ([`references_validation.md`](references_validation.md)). The six ASTM standards were checked by hand on store.astm.org on 27 Nov 2026 and moved to their active editions: B213-25, B964-25, B527-24, B822-25, D7891-24, F3049-14(2021). Still for a person: the companion paper's final title and status, the Ax citation, and two DataCite DOIs |
 | Stand-alone paper; no part papers | **done**: the hardware is described in full in Section 2.1, and the boundary with the companion paper is stated |
 | Reproducibility: equipment models, software and firmware versions, process parameters, feedstock | mostly **done**; **open**: tube ID and as-printed exit geometry (Will), auger capacity (58 or 70 mL; Will), salt and AlSi10Mg supplier and lot (Will), solenoid supply voltage (Will) |
 | No preprint before submission ("strongly discouraged") | nothing posted; keep it that way |
