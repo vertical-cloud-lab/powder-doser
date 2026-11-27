@@ -1,0 +1,23 @@
+A walkthrough of the multi-doser chain carousel, version 11: thirteen auger powder-dosing modules on a vertical twin-chain loop, one dosing station inside the loop that tilts each module up to 90 degrees, and an analytical balance with its draft cage under the station. Every picture is the design's CAD or a simulation of it; nothing has been built yet, so every number is a prediction.
+
+Covered: the frame and the chain loop, a module, building it step by step, indexing into the station, how the auger gear meets the pinion and what holds the mesh while it doses (a MuJoCo model with real tooth contact), the 0-90 degree tilt, dosing into the balance, the interference checks, printing and buying, and the next change: a spring-loaded pinion.
+
+Design files, simulations and this video's sources: https://github.com/vertical-cloud-lab/powder-doser/tree/claude/issue-128-20261013-2050/cad/chain-carousel-v11
+Onshape (public): https://cad.onshape.com/documents/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/e/cd46c1a5e6c910443d6daad8
+Discussion: https://github.com/vertical-cloud-lab/powder-doser/pull/185
+
+Narration: Piper text-to-speech, LJ Speech voice (public-domain data), synthesised offline.
+
+Chapters
+0:00 What v11 is
+0:40 The frame and the chain loop
+1:14 A module
+1:46 Building it, step by step
+2:40 Indexing into the station
+3:09 How the gear meets the pinion
+4:19 What holds the mesh while it doses
+5:10 Tilting to ninety degrees
+5:41 Dosing into the balance
+6:14 Checks
+7:01 Printing and buying
+7:59 Next: a spring-loaded pinion
