@@ -1,4 +1,4 @@
-"""v9 (v7's, with the balance on its block, the beaker on the pan 32 mm under the exit, and the weighing chamber's deck 4.6 mm under the passing modules): the chain sweep restricted to the station: every carriage and module within two modules of the station
+"""v12: v11's station sweep with the cradle on its stop (its lowest). The rest of this docstring is v9's: v9 (v7's, with the balance on its block, the beaker on the pan 32 mm under the exit, and the weighing chamber's deck 4.6 mm under the passing modules): the chain sweep restricted to the station: every carriage and module within two modules of the station
 (their new dock posts, the gears, the door strips, the latch followers) against the parked station (EC v7 and its tail, the
 P16, the two guides and the cross bars, the latch cam, the hold-downs) and the balance, over one module of travel the way the
 machine runs, in 1-link steps. The full --sweep (every pair) takes far longer; v7 left everything else as v6 had it.
@@ -22,7 +22,7 @@ import sys
 STEPS = [float(v) for v in sys.argv[1].split(",")] if len(sys.argv) > 1 else [float(i) for i in range(MODULE_LINKS + 1)]
 for i in STEPS:
     s = RUN_DIRECTION * float(i)
-    pl = L.placements(L.State(shift=s, ext=0.0, enclosure=False))
+    pl = L.placements(L.State(shift=s, ext=0.0, enclosure=False, cradle_lift=-L.CRADLE12_STOP))   # v12: the cradle on its stop, its lowest
     near = []
     for p in pl:
         if p.module < 0 or p.group not in ("modules", "carriages"):
@@ -40,4 +40,4 @@ for i in STEPS:
     poses.append(s)
     print(f"  shift {s:+3.0f} links: {len(h)} clash(es) ({len(near)} moving, {len(fixed)} fixed)", flush=True)
 CI._report(sys.argv[2] if len(sys.argv) > 2 else "sweep_station", hits, {"step_links": 1, "poses": len(poses), "direction": RUN_DIRECTION, "seconds": round(time.time() - t0),
-                                   "scope": "v11: carriages and modules within 2.2 modules of the station vs the parked station (the EC, the P16 and its front bar, the guide, the beam, the latch cam, the hold-downs), the side plates, the rungs, the NEMA 34, the balance, the pillar and the beaker"})
+                                   "scope": "v12: carriages and modules within 2.2 modules of the station vs the parked station (EC v12 and its cradle on its stop, 0.4 mm past tight mesh, its lowest; the P16 and its front bar, both guides and beams, the latch cam, the hold-downs), the side plates, the rungs, the NEMA 34, the balance, the pillar and the beaker. The passing gears run through the pinion (by design: in the machine they lift it on its spring)"})

@@ -1,4 +1,8 @@
-"""Bill of materials for the chain-carousel test rig v11 (Sam, 2026-11-25, PR #185: v10, the station inside the loop, with his notes):
+"""Bill of materials for the chain-carousel test rig v12 (Sterling, 2026-11-27, PR #185): v11 with the spring-loaded pinion (the NEMA 11 and its
+24T pinion on a printed cradle that pivots in the EC on two 3 x 12 mm dowels, a 1 N/mm spring, an M3 set-screw stop and a US5881 hall
+switch on the cradle) and the EC's second guide seat, on a second 2020 station beam. The rest of this docstring is v11's:
+
+Bill of materials for the chain-carousel test rig v11 (Sam, 2026-11-25, PR #185: v10, the station inside the loop, with his notes):
 the carriages 40 mm longer and the hinge 5 mm nearer the carriage plate, so the module and the EC turn 0-90 deg and the 44T gear meets
 a 24T pinion at rest; a straight keyed rail (no lift); the EC reaching over the outlet to draw each door's rod open (no cable); the
 solenoid over clip 1; a P16-150 through a slot in the front side plate, its base on a new 2020 bar across the front posts; the
@@ -92,18 +96,20 @@ ITEMS = [
     # ---- frame
     (18, None, 1, "2020 T-slot extrusion, 10 x 1000 mm pack. v11: 4 posts of 697.5 mm (one bar each; the carousel is 98.5 mm lower), "
      "4 long rails of 457.7 mm (2 per bar), 4 rungs of 417.7 mm (2 per bar), 3 cross rails of 340 mm, the 405 mm station beam and the "
-     "380 mm front bar (340 + 405 on one bar, 340 + 380 on another, 340 on the last; tap the beam's ends M5): ten bars, one pack",
+     "380 mm front bar (340 + 405 on one bar, 340 + 380 on another, 340 on the last; tap the beam's ends M5); v12: the second 405 mm "
+     "station beam goes on the last bar (340 + 405), so still ten bars, one pack",
      "VEVOR", "2020OBLXC10JMQNSK001V0",
      "https://www.vevor.com/linear-guide-rail-c_10531/10pcs-39-4in-1000mm-t-slot-2020-aluminum-extrusion-anodized-linear-rail-p_010731760492",
      66.90, f"{V13}; the page shows both in and out of stock", (1, 2, 8), "Frame"),
     (19, ("corner_bracket",), 2, "2020 90-degree corner bracket (+2 spare; v10: v7's two cross bars and their 8 are gone)", "West3D", "NA0394",
      "https://west3d.com/products/angle-corner-connector-90-degree-like-openbuilds", 1.59, V13, (1, 2, 8), "Frame"),
-    (20, None, 56, "M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock). v11: 24 corner brackets x 2, the "
-     "EC's guide hanger to the station beam (2), the P16's clevis to the front bar (2), 4 spare", "BelMetric",
+    (20, None, 58, "M5 x 10 button head screw, with blue threadlocker (T-nuts can't take a nylock). v11: 24 corner brackets x 2, the "
+     "EC's guide hanger to the station beam (2), the P16's clevis to the front bar (2), 4 spare; v12: the second guide's hanger to the "
+     "second beam (2)", "BelMetric",
      "M5 x 10 BHCS", "https://www.belmetric.com/", 0.12, V16, (1, 2, 8), "Frame"),
-    (21, ("tnut_m5",), 54, "M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the "
+    (21, ("tnut_m5",), 56, "M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the "
      "guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's "
-     "screws in the front posts' front slots)", "West3D", "WES5240M5",
+     "screws in the front posts' front slots; v12: 2 for the second guide's hanger in the second beam's bottom slot)", "West3D", "WES5240M5",
      "https://west3d.com/products/roll-in-drop-in-t-nuts-for-2020-extrusions-m3-3mm-and-m5-5mm-threads", 0.17, V13, (1, 2, 3, 8), "Frame"),
     (22, ("foot",), None, "Leveling foot, M6 x 40 stud, into a T-nut in the base rail", "TNUTZ", "LF-020-A", "https://www.tnutz.com/product/lf-020-a/",
      1.85, V16, (1,), "Frame"),
@@ -128,8 +134,8 @@ ITEMS = [
      "6 x 18 mm, 92735A131, $4.88 per 5; the headless grooved ones in 3, 4, 6, 8, 10 and 12 mm", (9,), "Fasteners"),
     (29, None, 1, "E-clip DIN 6799-4 (5-7 mm shaft, 4 mm groove x 0.74), spring steel, 8.85 OD, 0.7 thick, pack of 100 (26 used on the hinge "
      "pins)", "McMaster-Carr", "98543A112", f"{MC}/98543A112/", 4.25, "verified 2026-10-27 (McMaster page, logged out)", (9,), "Fasteners"),
-    (32, None, 1, "M5 x 16 socket head screw, 18-8, pack of 100 (10 used: hold-downs and side tabs, through the side plates, 8; v10: "
-     "one through each side plate into the station beam's tapped ends, 2), with blue threadlocker",
+    (32, None, 1, "M5 x 16 socket head screw, 18-8, pack of 100 (12 used: hold-downs and side tabs, through the side plates, 8; v10: "
+     "one through each side plate into the station beam's tapped ends, 2; v12: the same for the second beam, 2), with blue threadlocker",
      "McMaster-Carr", "91292A126", f"{MC}/91292A126/", 16.05, "verified 2026-10-27 (McMaster page, logged out)", (2, 8), "Fasteners"),
     (33, None, 1, "M5 brass heat-set insert, 5.7 mm long, 6.4 mm hole, pack of 25 (hold-downs and side tabs)", "McMaster-Carr", "94459A774",
      f"{MC}/94459A774/", 7.27, "verified 2026-10-27 (McMaster page, logged out)", (8,), "Fasteners"),
@@ -155,9 +161,10 @@ ITEMS = [
      "filament at $20/kg (about 65 g)", (10,), "Printed"),
     (37, ("hold_down", "tensioner_block"), None, "Hold-downs (2) and tensioner blocks (4), PETG", "printed", "stl/hold_down.stl, stl/tensioner_block.stl",
      "", 0.16, "filament (46.5 g for all six, sliced)", (4, 8), "Printed"),
-    (38, ("p16_bracket11", "guide11", "latch_rail11", "side_tab", "side_tab_m", "catch"), None,
+    (38, ("p16_bracket11", "guide11", "guide12", "latch_rail11", "side_tab", "side_tab_m", "catch"), None,
      "Station and enclosure parts, PETG. v11: the P16's base clevis (a flange under the front bar on two M5 into T-nuts, two cheeks round "
-     "the P16's rear tab), the EC's guide hanger (v10's, from the station beam, now at y -56), the latch cam (v10's, its web and foot "
+     "the P16's rear tab), the EC's guide hanger (v10's, from the station beam, now at y -56), v12: the second guide's hanger (its seat "
+     "under the EC's far shoe, from the second beam at y +56), the latch cam (v10's, its web and foot "
      "moved beside the back hold-down), 2 side tabs, the side hatch's turn button", "printed", "stl/", "", 0.6, "filament", (8, 12), "Printed"),
     (39, ("sam_mounting_plate",), None, "Mounting plate v11: v10's (Sam's Oct 13 plate carried on to the cap's end: clip 2, cap saddle, "
      "the latch keeper, the door housing's inserts, the T-bracket's two M3 inserts), without v10's relief over the NEMA 11 (the 24T "
@@ -203,7 +210,9 @@ ITEMS = [
     (121, None, 1, "Shaft sleeve for the 24T pinion: 6 mm OD x 0.5 mm wall brass tube (5 mm bore for the NEMA 11's shaft), a 10 mm length "
      "slotted lengthwise under the pinion's M4 set screw, Loctite 638 (2026-11-27: no stock module 1 24T has a 5 mm bore)", "K&S Precision "
      "Metals", "6 mm x 0.5 mm brass tube", "https://www.ksprecisionmetals.com/", 4.0, E, (8,), "Station"),
-    (119, ("nema11",), None, "NEMA 11 stepper StepperOnline 11HS18-0674S (the auger's drive on EC v11; the single doser's, in the lab)",
+    (119, ("nema11_v12",), None, "NEMA 11 stepper StepperOnline 11HS18-0674S (the auger's drive, on the cradle; the single doser's, in the "
+     "lab). v12: cut its 5 mm shaft to 15 mm (from 20), so it ends at the pinion's front face instead of 4.8 mm past it, in the EC's rail "
+     "block (v11's CAD had the same overlap, hidden by a skipped pair)",
      "StepperOnline", "11HS18-0674S", "https://www.omc-stepperonline.com/", 0.0, "in the lab (the single doser's motor)", (8,), "Station"),
     (120, ("solenoid",), None, "Solenoid, small push-pull, 12 V (Adafruit 412): the tap, over clip 1 on EC v11 (the single doser's, in the lab)",
      "Adafruit", "412", "https://www.adafruit.com/product/412", 0.0,
@@ -218,12 +227,24 @@ ITEMS = [
     (74, None, 1, "DC motor driver DRV8871 breakout (the 12 V tap solenoid)", "Adafruit", "3190", "https://www.adafruit.com/product/3190", 7.50,
      "verified 2026-11-27 (Adafruit's page, in stock)", (11,), "Electronics"),
     # ---- v10: the electronics carriage (v7's dock is gone: its ball, vee dowels and magnets, items 78-80)
-    (77, ("ec11",), None, "Electronics carriage v11 (new), PETG: inside the loop on the plate's side of the module, 1 mm or more over the "
-     "passing plates, carriages and T-brackets: the door ramp at its front, over the outlet (two wedge lips that catch each door rod's "
-     "head and draw it 6 mm); a spine back to the motor; the solenoid's collar over clip 1 (plunger toward the plate); the rail block "
-     "with the straight T-slot (level lips, ends flared 2.5 mm); the motor plate and two cheeks round the NEMA 11 (behind the gear, "
-     "shaft forward to the 24T pinion) with a strap; an arm out to the -y side with the P16's rod-end clevis and the guide shoe",
-     "printed", "stl/ec11.stl", "", 1.5, "filament (about 75 g)", (8,), "Printed"),
+    (77, ("ec12",), None, "Electronics carriage v12 (new), PETG: v11's front half (the door ramp over the outlet, the spine, the "
+     "solenoid's collar over clip 1, the straight T-slot); behind the pinion, the cradle's two pivot bosses (the dowels pressed in), an "
+     "outer -y rail and a cross bar behind the motor, a roof over the cradle's spring with an up-stop pad, the hall switch's magnet post, "
+     "the arm out to the -y side with the P16's rod-end clevis (v12: a slot for the rod-end tab and pockets for the pin's nut and head) "
+     "and the first guide shoe, and a second guide shoe on the far side of the module",
+     "printed", "stl/ec12.stl", "", 1.5, "filament (about 75 g)", (8,), "Printed"),
+    (122, ("cradle12",), None, "Pinion cradle v12 (new), PETG: the NEMA 11's plate (its face bolts on with the motor's own four M2.5 screws, as on v11's EC), a pivot "
+     "tube along the motor's -y side on the two dowels (3.1 mm bores), a top bar over the motor with the spring's seat, and a lug on the "
+     "motor's +y side with the stop's M3 insert and the hall switch's pocket", "printed", "stl/cradle12.stl", "", 0.25,
+     "filament (about 10 g)", (8,), "Printed"),
+    (123, ("pivot_dowel12",), None, "Pivot dowel pin, 3 mm x 12 mm (the cradle's two pivots: pressed into the EC's 2.95 mm bosses, free "
+     "in the cradle's 3.1 mm bores). PRICE PENDING", "McMaster-Carr", "TBD", f"{MC}/dowel-pins/", 0.0, E, (8,), "Station"),
+    (124, None, 1, "Compression spring for the cradle (1 N/mm, 6 N at the stop: about 19 mm free, installed 13.0 mm at the stop, 12.6 in "
+     "tight mesh, 10.6 on a gear's tips, 9.4 at the up-stop; 6 mm OD over a 3 mm peg). PRICE PENDING", "McMaster-Carr", "TBD",
+     f"{MC}/compression-springs/", 0.0, E, (8,), "Station"),
+    (125, ("set_screw_m3x6",), None, "M3 x 6 cup-point set screw: the cradle's stop, down through an M3 insert in its lug (item 108) onto "
+     "the EC's arm; set 0.4 mm past tight mesh with module 1 at the station (TEST-PLAN T6a), Loctite 222. PRICE PENDING",
+     "McMaster-Carr", "TBD", f"{MC}/set-screws/", 0.0, E, (8,), "Station"),
     # ---- v3: outlet doors (item 4) and plate latches (item 4a)
     (83, ("door_housing", "door_shutter", "door_head11"), None, "Outlet door v11, PETG, three parts per module: v10's housing (a 1.8 mm "
      "hole through its cap for the rod), v10's shutter (no push strip), and a 6 x 6 x 2.5 mm head pressed and glued on the rod's end "
@@ -295,10 +316,11 @@ ITEMS = [
      "door, flush with the frame, a 24 mm hole under the exit (laser cut from an offcut of item 89)", "laser cut", "dxf/", "", 0.0,
      "from item 89's offcuts", (12,), "Enclosure"),
     # ---- sensing & electronics
-    (53, ("hall_switch",), None, "Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME", "Adafruit", "158",
+    (53, ("hall_switch", "hall_switch12"), None, "Hall-effect switch US5881 (unipolar, open drain, TO-92): INDEX and HOME; v12: the "
+     "cradle's (reads 'lifted' when the pinion rests on the gear's tips; BCM 26)", "Adafruit", "158",
      "https://www.adafruit.com/product/158", 2.00, V10, (8,), "Electronics"),
-    (54, ("magnet",), None, "Neodymium disc magnet D42-N52, 1/4 x 1/8 in (13 index + 1 home; v10: none in the plates, which have no dock "
-     "posts)", "K&J Magnetics", "D42-N52",
+    (54, ("magnet", "hall_magnet12"), None, "Neodymium disc magnet D42-N52, 1/4 x 1/8 in (13 index + 1 home; v10: none in the plates, "
+     "which have no dock posts; v12: + 1 in the EC's post for the cradle's switch)", "K&J Magnetics", "D42-N52",
      "https://www.kjmagnetics.com/d42-n52-neodymium-disc-magnet", 0.52, V10, (10,), "Electronics"),
     (55, ("raspberry_pi",), None, "Raspberry Pi Zero 2 W (or any spare Pi that runs pigpio)", "Adafruit", "5291",
      "https://www.adafruit.com/product/5291", 19.05, "verified 2026-11-27 (Adafruit's page; out of stock that day)", (11,), "Electronics"),

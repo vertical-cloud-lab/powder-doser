@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Drive and log the chain-carousel test rig v11 from a Raspberry Pi (issue #128). v11 (Sam's notes of 2026-11-25, PR #185) is v10 with
+"""Drive and log the chain-carousel test rig v12 from a Raspberry Pi (issue #128). v12 (Sterling, PR #185, 2026-11-27) is v11 with the
+spring-loaded pinion: the NEMA 11 and its 24T pinion ride on a printed cradle that pivots in the EC, a 1 N/mm spring presses the
+pinion into the auger's gear (6 N at the set-screw stop, 0.4 mm past tight mesh), and a US5881 hall switch on the cradle
+(PIN_HALL_CRADLE, low = lifted) tells the driver when the pinion is resting on the gear's tips instead of in mesh. After every index
+the driver runs the seek (Rig.seek_mesh): the pinion turned SEEK_REV_S forward for SEEK_T and back for SEEK_T, so the auger ends where
+it started; if the switch still reads "lifted", a second try the other way round; if it still does, it stops and says so (TEST-PLAN
+T6a). In the v12 model (sim/README.md) every stub cleared on the first seek and nothing jammed. The rest is v11's:
+
+Drive and log the chain-carousel test rig v11 from a Raspberry Pi (issue #128). v11 (Sam's notes of 2026-11-25, PR #185) is v10 with
 0-90 deg: the carriages 40 mm longer, a P16-150 (back from v10's P16-100) whose base is outside the front side plate on a bar across
 the front posts, through a slot in the plate; a straight rail (no lift: the module sits at 0 deg, its 44T gear meeting a 24T pinion
 at rest, so GEAR_RATIO is 44/24); the EC opens each door itself; the solenoid taps over clip 1; the tall-cage balance on the bench,
@@ -138,6 +146,7 @@ GEAR_RATIO = 44 / 24                               # NEMA 11 turns per auger tur
 NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
 SEEK_REV_S = -0.25                                 # v10 --seek: the pinion's rev/s while the chain moves (Rig.nema11)
+SEEK12_REV_S, SEEK12_T, SEEK12_TRIES = 0.25, 0.2, 2   # v12: the seek after every index: rev/s, s each way, tries (params.SEEK12)
 DOSE_HOLD_S = 0.5                                  # at the dose tilt after the auger stops (the tail falls)
 REVERSE_REVS = 1.0                                 # auger revolutions backwards at rest, after the P16 is back fully extended
 
@@ -147,6 +156,7 @@ PIN_INDEX, PIN_HOME, PIN_ALARM = 23, 24, 25
 PIN_LAC = 18                                       # v7-v10: RC pulse to the one P16's LAC (v5/v6 also used 26 and 16 for their other LACs)
 PIN_AUG_STEP, PIN_AUG_DIR = 13, 21                 # DRV8825 for the NEMA 11 (STEP on a hardware-PWM pin for the seek)
 PIN_AUG_ENA = 20                                   # v10: DRV8825 EN, high = outputs off (the NEMA 11 free); header pin 38, beside DIR's 40
+PIN_HALL_CRADLE = 26                               # v12: the cradle's US5881 (open drain, 10k pull-up to 3.3 V): low = lifted; header pin 37
 PIN_TAP = 12                                       # DRV8871 IN1, tap solenoid
 PIN_HX_DT, PIN_HX_SCK = 5, 6
 
@@ -183,6 +193,8 @@ class Rig:
     edges: list = field(default_factory=list)
     ext: float = 0.0                                # actuator extension, mm
     n11_mode: str = "held"                          # v10: the NEMA 11's DRV8825: "held", "free" or "seek" (nema11())
+    sim_stub: int = 0                               # v12 --sim: how many seeks the simulated pinion needs before it drops into mesh
+    last_seek: dict = field(default_factory=dict)   # v12: what the last seek_mesh() did (logged)
 
     def __post_init__(self):
         if self.sim:
@@ -198,7 +210,7 @@ class Rig:
         for p in (PIN_STEP, PIN_DIR, PIN_ENA, PIN_AUG_STEP, PIN_AUG_DIR, PIN_AUG_ENA, PIN_TAP):
             self.pi.set_mode(p, pigpio.OUTPUT)
             self.pi.write(p, 0)                         # v10: PIN_AUG_ENA low enables the DRV8825: the NEMA 11 held
-        for p in (PIN_INDEX, PIN_HOME, PIN_ALARM):
+        for p in (PIN_INDEX, PIN_HOME, PIN_ALARM, PIN_HALL_CRADLE):
             self.pi.set_mode(p, pigpio.INPUT)
             self.pi.set_pull_up_down(p, pigpio.PUD_UP)
         # the US5881 pulls low when a magnet's south pole is over it
@@ -277,6 +289,55 @@ class Rig:
             self.say(f"chain {n:+d} steps: module {self.module} -> {k % N_MODULES} at the station")
         self.nema11("held")                          # v10: enabled again after the move, the arriving gear in mesh
         self.module = k % N_MODULES
+        if n:
+            self.seek_mesh()                         # v12: every index, then check the cradle's switch
+
+    # ---- v12: the spring-loaded pinion's cradle
+    def cradle_lifted(self) -> bool:
+        """v12: the cradle's US5881 reads low while the EC's magnet is over it, i.e. while the pinion rides more than about 0.8 mm over
+        tight mesh: resting on the gear's tips instead of in its gaps."""
+        if self.pi is None:
+            return self.sim_stub > 0
+        return self.pi.read(PIN_HALL_CRADLE) == 0
+
+    def _turn(self, rev_s: float, t: float):
+        """Turn the pinion at rev_s (+ turns the auger toward the outlet) for t seconds on the STEP pin's hardware PWM, the driver on."""
+        if self.pi is None:
+            return
+        self.pi.write(PIN_AUG_ENA, 0)
+        self.pi.write(PIN_AUG_DIR, 1 if rev_s > 0 else 0)
+        self.pi.hardware_PWM(PIN_AUG_STEP, int(abs(rev_s) * NEMA11_USTEPS), 500000)
+        time.sleep(t)
+        self.pi.hardware_PWM(PIN_AUG_STEP, 0, 0)
+        self.pi.write(PIN_AUG_STEP, 0)
+
+    def seek_mesh(self, tries: int = SEEK12_TRIES) -> dict:
+        """v12, after every index: turn the pinion slowly forward and back (SEEK12_REV_S for SEEK12_T each way, so the auger ends where it
+        started), then read the cradle's switch; while it still reads lifted, try again the other way round, up to `tries` seeks. A
+        pinion left on the gear's tips is lifted on its spring with nothing forced (the model's 6.4-8.4 N), so a stop here is safe:
+        back the chain off 2 mm and index again (TEST-PLAN T6a)."""
+        before = self.cradle_lifted()
+        readings = [before]
+        n = 0
+        for k in range(tries):
+            if k > 0 and not self.cradle_lifted():
+                break
+            d = 1 if k % 2 == 0 else -1
+            self._turn(d * SEEK12_REV_S, SEEK12_T)
+            self._turn(-d * SEEK12_REV_S, SEEK12_T)
+            if self.pi is not None:
+                time.sleep(0.05)
+            n += 1
+            if self.sim_stub > 0:
+                self.sim_stub -= 1
+            readings.append(self.cradle_lifted())
+            self.say(f"seek {n} ({'forward, back' if d > 0 else 'back, forward'} at {SEEK12_REV_S:g} rev/s, {SEEK12_T:g} s each way): "
+                     f"cradle switch reads {'LIFTED' if readings[-1] else 'seated'}")
+        self.last_seek = dict(hall_before=int(before), seeks=n, hall_after=int(readings[-1]))
+        if readings[-1]:
+            raise SystemExit("the pinion is still on the gear's tips after the seek and a second try (the cradle's switch reads lifted): "
+                             "back the chain off 2 mm and index again, or turn the pinion by hand (TEST-PLAN T6a)")
+        return self.last_seek
 
     def alarm(self) -> bool:
         return bool(self.pi and self.pi.read(PIN_ALARM) == 0)
@@ -440,7 +501,7 @@ def _profile(n: int, v: float, a: float) -> list[int]:
 
 LOG_COLUMNS = ["run", "utc", "cmd", "module", "target_steps", "pos_steps", "move_s", "index_edge_steps", "alarm", "dial_mm",
                "tilt", "revs", "rpm", "taps", "hold_s", "reverse_revs", "auger_current_ma", "dose_g", "p16_ext_mm",
-               "nema11", "rail"]                 # v10: the NEMA 11's mode and the rail's result for chain moves (T6a)
+               "nema11", "rail", "hall_before", "seeks", "hall_after"]   # v10: the NEMA 11's mode and the rail's result (T6a); v12: the cradle's switch and seeks
 
 
 def log_row(path: Path, row: dict):
@@ -465,6 +526,7 @@ def main():
                     "free (the DRV8825 disabled), so the pinion's teeth find the arriving gear's gaps (TEST-PLAN T6a)")
     ap.add_argument("--seek-rev-s", type=float, default=SEEK_REV_S, help="v10: the pinion's rev/s for --seek, either direction "
                     "(+ turns the auger toward the outlet, - away from it)")
+    ap.add_argument("--sim-stub", type=int, default=0, help="v12, with --sim: the pinion lands on the gear's tips and needs this many seeks to drop in")
     ap.add_argument("--ask-rail", action="store_true", help="v10: prompt for what the rail did after each chain move "
                     "(clean, clash or jam; TEST-PLAN T6a)")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -502,7 +564,7 @@ def main():
     if a.cmd in ("station", "dose-to", "dose"):
         tilt_to_ext(a.tilt)                             # v10: refuse a tilt outside 4-65 before touching the hardware
 
-    rig = Rig(ppr=a.ppr, sim=a.sim, seek_rev_s=a.seek_rev_s if a.seek else 0.0)
+    rig = Rig(ppr=a.ppr, sim=a.sim, seek_rev_s=a.seek_rev_s if a.seek else 0.0, sim_stub=a.sim_stub)
     rig.enable(True)
     run = time.strftime("%Y%m%dT%H%M%S")
     n11 = f"seek {rig.seek_rev_s:+g}" if rig.seek_rev_s else "free"     # v10: the NEMA 11 during chain moves, logged (T6a)
@@ -511,6 +573,7 @@ def main():
         idx = [e[1] for e in rig.edges if e[0] == "index"]
         if cmd in ("index", "repeat", "endurance", "lap"):     # v10 (T6a): the NEMA 11's mode, and what the rail did
             extra.update(nema11=n11, rail=input("rail (clean, clash or jam): ") if a.ask_rail else "")
+            extra.update(rig.last_seek)                  # v12: the cradle's switch before and after, and how many seeks it took
         row = dict(run=run, utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), cmd=cmd, module=k % N_MODULES,
                    target_steps=rig.module_steps(k), pos_steps=rig.pos, move_s=round(time.time() - t0, 3),
                    index_edge_steps=";".join(map(str, idx)), alarm=int(rig.alarm()),

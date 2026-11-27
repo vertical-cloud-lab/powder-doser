@@ -1,4 +1,5 @@
-"""Pairwise interference checks of the v6 rig (OCC booleans), in frame coordinates.
+"""Pairwise interference checks of the v12 rig (OCC booleans), in frame coordinates. v12 adds --cradle (the spring-loaded pinion's
+cradle over its travel). The rest of this docstring is older:
 
     python check_interference.py            # home pose (station docked), every pair
     python check_interference.py --sweep    # chain indexed one module (8 pitches) in half-link steps the way it runs;
@@ -391,6 +392,29 @@ def tilt10(angles=(4, 10, 20, 30, 40, 50, 60, 65, 70, 75, 80), tag: str = "tilt"
     return hits
 
 
+def cradle(lifts=(-0.4, 0.0, 1.0, 2.0, 2.6, 3.2), angles=(0.0, 30.0, 90.0)) -> list:
+    """v12: the pinion's cradle over its whole travel (on its stop, in tight mesh, lifted 1, 2 (a tip-on-tip stub), 2.6 and 3.2 mm, the
+    roof's pad) at rest and with the module pulled up to 30 and 90 deg: the cradle, the NEMA 11, the pinion, the spring, the stop's set
+    screw and insert and the hall switch against everything else (the EC included, its pivot bosses, rail, roof, magnet post and arm)."""
+    hits = []
+    movers = ("cradle12", "nema11_v12", "pinion24", "set_screw_m3x6", "insert_m3_short", "hall_switch12")
+    for a in angles:
+        for lf in lifts:
+            st = L.State(tilt=float(a), cradle_lift=float(lf))
+            pl = L.placements(st)
+            mv = [p for p in pl if p.key in movers or p.key.startswith("spring12_")]
+            ids = {id(p) for p in mv}
+            rest = [p for p in pl if id(p) not in ids]
+            mo, ro = objects(mv), objects(rest)
+            objs = mo + ro
+            pairs = [(i, j) for i in range(len(mo)) for j in range(i + 1, len(objs))]
+            h = overlaps(objs, pairs)
+            hits += [(f"{x} @tilt{a:g} lift{lf:+g}", y, v) for x, y, v in h]
+            print(f"  tilt {a:4.0f}, lift {lf:+.1f}: {len(h)} clash(es)", flush=True)
+    _report("cradle", hits, {"lifts_mm": list(lifts), "angles": list(angles)})
+    return hits
+
+
 SWAP_AUGER_OUT = (5.0, 15.0, 30.0, 45.0, 60.0, 80.0, 100.0, 140.0)       # mm off the plate: the auger crosses the +y panel at 43-92
 SWAP_LIFT = (0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 100.0)               # v11: 15 mm steps; v4's 0, 30, 100 jumped over the panel
 
@@ -458,7 +482,9 @@ def scale() -> list:
 
 
 if __name__ == "__main__":
-    if "--sweep" in sys.argv:
+    if "--cradle" in sys.argv:
+        cradle()
+    elif "--sweep" in sys.argv:
         # --step N: a coarser sweep (N links per pose) when time is short; the JSON records the step and pose count
         sweep(float(sys.argv[sys.argv.index("--step") + 1])) if "--step" in sys.argv else sweep()
     elif "--latch" in sys.argv:

@@ -1,30 +1,30 @@
-"""v11 station dynamics with real tooth contact (MuJoCo): how the auger's 44T gear meets the EC's 24T pinion, stays in mesh
-while the P16 tilts the module, and lets go again; and what a spring-loaded pinion would change.
+"""v12 station dynamics with real tooth contact (MuJoCo): the spring-loaded pinion v12 is built round.
 
-Sterling (PR #185, 2026-11-27): "I also need a better explanation for how the auger gear engages and disengages now that it's
-not gravity keeping contact ... perhaps a spring or similar could help at some point". v11's README listed "the station's
-dynamics, and the gear's sideways engagement" as not simulated.
+Sterling (PR #185, 2026-11-27): "Go with the spring-loaded pinion. Make v12 from v11 with what your last report proposed: the NEMA 11
+and its pinion on a cradle that pivots in the EC, with a spring pressing the pinion into the gear (about 1 N/mm and 6 N preload) and a
+set-screw stop; a hall switch on the cradle ...; the slow seek after each index (turn the pinion slowly, reversing once), with a second
+try when the switch still reads 'lifted'; a second seat for the EC on the far side of the module ... Then redo every check for v12: the
+MuJoCo entry, hold, exit and robustness runs, against the same tolerance stack; the stall torque with the preloaded mesh, against what
+the auger needs".
 
-Everything is in the station module's Sam frame at rest (layout.sam_frame(station_frame(), 0)): x along the auger from its
-exit (the hinge is the y axis through the origin), z out of the loop (world DOWN at the station), so gravity is +z here and the
-module's weight presses it onto its latch shelf. The machine runs the bottom run toward Sam +y, so the next module arrives from
-Sam -y. SI units inside MuJoCo, mm in the code's constants.
+This is v11's model (mesh11.py, kept in ../../chain-carousel-v11/sim) with the pinion on v12's cradle instead of v11's rigid mount or
+its proposed slide:
+  cradle  the NEMA 11, the 24T pinion and the printed cradle (224 g), hinged in the EC about x on the pivot dowels, 18.5 mm to the side
+          the gears arrive from (Sam -y) at the pinion's level; a torsional spring equal to v12's 1 N/mm spring at the pinion, 6 N at
+          the set screw's stop 0.4 mm past tight mesh (the joint's upper limit); the roof's pad 3.2 mm over tight mesh (its lower limit)
+  hall    the switch on the cradle reads "lifted" when the pinion is more than 0.8 mm over the pivot's level (tight mesh as drawn)
+  seats   the EC's two guide shoes in two 90 deg seats, one each side of the module (v11: one)
+and the driver's v12 seek after every index: the pinion turned 0.25 rev/s forward for 0.2 s and back for 0.2 s with the driver on; if the
+switch still reads "lifted", a second try the other way round. The tolerance stack a_err places the EC (its pivot and stop) a_err mm
+farther from the gear than drawn (the set screw is set once, on module 1): at +0.4 or more the cradle rests on its stop in mesh.
 
-Bodies:
-  carriage  the station carriage on the chain: a slide along y, position-servoed (the NEMA 34 and the chain), the index profile
-    module  Sam's plate v11 + T-bracket + door: hinged on the carriage (y axis), its outward swing stopped by the latch shelf
-            (the joint's lower limit at 0); the T's head runs between the EC's lips
-      auger tube, flights, cap and the 44T gear (the lab auger STEP's own tooth outline, convex prisms), turning on x
-  p16       Actuonix P16-150 pinned at its base (y axis), its rod a position-held slide (the LAC), 50 N limit
-    ec      EC v11 on the rod-end pin: free about the pin (y), with the clevis's and the P16's lateral compliance in y, roll (x)
-            and yaw (z) as springs; its lips and ceiling round the T's head, its shoe's nose over the guide's 90 deg seat
-      carrier (optional) the NEMA 11 on a spring-loaded slide toward the gear, with a stop: the spring option
-        pinion the 24T steel pinion (involute, module 1) on the NEMA 11, driven by a stepper torque-angle model, or free
-  seat      the guide's 90 deg cone (world), 0.5 mm under the shoe's nose tip as drawn
+Everything is in the station module's Sam frame at rest (layout.sam_frame(station_frame(), 0)): x along the auger from its exit (the
+hinge is the y axis through the origin), z out of the loop (world DOWN at the station), so gravity is +z here. The machine runs the
+bottom run toward Sam +y, so the next module arrives from Sam -y. SI units inside MuJoCo, mm in the code's constants.
 
-    python mesh11.py geom                    # re-derive the station geometry from layout.py (needs cadquery)
-    python mesh11.py entry [--a-err 0] [--spring] [--mode free|held|seek] [--phases 12]
-    python mesh11.py study                   # every study in the README, results in out/*.json
+    python mesh12.py entry [--a-err 0] [--phases 12] [--k-roll 10] [--leading]
+    python mesh12.py cycle [--a-err 0]
+    python mesh12.py info
 """
 from __future__ import annotations
 
@@ -40,7 +40,8 @@ import mujoco
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
-V11 = HERE.parent
+V12 = HERE.parent
+V11 = V12
 GM = V11.parent / "gear-mesh"
 OUT = HERE / "out"
 OUT.mkdir(parents=True, exist_ok=True)
@@ -70,18 +71,33 @@ GEO = dict(
     lip_bottom=-21.0,                        # params.RAIL11_BOTTOM
     ec_bottom=-19.0, plate_top=-18.0,        # the EC's underside 1 mm over the plate's inner face
     sol_x=32.0,
+    pivot=(-18.5, -34.0),                    # v12: params.CRADLE12_PIV (y, z): the cradle's dowels, level with the pinion in tight mesh
+    shoe_tip2=(139.0, -32.0, -24.5),         # v12: the second shoe's nose tip (params.SHOE12_Y2), its seat 0.5 further (+z)
+    lift_max=3.2,                            # v12: the roof's pad (params.CRADLE12_LIFT)
 )
 Z1, Z2 = 24, GC.Z2                           # pinion, gear teeth
 R1, R2 = 12.0, 22.0
 A0 = R1 + R2                                 # 34.0: zero-backlash centre distance for standard teeth
 
 # masses (g, mm): printed PETG at 1.27 g/cm3 x a solid fraction, STL volumes from stl/*.stl (trimesh)
-EC_PARTS = [  # (g, x, y, z)
+EC_PARTS_V11 = [  # (g, x, y, z)
     (45.07 * 1.27 * 0.80, 83.0, 8.0, -32.7),  # EC v11's CAD, 45.07 cm3, its centroid (2026-11-27, after the spine, bars and shoe bracket fixes)
     (180.0, 115.0, 0.0, -34.25),             # NEMA 11 11HS18-0674S (0.18 kg, SPECS.md), body x 93.5-137 on the pinion's axis
     (34.0, 83.3, 0.0, -34.25),               # 24T steel pinion, OD 26 x 10, 5 mm bore
     (35.0, 32.0, 0.0, -40.0),                # solenoid over clip 1 (Adafruit 412 class)
     (10.0, 90.0, 20.0, -30.0),               # screws, rod-end shoulder screw, nut
+]
+EC_PARTS = [  # v12: the EC without the cradle (g, x, y, z)
+    (48.06 * 1.27 * 0.80, 88.0, 6.7, -37.4),  # EC v12's CAD, 48.06 cm3, its centroid
+    (35.0, 32.0, 0.0, -40.0),                # solenoid over clip 1
+    (10.0, 90.0, 20.0, -30.0),               # screws, rod-end shoulder screw, nut
+    (1.5, 102.0, 30.0, -39.5),               # the hall switch's magnet, the two dowels
+]
+CRADLE_PARTS = [  # v12: what turns on the cradle (g, x, y, z)
+    (7.71 * 1.27 * 0.80, 105.0, 0.3, -39.1),  # cradle v12's CAD, 7.71 cm3
+    (180.0, 116.0, 0.0, -34.0),               # NEMA 11 11HS18-0674S, body x 93.5-138.5 on the pinion's axis
+    (34.0, 83.3, 0.0, -34.0),                 # 24T steel pinion and its sleeve
+    (2.0, 106.0, 22.0, -36.0),                # the stop's insert and set screw, the hall switch
 ]
 MOD_PARTS = [  # the module without the turning auger (the plate, T, door, screws)
     (70.35 * 1.27 * 0.80, 128.2, 0.1, -13.3),   # mounting_plate_v11.stl 70.35 cm3 (Sam z = -18 + z_stl)
@@ -155,7 +171,7 @@ def tooth_polygon(outline: np.ndarray, z: int) -> np.ndarray:
 
 def tooth_polys() -> tuple[np.ndarray, np.ndarray]:
     """(44T gear tooth from the lab auger's STEP, 24T pinion tooth), each a convex 2D polygon with the tooth on +y."""
-    cache = OUT / "tooth_polys11.npz"
+    cache = OUT / "tooth_polys12.npz"
     if cache.exists():
         z = np.load(cache)
         return z["g"], z["p"]
@@ -182,8 +198,13 @@ class Cfg:
     k_lat: float = 1.0e4        # N/m: its sideways (y) give: the P16's rod at 10 N side load moves ~1 mm (assumed)
     detent: float = 3.0e-3      # N*m: the free NEMA 11's detent torque (DRV8825 disabled)
     drag: float = 5.0e-3        # N*m: the auger's static drag (5 mN m empty; 30 mN m with packed powder)
-    spring: bool = False        # the proposed spring-loaded pinion (v12 candidate)
-    k_spring: float = 1000.0    # N/m (1 N/mm)
+    spring: bool = False        # v11's proposed slide (kept for comparison; v12 is the cradle)
+    cradle: bool = True         # v12: the pinion on the spring-loaded cradle (False: v11's rigid mount, as drawn in v11)
+    piv_dy: float = -18.5       # v12: the pivot's y from the pinion's axis (-: the side the gears arrive from, a trailing arm; +: leading)
+    piv_dz: float = 0.0         # v12: the pivot's z from the pinion's axis (+: toward the gear; +12 puts it level with the pitch point)
+    seats: int = 2              # v12: the EC's guide seats (v11: 1)
+    hall_lift: float = 0.8      # v12: the hall switch reads 'lifted' above this lift of the pinion over the pivot's level (mm)
+    k_spring: float = 1000.0    # N/m (1 N/mm) at the pinion
     f_spring: float = 6.0       # N at the stop
     stop_deep: float = 0.4      # mm the stop lets the pinion go deeper than the zero-backlash centre distance (34.0)
     p16_kp: float = 1.0e5       # N/m: the P16's lead screw held by the LAC
@@ -195,7 +216,9 @@ class Cfg:
 
 
 def ec_inertial(cfg: Cfg):
-    parts = EC_PARTS if not cfg.spring else [p for p in EC_PARTS if p[0] not in (180.0, 34.0)]
+    if cfg.cradle:
+        return _com(EC_PARTS)
+    parts = EC_PARTS_V11 if not cfg.spring else [p for p in EC_PARTS_V11 if p[0] not in (180.0, 34.0)]
     return _com(parts)
 
 
@@ -225,11 +248,11 @@ def build(cfg: Cfg) -> tuple[str, dict]:
     ry = g["rail_y"]
     lip_top = hz0 + g["lip_gap"]
     ceil = hz1 - g["ceiling_gap"]
-    tx, ty, tz = g["shoe_tip"]
-    apex_z = tz + g["seat_gap"]
+    tips = [g["shoe_tip"]] + ([g["shoe_tip2"]] if (cfg.cradle and cfg.seats >= 2) else [])
     r_nose = 2.0
-    nose_c = (tx - px, ty - py, (apex_z - g["seat_gap"] - r_nose * math.sqrt(2)) - pz)   # contact after the 0.5 mm the drawing leaves
-    X = [f"""<mujoco model="v11-station">
+    nose_cs = [(t[0] - px, t[1] - py, (t[2] - r_nose * math.sqrt(2)) - pz) for t in tips]   # contact after the 0.5 mm the drawing leaves
+    tx, ty, tz = g["shoe_tip"]
+    X = [f"""<mujoco model="v12-station">
   <compiler angle="radian" autolimits="true"/>
   <option timestep="{DT}" gravity="0 0 {G}" integrator="implicitfast" cone="elliptic" iterations="80" tolerance="1e-10">
     <flag filterparent="disable"/>
@@ -246,24 +269,26 @@ def build(cfg: Cfg) -> tuple[str, dict]:
     <default class="hard"><geom condim="3" friction="0.3 0 0" {sol_c}/></default>
   </default>
   <worldbody>"""]
-    # the guide's seat: a 90 deg cone (12 flat facets) with its apex at apex_z, opening toward -z (world up)
+    # the guides' seats: 90 deg cones (12 flat facets) with their apexes seat_gap under the noses' tips, opening toward -z (world up)
     nf = 12
-    seat = []
-    for k in range(nf):
-        a = 2 * math.pi * k / nf
-        rr = 4.0                                  # facet centre's distance from the axis
-        cxw, cyw = tx + rr * math.cos(a), ty + rr * math.sin(a)
-        czw = apex_z - rr                        # 45 deg: z rises (toward -z) as r grows
-        # facet normal points inward/up: (-cos a, -sin a, -1)/sqrt2 ; build a box whose local z is that normal
-        n = np.array([-math.cos(a), -math.sin(a), -1.0]) / math.sqrt(2)
-        t1 = np.array([-math.sin(a), math.cos(a), 0.0])
-        t2 = np.cross(n, t1)
-        R = np.c_[t1, t2, n]
-        q = _quat(R)
-        ctr = np.array([cxw, cyw, czw]) - n * 2.5
-        seat.append(f'<geom class="hard" type="box" size="{2.4 * MM:.5f} {4.5 * MM:.5f} {2.5 * MM:.5f}" pos="{ctr[0] * MM:.6f} {ctr[1] * MM:.6f} {ctr[2] * MM:.6f}" '
-                    f'quat="{q[0]:.6f} {q[1]:.6f} {q[2]:.6f} {q[3]:.6f}" contype="64" conaffinity="32" rgba="0.9 0.5 0.1 0.6"/>')
-    X.append('    <body name="seat">' + "".join(seat) + "</body>")
+    for si, (tx, ty, tz) in enumerate(tips):
+        apex_z = tz + g["seat_gap"]
+        seat = []
+        for k in range(nf):
+            a = 2 * math.pi * k / nf
+            rr = 4.0                                  # facet centre's distance from the axis
+            cxw, cyw = tx + rr * math.cos(a), ty + rr * math.sin(a)
+            czw = apex_z - rr                        # 45 deg: z rises (toward -z) as r grows
+            n = np.array([-math.cos(a), -math.sin(a), -1.0]) / math.sqrt(2)
+            t1 = np.array([-math.sin(a), math.cos(a), 0.0])
+            t2 = np.cross(n, t1)
+            R = np.c_[t1, t2, n]
+            q = _quat(R)
+            ctr = np.array([cxw, cyw, czw]) - n * 2.5
+            seat.append(f'<geom class="hard" type="box" size="{2.4 * MM:.5f} {4.5 * MM:.5f} {2.5 * MM:.5f}" pos="{ctr[0] * MM:.6f} {ctr[1] * MM:.6f} {ctr[2] * MM:.6f}" '
+                        f'quat="{q[0]:.6f} {q[1]:.6f} {q[2]:.6f} {q[3]:.6f}" contype="64" conaffinity="32" rgba="0.9 0.5 0.1 0.6"/>')
+        X.append(f'    <body name="seat{"" if si == 0 else si + 1}">' + "".join(seat) + "</body>")
+
     # the carriage (chain) and the module
     imod = 0.30 * m_mod * (0.257 ** 2 / 12)
     X.append(f"""    <body name="carriage">
@@ -312,10 +337,28 @@ def build(cfg: Cfg) -> tuple[str, dict]:
           <joint name="ec_yaw" type="hinge" axis="0 0 1" stiffness="{cfg.k_yaw:.4g}" damping="{0.02 * cfg.k_yaw ** 0.5:.4g}"/>
           <joint name="ec_pin" type="hinge" axis="0 1 0" damping="0.0005"/>
           <inertial pos="{cx:.6f} {cy:.6f} {cz:.6f}" mass="{m_ec:.5f}" diaginertia="6e-5 6e-4 6e-4"/>
-          <geom type="sphere" pos="{nose_c[0] * MM:.6f} {nose_c[1] * MM:.6f} {nose_c[2] * MM:.6f}" size="{r_nose * MM:.5f}" class="hard" contype="32" conaffinity="64" rgba="0.2 0.7 0.4 1"/>
+          {''.join(f'<geom type="sphere" pos="{c[0] * MM:.6f} {c[1] * MM:.6f} {c[2] * MM:.6f}" size="{r_nose * MM:.5f}" class="hard" contype="32" conaffinity="64" rgba="0.2 0.7 0.4 1"/>' for c in nose_cs)}
           {''.join(lip_geoms)}""")
     pin_ax = ec_rel(xm, 0.0, pin_z)
-    if cfg.spring:
+    if cfg.cradle:
+        # v12: the cradle on its pivot (along x), the pinion level with it at q = 0; q > 0 turns the pinion toward the gear (+z). The pivot and
+        # the stop sit a_err farther from the gear than drawn: tight mesh is at sin q = a_err / L, the stop at sin q = stop_deep / L
+        L = abs(cfg.piv_dy)
+        sg = 1.0 if cfg.piv_dy < 0 else -1.0                # pinion at +L (trailing arm, pivot on -y) or -L (leading) in y from the pivot
+        pvz = g["pivot"][1] + cfg.piv_dz - cfg.a_err
+        piv = ec_rel(xm, cfg.piv_dy, pvz)
+        q_stop = math.asin(cfg.stop_deep / L)
+        q_lo = -math.asin(g["lift_max"] / L)
+        k_th = cfg.k_spring * (L * MM) ** 2
+        ref = q_stop + (cfg.f_spring / cfg.k_spring) / (L * MM)
+        mc, cc = _com(CRADLE_PARTS)
+        crel = ((cc[0] - xm) * MM, (cc[1] - cfg.piv_dy) * MM, (cc[2] - g["pivot"][1] - cfg.piv_dz) * MM)   # the cradle's centre of mass from the pivot
+        icr = 2.4e-5                                        # about its centre of mass (the NEMA 11's 28 mm square body)
+        X.append(f"""          <body name="cradle" pos="{piv[0]:.6f} {piv[1]:.6f} {piv[2]:.6f}">
+            <joint name="cradle" type="hinge" axis="{sg:.0f} 0 0" range="{q_lo:.6f} {q_stop:.6f}" stiffness="{k_th:.6g}" springref="{ref:.6f}" damping="0.0008" solreflimit="0.0005 1"/>
+            <inertial pos="{crel[0]:.6f} {crel[1]:.6f} {crel[2]:.6f}" mass="{mc - 0.034:.5f}" diaginertia="{icr:.3e} {icr:.3e} {icr:.3e}"/>
+            <body name="pinion" pos="0 {-cfg.piv_dy * MM:.6f} {-cfg.piv_dz * MM:.6f}">""")
+    elif cfg.spring:
         # the NEMA 11 and pinion on a slide toward the gear (+z), pushed by a spring; the stop lets it go stop_deep under 34.0
         q_stop = (a_nom - (A0 - cfg.stop_deep))             # how far (+z, mm) the carrier can move from as-drawn before the stop
         ref = q_stop + cfg.f_spring / cfg.k_spring * 1000.0  # spring's free position, mm
@@ -331,7 +374,7 @@ def build(cfg: Cfg) -> tuple[str, dict]:
         a = 2 * math.pi * k / Z1 + math.pi + math.pi / Z1        # tooth on -z side faces a gear space at the line of centres
         q = (math.cos(a / 2), math.sin(a / 2), 0, 0)
         X.append(f'              <geom class="tooth" type="mesh" mesh="ptooth" quat="{q[0]:.7f} {q[1]:.7f} 0 0" contype="4" conaffinity="2" rgba="0.95 0.45 0.05 1"/>')
-    X.append("            </body>" + ("\n          </body>" if cfg.spring else ""))
+    X.append("            </body>" + ("\n          </body>" if (cfg.spring or cfg.cradle) else ""))
     X.append("""        </body>
       </body>
     </body>
@@ -368,10 +411,12 @@ class Station:
         self.m = mujoco.MjModel.from_xml_string(self.xml)
         self.d = mujoco.MjData(self.m)
         m = self.m
-        names = ["chain", "hinge", "spin", "p16_pivot", "p16_slide", "ec_lat", "ec_roll", "ec_yaw", "ec_pin", "motor"] + (["carrier"] if cfg.spring else [])
+        names = ["chain", "hinge", "spin", "p16_pivot", "p16_slide", "ec_lat", "ec_roll", "ec_yaw", "ec_pin", "motor"] + (
+            ["cradle"] if cfg.cradle else (["carrier"] if cfg.spring else []))
         self.qa = {n: m.jnt_qposadr[m.joint(n).id] for n in names}
         self.va = {n: m.jnt_dofadr[m.joint(n).id] for n in names}
-        self.bid = {n: m.body(n).id for n in ("module", "auger", "ec", "pinion", "seat", "carriage")}
+        self.bid = {n: m.body(n).id for n in ("module", "auger", "ec", "pinion", "seat", "carriage") + (("cradle",) if cfg.cradle else ())}
+        self.seat_ids = [m.body(n).id for n in ("seat", "seat2") if mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, n) >= 0]
         self.mode = "free"          # free | held | drive
         self.theta_cmd = 0.0
         self.w_cmd = 0.0
@@ -432,16 +477,34 @@ class Station:
         return tot
 
     def seat_force(self):
+        return sum(self.seat_forces())
+
+    def seat_forces(self):
+        """Normal force on each guide seat (N): (first, second)."""
         d, m = self.d, self.m
         f = np.zeros(6)
-        tot = 0.0
-        sb = self.bid["seat"]
+        out = [0.0 for _ in self.seat_ids]
         for i in range(d.ncon):
             c = d.contact[i]
-            if sb in (m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2]):
-                mujoco.mj_contactForce(m, d, i, f)
-                tot += f[0]
-        return tot
+            b1, b2 = m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2]
+            for j, sb in enumerate(self.seat_ids):
+                if sb in (b1, b2):
+                    mujoco.mj_contactForce(m, d, i, f)
+                    out[j] += f[0]
+        return out
+
+    def lift(self):
+        """v12: the pinion's lift over the pivot's level (mm), what the hall switch on the cradle reads (0 in tight mesh as drawn)."""
+        if not self.cfg.cradle:
+            return 0.0
+        q = self.d.qpos[self.qa["cradle"]]
+        sg = 1.0 if self.cfg.piv_dy < 0 else -1.0
+        ry, rz = -self.cfg.piv_dy, -self.cfg.piv_dz
+        ph = sg * q
+        return -(ry * math.sin(ph) + rz * (math.cos(ph) - 1.0))
+
+    def lifted(self):
+        return self.lift() > self.cfg.hall_lift
 
     def t_force(self):
         """Normal force between the T (module) and the EC's lips/ceiling/walls/underside (N)."""
@@ -536,23 +599,25 @@ def trapezoid(dist: float, v: float, a: float, t: float) -> tuple[float, float]:
 
 
 # ---------------------------------------------------------------- studies
-def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0, record=False, seek_rev_s=-0.25, hold=0.12, post_seek=True,
-          seek_reverse=False):
-    """One index into the station: the carriage arrives from Sam -y at the Pi driver's 50 mm/s and 250 mm/s^2 (the last 5 mm
-    decelerating), the gear slides into mesh with the pinion, the carriage stops at the station, everything settles. The pinion
-    starts phase_frac of a pinion pitch off the angle that meshes at the station."""
+def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0, record=False, seek_rev_s=0.25, hold=0.12, post_seek=True,
+          seek_reverse=True, seek_t=0.2, tries=2):
+    """One index into the station: the carriage arrives from Sam -y at the Pi driver's 50 mm/s and 250 mm/s^2, the gear slides into
+    mesh with the pinion (the NEMA 11's driver off: the pinion free), the carriage stops at the station, everything settles. The pinion
+    starts phase_frac of a pinion pitch off the angle that meshes at the station. Then v12's seek: the driver on, the pinion turned
+    seek_rev_s forward for seek_t and back for seek_t; if the hall switch still reads 'lifted', a second try, back first. The result
+    records the switch's reading after each step and whether it was right."""
     S = Station(cfg)
     d = S.d
     S.mode = "free" if mode == "free" else "drive"
     S.d.qpos[S.qa["motor"]] = phase_frac * 2 * math.pi / Z1
     S.theta_cmd = S.d.qpos[S.qa["motor"]]
-    S.w_cmd = (2 * math.pi * seek_rev_s) if mode == "seek" else 0.0
+    S.w_cmd = (-2 * math.pi * abs(seek_rev_s)) if mode == "seek" else 0.0
     S.set_chain(y0, 0.0)
-    S.settle(0.10)                          # the EC settles on its seat and clevis, the module on its shelf
-    cd_rest = S.centre_distance()
+    S.settle(0.10)                          # the EC settles on its seats and clevis, the module on its shelf, the cradle on its stop
+    rest_seats = [round(float(f), 2) for f in S.seat_forces()]
+    rest_lift = S.lift()
     t_a = v / acc
     dist = -y0
-    # start already at speed: shift the trapezoid so the carriage is at cruise when the run starts
     t_start = t_a
     x_start = 0.5 * acc * t_a ** 2
     total = dist + x_start
@@ -563,6 +628,7 @@ def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0,
     frames = []
     every = max(1, int(2e-4 / DT))
     f_chain_max = 0.0
+    lift_max = -9.0
     for i in range(n):
         t = t_start + i * DT
         x, vv = trapezoid(total, v, acc, t)
@@ -573,52 +639,83 @@ def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0,
             fc = float(S.f_chain)
             if abs(S.chain_y) < 13.0:
                 f_chain_max = max(f_chain_max, abs(fc))
+            lift_max = max(lift_max, S.lift())
             log.append((d.time, S.chain_y, d.qpos[S.qa["chain"]] / MM, S.centre_distance(), S.tooth_force(), fc,
                         math.degrees(d.qpos[S.qa["motor"]]), math.degrees(d.qpos[S.qa["spin"]]), S.seat_force(),
-                        math.degrees(d.qpos[S.qa["ec_roll"]]), S.tilt_deg(), S.t_force()))
+                        math.degrees(d.qpos[S.qa["ec_roll"]]), S.tilt_deg(), S.t_force(), S.lift()))
         if record and i % int(round(1 / 300 / DT)) == 0:
             frames.append((d.time, d.qpos.copy()))
     cd_stop = S.centre_distance()
+    hall = [bool(S.lifted())]
+    cds = [cd_stop]
     seek_log = []
-    # after the index: turn the pinion slowly (0.25 rev/s, 0.3 s) with the driver on, as the Pi driver's seek does, and see whether a
-    # pinion left on the gear's tips drops into mesh
-    if post_seek:
+
+    def seek(direction):
+        """forward then back (direction +1), or back then forward (-1): the driver on, 0.25 rev/s, seek_t each way, then hold 0.1 s."""
         S.mode = "drive"
         S.theta_cmd = d.qpos[S.qa["motor"]]
-        S.w_cmd = 2 * math.pi * 0.25 * (-1)
-        for i in range(int(0.4 / DT)):
-            if seek_reverse and i == int(0.2 / DT):
-                S.w_cmd = -S.w_cmd                 # half a seek forward, then back: a pinion whose tips ride on the gear's lets go
+        w = -2 * math.pi * abs(seek_rev_s) * direction          # - turns the auger forward (the dose's direction)
+        S.w_cmd = w
+        nn = int(2 * seek_t / DT)
+        for i in range(nn):
+            if i == nn // 2:
+                S.w_cmd = -w
             S.step()
             if record and i % int(round(1 / 300 / DT)) == 0:
                 frames.append((d.time, d.qpos.copy()))
             if i % every == 0:
-                seek_log.append((d.time, S.centre_distance(), S.tooth_force()))
+                seek_log.append((d.time, S.centre_distance(), S.tooth_force(), S.lift()))
         S.w_cmd = 0.0
         for i in range(int(0.1 / DT)):
             S.step()
             if record and i % int(round(1 / 300 / DT)) == 0:
                 frames.append((d.time, d.qpos.copy()))
+
+    n_seeks = 0
+    if post_seek:
+        for k in range(tries):
+            if k > 0 and not S.lifted():
+                break                                           # the second try only when the switch still reads lifted
+            seek(+1 if (k % 2 == 0) else -1)
+            n_seeks += 1
+            hall.append(bool(S.lifted()))
+            cds.append(S.centre_distance())
+            if not seek_reverse:
+                break
     A = np.array(log)
     lag = A[:, 1] - A[:, 2]
     near = np.abs(A[:, 2]) < 11.5
-    # the peak tooth force averaged over 2 ms (the one-sample peak depends on the contact model's stiffness)
     kf = max(1, int(round(2e-3 / (every * DT))))
     f_avg = np.convolve(A[:, 4], np.ones(kf) / kf, mode="same")
-    res = dict(phase=phase_frac, mode=mode, a_err=cfg.a_err, spring=cfg.spring, k_roll=cfg.k_roll, drag_mNm=cfg.drag * 1e3,
-               cd_rest_before=round(cd_rest, 3), cd_end=round(float(A[-1, 3]), 3),
+    res = dict(phase=phase_frac, mode=mode, a_err=cfg.a_err, spring=cfg.spring, cradle=cfg.cradle, piv_dy=cfg.piv_dy, seats=cfg.seats,
+               f_spring=cfg.f_spring, stop_deep=cfg.stop_deep, k_roll=cfg.k_roll, drag_mNm=cfg.drag * 1e3,
+               cd_end=round(float(S.centre_distance()), 3),
                tooth_force_max_N=round(float(A[near, 4].max() if near.any() else 0.0), 2),
                tooth_force_2ms_max_N=round(float(f_avg[near].max() if near.any() else 0.0), 2), cd_at_stop=round(cd_stop, 3),
                chain_force_max_N=round(f_chain_max, 2), chain_lag_max_mm=round(float(np.abs(lag).max()), 3),
                pinion_turn_deg=round(float(A[-1, 6] - A[0, 6]), 1), auger_turn_deg=round(float(A[-1, 7] - A[0, 7]), 2),
                ec_roll_max_deg=round(float(np.abs(A[:, 9]).max()), 3), module_lift_max_deg=round(float(A[:, 10].max()), 3),
-               end_tooth_force_N=round(float(A[-1, 4]), 2), end_seat_N=round(float(A[-1, 8]), 2))
-    res["cd_after_seek"] = round(S.centre_distance(), 3)
+               end_tooth_force_N=round(float(S.tooth_force()), 2), end_seats_N=[round(float(f), 2) for f in S.seat_forces()],
+               end_t_force_N=round(float(S.t_force()), 2), rest_seats_N=rest_seats, rest_lift_mm=round(rest_lift, 3),
+               lift_max_mm=round(lift_max, 3), end_lift_mm=round(S.lift(), 3), n_seeks=n_seeks,
+               hall=hall, cds=[round(float(c), 3) for c in cds])
     res["jam"] = bool(res["chain_lag_max_mm"] > 0.25 or res["chain_force_max_N"] > 40.0)
-    res["meshed"] = bool(res["cd_at_stop"] < A0 + 0.70 and not res["jam"])            # in mesh when the chain stops
-    res["stubbed"] = bool(not res["jam"] and not res["meshed"])                        # parked on the gear's tips, nothing forced
-    res["meshed_after_seek"] = bool(res["cd_after_seek"] < A0 + 0.70 and not res["jam"])
-    res["outcome"] = "jam" if res["jam"] else ("meshed" if res["meshed"] else ("stub, cleared by the seek" if res["meshed_after_seek"] else "stub"))
+    ok = lambda c: c < A0 + 0.70
+    res["meshed"] = bool(ok(cd_stop) and not res["jam"])
+    res["stubbed"] = bool(not res["jam"] and not res["meshed"])
+    res["meshed_after_seek"] = bool(ok(res["cd_end"]) and not res["jam"])
+    # the switch is right when it reads lifted exactly when the pinion isn't in mesh, at every reading
+    res["hall_right"] = all(h == (not ok(c)) for h, c in zip(hall, cds))
+    if res["jam"]:
+        res["outcome"] = "jam"
+    elif res["meshed"]:
+        res["outcome"] = "meshed"
+    elif len(cds) > 1 and ok(cds[1]):
+        res["outcome"] = "stub, cleared by the seek"
+    elif len(cds) > 2 and ok(cds[2]):
+        res["outcome"] = "stub, cleared by the second try"
+    else:
+        res["outcome"] = "stub left (the switch reads lifted)" if S.lifted() else "stub left, the switch reads seated"
     return (res, A, frames, S) if record else (res, A)
 
 
