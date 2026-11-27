@@ -1,0 +1,7 @@
+powder_id,powder,target_g,trials,doses,within_1mg,within_5mg,within_5pct,over_1mg,median_error_mg,mean_error_mg,sd_error_mg,min_error_mg,max_error_mg,median_time_s,min_time_s,max_time_s,ended_in_bulk,ended_in_fine,ended_in_tap,median_fine_afterflow_mg,median_bulk_rate_g_per_s
+alsi10mg,AlSi10Mg,2.0,26,20,11,14,20,9,0.7,7.6,13.6,-0.6,41.3,47.2,26.5,193.8,0,9,11,32.5,0.118
+sodium-sulfate,Sodium sulfate,1.5,23,23,1,1,12,22,65.5,90.4,74.2,-0.1,254.9,11.9,11.2,12.6,23,0,0,,0.357
+calcium-lactate,Calcium lactate,2.0,18,18,1,4,14,17,46.5,48.3,43.1,0.5,115.1,24.2,22.1,108.1,0,12,6,34.8,0.173
+barium-chloride,Barium chloride,1.5,4,0,0,0,0,0,,,,,,,,,0,0,0,,
+xanthan-gum,Xanthan gum,2.0,18,18,3,9,18,15,5.0,17.4,23.5,-0.3,62.9,61.5,30.3,94.7,0,8,10,28.2,0.108
+salt,NaCl,1.0,27,24,3,7,23,21,7.3,15.6,17.4,0.7,58.3,27.4,21.0,65.3,0,14,10,40.2,0.093

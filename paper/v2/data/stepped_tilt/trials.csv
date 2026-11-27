@@ -1,0 +1,134 @@
+powder_id,powder,group,run,launch,protocol,trial,date_utc,start_utc,status,target_g,final_g,error_mg,error_pct,dose_s,end_stage,bulk_rate_g_per_s,fine_afterflow_mg,dose_completed,within_1mg,within_5pct,plot_row,plot_y,plot_x_symlog
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,1,2026-11-19,22:43:48,stalled,2.0,0.0027,-1997.3,-99.86,13.5,,,,0,0,0,6,6.066,-3.3007
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,2,2026-11-19,22:44:18,overshoot,2.0,2.0026,2.6,0.13,35.4,fine,0.1384,42.4,1,0,1,6,5.852,0.5563
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,3,2026-11-19,22:45:09,ok,2.0,2.0003,0.3,0.01,84.4,tap,0.1324,2.9,1,1,1,6,6.198,0.1139
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,4,2026-11-19,22:46:48,overshoot,2.0,2.0023,2.3,0.11,74.2,tap,0.1515,6.3,1,0,1,6,5.984,0.5185
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,5,2026-11-19,22:48:17,ok,2.0,1.9997,-0.3,-0.01,94.5,tap,0.1224,17.2,1,1,1,6,5.770,-0.1139
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,6,2026-11-19,22:50:06,overshoot,2.0,2.0403,40.3,2.01,34.4,fine,0.0903,69.6,1,0,1,6,6.117,1.6160
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,7,2026-11-19,22:50:56,ok,2.0,1.9994,-0.6,-0.03,105.5,tap,0.0974,23.1,1,1,1,6,5.903,-0.2041
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,8,2026-11-19,22:52:56,ok,2.0,1.9997,-0.3,-0.01,66.8,tap,0.0786,16.2,1,1,1,6,6.249,-0.1139
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,9,2026-11-19,22:54:18,ok,2.0,2.0006,0.6,0.03,183.9,tap,0.0781,2.6,1,1,1,6,6.035,0.2041
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,10,2026-11-19,22:57:36,ok,2.0,1.9998,-0.2,-0.01,108.4,tap,0.0769,36.4,1,1,1,6,5.821,-0.0792
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,11,2026-11-19,22:59:39,ok,2.0,2.0008,0.8,0.04,49.2,tap,0.0862,31.1,1,1,1,6,6.167,0.2553
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,12,2026-11-19,23:00:43,ok,2.0,1.9995,-0.5,-0.03,193.8,tap,0.08,2.6,1,1,1,6,5.953,-0.1761
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,13,2026-11-19,23:04:12,overshoot,2.0,2.0265,26.5,1.32,29.7,fine,0.1266,63.3,1,0,1,6,5.739,1.4393
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,14,2026-11-19,23:04:57,overshoot,2.0,2.0413,41.3,2.06,27.8,fine,0.1188,69.1,1,0,1,6,6.085,1.6263
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,15,2026-11-19,23:05:40,overshoot,2.0,2.0209,20.9,1.04,28.8,fine,0.1132,52.4,1,0,1,6,5.871,1.3404
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,16,2026-11-19,23:06:25,overshoot,2.0,2.0052,5.2,0.26,62.8,tap,0.1167,8.6,1,0,1,6,6.218,0.7924
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,17,2026-11-19,23:07:42,ok,2.0,2.0001,0.1,0.01,45.3,tap,0.1199,14.9,1,1,1,6,6.004,0.0414
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,18,2026-11-19,23:08:42,stalled,2.0,1.3526,-647.4,-32.37,72.6,,,,0,0,0,6,5.790,-2.8118
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,19,2026-11-19,23:10:11,stalled,2.0,0.0005,-1999.5,-99.97,14.2,,,,0,0,0,6,6.136,-3.3011
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch1_2243Z,final,20,2026-11-19,23:10:41,stalled,2.0,0.0004,-1999.6,-99.98,13.6,,,,0,0,0,6,5.922,-3.3012
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch2_0208Z,final,21,2026-11-20,02:08:49,stalled,2.0,0.0022,-1997.8,-99.89,14.2,,,,0,0,0,6,6.268,-3.3008
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch2_0208Z,final,22,2026-11-20,02:09:19,ok,2.0,1.9994,-0.6,-0.03,39.0,fine,0.1221,41.0,1,1,1,6,6.054,-0.2041
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch2_0208Z,final,23,2026-11-20,02:10:14,overshoot,2.0,2.0016,1.6,0.08,26.9,fine,0.1235,34.0,1,0,1,6,5.840,0.4150
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch2_0208Z,final,24,2026-11-20,02:10:56,ok,2.0,1.9999,-0.1,-0.01,26.5,fine,0.1269,37.4,1,1,1,6,6.186,-0.0414
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch2_0208Z,final,25,2026-11-20,02:11:39,overshoot,2.0,2.0116,11.6,0.58,28.8,fine,0.1174,48.2,1,0,1,6,5.972,1.1004
+alsi10mg,AlSi10Mg,research,2026-11-19_alsi10mg_tilt-schedule-2g,launch2_0208Z,final,26,2026-11-20,02:12:23,incomplete,2.0,,,0.00,,,,,0,0,0,6,5.759,0.0000
+barium-chloride,Barium chloride,research,2026-11-20_barium-chloride_tilt-schedule-1p5g,launch1_1735Z,final,1,2026-11-20,17:35:27,stalled,1.5,0.0056,-1494.4,-99.63,16.0,,,,0,0,0,3,3.066,-3.1748
+barium-chloride,Barium chloride,research,2026-11-20_barium-chloride_tilt-schedule-1p5g,launch1_1735Z,final,2,2026-11-20,17:35:59,stalled,1.5,0.0025,-1497.5,-99.83,14.9,,,,0,0,0,3,2.852,-3.1757
+barium-chloride,Barium chloride,research,2026-11-20_barium-chloride_tilt-schedule-1p5g,launch2_1741Z,final,1,2026-11-20,17:41:46,stalled,1.5,0.0021,-1497.9,-99.86,14.9,,,,0,0,0,3,2.910,-3.1758
+barium-chloride,Barium chloride,research,2026-11-20_barium-chloride_tilt-schedule-1p5g,launch2_1741Z,final,2,2026-11-20,17:42:17,stalled,1.5,0.0022,-1497.8,-99.85,14.8,,,,0,0,0,3,3.256,-3.1757
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,1,2026-11-20,03:06:05,overshoot,2.0,2.1151,115.1,5.75,22.9,fine,0.1882,73.0,1,0,0,4,4.066,2.0648
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,2,2026-11-20,03:06:43,overshoot,2.0,2.0317,31.7,1.58,22.9,fine,0.1636,7.5,1,0,1,4,3.852,1.5145
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,3,2026-11-20,03:07:22,overshoot,2.0,2.0065,6.5,0.33,22.5,fine,0.1735,9.8,1,0,1,4,4.198,0.8751
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,4,2026-11-20,03:08:00,overshoot,2.0,2.1037,103.7,5.18,24.2,fine,0.1634,144.0,1,0,0,4,3.984,2.0199
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,5,2026-11-20,03:08:40,overshoot,2.0,2.0049,4.9,0.25,90.7,tap,0.1745,1.7,1,0,1,4,3.770,0.7709
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,6,2026-11-20,03:10:25,overshoot,2.0,2.0164,16.4,0.82,85.1,tap,0.1719,2.0,1,0,1,4,4.117,1.2405
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,7,2026-11-20,03:12:05,overshoot,2.0,2.1024,102.4,5.12,24.3,fine,0.1699,126.8,1,0,0,4,3.903,2.0145
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,8,2026-11-20,03:12:45,overshoot,2.0,2.0713,71.3,3.56,24.7,fine,0.1653,94.2,1,0,1,4,4.249,1.8591
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,9,2026-11-20,03:13:25,overshoot,2.0,2.0072,7.2,0.36,23.2,fine,0.167,1.8,1,0,1,4,4.035,0.9138
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,10,2026-11-20,03:14:04,overshoot,2.0,2.005,5.0,0.25,102.2,tap,0.1576,2.2,1,0,1,4,3.821,0.7782
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,11,2026-11-20,03:16:01,overshoot,2.0,2.004,4.0,0.20,108.1,tap,0.1663,11.8,1,0,1,4,4.167,0.6990
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,12,2026-11-20,03:18:03,overshoot,2.0,2.0056,5.6,0.28,85.2,tap,0.1657,1.1,1,0,1,4,3.953,0.8195
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,13,2026-11-20,03:19:43,overshoot,2.0,2.1062,106.2,5.31,22.1,fine,0.1735,93.2,1,0,0,4,3.739,2.0302
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,14,2026-11-20,03:20:21,ok,2.0,2.0005,0.5,0.03,54.1,tap,0.1789,3.8,1,1,1,4,4.085,0.1761
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,15,2026-11-20,03:21:30,overshoot,2.0,2.0776,77.6,3.88,24.5,fine,0.176,99.3,1,0,1,4,3.871,1.8954
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,16,2026-11-20,03:22:10,overshoot,2.0,2.0852,85.2,4.26,23.0,fine,0.1781,57.8,1,0,1,4,4.218,1.9355
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,17,2026-11-20,03:22:49,overshoot,2.0,2.0612,61.2,3.06,23.9,fine,0.1846,95.8,1,0,1,4,4.004,1.7938
+calcium-lactate,Calcium lactate,surrogate,2026-11-20_calcium-lactate_tilt-schedule-2g,launch1_0305Z,final,18,2026-11-20,03:23:28,overshoot,2.0,2.0654,65.4,3.27,22.9,fine,0.183,58.6,1,0,1,4,3.790,1.8222
+salt,NaCl,surrogate,2026-11-18_salt_tilt-schedule-50-30deg,launch1_1606Z,development,1,2026-11-18,16:06:25,stalled,1.0,0.0001,-999.9,-99.99,12.9,,,,0,0,0,1,1.066,-3.0004
+salt,NaCl,surrogate,2026-11-18_salt_tilt-schedule-50-30deg,launch1_1606Z,development,2,2026-11-18,16:06:54,stalled,1.0,0.0002,-999.8,-99.98,13.0,,,,0,0,0,1,0.852,-3.0003
+salt,NaCl,surrogate,2026-11-18_salt_tilt-schedule-50-30deg,launch2_1609Z,development,1,2026-11-18,16:09:47,stalled,1.0,0.0,-1000.0,-100.00,13.0,,,,0,0,0,1,0.910,-3.0004
+salt,NaCl,surrogate,2026-11-18_salt_tilt-schedule-50-30deg,launch2_1609Z,development,2,2026-11-18,16:10:16,stalled,1.0,0.0,-1000.0,-100.00,13.0,,,,0,0,0,1,1.256,-3.0004
+salt,NaCl,surrogate,2026-11-18_salt_tilt-schedule,launch1_0645Z,development,1,2026-11-18,06:45:19,stalled,1.0,-0.0232,-1023.2,-102.32,13.3,,,,0,0,0,1,1.066,-3.0104
+salt,NaCl,surrogate,2026-11-18_salt_tilt-schedule,launch1_0645Z,development,2,2026-11-18,06:45:49,stalled,1.0,-0.0036,-1003.6,-100.36,15.1,,,,0,0,0,1,0.852,-3.0020
+salt,NaCl,surrogate,2026-11-18_salt_tilt-schedule,launch2_0655Z,development,1,2026-11-18,06:55:13,stalled,1.0,0.5597,-440.3,-44.03,45.8,,,,0,0,0,1,0.910,-2.6447
+salt,NaCl,surrogate,2026-11-18_salt_tilt-schedule,launch2_0655Z,development,2,2026-11-18,06:56:15,stalled,1.0,-0.0107,-1010.7,-101.07,15.0,,,,0,0,0,1,1.256,-3.0051
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-bulk-taps,launch1_2041Z,development,1,2026-11-19,20:41:16,stalled,1.0,0.7557,-244.3,-24.43,113.0,,0.0029,,0,0,0,1,1.066,-2.3897
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-bulk-taps,launch1_2041Z,development,2,2026-11-19,20:43:24,stalled,1.0,0.7586,-241.4,-24.14,431.4,,0.0024,,0,0,0,1,0.852,-2.3845
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-bulk-taps,launch2_2052Z,development,1,2026-11-19,20:51:57,timeout,1.0,0.8482,-151.8,-15.18,600.7,,0.0014,,0,0,0,1,0.910,-2.1841
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-bulk-taps,launch2_2052Z,development,2,2026-11-19,21:02:14,stalled,1.0,0.2891,-710.9,-71.09,401.3,,,,0,0,0,1,1.256,-2.8524
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-bulk-taps,launch2_2052Z,development,3,2026-11-19,21:09:11,stalled,1.0,0.0002,-999.8,-99.98,13.0,,,,0,0,0,1,1.042,-3.0003
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-new-auger,launch1_1947Z,development,1,2026-11-19,19:47:21,stalled,1.0,0.1672,-832.8,-83.28,18.5,,,,0,0,0,1,1.066,-2.9211
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-new-auger,launch1_1947Z,development,2,2026-11-19,19:47:56,stalled,1.0,0.0017,-998.3,-99.83,14.0,,,,0,0,0,1,0.852,-2.9997
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-new-auger,launch2_1953Z,development,1,2026-11-19,19:53:54,stalled,1.0,0.0558,-944.2,-94.42,37.7,,,,0,0,0,1,0.910,-2.9755
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-new-auger,launch2_1953Z,development,2,2026-11-19,19:54:48,stalled,1.0,0.0005,-999.5,-99.95,14.1,,,,0,0,0,1,1.256,-3.0002
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,1,2026-11-19,21:43:26,overshoot,1.0,1.0229,22.9,2.29,24.1,fine,0.0924,65.7,1,0,1,1,1.066,1.3784
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,2,2026-11-19,21:44:06,overshoot,1.0,1.0439,43.9,4.39,25.0,fine,0.0865,71.5,1,0,1,1,0.852,1.6522
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,3,2026-11-19,21:44:46,overshoot,1.0,1.0137,13.7,1.37,22.1,fine,0.1037,56.5,1,0,1,1,1.198,1.1673
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,4,2026-11-19,21:45:24,overshoot,1.0,1.0015,1.5,0.15,65.3,tap,0.0607,24.7,1,0,1,1,0.984,0.3979
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,5,2026-11-19,21:46:44,overshoot,1.0,1.0024,2.4,0.24,32.3,tap,0.0651,29.8,1,0,1,1,0.770,0.5315
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,6,2026-11-19,21:47:31,overshoot,1.0,1.0497,49.7,4.97,27.4,fine,0.0759,91.0,1,0,1,1,1.117,1.7050
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,7,2026-11-19,21:48:14,ok,1.0,1.0008,0.8,0.08,31.1,fine,0.0404,44.4,1,1,1,1,0.903,0.2553
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,8,2026-11-19,21:49:01,ok,1.0,1.0008,0.8,0.08,27.5,fine,0.0559,40.2,1,1,1,1,1.249,0.2553
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,9,2026-11-19,21:49:44,overshoot,1.0,1.0053,5.3,0.53,22.7,fine,0.0982,43.2,1,0,1,1,1.035,0.7993
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,10,2026-11-19,21:50:22,overshoot,1.0,1.0145,14.5,1.45,29.4,tap,0.0844,40.3,1,0,1,1,0.821,1.1903
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,11,2026-11-19,21:51:06,overshoot,1.0,1.0469,46.9,4.69,23.2,fine,0.0661,72.7,1,0,1,1,1.167,1.6803
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,12,2026-11-19,21:51:45,overshoot,1.0,1.0319,31.9,3.19,22.4,fine,0.0844,40.9,1,0,1,1,0.953,1.5172
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,13,2026-11-19,21:52:23,overshoot,1.0,1.0185,18.5,1.85,22.9,fine,0.0896,62.7,1,0,1,1,0.739,1.2900
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,14,2026-11-19,21:53:02,overshoot,1.0,1.013,13.0,1.30,22.5,fine,0.0886,54.5,1,0,1,1,1.085,1.1461
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,15,2026-11-19,21:53:40,overshoot,1.0,1.0074,7.4,0.74,45.6,tap,0.0958,19.2,1,0,1,1,0.871,0.9243
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,16,2026-11-19,21:54:40,ok,1.0,1.0007,0.7,0.07,21.5,fine,0.0999,36.7,1,1,1,1,1.218,0.2304
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,17,2026-11-19,21:55:17,overshoot,1.0,1.0046,4.6,0.46,21.0,fine,0.096,37.8,1,0,1,1,1.004,0.7482
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,18,2026-11-19,21:55:54,overshoot,1.0,1.0073,7.3,0.73,38.6,tap,0.1026,11.6,1,0,1,1,0.790,0.9191
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,19,2026-11-19,21:56:47,overshoot,1.0,1.0061,6.1,0.61,49.2,tap,0.1058,21.7,1,0,1,1,1.136,0.8513
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,20,2026-11-19,21:57:51,overshoot,1.0,1.0061,6.1,0.61,34.0,tap,0.1002,23.9,1,0,1,1,0.922,0.8513
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,21,2026-11-19,21:58:39,overshoot,1.0,1.0089,8.9,0.89,48.5,tap,0.1062,20.9,1,0,1,1,1.268,0.9956
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,22,2026-11-19,21:59:43,overshoot,1.0,1.0583,58.3,5.83,21.8,fine,0.0935,95.7,1,0,0,1,1.054,1.7731
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,23,2026-11-19,22:00:20,overshoot,1.0,1.0071,7.1,0.71,45.2,tap,0.1008,12.0,1,0,1,1,0.840,0.9085
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,24,2026-11-19,22:01:20,overshoot,1.0,1.0022,2.2,0.22,49.8,tap,0.1007,17.3,1,0,1,1,1.186,0.5051
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,25,2026-11-19,22:02:24,stalled,1.0,0.7808,-219.2,-21.92,27.7,,0.0942,,0,0,0,1,0.972,-2.3428
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,26,2026-11-19,22:03:08,stalled,1.0,0.0006,-999.4,-99.94,13.4,,,,0,0,0,1,0.759,-3.0002
+salt,NaCl,surrogate,2026-11-19_salt_tilt-schedule-old-auger-80rpm,launch1_2143Z,final,27,2026-11-19,22:03:37,stalled,1.0,0.0002,-999.8,-99.98,13.6,,,,0,0,0,1,1.105,-3.0003
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,1,2026-11-20,18:04:17,overshoot,1.5,1.5493,49.3,3.29,12.6,bulk,0.3193,,1,0,1,5,5.066,1.7016
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,2,2026-11-20,18:04:46,overshoot,1.5,1.5064,6.4,0.43,12.3,bulk,0.3377,,1,0,1,5,4.852,0.8692
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,3,2026-11-20,18:05:14,overshoot,1.5,1.4999,-0.1,-0.01,11.6,bulk,0.339,,1,1,1,5,5.198,-0.0414
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,4,2026-11-20,18:05:42,overshoot,1.5,1.5219,21.9,1.46,12.4,bulk,0.3335,,1,0,1,5,4.984,1.3598
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,5,2026-11-20,18:06:10,overshoot,1.5,1.5074,7.4,0.49,11.9,bulk,0.3397,,1,0,1,5,4.770,0.9243
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,6,2026-11-20,18:06:38,overshoot,1.5,1.5381,38.1,2.54,12.3,bulk,0.3267,,1,0,1,5,5.117,1.5922
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,7,2026-11-20,18:07:06,overshoot,1.5,1.5432,43.2,2.88,12.0,bulk,0.3541,,1,0,1,5,4.903,1.6454
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,8,2026-11-20,18:07:34,overshoot,1.5,1.5616,61.6,4.11,12.4,bulk,0.3576,,1,0,1,5,5.249,1.7966
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,9,2026-11-20,18:08:02,overshoot,1.5,1.5655,65.5,4.37,11.7,bulk,0.3434,,1,0,1,5,5.035,1.8228
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,10,2026-11-20,18:08:30,overshoot,1.5,1.6036,103.6,6.91,12.1,bulk,0.3564,,1,0,0,5,4.821,2.0195
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,11,2026-11-20,18:08:58,overshoot,1.5,1.6467,146.7,9.78,11.9,bulk,0.353,,1,0,0,5,5.167,2.1694
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,12,2026-11-20,18:09:26,overshoot,1.5,1.6601,160.1,10.67,12.3,bulk,0.361,,1,0,0,5,4.953,2.2071
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,13,2026-11-20,18:09:54,overshoot,1.5,1.7043,204.3,13.62,11.7,bulk,0.3448,,1,0,0,5,4.739,2.3124
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,14,2026-11-20,18:10:22,overshoot,1.5,1.5117,11.7,0.78,12.0,bulk,0.3649,,1,0,1,5,5.085,1.1038
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,15,2026-11-20,18:10:49,overshoot,1.5,1.6104,110.4,7.36,11.9,bulk,0.3827,,1,0,0,5,4.871,2.0469
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,16,2026-11-20,18:11:17,overshoot,1.5,1.5175,17.5,1.17,12.0,bulk,0.3663,,1,0,1,5,5.218,1.2672
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,17,2026-11-20,18:11:45,overshoot,1.5,1.6384,138.4,9.23,11.6,bulk,0.3804,,1,0,0,5,5.004,2.1443
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,18,2026-11-20,18:12:13,overshoot,1.5,1.7163,216.3,14.42,11.8,bulk,0.3573,,1,0,0,5,4.790,2.3371
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,19,2026-11-20,18:12:41,overshoot,1.5,1.5564,56.4,3.76,11.8,bulk,0.4081,,1,0,1,5,5.136,1.7589
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,20,2026-11-20,18:13:08,overshoot,1.5,1.7549,254.9,16.99,11.2,bulk,0.3624,,1,0,0,5,4.922,2.4081
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,21,2026-11-20,18:13:35,overshoot,1.5,1.6158,115.8,7.72,12.0,bulk,0.4001,,1,0,0,5,5.268,2.0674
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,22,2026-11-20,18:14:03,overshoot,1.5,1.5811,81.1,5.41,11.7,bulk,0.3749,,1,0,0,5,5.054,1.9143
+sodium-sulfate,Sodium sulfate,research,2026-11-20_sodium-sulfate_tilt-schedule-1p5g,launch1_1804Z,final,23,2026-11-20,18:14:31,overshoot,1.5,1.6682,168.2,11.21,11.5,bulk,0.3826,,1,0,0,5,4.840,2.2284
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,1,2026-11-20,18:59:21,ok,2.0,1.9997,-0.3,-0.01,82.8,tap,0.1121,10.6,1,1,1,2,2.066,-0.1139
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,2,2026-11-20,19:00:58,ok,2.0,1.9997,-0.3,-0.01,94.7,tap,0.106,11.4,1,1,1,2,1.852,-0.1139
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,3,2026-11-20,19:02:48,overshoot,2.0,2.0233,23.3,1.17,33.0,fine,0.0978,48.0,1,0,1,2,2.198,1.3856
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,4,2026-11-20,19:03:36,ok,2.0,2.0002,0.2,0.01,71.9,tap,0.1096,8.3,1,1,1,2,1.984,0.0792
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,5,2026-11-20,19:05:03,overshoot,2.0,2.0026,2.6,0.13,63.1,tap,0.1058,35.9,1,0,1,2,1.770,0.5563
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,6,2026-11-20,19:06:21,overshoot,2.0,2.0022,2.2,0.11,67.0,tap,0.1041,22.1,1,0,1,2,2.117,0.5051
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,7,2026-11-20,19:07:42,overshoot,2.0,2.0019,1.9,0.10,82.6,tap,0.0967,15.0,1,0,1,2,1.903,0.4624
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,8,2026-11-20,19:09:19,overshoot,2.0,2.0034,3.4,0.17,63.4,tap,0.1018,24.7,1,0,1,2,2.249,0.6435
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,9,2026-11-20,19:10:37,overshoot,2.0,2.0017,1.7,0.09,82.6,tap,0.1073,11.1,1,0,1,2,2.035,0.4314
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,10,2026-11-20,19:12:15,overshoot,2.0,2.0629,62.9,3.15,32.7,fine,0.0973,91.6,1,0,1,2,1.821,1.8055
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,11,2026-11-20,19:13:03,overshoot,2.0,2.0081,8.1,0.41,32.0,fine,0.11,51.9,1,0,1,2,2.167,0.9590
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,12,2026-11-20,19:13:51,overshoot,2.0,2.0015,1.5,0.07,72.7,tap,0.1217,27.6,1,0,1,2,1.953,0.3979
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,13,2026-11-20,19:15:18,overshoot,2.0,2.0066,6.6,0.33,60.0,tap,0.1197,21.2,1,0,1,2,1.739,0.8808
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,14,2026-11-20,19:16:33,overshoot,2.0,2.0164,16.4,0.82,30.3,fine,0.124,28.9,1,0,1,2,2.085,1.2405
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,15,2026-11-20,19:17:19,overshoot,2.0,2.012,12.0,0.60,30.5,fine,0.126,53.1,1,0,1,2,1.871,1.1139
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,16,2026-11-20,19:18:05,overshoot,2.0,2.0593,59.3,2.96,30.9,fine,0.1237,84.7,1,0,1,2,2.218,1.7803
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,17,2026-11-20,19:18:51,overshoot,2.0,2.0546,54.6,2.73,31.6,fine,0.1205,80.8,1,0,1,2,2.004,1.7451
+xanthan-gum,Xanthan gum,surrogate,2026-11-20_xanthan-gum_tilt-schedule-2g,launch1_1859Z,final,18,2026-11-20,19:19:39,overshoot,2.0,2.0578,57.8,2.89,33.0,fine,0.1042,78.7,1,0,1,2,1.790,1.7694

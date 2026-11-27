@@ -1,0 +1,125 @@
+% Figure: repeated doses on the stepped-tilt protocol (PR #131, 18-20 Nov 2026).
+% Two panels, one page each (assembled as subfigures in paper/main.tex):
+%   page 1  final error of every completed dose, on a symmetric-log axis
+%   page 2  time per dose
+% Data: data/stepped_tilt/plot_doses.csv, made by data/stepped_tilt/build.sh.
+% Build (MiKTeX):  cd paper/v2 && pdflatex steppedtilt.tex && mv steppedtilt.pdf figures/
+\documentclass[multi=tikzpicture,border=1pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{patterns}
+
+\definecolor{surr}{HTML}{2A78D6}
+\definecolor{res}{HTML}{EB6834}
+\definecolor{ink}{HTML}{0B0B0B}
+\definecolor{ink2}{HTML}{52514E}
+\definecolor{muted}{HTML}{B8B6AE}
+\definecolor{band}{HTML}{F5F4F0}
+\definecolor{pass}{HTML}{DFF0DF}
+\definecolor{stop}{HTML}{8FCB8F}
+
+\pgfplotsset{
+  doser/.style={
+    font=\fontsize{6.5}{7.5}\selectfont,
+    scale only axis, height=4.1cm,
+    ymin=0.5, ymax=6.5,
+    ytick={1,...,6},
+    y tick style={draw=none},
+    axis line style={muted, line width=0.6pt},
+    tick style={ink2, line width=0.5pt},
+    tick label style={ink2},
+    label style={ink},
+    axis x line*=bottom, axis y line*=left,
+    clip=false,
+    scatter/classes={
+      research-tap-in={mark=*, draw=res, fill=res},
+      research-fine-in={mark=triangle*, draw=res, fill=res},
+      research-bulk-in={mark=square*, draw=res, fill=res},
+      research-bulk-out={mark=square, draw=res, fill=white},
+      research-fine-out={mark=triangle, draw=res, fill=white},
+      surrogate-tap-in={mark=*, draw=surr, fill=surr},
+      surrogate-fine-in={mark=triangle*, draw=surr, fill=surr},
+      surrogate-fine-out={mark=triangle, draw=surr, fill=white}},
+    every mark/.append style={line width=0.45pt, scale=0.62, fill opacity=0.85},
+  },
+}
+
+% Row shading, alternate rows, as in Fig. 7.
+\newcommand{\rowbands}[2]{%
+  \fill[band] (axis cs:#1,1.5) rectangle (axis cs:#2,2.5);
+  \fill[band] (axis cs:#1,3.5) rectangle (axis cs:#2,4.5);
+  \fill[band] (axis cs:#1,5.5) rectangle (axis cs:#2,6.5);}
+
+\begin{document}
+
+% ---------------------------------------------------------------- (a) error
+% x = sign(e) log10(1 + |e|), e in mg (symmetric-log axis).
+\begin{tikzpicture}
+\begin{axis}[doser,
+  width=7.4cm,
+  xmin=-0.62, xmax=2.48,
+  xtick={-0.4771,0,0.3010,0.7782,1.0414,1.7076,2.0043,2.3997},
+  xticklabels={$-2$,0,1,5,10,50,100,250},
+  xlabel={Final error (mg, delivered $-$ target; symmetric log scale)},
+  yticklabels={NaCl (1 g), Xanthan gum (2 g), Barium chloride (1.5 g),
+               Calcium lactate (2 g), Sodium sulfate (1.5 g), AlSi10Mg (2 g)},
+  ]
+  \rowbands{-0.62}{2.48}
+  % Acceptance limit (+-5 % of the target; the lower edge is off the axis).
+  \fill[pass] (axis cs:-0.62,0.58) rectangle (axis cs:1.7076,1.42);   % NaCl, 1 g: +50 mg
+  \fill[pass] (axis cs:-0.62,1.58) rectangle (axis cs:2.0043,2.42);   % xanthan, 2 g: +100 mg
+  \fill[pass] (axis cs:-0.62,2.58) rectangle (axis cs:1.8808,3.42);   % BaCl2, 1.5 g: +75 mg
+  \fill[pass] (axis cs:-0.62,3.58) rectangle (axis cs:2.0043,4.42);   % Ca lactate, 2 g
+  \fill[pass] (axis cs:-0.62,4.58) rectangle (axis cs:1.8808,5.42);   % Na2SO4, 1.5 g
+  \fill[pass] (axis cs:-0.62,5.58) rectangle (axis cs:2.0043,6.42);   % AlSi10Mg, 2 g
+  % The controller's own stopping band, +-1 mg.
+  \fill[stop, fill opacity=0.55] (axis cs:-0.3010,0.5) rectangle (axis cs:0.3010,6.5);
+  \draw[ink2, line width=0.4pt] (axis cs:0,0.5) -- (axis cs:0,6.5);
+  \node[anchor=west, text=ink2, font=\fontsize{6}{7}\selectfont\itshape]
+    at (axis cs:-0.55,3) {no dose: nothing left the tube in 4 trials};
+  \addplot[scatter, only marks, scatter src=explicit symbolic]
+    table[x=x, y=y, meta=cls, col sep=comma] {data/stepped_tilt/plot_doses.csv};
+  \node[anchor=south, text=ink2, font=\fontsize{5.6}{6.5}\selectfont, align=center]
+    at (axis cs:0,6.5) {$\pm$1 mg\\stopping band};
+  \node[anchor=south west, text=ink2, font=\fontsize{5.6}{6.5}\selectfont]
+    at (axis cs:1.2,6.5) {light green: $\pm$5\% acceptance limit};
+\end{axis}
+\end{tikzpicture}
+
+% ---------------------------------------------------------------- (b) time
+\begin{tikzpicture}
+\begin{axis}[doser,
+  width=4.3cm,
+  xmode=log, log basis x=10,
+  xmin=9, xmax=260,
+  xtick={10,20,50,100,200},
+  xticklabels={10,20,50,100,200},
+  xlabel={Time per dose (s)},
+  yticklabels={},
+  legend style={draw=none, fill=none, font=\fontsize{5.8}{6.8}\selectfont,
+                at={(0.5,1.03)}, anchor=south, row sep=0pt, column sep=4pt},
+  legend columns=2,
+  legend cell align=left,
+  ]
+  \rowbands{9}{260}
+  \addplot[scatter, only marks, scatter src=explicit symbolic, forget plot]
+    table[x=t, y=y, meta=cls, col sep=comma] {data/stepped_tilt/plot_doses.csv};
+  \addlegendimage{only marks, mark=*, draw=ink2, fill=ink2, mark size=1.4pt}
+  \addlegendentry{ended in the tap stage}
+  \addlegendimage{only marks, mark=triangle*, draw=ink2, fill=ink2, mark size=1.6pt}
+  \addlegendentry{ended in the fine stage}
+  \addlegendimage{only marks, mark=square*, draw=ink2, fill=ink2, mark size=1.3pt}
+  \addlegendentry{ended in the bulk stage}
+  \addlegendimage{only marks, mark=square, draw=ink2, fill=white, mark size=1.3pt}
+  \addlegendentry{open: outside $\pm$5\%}
+  \addlegendimage{only marks, mark=*, draw=res, fill=res, mark size=1.4pt}
+  \addlegendentry{research powder}
+  \addlegendimage{only marks, mark=*, draw=surr, fill=surr, mark size=1.4pt}
+  \addlegendentry{food-safe surrogate}
+\end{axis}
+\end{tikzpicture}
+
+\end{document}
