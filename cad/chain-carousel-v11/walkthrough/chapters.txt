@@ -1,0 +1,12 @@
+0:00 What v11 is
+0:40 The frame and the chain loop
+1:14 A module
+1:46 Building it, step by step
+2:40 Indexing into the station
+3:09 How the gear meets the pinion
+4:19 What holds the mesh while it doses
+5:10 Tilting to ninety degrees
+5:41 Dosing into the balance
+6:14 Checks
+7:01 Printing and buying
+7:59 Next: a spring-loaded pinion

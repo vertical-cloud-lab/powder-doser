@@ -201,6 +201,18 @@ version; [VENDOR-CHECK.md](VENDOR-CHECK.md), [`../print/README.md`](../print/REA
 boss (0.4 mm). The rod needs a boss about 3.1 mm across, which means re-laying the housing's tower channel, the spring's axis and the
 cap's hole round it. Until then the rod can only be glued to the boss's face.
 
+## The walkthrough video (2026-11-27)
+
+[`walkthrough/walkthrough_v11.mp4`](walkthrough/walkthrough_v11.mp4) is a narrated tour of v11, made by
+[`walkthrough/make_walkthrough.py`](walkthrough/make_walkthrough.py) from this folder's own clips, stills and simulation plots, with
+the chapters in [`walkthrough/script_v11.py`](walkthrough/script_v11.py). The chapters are: what v11 is, the frame and the chain,
+a module, building it step by step, indexing, how the gear meets the pinion, what holds the mesh, 0-90°, dosing into the balance, the
+checks, printing and buying, and the spring-loaded pinion. The narration is Piper's offline text-to-speech with the public-domain
+LJ Speech voice; the captions are the narration ([`walkthrough_v11.srt`](walkthrough/walkthrough_v11.srt)), and
+[`description.txt`](walkthrough/description.txt) is a YouTube description with the chapters' timestamps. It isn't on YouTube yet: this
+repo's `claude.yml` doesn't pass the upload token ([`../../youtube/README.md`](../../youtube/README.md) has the two steps and the
+one-command upload).
+
 ## Checks
 
 These are OCC boolean overlaps between parts; anything over 0.5 mm³ counts as a clash. By-design contacts are skipped by part key
@@ -209,8 +221,8 @@ every check.
 
 | Check | What moves | Result |
 |---|---|---|
-| Home ([`checks/home.json`](checks/home.json)) | Every pair of the 829 instances (re-run 2026-11-27 with the chain's plates redrawn to McMaster's CAD and the 400 mm side hatch) | **0** |
-| `--tilt11` ([`tilt_a.json`](checks/tilt_a.json), [`tilt_c.json`](checks/tilt_c.json), [`tilt_b.json`](checks/tilt_b.json)) | Module 1, the EC and the P16 (its body swings on its base pin, its rod slides) at 0, 10, 20 ... 80, 85 and 90° against everything else | **0 at every angle** |
+| Home ([`checks/home.json`](checks/home.json)) | Every pair of the 829 instances (re-run 2026-11-27 on the fixed CAD: the EC, the guide, the door housing, the T-bracket, the 400 mm side hatch and the chain's plates; the EC-pinion and EC-guide pairs no longer skipped) | **0** |
+| `--tilt11` ([`tilt_a.json`](checks/tilt_a.json), [`tilt_c.json`](checks/tilt_c.json), [`tilt_b.json`](checks/tilt_b.json)) | Module 1, the EC and the P16 (its body swings on its base pin, its rod slides) at 0, 10, 20 ... 80, 85 and 90° against everything else (re-run 2026-11-27 on the fixed CAD) | **0 at every angle** |
 | [`sweep_station.py`](sweep_station.py) ([`checks/sweep_station.json`](checks/sweep_station.json)) | Every carriage and module within 2.2 modules of the station, over one module of travel in 1-link steps (9 poses), each door opened by the EC's ramp as it passes, against the EC, the P16 and its bar, the guide, the beam, the balance, the pillar and the beaker | **0** |
 | `--swap` ([`checks/swap.json`](checks/swap.json)) | Module 4 at the loading position, the side hatch open: its auger pulled 5-140 mm straight off its plate through the hatch (8 poses); then the whole carriage, its two screws backed out 10 mm, slid 10 mm and lifted 0-100 mm in 15 mm steps (8 poses) | **0**: the auger, and the whole carriage out through the 400 mm hatch (the 330 mm one stopped it: below) |
 | `--latch` ([`checks/latch.json`](checks/latch.json)) | The latch cam against every other part while carriage 1 passes it in quarter-link steps over ±3 links (25 poses: the cam's ±18 mm flat and 30° ramps end 25.8 mm out), then with module 1, the EC and the P16 at 10, 20 ... 90° (9 poses) | **0**. Carriage 1's follower overlaps the cam only on the ramps, by at most 1.22 mm³ (a 0.2 mm sliver: the round 3 mm dowel placed by the ramp's straight-line kinematics; v5's 25° ramp gave 0.57), and not at all on the flat |
@@ -297,7 +309,11 @@ to $133.69 (was $473.94 before the vendor check of 2026-11-27, below).
 | [`explain11.py`](explain11.py), [`rail_profile.py`](rail_profile.py), [`chain_nitro.py`](chain_nitro.py) | The clips in `renders/v11/` (GIF + MP4 each), the rail's profile view, the chain figure |
 | [`build.py`](build.py) | STEP assembly and components, the printed parts' STLs (`ec11.stl`, `t_bracket.stl`, `door_head11.stl`, `p16_bracket11.stl`, `guide11.stl`, `latch_rail11.stl`, `pillar11.stl`, `mounting_plate_v11.stl`, `carriage.stl`), the DXFs |
 | [`bom.py`](bom.py) / [`BOM.md`](BOM.md) | The BoM |
-| [`TEST-PLAN.md`](TEST-PLAN.md) | v10's tests with the station's rewritten for v11 |
+| [`TEST-PLAN.md`](TEST-PLAN.md) | v10's tests with the station's rewritten for v11; T6a, T6d and T8c with the simulations' and A&D's numbers (2026-11-27) |
+| [`sim/`](sim/README.md) | The station in MuJoCo with real tooth contact: how the gear engages, holds and lets go; the spring-loaded pinion (2026-11-27) |
+| [`VENDOR-CHECK.md`](VENDOR-CHECK.md), [`checks/vendor_v11.json`](checks/vendor_v11.json) | The vendor check through the doser Pi: A&D's HR-100A drawing, McMaster's chain CAD, every estimated price (2026-11-27) |
+| [`walkthrough/`](walkthrough/) | The narrated walkthrough video, its script, captions, chapters and description (2026-11-27) |
+| [`ec_fix_still.py`](ec_fix_still.py) | `renders/ec11_fixed.png`: EC v11 as fixed, with the pinion, the NEMA 11 and the guide |
 | [`test/chain_rig.py`](test/chain_rig.py) | The Pi driver: one P16-150 (0-90°, `P16_TABLE` from `layout.p16_11_ext`), the 24T pinion's ratio |
 
 To re-run:

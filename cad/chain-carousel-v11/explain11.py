@@ -42,8 +42,8 @@ def ec(local):
 def opac(pl, extra=None):
     o = {}
     for k, p in R.keyed(pl):
-        if p.key == "beaker":
-            o[k] = 0.4
+        if p.key == "beaker":                 # opaque (2026-11-27): at 0.4 the cup behind the cage's glass was lost to the renderer's 6 depth
+            o[k] = 1.0                        # peels, so the dose fell into an invisible beaker
         elif p.key.startswith(SEE):
             o[k] = 0.18
         if extra and p.key in extra:

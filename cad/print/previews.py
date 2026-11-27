@@ -1,6 +1,7 @@
 """Toolpath previews of the sliced plates, from the G-code inside each .gcode.3mf, and the contact sheet plates.png.
 
-    python previews.py          # after slice.py
+    python previews.py                       # after slice.py: paternoster and chain-carousel-v2 -> plates.png
+    python previews.py chain-carousel-v11    # v11 -> chain-carousel-v11/plates.png
 
 Each plate's extrusion moves are drawn in an isometric view, oldest layer first, coloured by feature
 (Bambu's "; FEATURE:" comments), over the outline of the printable area (the H2D's left nozzle 325 x 320,
@@ -14,6 +15,7 @@ import json
 import math
 import re
 import shutil
+import sys
 import textwrap
 import zipfile
 from pathlib import Path
@@ -36,11 +38,30 @@ FEATURE_GROUP = {"Outer wall": 0, "Inner wall": 1, "Sparse infill": 2, "Internal
                  "Top surface": 3, "Bottom surface": 3, "Bridge": 4, "Internal Bridge": 4, "Overhang wall": 4,
                  "Support": 5, "Support interface": 5, "Support transition": 5, "Brim": 5, "Skirt": 5}
 C30, S30 = math.cos(math.radians(30)), math.sin(math.radians(30))
-WORD = re.compile(r"([XYZE])(-?[\d.]+)")
+WORD = re.compile(r"([XYZEIJ])(-?[\d.]+)")
+ARC_CHORD = 1.0               # mm: G2/G3 arcs are drawn as chords about this long
+
+
+def _arc(x, y, nx, ny, i, j, cw: bool):
+    """Points along a G2 (cw) / G3 (ccw) arc from (x, y) to (nx, ny) about (x + i, y + j); a full circle when they coincide."""
+    cx, cy = x + i, y + j
+    r = math.hypot(x - cx, y - cy)
+    a0, a1 = math.atan2(y - cy, x - cx), math.atan2(ny - cy, nx - cx)
+    sweep = (a0 - a1) if cw else (a1 - a0)
+    sweep %= 2 * math.pi
+    if sweep < 1e-9:
+        sweep = 2 * math.pi
+    n = max(2, int(math.ceil(sweep * r / ARC_CHORD)))
+    t = np.linspace(0.0, 1.0, n + 1)
+    a = a0 - sweep * t if cw else a0 + sweep * t
+    px, py = cx + r * np.cos(a), cy + r * np.sin(a)
+    px[-1], py[-1] = nx, ny
+    return px, py
 
 
 def segments(gcode: str):
-    """(x0, y0, x1, y1, z, group) of every extrusion move in a known feature."""
+    """(x0, y0, x1, y1, z, group) of every extrusion move in a known feature; arcs (Studio's arc fitting writes G2/G3 with
+    I/J) are split into short chords, full circles included."""
     x = y = z = 0.0
     rel = True
     group = None
@@ -61,8 +82,12 @@ def segments(gcode: str):
         if "Z" in w:
             z = float(w["Z"])
         e = float(w.get("E", 0.0))
-        if group is not None and e > 0 and rel and (nx != x or ny != y):
-            out.append((x, y, nx, ny, z, group))
+        if group is not None and e > 0 and rel:
+            if line[1] in "23" and ("I" in w or "J" in w):
+                px, py = _arc(x, y, nx, ny, float(w.get("I", 0.0)), float(w.get("J", 0.0)), line[1] == "2")
+                out.extend((px[k], py[k], px[k + 1], py[k + 1], z, group) for k in range(len(px) - 1))
+            elif nx != x or ny != y:
+                out.append((x, y, nx, ny, z, group))
         x, y = nx, ny
     return np.array(out, dtype=float).reshape(-1, 6)
 
@@ -97,14 +122,16 @@ def draw(seg: np.ndarray, bed: tuple[float, float], title: str, path: Path) -> N
 
 def caption(p: dict, n_same: int) -> str:
     parts = ", ".join(f"{k} x{v}" for k, v in p["parts"].items())
+    n_same = max(n_same, p.get("copies", 1))
     rep = f" (x{n_same} identical plates)" if n_same > 1 else ""
-    return (f"{p['plate']}{rep}: {p['printer']}\n{parts}\n{p.get('print_time')}, {p.get('filament_g')} g PETG, "
+    blk = "  NOT PRINTABLE AS DRAWN (CAD defect, see README)" if p.get("blocked") else ""
+    return (f"{p['plate']}{rep}: {p['printer']}{blk}\n{parts}\n{p.get('print_time')}, {p.get('filament_g')} g PETG, "
             f"{p.get('layers')} layers, support {'on' if p.get('support_used') else 'off'}")
 
 
-def main() -> None:
+def main(designs=DESIGNS, out_png: Path = HERE / "plates.png") -> None:
     tiles = []
-    for design in DESIGNS:
+    for design in designs:
         rep = json.loads((HERE / design / "slice_report.json").read_text())
         done = {}
         for p in rep["plates"]:
@@ -130,7 +157,8 @@ def main() -> None:
         for t in tiles:
             if t[0] == design:
                 t[3] = done[t[2]][1]
-    sheet(tiles)
+    title = ("3D-printed parts of both carousels" if len(designs) > 1 else f"3D-printed parts of {designs[0]}")
+    sheet(tiles, out_png, title)
 
 
 def _crop(im: Image.Image) -> Image.Image:
@@ -146,7 +174,7 @@ def _fit(im: Image.Image, w: int, h: int) -> Image.Image:
     return im.resize((max(1, int(im.width * k)), max(1, int(im.height * k))), Image.LANCZOS)
 
 
-def sheet(tiles) -> None:
+def sheet(tiles, out_png: Path = HERE / "plates.png", title: str = "3D-printed parts of both carousels") -> None:
     """plates.png: one row per distinct plate, Studio's picture | toolpaths | caption."""
     from PIL import ImageDraw, ImageFont
     font_path = Path(matplotlib.get_data_path()) / "fonts" / "ttf" / "DejaVuSans.ttf"
@@ -155,8 +183,9 @@ def sheet(tiles) -> None:
     head = 84
     img = Image.new("RGB", (2 * W + 3 * PAD, head + len(tiles) * (H + CAP + PAD)), "white")
     d = ImageDraw.Draw(img)
-    d.text((PAD, 14), "3D-printed parts of both carousels, sliced in Bambu Studio 02.08.02.61: PETG, 0.20 mm layers, 3 walls, 25 % infill,\n"
-           "supports off. Left: Studio's own plate picture; right: the sliced toolpaths", fill="#1f1f1c", font=f_head, spacing=6)
+    sup = ("supports off" if not any(p.get("support_used") for _, p, _, _ in tiles) else "supports off unless the caption says on (tree)")
+    d.text((PAD, 14), f"{title}, sliced in Bambu Studio 02.08.02.61: PETG, 0.20 mm layers, 3 walls, 25 % infill,\n"
+           f"{sup}. Left: Studio's own plate picture; right: the sliced toolpaths", fill="#1f1f1c", font=f_head, spacing=6)
     y = head
     for design, p, _, n in tiles:
         studio = HERE / design / (p.get("studio_png") or "")
@@ -170,10 +199,14 @@ def sheet(tiles) -> None:
         d.text((PAD, y + H + 4), "\n".join(lines[:4]), fill="#1f1f1c", font=f_txt, spacing=5)
         y += H + CAP + PAD
         d.line([(PAD, y - PAD // 2), (img.width - PAD, y - PAD // 2)], fill="#d8d7d0", width=1)
-    img.save(HERE / "plates.png", optimize=True)
+    img.save(out_png, optimize=True)
     rows = len(tiles)
-    print(f"plates.png: {rows} distinct plates")
+    print(f"{out_png.relative_to(HERE)}: {rows} distinct plates")
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:]:
+        ds = tuple(sys.argv[1:])
+        main(ds, HERE / ds[0] / "plates.png" if len(ds) == 1 else HERE / "plates.png")
+    else:
+        main()

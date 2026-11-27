@@ -1,4 +1,5 @@
-"""Write README.md from slice_report.json and audit.json of both designs (run after slice.py and previews.py)."""
+"""Write README.md from slice_report.json and audit.json of every design (run after slice.py and previews.py).
+paternoster and chain-carousel-v2 share the Plates and audit sections; chain-carousel-v11 (PR #185) has its own section."""
 from __future__ import annotations
 
 import json
@@ -61,6 +62,118 @@ NOTES = {
 }
 
 
+V11 = "chain-carousel-v11"
+NOTES_V11 = {
+    "carriage": "Since v10 neither face is flat: the hinge lugs (21 mm), the ribs (7 mm) and the latch housing stand on the outer face, "
+                "the two tab hooks (6.55 mm) on the inner face. Inner face down, only the hooks' fingers touch the bed (156 mm2) and the "
+                "plate's 9300 mm2 are 6.55 mm up: Studio, supports off: \"floating cantilever\". So it prints on tree supports from the "
+                "build plate (none inside the 1.55 mm tab slots, which stand on the fingers): 77.6 g with them, 56.5 g without, about "
+                "21 g of support each. Outer face down would be worse (the plate 21 mm up on the lugs' rounded ends). On the H2D bed's "
+                "diagonal: the 391 x 66 mm outline is 305 x 301 mm at 44.6 deg (the 40 mm tongues cut its corners), inside the left "
+                "nozzle's 325 x 320 with about 10 mm to spare each side (toolpaths x 6-317, y 6-313). The file keeps the break-off webs "
+                "across the tab slots' mouths (`print_web=True`, as v11's own stl/): cut them off flush. The support comes off the inner "
+                "face, which seats on the A-1 tabs: sand any nubs flat.",
+    "sam_mounting_plate": "Sam's plate with v11's additions (`parts11.plate_additions_v11`: carried on to the cap's end with clip 2, the cap "
+                          "saddle and the latch keeper, the door housing's inserts, the T-bracket's two M3 " + INSERT + " holes; no motor "
+                          "relief; since 2026-11-27 the door housing's M2 inserts at |y| 14.35 and the channel wall cut back to |y| 16.3 "
+                          "beside its arms), 257 mm long. Underside on the bed (10 959 mm2), no floating regions; 380 mm2 of "
+                          "bridges and hole roofs. "
+                          "Five per H2D plate (5 x 54 mm plus gaps: 302 of the 320 mm); all 13 are printed (BoM item 39).",
+    "t_bracket": "One solid since v11's fix (item 3). On its side: the T's profile on the bed (104 mm2), 16 mm tall, so the head's "
+                 "underside, which rides on the rail's lips, is a wall, and the head pulls along the layers, not across them. The two M3 "
+                 "clearance holes (3.4 mm, 6 mm counterbores) are horizontal.",
+    "door_housing": "One solid since v11's fix (item 2). As drawn: the cap's top face on the bed (115 mm2), rails and spring tower up; "
+                    "the two mounting arms leave the rails 6.5 mm up as 22 mm cantilevers (Studio, supports off: floating cantilever), so the "
+                    "housings print on tree supports under the arms. The shutter's grooves and the tower's channel open upward, so "
+                    "nothing grows inside them.",
+    "door_shutter": "Flat, no overhang. No hole is modelled for the 1.5 mm door rod, which the BoM says is pressed in (item 5, still open).",
+    "door_head11": "6 x 6 x 2.5 mm, flat, the rod's 1.5 mm hole vertical (printed holes run 0.1-0.2 mm small: a press fit, then glue "
+                   "as the BoM says). Only 34 mm2 on the bed: the module_parts plate's 3 mm brim holds it.",
+    "latch_bolt": "The carrier and its rest shelf with the dowel's 4.0 mm hole, 2 mm deep (item 4: the builder fuses the dowel for the "
+                  "assembly; v11's build.py and `print_variants.latch_bolt` export this carrier). On its back face (97 mm2): the hole "
+                  "opens upward and prints round (press the dowel in; ream to 4.0 if too tight), the shelf is a 2 mm fin, the follower's "
+                  "3.0 mm hole is horizontal, and the faces that slide in the latch housing are walls.",
+    "ec11": "One solid since v11's fix (item 1). On its -y side: the motor cheek and the side bar on the bed (1595 mm2), so the "
+            "rail's T-slot, the door ramp's lips and the P16's pin hole run vertical and the faces the T-brackets, door heads and pin "
+            "ride on are walls, not supported ceilings. The door ramp's end and the solenoid collar start in mid-air, 5.5 and 8.7 mm over "
+            "the bed (Studio, supports off: floating cantilever): tree supports from the build plate, none inside the T-slot. The motor plate's 22.4 mm hole "
+            "lies on its side (its top arches over).",
+    "pillar11": "212 mm tall: H2D only (the A1 mini stops at 180). Its wall is two 0.42 mm lines since v11's fix (item 6: 0.85 mm, "
+                "was 1.6). The deck under the beaker's socket bridges the tube's bore (1222 mm2 unsupported); Studio prints it "
+                "without a warning.",
+    "p16_bracket11": "The flange's bar face on the bed (752 mm2), the cheeks up: the 4.15 mm pin hole (for the 4 mm shoulder screw; "
+                     "ream to 4.2) horizontal through the R6 bosses, the two 5.5 mm M5 holes vertical.",
+    "guide11": "Rebuilt from the EC's moved shoe (item 1): its seat now behind the arm. On its side: its L-shaped profile (flange, "
+               "plate, seat block) on the bed (724 mm2), 22 mm tall; the seat's 90 deg cone and 45 deg funnel mouth lie on their "
+               "side (45 deg walls, no support), the flange's two 5.5 mm M5 holes horizontal. Standing as drawn it would be 111 mm "
+               "tall with 393 mm2 overhanging.",
+    "latch_rail11": "On its side: the cam's and the foot's +y ends on the bed (390 mm2), 57 mm tall. The cam's flat and 30 deg ramps, "
+                    "which the follower rides, print as walls (0.2 mm steps along the ramps); the web and foot stand on the cam; the "
+                    "foot's two M5 holes horizontal. As drawn, the web and foot would hang 1650 mm2 over the bed.",
+    "hold_down": NOTES["chain-carousel-v2"]["hold_down"],
+    "tensioner_block": NOTES["chain-carousel-v2"]["tensioner_block"],
+    "side_tab": "As drawn: the side-plate face on the bed (564 mm2); lip, foot and web stand on it with no overhang; the two 5.5 mm "
+                "clearance holes and their 9.2 mm counterbores vertical.",
+    "side_tab_m": "As side_tab (mirror image).",
+    "catch": "The 24 x 10 x 3 mm tab on the bed (223 mm2), the 10 mm spacer up; the M4 hole (4.2 mm) vertical.",
+    "hatch_knob": "Cut out of `parts3.hatch_door`, which draws the knob as part of the acrylic door: a 16 x 14 mm cylinder with a "
+                  "10 x 4 mm cap, its bonded face on the bed (201 mm2).",
+}
+
+
+# v11: the parts that aren't printable as drawn, and what to change in v11's CAD (checked by building the changed solids here, without
+# editing cad/chain-carousel-v11/)
+V11_FIXES = [
+    "### What the slicing found in v11's CAD, and what was changed\n",
+    "Found by splitting each exported mesh into its connected bodies, measuring the gaps in the CAD (OCC distances) and slicing each "
+    "part alone; the proposed fixes were built from v11's own functions in a scratch copy and checked for one solid and for overlaps "
+    "with the parts round them. Items 1-4 and 6 were then made in v11's CAD on 2026-11-27, and everything above is re-exported and "
+    "re-sliced from it; item 5 is still open.\n",
+    "1. **EC v11** (`parts11.ec_v11`, `params.py`), **fixed in v11.** It was five separate solids: the front (door ramp walls and roof, "
+    "spine, solenoid collar, rail block: 17 860 mm3), the back (motor plate, cheeks, strap, arm, the P16's clevis: 25 869 mm3), the door "
+    "ramp's two lips (393 mm3 each) and the guide shoe (490 mm3). The lips stopped 0.05 mm short of the channel's walls; the spine ran "
+    "to x 93.5 and ended inside the motor plate's 22.4 mm hole, 1.6 mm from its edge, after running through the 24T pinion (652 mm3 at "
+    "rest) and the NEMA 11's shaft; the shoe hung 1.0 mm off the arm (v11 had moved the arm to z -30 to -20 and left v10's shoe at "
+    "-38 to -31), and `guide11`, built from its tip, put its seat block inside the arm (1759 mm3). `check_interference.py` skipped all "
+    "three pairs (\"ec11\" with \"pinion24\", \"nema11\" and \"guide11\"). Now: `DOOR11_LIP_W` 2.2 -> 2.3; the spine stops at "
+    "x 71.5, widens to |y| 19.5 over x 69.5-71.5, and two 4 x 4.5 mm bars at |y| 15.5-19.5 run beside the pinion to the cheeks "
+    "(x 69.5-89.91); the shoe sits behind the arm (`SHOE11` = (133, 145, -24.5, -31.6), `SHOE11_Y` 36) on a bracket "
+    "(`SHOE11_BRACKET`) with a riser onto the arm's far face, its nose a true 90 deg cone, and `guide11` follows its tip. One solid "
+    "(45 068 mm3); EC-pinion 0, EC-guide 0, EC-NEMA 11 4.3 mm3 (the face it is bolted to). It still needs supports in every "
+    "orientation; on its side, as printed here, two regions start in mid-air (the door ramp's end and the "
+    "solenoid collar) and 2710 mm2 is unsupported.\n",
+    "2. **Door housing** (`parts4.door_housing_v4`, which `parts10.door_housing_v10` and v11 reuse), **fixed in v11.** It was five "
+    "solids: the mounting arms (|y| 12.8-14.6) stood 0.3 mm off the rails (|y| <= 12.5), and each arm's 2.2 mm M2 hole (at |y| 13.7) "
+    "was wider than the 1.8 mm arm, so it cut the arm in two. Now the arms run |y| 12.45-16.25 with the M2 holes at |y| 14.35 "
+    "(`DOOR_M2_Y11`, 0.8 mm of wall each side); the mounting plate's M2 inserts moved to |y| 14.35 (`parts10.plate_additions_v10`) and "
+    "its channel wall is cut back to |y| 16.3 over x 4.8-22 (`parts11.plate_additions_v11`). One solid (2161 mm3), clear of the plate. "
+    "The arms are 22 mm cantilevers off the rails, so in every orientation something needs support; as drawn it is the arms' "
+    "undersides, 6.5 mm up, and the housings print on tree supports.\n",
+    "3. **T-bracket** (`parts11.t_bracket_v11`), **fixed in v11.** Its stem started at `zu + 0.01` (z -23.99) and the head ended at "
+    "`zu` (-24.00): the head was a separate solid 0.01 mm off the stem. Now `zu - 0.01`: one solid, and the print file is the CAD's "
+    "part again (the earlier print variant is gone).\n",
+    "4. **Latch bolt** (`parts7.latch_bolt_v7`), **fixed in v11's `build.py`.** The builder returns the steel dowel fused to the printed "
+    "carrier (`pin.union(blk)`, which the assembly wants), and `build.py` exported that as `stl/latch_bolt.stl`, so the dowel would have "
+    "been printed in PETG with no hole for the real one. `build.py` now exports the carrier with the dowel's 4.0 mm hole, 2 mm deep; "
+    "these files use the same carrier (`print_variants.latch_bolt`).\n",
+    "5. **Door shutter and rod** (`parts10.door_shutter_v10`, `parts11.door_rod_v11`), **still open: not fixed.** The shutter prints "
+    "fine but can't take its rod. The 1.5 mm rod is \"pressed into each shutter's boss\" (BoM item 116), but no hole is modelled: the "
+    "rod is drawn 1 mm into the shutter (z -5 to -4), and its axis (the spring's, x -2.85) is 0.35 mm inside the face of the 1.8 mm "
+    "boss (x -3.2 to -1.4), which can't grow past the housing tower's channel (x -3.3). A 1.5 mm hole there breaks 0.4 mm out of the "
+    "boss. Pressing the rod in needs a hole about 3 mm deep (`DOOR11_ROD_Z0` -4 -> -2) with 0.8 mm of boss round it, i.e. the boss "
+    "3.1 mm across on the rod's axis, so the tower's channel, the spring's axis and the cap's 1.8 mm hole have to be laid out again "
+    "round it. (The rod also runs 0.3 mm into the tower's wall along its length, 2.6 mm3; the check skips (\"door_rod11\", "
+    "\"door_housing\").)\n",
+    "6. **Beaker pillar** (`params.PILLAR11`), **fixed in v11.** Its 1.6 mm wall (3-4 lines) sliced to 53.6 g, not the BoM's \"near "
+    "30 g\" (item 117: \"vase-mode walls (two 0.4 mm lines)\"), and spiral vase mode can't print it: the deck and the beaker's socket "
+    "need top layers, which vase mode doesn't print. Now `PILLAR11` = (40.0, 0.85), two 0.42 mm lines printed normally: "
+    "29.9 g, 3 h 47 min sliced.\n",
+    "7. **Carriage** (not a defect; unchanged): it prints, but only on supports, about 21 g and 1 h 37 min more per carriage "
+    "(13 times). Printing it flat with no support would need a flat inner face, e.g. the two tab hooks made as separate printed clips "
+    "held by the tab's M3 screw, which changes how the carriage slides onto the tabs; not proposed here.\n",
+]
+
+
 def hm(s: int | None) -> str:
     if not s:
         return "-"
@@ -70,6 +183,88 @@ def hm(s: int | None) -> str:
 
 def orient_txt(spec) -> str:
     return "as drawn" if not spec else ", ".join(f"{d:+d} deg about {a}" for a, d in spec)
+
+
+def v11_section(w) -> None:
+    """chain-carousel-v11 (PR #185): its plates, the per-part audit and the parts that are not printable as drawn."""
+    r = json.loads((HERE / V11 / "slice_report.json").read_text())
+    a = json.loads((HERE / V11 / "audit.json").read_text())
+    w("## chain-carousel-v11 (PR #185)\n")
+    w("Every printed part of [`cad/chain-carousel-v11/`](../chain-carousel-v11/) (its `bom.py`'s \"Printed\" lines: items 36-39, 77, 83, "
+      "86, 93, 106 and 117), exported from v11's own builders by `export_printed.py`: the same solids as v11's `stl/`, volume for volume (the carriage with "
+      "its break-off webs and the latch bolt's carrier as v11's `build.py` exports them, built here by "
+      "[`chain-carousel-v11/print_variants.py`](chain-carousel-v11/print_variants.py)), plus the side hatch's knob, which v11 draws as "
+      "part of the acrylic door. They are oriented, laid out and sliced with the settings above. Quantities are v11's `layout.placements()` counts: 13 of every module part and all 13 "
+      "mounting plates (BoM item 39: \"Print all 13\"). Identical plates are sliced once and printed as many times as the Prints column "
+      "says.\n")
+    w("![v11 plates](chain-carousel-v11/plates.png)\n")
+    blocked_plates = [p["plate"] for p in r["plates"] if p.get("blocked")]
+    if blocked_plates:
+        w("**Not printable as drawn:** " + ", ".join(blocked_plates) + " (see below). Their plates are sliced as drawn only for the time "
+          "and weight: don't print them until the CAD is fixed.\n")
+    else:
+        w("**Status, 2026-11-27:** the first slicing of v11 found the electronics carriage (EC v11) and the outlet door housing in "
+          "pieces, the T-bracket's head off its stem, the steel dowel printed as part of the latch carrier and the pillar twice the "
+          "BoM's weight. All of these were fixed in v11's CAD the same day (items 1-4 and 6 below) and everything here is re-exported "
+          "and re-sliced from the fixed CAD: every part is one solid and every plate is ready to print. Still open: the door shutter "
+          "has no hole for its rod (item 5).\n")
+    w("### Plates\n")
+    w("| Plate | Printer | Parts (quantity) | Prints | Time (each) | PETG (each) | Layers | Support | Files |\n|---|---|---|---|---|---|---|---|---|")
+    tot = {}
+    for p in r["plates"]:
+        parts = ", ".join(f"{k} x{v}" for k, v in p["parts"].items())
+        files = " ".join(f"[{lbl}]({V11}/{p[k]})" for k, lbl in (("gcode_3mf", "3mf"), ("studio_png", "Studio"), ("toolpath_png", "toolpaths")) if p.get(k))
+        name = f"{p['plate']} (NOT PRINTABLE AS DRAWN)" if p.get("blocked") else p["plate"]
+        sup = "tree, build plate only" if p.get("support_used") else ("off, 3 mm brim" if p.get("brim_mm") else "off")
+        w(f"| {name} | {p['printer']} | {parts} | {p.get('copies', 1)} | {hm(p.get('print_time_s'))} | {p.get('filament_g')} g | "
+          f"{p.get('layers')} | {sup} | {files} |")
+        key = ("blocked" if p.get("blocked") else "ready", p["printer"])
+        t = tot.setdefault(key, [0, 0, 0.0])
+        c = p.get("copies", 1)
+        t[0] += c
+        t[1] += (p.get("print_time_s") or 0) * c
+        t[2] += (p.get("filament_g") or 0) * c
+    w("")
+
+    def line(keys):
+        n = sum(tot[k][0] for k in keys)
+        return n, sum(tot[k][1] for k in keys), sum(tot[k][2] for k in keys)
+    ready = [k for k in tot if k[0] == "ready"]
+    blocked = [k for k in tot if k[0] == "blocked"]
+    parts_txt = "; ".join(f"{k[1]}: {v[0]} prints, {hm(v[1])}, {v[2]:.0f} g" for k, v in tot.items() if k[0] == "ready")
+    n, t, g = line(ready)
+    if blocked:
+        w(f"Totals, Studio's estimates. Ready to print: {parts_txt}; together {n} prints, {t / 3600:.1f} h of printing, {g:.0f} g of PETG. "
+          + "Not printable as drawn: " + "; ".join(f"{k[1]}: {hm(v[1])}, {v[2]:.0f} g" for k, v in tot.items() if k[0] == "blocked")
+          + f". All: {r['total_print_time_h']} h, {r['total_filament_g']:.0f} g.\n")
+    else:
+        w(f"Totals, Studio's estimates: {parts_txt}; together {n} prints, {t / 3600:.1f} h of printing, {g:.0f} g of PETG.\n")
+    h2d = [p for p in r["plates"] if p["printer_key"] == "h2d"]
+    ok = all([f["id"] for f in p.get("filaments_used", [])] == ["1"] and len(p.get("nozzles", [])) == 1
+             and all(float(n["diameter"]) == 0.4 for n in p.get("nozzles", [])) and not p.get("prime_tower_in_gcode") for p in h2d)
+    w("The carriage, EC and door-housing plates have tree supports (Studio 2.08 turns `tree(auto)` into organic trees), from the build "
+      "plate only. "
+      "The two A1 mini plates of small parts get the 3 mm outer brim (door heads: 34 mm2 on the bed each). "
+      + ("Every H2D file uses filament 1 only, on one 0.4 mm nozzle (extruder 1, the left: `filament_map` 1,2), with no prime tower or "
+         "wipe on the other nozzle (`filaments_used`, `nozzles` and `prime_tower_in_gcode` in [slice_report.json](chain-carousel-v11/slice_report.json), "
+         "read from each file's slice_info.config and G-code)." if ok else
+         "CHECK: an H2D file uses more than filament 1 on one 0.4 mm nozzle, or has a prime tower: see slice_report.json.")
+      + " The carriage goes on the H2D bed's diagonal, one per plate.\n")
+    w("### Printability audit\n")
+    w("As for the other designs: `audit.py` on the mesh in print orientation, and each part sliced alone with supports off.\n")
+    w("| Part | Qty | Orientation | On the bed (mm) | First layer | Overhang > 50 deg | Floating islands | Thin layers | Studio, supports off | Alone | Notes |")
+    w("|---|---|---|---|---|---|---|---|---|---|---|")
+    for k, v in a.items():
+        m, s_ = v["mesh"], v["studio_supports_off"]
+        warn = "; ".join(s_.get("slicer_warnings") or []) or "no warnings"
+        sz = " x ".join(f"{x:g}" for x in m["size_mm"])
+        w(f"| {k} | {v['qty']} | {v['why'] if v['why'].startswith('as ') else orient_txt(v['orientation']) + ': ' + v['why']} | {sz} | "
+          f"{m.get('first_layer_mm2', '-')} mm2 | {m['overhang_area_mm2']} mm2 | {m.get('n_floating_islands', '-')} | "
+          f"{m.get('thin_wall_layers', '-')} | {warn} | {s_.get('print_time')}, {s_.get('filament_g')} g | {NOTES_V11.get(k, '')} |")
+    w("")
+    w("Thin layers: the carriage's are its 0.8 mm break-off webs, the hold-down's its 0.8 mm hall window (both on purpose).\n")
+    for t_ in V11_FIXES:
+        w(t_)
 
 
 def main() -> None:
@@ -82,12 +277,15 @@ def main() -> None:
     w("Every 3D-printed part of [`cad/paternoster/`](../paternoster/) and [`cad/chain-carousel-v2/`](../chain-carousel-v2/), "
       "plus Sam's mounting plate (printed for the extra modules in both), oriented, laid out on plates and sliced with Bambu "
       "Studio's own CLI. Quantities are the BoMs' (counted from each design's `layout.placements()`).\n")
+    w("[`cad/chain-carousel-v11/`](../chain-carousel-v11/) (PR #185) is sliced the same way in its own section: "
+      "[chain-carousel-v11 (PR #185)](#chain-carousel-v11-pr-185).\n")
     w("![All plates](plates.png)\n")
     w("## Re-running\n")
     w("```bash\n# Bambu Studio for Linux (no login), extracted\n"
       "curl -LO https://github.com/bambulab/BambuStudio/releases/download/v02.08.02.61/BambuStudio_ubuntu24.04-v02.08.02.61-20260820225108.AppImage\n"
       "chmod +x BambuStudio_*.AppImage && ./BambuStudio_*.AppImage --appimage-extract    # -> squashfs-root/\n"
-      "sudo apt-get install -y xvfb libosmesa6 weston libwebkit2gtk-4.1-0 libgstreamer-plugins-base1.0-0 gstreamer1.0-plugins-good\n"
+      "sudo apt-get install -y xvfb libosmesa6 libosmesa6-dev weston libwebkit2gtk-4.1-0 libgstreamer-plugins-base1.0-0 gstreamer1.0-plugins-good\n"
+      "pip install trimesh shapely rtree                 # audit.py's sections (cadquery for export_printed.py)\n"
       "# optional, for Studio's plate pictures: a headless Wayland display for its OSMesa renderer (glxshim.c is built by slice.py)\n"
       "export XDG_RUNTIME_DIR=/tmp/xdg WAYLAND_DISPLAY=wayland-pd; mkdir -p -m 700 $XDG_RUNTIME_DIR\n"
       "weston --backend=headless --socket=$WAYLAND_DISPLAY --idle-time=0 &\n\n"
@@ -95,7 +293,12 @@ def main() -> None:
       "python slice.py --bambu squashfs-root --parts     # plates -> <design>/plates/, slice_report.json; --parts: audit.json\n"
       "python previews.py                               # toolpath pictures and plates.png\n"
       "python before_after.py                           # <design>/changes/*_before_after.png\n"
-      "python report.py                                 # this README\n```\n")
+      "python report.py                                 # this README\n\n"
+      "# chain-carousel-v11 (PR #185): its own STLs, plates, audit and overview picture\n"
+      "python export_printed.py chain-carousel-v11\n"
+      "python slice.py --bambu squashfs-root --design chain-carousel-v11 --parts\n"
+      "python previews.py chain-carousel-v11              # -> chain-carousel-v11/plates.png\n"
+      "python report.py\n```\n")
     w("| File | What it does |\n|---|---|")
     for f, t in [("export_printed.py", "exports each printed part's STL in its CAD frame from the design's own builders (does not run build.py); "
                   "the v2 carriage is exported with its print-only break-off webs"),
@@ -105,7 +308,11 @@ def main() -> None:
                  ("audit.py", "mesh checks in print orientation: overhang faces > 50 deg from vertical, layer-by-layer floating "
                   "islands and unsupported area, walls under two line widths, first-layer area"),
                  ("glxshim.c", "lets Studio's CLI render on an OSMesa context under Wayland (fakes the GLX calls its GLEW makes)"),
-                 ("previews.py", "draws each plate's extrusion moves from the G-code in its .gcode.3mf, coloured by feature"),
+                 ("previews.py", "draws each plate's extrusion moves from the G-code in its .gcode.3mf, coloured by feature (arcs "
+                  "included: Studio's arc fitting writes circles as G2/G3)"),
+                 ("chain-carousel-v11/print_variants.py", "v11's printed forms that differ from its assembly shapes (the carriage "
+                  "with its break-off webs, the latch carrier without its steel dowel, the side hatch's knob off its acrylic door), "
+                  "built from v11's own builders"),
                  ("check_changes.py", "intersects the material a change added with every neighbouring instance at the home pose"),
                  ("before_after.py", "close-ups of the changed parts before and after, in print orientation")]:
         w(f"| [`{f}`]({f}) | {t} |")
@@ -177,6 +384,7 @@ def main() -> None:
     w("* No fastener holes are modelled in paternoster's `hold_bracket` and `fork_arm`, or in either design's `fork`.\n"
       "* Press and pin holes (4.0 mm stub pin, 4.15 mm clevis pin, 7.0 mm bushings) are drawn at nominal size; printed holes run "
       "0.1-0.2 mm small, so plan to ream. Studio's circle compensation is off (stock).\n")
+    v11_section(w)
     w("## Not verified\n")
     w("* Nothing here has been printed. Times and grams are Studio's estimates.\n"
       "* The plates use the H2D's left nozzle only; the bed type is assumed (Textured PEI) and must match the plate on the printer.\n"

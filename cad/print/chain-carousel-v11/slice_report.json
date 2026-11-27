@@ -1,0 +1,1129 @@
+{
+ "design": "chain-carousel-v11",
+ "bambu_studio": "02.08.02.61",
+ "bed_type": "Textured PEI Plate",
+ "presets": {
+  "h2d": {
+   "machine": "Bambu Lab H2D 0.4 nozzle",
+   "process": "0.20mm Standard @BBL H2D",
+   "filament": "Bambu PETG Basic @BBL H2D 0.4 nozzle"
+  },
+  "a1m": {
+   "machine": "Bambu Lab A1 mini 0.4 nozzle",
+   "process": "0.20mm Standard @BBL A1M",
+   "filament": "Bambu PETG Basic @BBL A1M 0.4 nozzle"
+  }
+ },
+ "process_overrides": {
+  "wall_loops": "3",
+  "sparse_infill_density": "25%",
+  "enable_support": "0"
+ },
+ "support_settings_when_on": {
+  "enable_support": "1",
+  "support_type": "tree(auto)",
+  "support_on_build_plate_only": "1"
+ },
+ "brim_settings_when_on": {
+  "brim_type": "outer_only",
+  "brim_width": "3"
+ },
+ "quantities": {
+  "carriage": 13,
+  "sam_mounting_plate": 13,
+  "t_bracket": 13,
+  "door_housing": 13,
+  "door_shutter": 13,
+  "door_head11": 13,
+  "latch_bolt": 13,
+  "ec11": 1,
+  "pillar11": 1,
+  "p16_bracket11": 1,
+  "guide11": 1,
+  "latch_rail11": 1,
+  "hold_down": 2,
+  "tensioner_block": 4,
+  "side_tab": 1,
+  "side_tab_m": 1,
+  "catch": 1,
+  "hatch_knob": 1
+ },
+ "quantities_note": "quantities from layout.placements() (the BoM's counts)",
+ "plates": [
+  {
+   "plate": "carriage",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "carriage": 1
+   },
+   "copies": 13,
+   "blocked": false,
+   "support": true,
+   "brim_mm": 0.0,
+   "positions": [
+    [
+     "carriage",
+     162.5,
+     160.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 13353,
+   "print_time": "3h 42m 33s",
+   "filament_g": 77.56,
+   "filament_m": 25.8,
+   "layers": 163,
+   "max_z_mm": 32.6,
+   "toolpath_outside_bed": false,
+   "support_used": true,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 3,
+    "Bridge": 768,
+    "Custom": 303,
+    "Flush": 26,
+    "Gap infill": 49,
+    "Inner wall": 1290,
+    "Internal solid infill": 846,
+    "Outer wall": 1151,
+    "Overhang wall": 527,
+    "Sparse infill": 1164,
+    "Support": 3669,
+    "Support interface": 459,
+    "Top surface": 207,
+    "Travel": 2895,
+    "Undefined": 2887
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "filaments_used": [
+    {
+     "id": "1",
+     "used_g": "77.56",
+     "nozzle_diameter": "0.40"
+    }
+   ],
+   "nozzles": [
+    {
+     "extruder_id": "1",
+     "diameter": "0.4"
+    }
+   ],
+   "filament_map": "1,2",
+   "prime_tower_in_gcode": false,
+   "gcode_3mf": "plates/carriage.gcode.3mf",
+   "gcode_3mf_mb": 3.49,
+   "studio_png": "plates/carriage.png",
+   "toolpath_png": "plates/carriage_toolpath.png"
+  },
+  {
+   "plate": "mounting_plates_5",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "sam_mounting_plate": 5
+   },
+   "copies": 2,
+   "blocked": false,
+   "support": false,
+   "brim_mm": 0.0,
+   "positions": [
+    [
+     "sam_mounting_plate",
+     162.5,
+     35.9
+    ],
+    [
+     "sam_mounting_plate",
+     162.5,
+     98.0
+    ],
+    [
+     "sam_mounting_plate",
+     162.5,
+     160.0
+    ],
+    [
+     "sam_mounting_plate",
+     162.5,
+     222.0
+    ],
+    [
+     "sam_mounting_plate",
+     162.5,
+     284.1
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 26455,
+   "print_time": "7h 20m 55s",
+   "filament_g": 249.93,
+   "filament_m": 83.13,
+   "layers": 163,
+   "max_z_mm": 32.6,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 1578,
+    "Bridge": 2407,
+    "Custom": 304,
+    "Flush": 26,
+    "Gap infill": 335,
+    "Inner wall": 3621,
+    "Internal solid infill": 4924,
+    "Outer wall": 3889,
+    "Overhang wall": 66,
+    "Sparse infill": 4077,
+    "Top surface": 1015,
+    "Travel": 4224,
+    "Undefined": 4216
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "filaments_used": [
+    {
+     "id": "1",
+     "used_g": "249.93",
+     "nozzle_diameter": "0.40"
+    }
+   ],
+   "nozzles": [
+    {
+     "extruder_id": "1",
+     "diameter": "0.4"
+    }
+   ],
+   "filament_map": "1,2",
+   "prime_tower_in_gcode": false,
+   "gcode_3mf": "plates/mounting_plates_5.gcode.3mf",
+   "gcode_3mf_mb": 3.24,
+   "studio_png": "plates/mounting_plates_5.png",
+   "toolpath_png": "plates/mounting_plates_5_toolpath.png"
+  },
+  {
+   "plate": "mounting_plates_3",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "sam_mounting_plate": 3
+   },
+   "copies": 1,
+   "blocked": false,
+   "support": false,
+   "brim_mm": 0.0,
+   "positions": [
+    [
+     "sam_mounting_plate",
+     162.5,
+     98.0
+    ],
+    [
+     "sam_mounting_plate",
+     162.5,
+     160.0
+    ],
+    [
+     "sam_mounting_plate",
+     162.5,
+     222.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 16115,
+   "print_time": "4h 28m 35s",
+   "filament_g": 149.97,
+   "filament_m": 49.88,
+   "layers": 163,
+   "max_z_mm": 32.6,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 947,
+    "Bridge": 1446,
+    "Custom": 303,
+    "Flush": 26,
+    "Gap infill": 203,
+    "Inner wall": 2195,
+    "Internal solid infill": 3006,
+    "Outer wall": 2368,
+    "Overhang wall": 40,
+    "Sparse infill": 2445,
+    "Top surface": 606,
+    "Travel": 2537,
+    "Undefined": 2529
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "filaments_used": [
+    {
+     "id": "1",
+     "used_g": "149.97",
+     "nozzle_diameter": "0.40"
+    }
+   ],
+   "nozzles": [
+    {
+     "extruder_id": "1",
+     "diameter": "0.4"
+    }
+   ],
+   "filament_map": "1,2",
+   "prime_tower_in_gcode": false,
+   "gcode_3mf": "plates/mounting_plates_3.gcode.3mf",
+   "gcode_3mf_mb": 2.01,
+   "studio_png": "plates/mounting_plates_3.png",
+   "toolpath_png": "plates/mounting_plates_3_toolpath.png"
+  },
+  {
+   "plate": "pillar",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "pillar11": 1
+   },
+   "copies": 1,
+   "blocked": false,
+   "support": false,
+   "brim_mm": 0.0,
+   "positions": [
+    [
+     "pillar11",
+     162.5,
+     160.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 13630,
+   "print_time": "3h 47m 10s",
+   "filament_g": 29.86,
+   "filament_m": 9.93,
+   "layers": 1060,
+   "max_z_mm": 212.0,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 66,
+    "Bridge": 182,
+    "Custom": 297,
+    "Flush": 26,
+    "Gap infill": 25,
+    "Inner wall": 95,
+    "Internal solid infill": 218,
+    "Outer wall": 12386,
+    "Overhang wall": 26,
+    "Sparse infill": 33,
+    "Top surface": 64,
+    "Travel": 215,
+    "Undefined": 214
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "filaments_used": [
+    {
+     "id": "1",
+     "used_g": "29.86",
+     "nozzle_diameter": "0.40"
+    }
+   ],
+   "nozzles": [
+    {
+     "extruder_id": "1",
+     "diameter": "0.4"
+    }
+   ],
+   "filament_map": "1,2",
+   "prime_tower_in_gcode": false,
+   "gcode_3mf": "plates/pillar.gcode.3mf",
+   "gcode_3mf_mb": 0.21,
+   "studio_png": "plates/pillar.png",
+   "toolpath_png": "plates/pillar_toolpath.png"
+  },
+  {
+   "plate": "module_parts",
+   "printer": "Bambu Lab A1 mini",
+   "printer_key": "a1m",
+   "bed_mm": [
+    180.0,
+    180.0
+   ],
+   "parts": {
+    "t_bracket": 13,
+    "latch_bolt": 13,
+    "door_shutter": 13,
+    "door_head11": 13
+   },
+   "copies": 1,
+   "blocked": false,
+   "support": false,
+   "brim_mm": 3.0,
+   "positions": [
+    [
+     "t_bracket",
+     138.8,
+     52.5
+    ],
+    [
+     "t_bracket",
+     30.0,
+     72.0
+    ],
+    [
+     "t_bracket",
+     70.0,
+     72.0
+    ],
+    [
+     "t_bracket",
+     110.0,
+     72.0
+    ],
+    [
+     "t_bracket",
+     150.0,
+     72.0
+    ],
+    [
+     "t_bracket",
+     30.0,
+     89.0
+    ],
+    [
+     "t_bracket",
+     70.0,
+     89.0
+    ],
+    [
+     "t_bracket",
+     110.0,
+     89.0
+    ],
+    [
+     "t_bracket",
+     150.0,
+     89.0
+    ],
+    [
+     "t_bracket",
+     30.0,
+     106.0
+    ],
+    [
+     "t_bracket",
+     70.0,
+     106.0
+    ],
+    [
+     "t_bracket",
+     110.0,
+     106.0
+    ],
+    [
+     "t_bracket",
+     150.0,
+     106.0
+    ],
+    [
+     "latch_bolt",
+     19.7,
+     122.5
+    ],
+    [
+     "latch_bolt",
+     39.8,
+     122.5
+    ],
+    [
+     "latch_bolt",
+     59.9,
+     122.5
+    ],
+    [
+     "latch_bolt",
+     80.0,
+     122.5
+    ],
+    [
+     "latch_bolt",
+     100.0,
+     122.5
+    ],
+    [
+     "latch_bolt",
+     120.1,
+     122.5
+    ],
+    [
+     "latch_bolt",
+     140.2,
+     122.5
+    ],
+    [
+     "latch_bolt",
+     160.3,
+     122.5
+    ],
+    [
+     "latch_bolt",
+     14.8,
+     138.5
+    ],
+    [
+     "latch_bolt",
+     34.9,
+     138.5
+    ],
+    [
+     "latch_bolt",
+     55.0,
+     138.5
+    ],
+    [
+     "latch_bolt",
+     75.1,
+     138.5
+    ],
+    [
+     "latch_bolt",
+     95.2,
+     138.5
+    ],
+    [
+     "door_shutter",
+     21.8,
+     30.5
+    ],
+    [
+     "door_shutter",
+     41.2,
+     30.5
+    ],
+    [
+     "door_shutter",
+     60.8,
+     30.5
+    ],
+    [
+     "door_shutter",
+     80.2,
+     30.5
+    ],
+    [
+     "door_shutter",
+     99.8,
+     30.5
+    ],
+    [
+     "door_shutter",
+     119.2,
+     30.5
+    ],
+    [
+     "door_shutter",
+     138.8,
+     30.5
+    ],
+    [
+     "door_shutter",
+     158.2,
+     30.5
+    ],
+    [
+     "door_shutter",
+     31.0,
+     52.5
+    ],
+    [
+     "door_shutter",
+     50.5,
+     52.5
+    ],
+    [
+     "door_shutter",
+     70.0,
+     52.5
+    ],
+    [
+     "door_shutter",
+     89.5,
+     52.5
+    ],
+    [
+     "door_shutter",
+     109.0,
+     52.5
+    ],
+    [
+     "door_head11",
+     112.2,
+     138.5
+    ],
+    [
+     "door_head11",
+     126.2,
+     138.5
+    ],
+    [
+     "door_head11",
+     140.2,
+     138.5
+    ],
+    [
+     "door_head11",
+     154.2,
+     138.5
+    ],
+    [
+     "door_head11",
+     168.2,
+     138.5
+    ],
+    [
+     "door_head11",
+     41.0,
+     153.5
+    ],
+    [
+     "door_head11",
+     55.0,
+     153.5
+    ],
+    [
+     "door_head11",
+     69.0,
+     153.5
+    ],
+    [
+     "door_head11",
+     83.0,
+     153.5
+    ],
+    [
+     "door_head11",
+     97.0,
+     153.5
+    ],
+    [
+     "door_head11",
+     111.0,
+     153.5
+    ],
+    [
+     "door_head11",
+     125.0,
+     153.5
+    ],
+    [
+     "door_head11",
+     139.0,
+     153.5
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 9301,
+   "print_time": "2h 35m 1s",
+   "filament_g": 46.43,
+   "filament_m": 15.44,
+   "layers": 105,
+   "max_z_mm": 21.0,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [
+    {
+     "msg": "not_support_traditional_timelapse",
+     "level": "2",
+     "code": "10018003"
+    },
+    {
+     "msg": "not_support_traditional_timelapse",
+     "level": "3",
+     "code": "1000C003"
+    }
+   ],
+   "feature_time_s": {
+    "Bottom surface": 129,
+    "Bridge": 83,
+    "Brim": 460,
+    "Custom": 354,
+    "Flush": 28,
+    "Gap infill": 786,
+    "Inner wall": 2208,
+    "Internal solid infill": 551,
+    "Outer wall": 1817,
+    "Overhang wall": 12,
+    "Sparse infill": 347,
+    "Top surface": 247,
+    "Travel": 2295,
+    "Undefined": 2276
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "filaments_used": [
+    {
+     "id": "1",
+     "used_g": "46.43",
+     "nozzle_diameter": "0.40"
+    }
+   ],
+   "nozzles": [
+    {
+     "extruder_id": "1",
+     "diameter": "0.4"
+    }
+   ],
+   "filament_map": "1",
+   "prime_tower_in_gcode": false,
+   "gcode_3mf": "plates/module_parts.gcode.3mf",
+   "gcode_3mf_mb": 1.95,
+   "studio_png": "plates/module_parts.png",
+   "toolpath_png": "plates/module_parts_toolpath.png"
+  },
+  {
+   "plate": "station",
+   "printer": "Bambu Lab A1 mini",
+   "printer_key": "a1m",
+   "bed_mm": [
+    180.0,
+    180.0
+   ],
+   "parts": {
+    "guide11": 1,
+    "hold_down": 2,
+    "latch_rail11": 1,
+    "p16_bracket11": 1,
+    "side_tab": 1,
+    "side_tab_m": 1,
+    "tensioner_block": 4,
+    "catch": 1,
+    "hatch_knob": 1
+   },
+   "copies": 1,
+   "blocked": false,
+   "support": false,
+   "brim_mm": 3.0,
+   "positions": [
+    [
+     "guide11",
+     66.0,
+     34.0
+    ],
+    [
+     "hold_down",
+     149.4,
+     34.0
+    ],
+    [
+     "hold_down",
+     33.8,
+     84.1
+    ],
+    [
+     "latch_rail11",
+     113.2,
+     84.1
+    ],
+    [
+     "p16_bracket11",
+     72.0,
+     84.1
+    ],
+    [
+     "side_tab",
+     155.2,
+     84.1
+    ],
+    [
+     "side_tab_m",
+     33.0,
+     127.1
+    ],
+    [
+     "tensioner_block",
+     67.0,
+     127.1
+    ],
+    [
+     "tensioner_block",
+     105.0,
+     127.1
+    ],
+    [
+     "tensioner_block",
+     143.0,
+     127.1
+    ],
+    [
+     "tensioner_block",
+     62.0,
+     158.1
+    ],
+    [
+     "catch",
+     121.0,
+     158.1
+    ],
+    [
+     "hatch_knob",
+     93.0,
+     158.1
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 13921,
+   "print_time": "3h 52m 1s",
+   "filament_g": 86.04,
+   "filament_m": 28.62,
+   "layers": 284,
+   "max_z_mm": 56.8,
+   "toolpath_outside_bed": false,
+   "support_used": false,
+   "slicer_warnings": [],
+   "gcode_warnings": [
+    {
+     "msg": "not_support_traditional_timelapse",
+     "level": "2",
+     "code": "10018003"
+    },
+    {
+     "msg": "not_support_traditional_timelapse",
+     "level": "3",
+     "code": "1000C003"
+    }
+   ],
+   "feature_time_s": {
+    "Bottom surface": 332,
+    "Bridge": 349,
+    "Brim": 226,
+    "Custom": 353,
+    "Flush": 28,
+    "Gap infill": 242,
+    "Inner wall": 3580,
+    "Internal solid infill": 1204,
+    "Outer wall": 1998,
+    "Overhang wall": 16,
+    "Sparse infill": 2838,
+    "Top surface": 336,
+    "Travel": 2434,
+    "Undefined": 2416
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "filaments_used": [
+    {
+     "id": "1",
+     "used_g": "86.04",
+     "nozzle_diameter": "0.40"
+    }
+   ],
+   "nozzles": [
+    {
+     "extruder_id": "1",
+     "diameter": "0.4"
+    }
+   ],
+   "filament_map": "1",
+   "prime_tower_in_gcode": false,
+   "gcode_3mf": "plates/station.gcode.3mf",
+   "gcode_3mf_mb": 2.27,
+   "studio_png": "plates/station.png",
+   "toolpath_png": "plates/station_toolpath.png"
+  },
+  {
+   "plate": "door_housings",
+   "printer": "Bambu Lab A1 mini",
+   "printer_key": "a1m",
+   "bed_mm": [
+    180.0,
+    180.0
+   ],
+   "parts": {
+    "door_housing": 13
+   },
+   "copies": 1,
+   "blocked": false,
+   "support": true,
+   "brim_mm": 0.0,
+   "positions": [
+    [
+     "door_housing",
+     38.1,
+     29.2
+    ],
+    [
+     "door_housing",
+     72.7,
+     29.2
+    ],
+    [
+     "door_housing",
+     107.3,
+     29.2
+    ],
+    [
+     "door_housing",
+     141.9,
+     29.2
+    ],
+    [
+     "door_housing",
+     38.1,
+     69.8
+    ],
+    [
+     "door_housing",
+     72.7,
+     69.8
+    ],
+    [
+     "door_housing",
+     107.3,
+     69.8
+    ],
+    [
+     "door_housing",
+     141.9,
+     69.8
+    ],
+    [
+     "door_housing",
+     38.1,
+     110.2
+    ],
+    [
+     "door_housing",
+     72.7,
+     110.2
+    ],
+    [
+     "door_housing",
+     107.3,
+     110.2
+    ],
+    [
+     "door_housing",
+     141.9,
+     110.2
+    ],
+    [
+     "door_housing",
+     90.0,
+     150.8
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 10761,
+   "print_time": "2h 59m 21s",
+   "filament_g": 37.45,
+   "filament_m": 12.46,
+   "layers": 123,
+   "max_z_mm": 24.6,
+   "toolpath_outside_bed": false,
+   "support_used": true,
+   "slicer_warnings": [],
+   "gcode_warnings": [
+    {
+     "msg": "not_support_traditional_timelapse",
+     "level": "2",
+     "code": "10018003"
+    },
+    {
+     "msg": "not_support_traditional_timelapse",
+     "level": "3",
+     "code": "1000C003"
+    }
+   ],
+   "feature_time_s": {
+    "Bottom surface": 56,
+    "Bridge": 46,
+    "Custom": 353,
+    "Flush": 28,
+    "Gap infill": 269,
+    "Inner wall": 1962,
+    "Internal solid infill": 586,
+    "Outer wall": 1562,
+    "Overhang wall": 407,
+    "Sparse infill": 308,
+    "Support": 1506,
+    "Support interface": 105,
+    "Top surface": 204,
+    "Travel": 3380,
+    "Undefined": 3362
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "filaments_used": [
+    {
+     "id": "1",
+     "used_g": "37.45",
+     "nozzle_diameter": "0.40"
+    }
+   ],
+   "nozzles": [
+    {
+     "extruder_id": "1",
+     "diameter": "0.4"
+    }
+   ],
+   "filament_map": "1",
+   "prime_tower_in_gcode": false,
+   "gcode_3mf": "plates/door_housings.gcode.3mf",
+   "gcode_3mf_mb": 1.98,
+   "studio_png": "plates/door_housings.png",
+   "toolpath_png": "plates/door_housings_toolpath.png"
+  },
+  {
+   "plate": "ec11",
+   "printer": "Bambu Lab H2D (left nozzle)",
+   "printer_key": "h2d",
+   "bed_mm": [
+    325.0,
+    320.0
+   ],
+   "parts": {
+    "ec11": 1
+   },
+   "copies": 1,
+   "blocked": false,
+   "support": true,
+   "brim_mm": 0.0,
+   "positions": [
+    [
+     "ec11",
+     162.5,
+     160.0
+    ]
+   ],
+   "cli_exit": 0,
+   "return_code": 0,
+   "error": "Success.",
+   "print_time_s": 8629,
+   "print_time": "2h 23m 49s",
+   "filament_g": 45.86,
+   "filament_m": 15.25,
+   "layers": 327,
+   "max_z_mm": 65.4,
+   "toolpath_outside_bed": false,
+   "support_used": true,
+   "slicer_warnings": [],
+   "gcode_warnings": [],
+   "feature_time_s": {
+    "Bottom surface": 53,
+    "Bridge": 279,
+    "Custom": 302,
+    "Flush": 26,
+    "Gap infill": 144,
+    "Inner wall": 1451,
+    "Internal solid infill": 521,
+    "Outer wall": 1164,
+    "Overhang wall": 142,
+    "Sparse infill": 968,
+    "Support": 1464,
+    "Support interface": 129,
+    "Top surface": 96,
+    "Travel": 1896,
+    "Undefined": 1889
+   },
+   "pngs_in_3mf": [
+    "Metadata/plate_1.png",
+    "Metadata/plate_1_small.png",
+    "Metadata/plate_no_light_1.png",
+    "Metadata/top_1.png",
+    "Metadata/pick_1.png"
+   ],
+   "filaments_used": [
+    {
+     "id": "1",
+     "used_g": "45.86",
+     "nozzle_diameter": "0.40"
+    }
+   ],
+   "nozzles": [
+    {
+     "extruder_id": "1",
+     "diameter": "0.4"
+    }
+   ],
+   "filament_map": "1,2",
+   "prime_tower_in_gcode": false,
+   "gcode_3mf": "plates/ec11.gcode.3mf",
+   "gcode_3mf_mb": 1.84,
+   "studio_png": "plates/ec11.png",
+   "toolpath_png": "plates/ec11_toolpath.png"
+  }
+ ],
+ "total_print_time_h": 83.0,
+ "total_filament_g": 1903.8
+}

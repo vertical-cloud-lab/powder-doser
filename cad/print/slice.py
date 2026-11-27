@@ -1,8 +1,9 @@
-"""Slice every 3D-printed part of both carousel designs with the Bambu Studio CLI, in PETG.
+"""Slice every 3D-printed part of the carousel designs with the Bambu Studio CLI, in PETG.
 
     python export_printed.py                                  # STLs of the printed parts, from the CAD
-    python slice.py --bambu /tmp/bambu/squashfs-root          # all plates of both designs
+    python slice.py --bambu /tmp/bambu/squashfs-root          # all plates of every design
     python slice.py --bambu ... --design paternoster --parts  # also slice each part alone (audit)
+    python slice.py --bambu ... --design chain-carousel-v11 --parts   # v11 (PR #185)
     python previews.py                                        # toolpath previews and plates.png
 
 Bambu Studio's own Linux AppImage (v02.08.02.61, `--appimage-extract`), no login. Presets are Bambu's
@@ -19,7 +20,8 @@ copilot/programmatic-access-bambu-h2d branch):
 On top of the stock process: 3 walls and 25 % sparse infill (functional parts, as byu-vcl's slices),
 Textured PEI plate (65-70 C for PETG), supports off unless a plate's SUPPORT entry turns them on.
 Each part is turned into its print orientation (ORIENT, with the reason), and each plate is
-sliced in its own run, so every plate gets its own .gcode.3mf. Writes, per design,
+sliced in its own run, so every plate gets its own .gcode.3mf. A plate with "copies" > 1 (v11) is printed that many times
+from the one file: identical plates are sliced once. Writes, per design,
 <design>/plates/<plate>.gcode.3mf (when < 20 MB), <design>/plates/<plate>.png (Studio's own plate
 render, when an OpenGL context is available), <design>/slice_report.json and <design>/audit.json.
 """
@@ -85,13 +87,39 @@ ORIENT = {
 }
 
 # Where a design's part differs from its namesake in the other design
+V11 = "chain-carousel-v11"
 ORIENT_DESIGN = {
     ("chain-carousel-v2", "fork_arm"): ([], "the 6 mm plate flat on the bed, M6 clearance and insert holes vertical"),
+    # v11 (PR #185)
+    (V11, "carriage"): ([(X, -90)], "inner face (the A-1 tabs' side) down: the two tab hooks' fingers on the bed, the plate 6.55 mm up "
+                        "on tree supports, ribs, hinge lugs and latch housing up; on the H2D bed's diagonal (391 mm > 325)"),
+    (V11, "sam_mounting_plate"): ([], "as drawn (Sam's part plus v11's additions): underside on the bed"),
+    (V11, "t_bracket"): ([(X, 90)], "on its side: the T's profile (foot, stem, head) flat on the bed, 16 mm tall; the head's bearing "
+                         "face is a wall and the stem's layers run along its pull"),
+    (V11, "door_housing"): ([], "as drawn: the cap's top face on the bed, rails and spring tower up; the mounting arms, 22 mm "
+                            "cantilevers off the rails 6.5 mm up, on tree supports"),
+    (V11, "door_shutter"): ([(Y, 90)], "flat: its 11.5 x 14 face on the bed (as v11's stl/)"),
+    (V11, "door_head11"): ([], "as drawn: flat, 6 x 6 on the bed, the rod's hole vertical"),
+    (V11, "latch_bolt"): ([(Y, 90)], "on its back face: the dowel's bore opens upward (round, for the press fit), the shelf stands up "
+                          "as a fin, the follower's 3 mm hole horizontal"),
+    (V11, "ec11"): ([(X, 90)], "on its -y side (the motor cheek and side bar on the bed): the rail's T-slot, the door ramp's lips and "
+                    "the P16's pin hole run vertical, so their working faces are walls; spine, collar and ramp over tree supports"),
+    (V11, "pillar11"): ([], "as drawn: the 60 mm foot on the bed, the tube up; the deck under the beaker's socket bridges the bore"),
+    (V11, "p16_bracket11"): ([(X, 180)], "the flange (its bar face) on the bed, cheeks up, the 4.15 mm pin hole horizontal"),
+    (V11, "guide11"): ([(Y, -90)], "on its side: its L-shaped profile (flange, plate, seat block) on the bed; the cone and funnel "
+                       "mouth horizontal (45 deg walls)"),
+    (V11, "latch_rail11"): ([(X, -90)], "on its side: the cam's and the foot's +y ends on the bed, the cam's flat and ramps walls"),
+    (V11, "hold_down"): ([], "side-plate face on the bed: foot, web and lip stack without overhang; insert holes vertical"),
+    (V11, "tensioner_block"): ([], "back face on the bed: screw holes and nut slot vertical, jack-screw hole horizontal"),
+    (V11, "side_tab"): ([], "as drawn: the side-plate face on the bed, lip, foot and web stand on it (no overhang)"),
+    (V11, "side_tab_m"): ([], "as drawn: the side-plate face on the bed, lip, foot and web stand on it (no overhang)"),
+    (V11, "catch"): ([(X, 180)], "the tab on the bed, the spacer up"),
+    (V11, "hatch_knob"): ([], "as drawn: the face bonded to the acrylic on the bed"),
 }
 
 
 def orient(design: str, key: str):
-    return ORIENT_DESIGN.get((design, key), ORIENT[key])
+    return ORIENT_DESIGN[(design, key)] if (design, key) in ORIENT_DESIGN else ORIENT[key]
 
 
 # Plates: (name, printer, [(part, count)], support?).  Filled per design by plates().
@@ -113,6 +141,25 @@ def plates(design: str, qty: dict) -> list[dict]:
         per = 6
         for i in range(math.ceil(m / per)):
             out.append({"name": f"mounting_plates_{i + 1}", "printer": "h2d", "parts": [("sam_mounting_plate", min(per, m - i * per))]})
+    elif design == V11:
+        # identical plates are sliced once and printed "copies" times
+        out.append({"name": "carriage", "printer": "h2d", "parts": [("carriage", 1)], "diagonal": True, "support": True,
+                    "copies": qty["carriage"]})
+        m, per = qty["sam_mounting_plate"], 5
+        full, rest = divmod(m, per)
+        if full:
+            out.append({"name": "mounting_plates_5", "printer": "h2d", "parts": [("sam_mounting_plate", per)], "copies": full})
+        if rest:
+            out.append({"name": f"mounting_plates_{rest}", "printer": "h2d", "parts": [("sam_mounting_plate", rest)]})
+        out.append({"name": "pillar", "printer": "h2d", "parts": [("pillar11", qty["pillar11"])]})
+        out.append({"name": "module_parts", "printer": "a1m", "brim": True,
+                    "parts": [(k, qty[k]) for k in ("t_bracket", "latch_bolt", "door_shutter", "door_head11")]})
+        out.append({"name": "station", "printer": "a1m", "brim": True,
+                    "parts": [(k, qty[k]) for k in ("guide11", "hold_down", "latch_rail11", "p16_bracket11", "side_tab", "side_tab_m",
+                                                    "tensioner_block", "catch", "hatch_knob")]})
+        # one solid each since v11's 2026-11-27 fixes (they came apart before), but both need supports in every orientation
+        out.append({"name": "door_housings", "printer": "a1m", "parts": [("door_housing", qty["door_housing"])], "support": True})
+        out.append({"name": "ec11", "printer": "h2d", "parts": [("ec11", qty["ec11"])], "support": True})
     else:
         for i in range(qty["carriage"]):
             out.append({"name": f"carriage_{i + 1:02d}", "printer": "h2d", "parts": [("carriage", 1)], "diagonal": True})
@@ -262,7 +309,8 @@ def parse(out: Path, name: str, log: str) -> dict:
     with zipfile.ZipFile(f3) as z:
         info = ET.fromstring(z.read("Metadata/slice_info.config"))
         gname = next(n for n in z.namelist() if re.match(r"Metadata/plate_\d+\.gcode$", n))
-        head = z.read(gname)[:6000].decode(errors="replace")
+        gcode = z.read(gname).decode(errors="replace")
+        head = gcode[:6000]
         pngs = [n for n in z.namelist() if n.endswith(".png")]
     pl = info.find("plate")
     meta = {m.get("key"): m.get("value") for m in pl.findall("metadata")}
@@ -281,6 +329,11 @@ def parse(out: Path, name: str, log: str) -> dict:
         "gcode_warnings": [{"msg": w.get("msg"), "level": w.get("level"), "code": w.get("error_code")} for w in pl.findall("warning")],
         "feature_time_s": {k: round(v) for k, v in sorted(sp.get("feature_type_times", {}).items())},
         "pngs_in_3mf": pngs,
+        # which filament and nozzle the file uses (CLAUDE.md: a single-filament H2D print uses one nozzle, nothing on the other)
+        "filaments_used": [{"id": f.get("id"), "used_g": f.get("used_g"), "nozzle_diameter": f.get("nozzle_diameter")} for f in pl.findall("filament")],
+        "nozzles": [{"extruder_id": n.get("extruder_id"), "diameter": n.get("nozzle_diameter")} for n in pl.findall("nozzle")],
+        "filament_map": re.search(r"^; filament_map = (.*)$", gcode, re.M).group(1) if "; filament_map =" in gcode else None,
+        "prime_tower_in_gcode": bool(re.search(r"^; FEATURE: (Prime|Wipe) tower", gcode, re.M)),
     })
     return r
 
@@ -308,7 +361,8 @@ def slice_plate(bambu: Path, presets: dict, design: str, plate: dict, build: Pat
     variant = "support" if plate.get("support") else ("brim" if plate.get("brim") else "")
     code, log = run_cli(bambu, plate["printer"], presets, assemble, out, name, variant)
     r = {"plate": name, "printer": pr["label"], "printer_key": plate["printer"], "bed_mm": list(pr["bed"]),
-         "parts": {k: n for k, n in plate["parts"]}, "support": plate.get("support", False), "brim_mm": float(BRIM["brim_width"]) if variant == "brim" else 0.0,
+         "parts": {k: n for k, n in plate["parts"]}, "copies": plate.get("copies", 1), "blocked": plate.get("blocked", False),
+         "support": plate.get("support", False), "brim_mm": float(BRIM["brim_width"]) if variant == "brim" else 0.0,
          "positions": [[k, round(x, 1), round(y, 1)] for k, x, y in pos], "cli_exit": code}
     r.update(parse(out, name, log))
     f3 = out / f"{name}.gcode.3mf"
@@ -333,7 +387,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--bambu", type=Path, default=Path("/tmp/bambu/squashfs-root"))
     ap.add_argument("--build", type=Path, default=Path("/tmp/slicebuild"))
-    ap.add_argument("--design", choices=["paternoster", "chain-carousel-v2"], action="append")
+    ap.add_argument("--design", choices=["paternoster", "chain-carousel-v2", V11], action="append")
     ap.add_argument("--parts", action="store_true", help="also slice every part alone, supports off (per-part audit)")
     ap.add_argument("--only", nargs="*", help="slice only these plates")
     args = ap.parse_args()
@@ -341,7 +395,7 @@ def main() -> None:
     presets = write_presets(args.bambu, args.build)
     gl_setup(args.build)
     version = re.search(r"BambuStudio_\S*?-v([\d.]+)", " ".join(os.listdir(args.bambu.parent))) if args.bambu.parent.exists() else None
-    for design in args.design or ["paternoster", "chain-carousel-v2"]:
+    for design in args.design or ["paternoster", "chain-carousel-v2", V11]:
         info = json.loads((HERE / design / "parts.json").read_text())
         qty = {k: v["qty"] for k, v in info.items()}
         dest = HERE / design / "plates"
@@ -352,7 +406,8 @@ def main() -> None:
             for k in info:
                 mesh = trimesh.load(HERE / design / "stl" / f"{k}.stl")
                 a = A.audit(mesh, orient(design, k)[0])
-                p = {"name": f"part_{k}", "printer": "h2d" if max(A.place(mesh, orient(design, k)[0]).extents[:2]) > 170 else "a1m",
+                ext = A.place(mesh, orient(design, k)[0]).extents
+                p = {"name": f"part_{k}", "printer": "h2d" if max(ext[:2]) > 170 or ext[2] > 175 else "a1m",
                      "parts": [(k, 1)], "diagonal": k == "carriage"}
                 s = slice_plate(args.bambu, presets, design, p, args.build / design / "parts", args.build / design / "parts_out")
                 audit[k] = {"qty": qty[k], "orientation": orient(design, k)[0], "why": orient(design, k)[1], "mesh": a,
@@ -370,8 +425,8 @@ def main() -> None:
                "presets": {k: {r: PRINTERS[k][r] for r in ("machine", "process", "filament")} for k in PRINTERS},
                "process_overrides": PROCESS, "support_settings_when_on": SUPPORT, "brim_settings_when_on": BRIM, "quantities": qty, "quantities_note": QTY_NOTE,
                "plates": pl,
-               "total_print_time_h": round(sum(p.get("print_time_s", 0) for p in pl) / 3600, 1),
-               "total_filament_g": round(sum(p.get("filament_g") or 0 for p in pl), 1)}
+               "total_print_time_h": round(sum(p.get("print_time_s", 0) * p.get("copies", 1) for p in pl) / 3600, 1),
+               "total_filament_g": round(sum((p.get("filament_g") or 0) * p.get("copies", 1) for p in pl), 1)}
         rep_path.write_text(json.dumps(rep, indent=1) + "\n")
         print(f"{design}: {len(pl)} plates, {rep['total_print_time_h']} h, {rep['total_filament_g']} g")
 
