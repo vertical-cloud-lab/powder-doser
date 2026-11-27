@@ -27,8 +27,8 @@ L_LATCH = L.HINGE_STATION[2] - L.P4.STATION_RAILS_OUTER - 35.0 - (Z_BASE + EXT)
 STEP_TEXT = {
     # 2026-11-27: rewritten for v11 (it was v4's text). Numbers are v11's: the BoM lines and the README.
     1: """Cut the 2020 from one VEVOR 10-pack (BoM item 18): four posts of 697.5 mm, four long rails of 457.7 mm, four rungs of
-417.7 mm, three cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar. Square every cut, and tap both ends of the
-station beam M5.
+417.7 mm, three cross rails of 340 mm, the two 405 mm station beams (v12: the second carries the EC's second guide) and the
+380 mm front bar. Square every cut, and tap both ends of both station beams M5.
 
 The base is a U that the balance stands inside: lay two long rails on the bench and join them at the back with a cross rail (two
 corner brackets each corner, M5 x 10 into drop-in T-nuts, blue Loctite on every screw that goes into a T-nut). Leave the front open:
@@ -40,8 +40,8 @@ The ladder (Sam: "I love the ladder rungs"): on each side, two 417.7 mm rungs be
 86 mm and the upper at 214 mm (centres over the bench). The lower rungs' brackets go under them, just over the posts' foot brackets;
 the upper rungs' tops sit 2.5 mm under the back side plate's lower edge. Nothing in v11 hangs on them; they stiffen the posts.""",
     3: """Have the two side plates cut and drilled from 1/4 in 6061 (`dxf/side_plate_front.dxf`, `dxf/side_plate_back.dxf`). v11's front
-plate has the P16's 22 x 68 mm slot and, under it, the 13/16 in (20.6 mm) hole for the wiring grommet; both plates have the station
-beam's end-screw hole. Tap the M5 holes under the top bearing slots.
+plate has the P16's 22 x 68 mm slot and, under it, the 13/16 in (20.6 mm) hole for the wiring grommet; both plates have the two station
+beams' end-screw holes (v12: the second at y +56). Tap the M5 holes under the top bearing slots.
 
 Bolt each plate to the inner faces of its two posts with M5 x 12 button heads into drop-in T-nuts (blue Loctite). The chains end up
 345 mm apart, centre plane to centre plane, 30 mm inside each plate.""",
@@ -77,17 +77,33 @@ clip's closed end pointing the way the chain travels (the bottom run toward -y).
 1. **Hold-downs and switches:** melt two M5 inserts into each printed hold-down, push a US5881 hall switch into each lip's pocket
    (INDEX front, HOME back), and screw them to the plates' inner faces (M5 x 16, blue Loctite). The side tabs go on at the loading
    position the same way.
-2. **The station beam:** the 405 mm 2020 from the front side plate to the back one, an M5 x 16 through each plate into its tapped
-   ends. The printed guide hangs from its bottom slot (two M5 x 10 into T-nuts): its seat is the cone the EC's shoe parks in.
+2. **The station beams:** two 405 mm 2020s from the front side plate to the back one, at y -56 and (v12) y +56, an M5 x 16 through
+   each plate into their tapped ends. A printed guide hangs from each one's bottom slot (two M5 x 10 into T-nuts): guide 1 (`guide11`)
+   on the -56 beam, guide 2 (`guide12`, v12) on the +56 beam. Their seats are the cones the EC's two shoes park in.
 3. **The front bar and the P16:** the 380 mm 2020 across the front posts' front faces, an M5 x 35 through it into a T-nut in each
    post's front slot (blue Loctite). The printed clevis hangs from its bottom slot (two M5 x 10). The P16-150's rear tab goes in the
    clevis on the 4 x 16 shoulder screw and an M3 nylock; its rod runs back through the front plate's slot.
-4. **EC v11** (print `stl/ec11.stl`, on its side, with supports): bolt the NEMA 11 to its plate, shaft forward. The KHK SS1-24A
-   pinion (hub faced off) goes on the motor's 5 mm shaft over a slotted 5 x 6 mm brass sleeve, its M4 set screw through the slot,
-   Loctite 638. The solenoid goes in its collar over clip 1, plunger toward the plate. Pin the EC's arm to the P16's rod end on the
-   4 x 20 shoulder screw, a PTFE washer each side of the rod's tab, and an M3 nylock.
-5. **Set the P16** fully out (139.2 of its 150 mm) so the EC's shoe sits in the guide's seat with the EC level.
-6. **The latch cam** on the back side plate (two M5 x 12 through the plate).""",
+4. **The pinion's cradle (v12)** (print `stl/cradle12.stl`): melt an M3 insert into the lug from its top, and push the US5881 into
+   the pocket on the lug's +y face, branded face out, its leads up the slot. Cut the NEMA 11's 5 mm shaft to 15 mm (from 20), so it
+   ends at the pinion's front face. Bolt the motor's face to the cradle's plate with its four M2.5 screws, shaft forward. The KHK
+   SS1-24A pinion (hub faced off) goes on the shaft over a slotted 5 x 6 mm brass sleeve, its M4 set screw through the slot, Loctite
+   638. Thread the M3 x 6 cup-point set screw into the lug's insert from the top until its tip just shows under the lug.
+5. **EC v12** (print `stl/ec12.stl`, on its side, with supports): press the K&J D42-N52 into the magnet post beside the lug's pocket
+   (south pole toward the switch: the US5881 switches on a south pole). Set the cradle between the EC's two pivot bosses and press a
+   3 x 12 mm dowel through each EC boss into the cradle's bore (2.95 mm in the EC, a press fit; 3.1 mm in the cradle, free). The
+   cradle must swing freely; if it doesn't, ream its bores 3.1. Drop the spring (1 N/mm, about 19 mm free) onto the cradle's peg
+   and compress it into the roof's pocket as the cradle goes in. The solenoid goes in its collar over clip 1, plunger toward the
+   plate. Pin the EC's arm to the P16's rod end on the 4 x 20 shoulder screw (its tab in the arm's slot, a PTFE washer each side, the
+   nut in its pocket), and an M3 nylock.
+6. **Set the P16** fully out (139.2 of its 150 mm) so both shoes sit in their seats with the EC level.
+7. **Set the stop (v12), with module 1 at the station** (the spring holds the pinion in tight mesh: no backlash when you rock the
+   auger by hand), a dial indicator on the motor's top: turn the set screw down until its tip touches the EC's arm and the dial just
+   starts to move, then back it out 1.7 turns (0.85 mm at the lug, which moves 2.1 times as far as the pinion: 0.4 mm at the pinion).
+   Loctite 222. Index module 1 away: the dial shows the cradle dropping 0.4 mm onto the stop.
+8. **Set the switch:** with module 1 in mesh the switch must read "seated" (`chain_rig.py` logs `hall_before`); lift the pinion
+   0.8 mm with a feeler gauge under the lug's stop and it must read "lifted". Shim the magnet in its post (or bend the switch's legs)
+   until it switches between 0.6 and 1.0 mm.
+9. **The latch cam** on the back side plate (two M5 x 12 through the plate).""",
     9: """Build each module on the bench (13):
 
 1. Print the mounting plate v11 (5 per H2D plate). Melt in the two M3 inserts for the T-bracket and the two M2 inserts for the door

@@ -187,6 +187,10 @@ SKIP = {("auger", "auger_cap"), ("auger", "sam_mounting_plate"), ("auger", "pini
         ("ec12", "hall_magnet12"), ("ec12", "solenoid"), ("ec12", "actuator_rod"), 
         ("guide12", "beam10")}
 SKIP = {tuple(sorted(k)) for k in SKIP}
+# v12: the door's tower is bored (parts12.door_housing_v12) and the shutter's boss takes the rod, so these are checked again (v3-v11 skipped them)
+SKIP -= {tuple(sorted(k)) for k in (("door_shutter", "door_housing"), ("door_spring", "door_housing"), ("door_spring", "door_shutter"),
+                                     ("door_spring_open", "door_housing"), ("door_spring_open", "door_shutter"), ("door_rod11", "door_shutter"),
+                                     ("door_rod11", "door_housing"))}
 CHAIN = ("chain_inner", "chain_outer", "chain_a1")
 
 
@@ -415,6 +419,31 @@ def cradle(lifts=(-0.4, 0.0, 1.0, 2.0, 2.6, 3.2), angles=(0.0, 30.0, 90.0)) -> l
     return hits
 
 
+DOOR_KEYS = ("door_housing", "door_shutter", "door_rod11", "door_head11", "door_spring", "door_spring_open")
+
+
+def door12(angles=(0.0, 10.0, 30.0, 50.0, 70.0, 90.0), shifts=(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)) -> list:
+    """v12: every module's outlet door (the bored housing, the shutter with its round boss, the rod, its head, the spring) against
+    everything else: module 1 at the station tilted to each angle, then the chain indexed one module in 1-link steps (the station at rest,
+    the cradle on its stop). The full checks ran before the door's change; this covers what it moved."""
+    hits = []
+    poses = [L.State(tilt=float(a)) for a in angles] + [L.State(shift=RUN_DIRECTION * float(s), cradle_lift=-0.4) for s in shifts]
+    for st in poses:
+        pl = L.placements(st)
+        dv = [p for p in pl if p.key in DOOR_KEYS]
+        ids = {id(p) for p in dv}
+        rest = [p for p in pl if id(p) not in ids]
+        do, ro = objects(dv), objects(rest)
+        objs = do + ro
+        pairs = [(i, j) for i in range(len(do)) for j in range(i + 1, len(objs)) if not (j < len(do) and dv[i].module != dv[j].module)]
+        h = overlaps(objs, pairs)
+        tag = f"tilt{st.tilt:g}" if st.shift == 0 else f"shift{st.shift:+g}"
+        hits += [(f"{a} @{tag}", b, v) for a, b, v in h]
+        print(f"  {tag}: {len(h)} clash(es)", flush=True)
+    _report("door", hits, {"angles": list(angles), "shifts": list(shifts)})
+    return hits
+
+
 SWAP_AUGER_OUT = (5.0, 15.0, 30.0, 45.0, 60.0, 80.0, 100.0, 140.0)       # mm off the plate: the auger crosses the +y panel at 43-92
 SWAP_LIFT = (0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 100.0)               # v11: 15 mm steps; v4's 0, 30, 100 jumped over the panel
 
@@ -482,7 +511,9 @@ def scale() -> list:
 
 
 if __name__ == "__main__":
-    if "--cradle" in sys.argv:
+    if "--door12" in sys.argv:
+        door12()
+    elif "--cradle" in sys.argv:
         cradle()
     elif "--sweep" in sys.argv:
         # --step N: a coarser sweep (N links per pose) when time is short; the JSON records the step and pose count

@@ -881,14 +881,15 @@ PIN12_X = ((84.0, 96.0), (131.0, 143.0))   # front dowel through the EC's front 
 EC12_BOSS_F = (84.0, 89.4)           # the EC's front pivot boss, on the -y bar's end
 EC12_BOSS_B = (137.1, 143.0)         # the EC's back pivot boss, on the cross bar behind the motor (the motor ends at x 138.5)
 # --- 2. the spring and the stop -----------------------------------------------------------------------------------------------
-SPRING12_K = 1.0                     # N/mm at the pinion; the spring sits over the motor on the pinion's line, 18.5 mm from the pivot like the
+SPRING12_K = 0.98                    # N/mm at the pinion (McMaster 9657K284: 5.6 lbf/in); the spring sits over the motor on the pinion's line, 18.5 mm from the pivot like the
                                      # pinion, so it is the spring's own rate and force
-SPRING12_F_STOP = 6.0                # N with the cradle on its stop (6.4 N in tight mesh, 8.4 N on a tip-on-tip stub)
+SPRING12_F_STOP = 5.93               # N with the cradle on its stop (6.3 N in tight mesh, 8.3 N on a tip-on-tip stub, 9.5 N at the up-stop)
 SPRING12_X = 116.0                   # its axis (Sam x, y 0)
-SPRING12_FREE = 19.0                 # free length (mm); installed 13.0 at the stop, 12.6 in tight mesh, 10.6 on a stub
-SPRING12_OD = 6.0
+SPRING12_FREE = 19.05                # free length (mm, 0.75 in); installed 13.0 at the stop, 12.6 in tight mesh, 10.6 on a stub, 9.8 at the up-stop
+                                     # (McMaster rates it to 8.64 mm)
+SPRING12_OD = 6.1                    # 0.24 in OD, 4.98 ID (0.022 in wire): over the cradle's 3 mm peg, in 6.7 mm pockets
 EC12_ROOF = (104.0, 128.0, -64.1, -68.1)   # the EC's roof over the spring: x0, x1, z near (the spring's top end in tight mesh), z far
-SETSCREW12_XY = (108.0, 21.0)        # the stop: an M3 x 6 cup-point set screw down through the lug (a heat-set insert), its tip on the arm's top
+SETSCREW12_XY = (108.0, 21.0)        # the stop: an M3 x 6 flat-point set screw (a cup point would dent the printed arm) down through the lug (a heat-set insert), its tip on the arm's top
 HALL12_XYZ = (102.0, 26.0, -36.0)    # the US5881 on the lug's +y face (branded face +y), its sensing point
 MAGNET12_DZ = -3.5                   # the switch's magnet (K&J D42-N52, axis along y) sits 3.5 mm further into the loop than the switch in tight
                                      # mesh: a 1 mm lift at the pinion (2.2 mm at the lug) brings the switch under the magnet's face

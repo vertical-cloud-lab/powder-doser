@@ -237,14 +237,18 @@ ITEMS = [
      "tube along the motor's -y side on the two dowels (3.1 mm bores), a top bar over the motor with the spring's seat, and a lug on the "
      "motor's +y side with the stop's M3 insert and the hall switch's pocket", "printed", "stl/cradle12.stl", "", 0.25,
      "filament (about 10 g)", (8,), "Printed"),
-    (123, ("pivot_dowel12",), None, "Pivot dowel pin, 3 mm x 12 mm (the cradle's two pivots: pressed into the EC's 2.95 mm bosses, free "
-     "in the cradle's 3.1 mm bores). PRICE PENDING", "McMaster-Carr", "TBD", f"{MC}/dowel-pins/", 0.0, E, (8,), "Station"),
-    (124, None, 1, "Compression spring for the cradle (1 N/mm, 6 N at the stop: about 19 mm free, installed 13.0 mm at the stop, 12.6 in "
-     "tight mesh, 10.6 on a gear's tips, 9.4 at the up-stop; 6 mm OD over a 3 mm peg). PRICE PENDING", "McMaster-Carr", "TBD",
-     f"{MC}/compression-springs/", 0.0, E, (8,), "Station"),
-    (125, ("set_screw_m3x6",), None, "M3 x 6 cup-point set screw: the cradle's stop, down through an M3 insert in its lug (item 108) onto "
-     "the EC's arm; set 0.4 mm past tight mesh with module 1 at the station (TEST-PLAN T6a), Loctite 222. PRICE PENDING",
-     "McMaster-Carr", "TBD", f"{MC}/set-screws/", 0.0, E, (8,), "Station"),
+    (123, ("pivot_dowel12",), None, "Pivot dowel pin, 3 mm x 12 mm, 316 stainless, ISO 2338-m6, pack of 25 (2 used: the cradle's pivots, "
+     "pressed into the EC's 2.95 mm bosses, free in the cradle's 3.1 mm bores)", "McMaster-Carr", "93600A335",
+     f"{MC}/products/dowel-pins/", 9.73, f"{MCV}: $9.73 per pack of 25", (8,), "Station"),
+    (124, None, 1, "Compression spring for the cradle, 0.75 in (19.05 mm) free, 0.24 in (6.10 mm) OD, 0.196 in (4.98 mm) ID, 0.022 in "
+     "music-wire, 5.6 lbf/in (0.98 N/mm), rated to 2.3 lb (10.2 N) at 8.64 mm; pack of 12 (1 used + spares). On the pinion's line over "
+     "the motor: 5.9 N at the stop, 6.3 N in tight mesh, 8.3 N on a gear's tips, 9.5 N at the up-stop (9.8 mm). No stainless spring "
+     "matches 1 N/mm and 19 mm: 316 8969T506 is 1.02 N/mm but 17 mm free (4.1 N at the stop)", "McMaster-Carr", "9657K284",
+     f"{MC}/products/compression-springs/", 12.74, f"{MCV}: $12.74 per pack of 12", (8,), "Station"),
+    (125, ("set_screw_m3x6",), None, "M3 x 6 flat-point set screw, 18-8 stainless, 1.5 mm hex, pack of 25 (1 used): the cradle's stop, "
+     "down through an M3 insert in its lug (item 108) onto the EC's arm (flat, so it doesn't dent the printed arm; a cup point would); "
+     "set 0.4 mm past tight mesh with module 1 at the station (ASSEMBLY step 8.7), Loctite 222", "McMaster-Carr", "92605A100",
+     f"{MC}/products/set-screws/", 3.81, f"{MCV}: $3.81 per pack of 25", (8,), "Station"),
     # ---- v3: outlet doors (item 4) and plate latches (item 4a)
     (83, ("door_housing", "door_shutter", "door_head11"), None, "Outlet door v11, PETG, three parts per module: v10's housing (a 1.8 mm "
      "hole through its cap for the rod), v10's shutter (no push strip), and a 6 x 6 x 2.5 mm head pressed and glued on the rod's end "
@@ -365,7 +369,7 @@ ITEMS = [
 ]
 
 # lines you can only buy in packs larger than the rig uses: what you actually pay
-BUY = {23: 188.30, 35: 12.78, 115: 8.59, 91: 12.34, 108: 14.99}
+BUY = {123: 9.73, 125: 3.81, 23: 188.30, 35: 12.78, 115: 8.59, 91: 12.34, 108: 14.99}
 
 NOTES = """**Before cutting the chain, measure it.** ANSI #35 has a 0.200 in (5.08 mm) bushing and 0.188 in (4.78 mm) between the
 inner plates. ISO 06B has the same 3/8 in pitch but a 6.35 mm roller and 5.72 mm between the plates, and the two don't mix.

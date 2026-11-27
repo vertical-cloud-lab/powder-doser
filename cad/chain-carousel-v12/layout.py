@@ -612,7 +612,7 @@ STEPS = {
     5: "Corner shafts with their sprockets (back set screws loose)",
     6: "NEMA 34 on the back plate, 15T sprockets, drive chain",
     7: "Chains: 13 Nitro CL35-A1 links per chain, close both loops",
-    8: "Station: hold-downs, hall switches; the station beam inside the loop and the EC's guide on it; the front bar across the front posts and the P16-150's clevis under it; EC v11 (door ramp, solenoid over clip 1, straight rail, NEMA 11 and 24T pinion, the arm) on the P16's rod end, through the front plate's slot; the latch cam; the side tabs",
+    8: "Station: hold-downs, hall switches; the two station beams inside the loop and the EC's two guides on them; the front bar across the front posts and the P16-150's clevis under it; EC v12 (door ramp, solenoid over clip 1, straight rail, the pinion's cradle with the NEMA 11, the 24T pinion, its spring, stop and hall switch, the arm, two shoes) on the P16's rod end, through the front plate's slot; the latch cam; the side tabs",
     9: "Modules on the bench: plate v11 with its T-bracket, the auger into clips 1 and 2 and onto the cap saddle, the outlet door with its rod and head; plate pinned onto a carriage's outer face, latch bolt over the keeper",
     10: "Carriages onto the chain at the loading position, one index at a time; phase and tension",
     11: "Electronics board: supply, driver, Pi, interface board, LAC, e-stop",
@@ -1550,6 +1550,9 @@ BUILDERS = {
     "ec12": lambda: P12.ec_v12(SY_P16_11),
     "cradle12": P12.cradle_v12,
     "nema11_v12": P12.nema11_v12,
+    "door_housing": P12.door_housing_v12,                 # v12: the spring's tower bored out (v4-v11 drew it solid)
+    "door_shutter": P12.door_shutter_v12,                 # v12: overrides v10's (above): a round boss the rod can be pressed into
+    "door_rod11": P12.door_rod_v12,                      # v12: the rod 0.9 mm longer, through the boss
     "pivot_dowel12": P12.pivot_dowel_v12,
     "set_screw_m3x6": P12.set_screw_m3x6,
     "insert_m3_short": PT.heat_insert_m3,

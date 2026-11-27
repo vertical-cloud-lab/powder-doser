@@ -1,9 +1,10 @@
-"""Export the chain-carousel test rig v11 (v10 with Sam's 2026-11-25 notes: longer carriages and the hinge nearer the carriage, 0-90 deg with a
+"""Export the chain-carousel test rig v12 (v11 with the spring-loaded pinion: the NEMA 11 and its 24T pinion on a printed cradle that pivots in
+the EC, a 1 N/mm spring, a set-screw stop and a hall switch; the EC's second guide seat on a second station beam). v11 was (v10 with Sam's 2026-11-25 notes: longer carriages and the hinge nearer the carriage, 0-90 deg with a
 P16-150 through the front side plate, a straight rail, the door opened by the EC, the solenoid near the outlet, the tall-cage balance).
 
     python build.py
 
-* step/chain_carousel_rig_v11.step  the whole rig as one STEP assembly: named,
+* step/chain_carousel_rig_v12.step  the whole rig as one STEP assembly: named,
   coloured instances that share their part definitions (the two chains'
   182 plain links are 2 parts, not 182), so Onshape imports it as one
   assembly plus one Part Studio per unique part.
@@ -25,11 +26,11 @@ import layout as L
 
 HERE = Path(__file__).resolve().parent
 PRINTED = ("carriage", "hold_down", "tensioner_block", "latch_rail11", "latch_bolt", "door_housing", "door_shutter", "door_head11",
-           "side_tab", "side_tab_m", "catch", "ec11", "t_bracket", "p16_bracket11", "guide11", "pillar11")   # v11: the EC, the T, the door's head, the clevis, the pillar
+           "side_tab", "side_tab_m", "catch", "ec12", "cradle12", "t_bracket", "p16_bracket11", "guide11", "guide12", "pillar11")   # v12: EC v12, the cradle, guide 2
 PRINTED_REF = {"sam_mounting_plate": "mounting_plate_v11"}   # Sam's plate + v6/v7's extension, the T-bracket's insert holes
 ACRYLIC = ("panel_side", "panel_side_hatch", "panel_front_door11", "panel_back", "panel_top", "hatch_side")
 WORLD_ACRYLIC = ("bal11_lid",)   # built in place (the balance's frame): the dosing lid
-STEP_FILE = "chain_carousel_rig_v11.step"
+STEP_FILE = "chain_carousel_rig_v12.step"
 
 
 def loc(M: np.ndarray) -> cq.Location:
@@ -42,7 +43,7 @@ def loc(M: np.ndarray) -> cq.Location:
 def assembly(tilt_deg: float = 0.0) -> cq.Assembly:
     """Root -> one sub-assembly per assembly step ("05 Idler ...") -> parts,
     so the Onshape assembly's tree reads like the build instructions."""
-    asm = cq.Assembly(name="Chain carousel test rig v11")
+    asm = cq.Assembly(name="Chain carousel test rig v12")
     subs: dict[int, cq.Assembly] = {}
     names: dict[str, int] = {}
     for p in L.placements(tilt_deg):

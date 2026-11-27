@@ -381,9 +381,10 @@ def _wide(cam, f: float = 1.25):
 
 
 def still_views() -> list:
-    """v11's stills: (name, state, camera, hide, title, sub, opacity). The cut-aways, close-up cameras and see-through parts are
+    """v12's stills (v11's, plus the cradle and the two seats): (name, state, camera, hide, title, sub, opacity). The cut-aways, close-up cameras and see-through parts are
     explain11's (the clips in renders/v11/), so each still shows the same parts its clip does."""
     import explain11 as X                   # lazily: explain11 imports this module
+    import explain12 as X12
     from params import LATCH10_RAMP_DEG, LATCH_RAIL_FLAT, LATCH_Y6, SOL11_X
     op = X.opac
     no_elec = lambda p: p.group == "elec"                                                          # noqa: E731
@@ -397,13 +398,13 @@ def still_views() -> list:
     S0 = dict(enclosure=False)
     before = -RUN_DIRECTION                 # a positive shift: carriage 1 still on its way in (the machine runs -1)
     return [
-        ("rig_iso", L.State(), HERO11, no_elec, "Chain carousel v11: the station inside the loop (0-90 deg), the carousel lowered over a tall-cage balance",
+        ("rig_iso", L.State(), HERO11, no_elec, "Chain carousel v12: v11 with a spring-loaded pinion on a cradle in the EC, and a second guide seat",
          "13 modules outside the loop; the acrylic enclosure with the balance's open doorway in front; the side hatch (+y) for swaps", op),
-        ("rig_open", L.State(**S0), HERO11, no_elec, "v11 without its enclosure: module 1 at the station under EC v11; the P16-150 through the front plate",
+        ("rig_open", L.State(**S0), HERO11, no_elec, "v12 without its enclosure: module 1 at the station under EC v12; the P16-150 through the front plate",
          "carriages 40 mm longer (chains 345 mm apart); the balance with its tall cage on the bench, the beaker on a pillar", op),
         ("rig_loop", L.State(), LOOP11, lambda p: front_open(p) or no_elec(p), "Front chain loop (the front plate, the P16 and the enclosure hidden)",
          "13 carriages on two Nitro RC35 chains, 345 mm apart, their modules outside the loop; 32T sprockets on four shafts", op),
-        ("rig_station", L.State(**S0), _wide(X.CAM_SIDE), X.near_cut, "Station at rest: EC v11 on module 1, inside the loop; the module rests on its own carriage",
+        ("rig_station", L.State(**S0), _wide(X.CAM_SIDE), X.near_cut, "Station at rest: EC v12 on module 1, inside the loop; the module rests on its own carriage",
          f"the P16-150 fully out ({e0:.1f} of 150 mm) from its clevis outside the front plate (the beam and the EC's guide cut away)", op),
         ("rig_tilt30", L.State(tilt=30.0, **S0), _wide(X.CAM_SIDE_HI), X.near_cut, "Dosing at 30 deg: the P16 pulls the EC and module 1 up about the hinge",
          f"P16 {e30:.1f} of 150 mm out; the exit is on the hinge axis, so it doesn't move", op),
@@ -414,20 +415,20 @@ def still_views() -> list:
          lambda pl: op(pl, {"side_plate_front": 0.6})),
         ("rig_rail", L.State(**S0), _wide(X.CAM_RAIL), X.close_cut, "The straight rail: the plate's T-bracket in the EC's slot (level lips, flared ends; no lift)",
          "at rest the T's head is 0.2 mm over the lips: the module sits on its carriage, the lips take it only when the P16 pulls",
-         lambda pl: op(pl, {"ec11": 0.6})),
+         lambda pl: op(pl, {"ec12": 0.6})),
         ("rig_gear", L.State(**S0), _wide(X.CAM_GEAR), gear_cut, "The 44T gear meets the 24T pinion at rest (the EC see-through)",
          "the hinge is 5 mm nearer the carriage, so the gear pokes past it; centre distance 34.25 mm",
-         lambda pl: op(pl, {"ec11": 0.35, "sam_mounting_plate": 0.5, "t_bracket": 0.6, "door_housing": 0.5})),
+         lambda pl: op(pl, {"ec12": 0.35, "sam_mounting_plate": 0.5, "t_bracket": 0.6, "door_housing": 0.5})),
         ("rig_door_open", L.State(**S0), _wide(X.CAM_DOOR), X.close_cut, "Outlet door open: the EC's front ramp holds the rod's head 6 mm toward the loop",
          "a 1.5 mm stainless rod from the shutter up the spring's axis, through the housing's cap, to a printed head; no cable",
-         lambda pl: op(pl, {"ec11": 0.7})),
+         lambda pl: op(pl, {"ec12": 0.7})),
         ("rig_door_closed", L.State(shift=before * 3.0, **S0), _wide(X.CAM_DOOR), X.close_cut,
          "Outlet door shut: module 1 three links before the station, its head not yet in the ramp",
          "the spring holds the shutter over the 3 mm exit; the door is fully open within 7 mm of the station",
-         lambda pl: op(pl, {"ec11": 0.7})),
+         lambda pl: op(pl, {"ec12": 0.7})),
         ("rig_solenoid", L.State(**S0), _wide(X.CAM_SOL), X.close_cut, f"The solenoid over clip 1, {SOL11_X:.0f} mm behind the exit (the auger's first third)",
          "in a collar in the EC's spine, its plunger 1.2 mm off the plate; it turns with the module, so it taps the same spot at every tilt",
-         lambda pl: op(pl, {"ec11": 0.5})),
+         lambda pl: op(pl, {"ec12": 0.5})),
         ("rig_latch", L.State(**S0), LATCH11, latch_cut11, f"Plate latch at the station: the cam holds carriage 1's bolt {LATCH_TRAVEL:g} mm back, its pin out of the keeper",
          f"the cam on an arm from the back side plate (hidden), its +-{LATCH_RAIL_FLAT:.0f} mm flat and {LATCH10_RAMP_DEG:.0f} deg ramps; carriage 1 and its plate see-through, the augers hidden", ghost_latch),
         ("rig_latch_closed", L.State(shift=before * 4.0, **S0), LATCH11, latch_cut11, "Half an index before the station: carriage 1's bolt is home, its pin in the keeper",
@@ -446,6 +447,15 @@ def still_views() -> list:
          "Swap through the side hatch: module 4's auger comes straight off its plate",
          "the side tabs take the pull, not the chain; the door, plate and carriage stay on the chain (check_interference.py --swap)", op),
         ("rig_side_tabs", L.State(), (TAB, (-0.6, 1.0, -0.2), 240), front_open, "Side tab at the loading position: its foot 1 mm outside the tongue", "", op),
+        ("rig_cradle", L.State(**S0), (X12.CAM_CR2[0], X12.CAM_CR2[1], X12.CAM_CR2[2] * 1.15), X12.close_cut,
+         "v12: the NEMA 11 and its 24T pinion on a spring-loaded cradle (the EC see-through)",
+         "two 3 mm dowels on the side the gears arrive from; a 1 N/mm spring over the motor (6 N at the stop); an M3 set-screw stop on the arm; a US5881 on the cradle's lug",
+         lambda pl: op(pl, {"ec12": 0.32})),
+        ("rig_cradle_lifted", L.State(cradle_lift=2.0, **S0), (X12.CAM_CR2[0], X12.CAM_CR2[1], X12.CAM_CR2[2] * 1.15), X12.close_cut,
+         "v12: a gear tooth on a pinion tooth lifts the cradle 2 mm on its spring (8.4 N) instead of jamming",
+         "the hall switch is now under its magnet: the driver reads 'lifted' and runs the seek", lambda pl: op(pl, {"ec12": 0.32})),
+        ("rig_seats", L.State(**S0), X12.CAM_SEAT, X12.seat_hide, "v12: the EC on two guide seats, one each side of the module",
+         "guide 1 (v11's) on the station beam; guide 2 (new) on a second 2020 beam across the loop", lambda pl: op(pl, {"ec12": 0.8, "beam10": 0.22})),
         ("rig_back_iso", L.State(), BACK11, None, "Back: the NEMA 34 inside the frame drives the bottom +y shaft; the electronics board behind",
          "", op),
     ]

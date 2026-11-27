@@ -176,6 +176,15 @@ def cradle(preview=False):
     c.done()
 
 
+def seat_hide(p) -> bool:
+    """Only the station's EC, its cradle, both guides and beams, and module 1 with its carriage."""
+    if p.group in ("station_ec", "station") or p.key in ("beam10", "guide11", "guide12"):
+        return p.key in ("latch_rail11", "side_tab", "side_tab_m", "m5x12_bhcs", "p16_bracket11", "grommet10", "clevis_screw")
+    if p.module == 0 and p.group in ("modules", "carriages"):
+        return False
+    return True
+
+
 def seats(preview=False):
     c = E.Clip("seats_v12", TAG, 3, preview)
     foc = lambda p: p.key in ("ec12", "guide11", "guide12", "beam10") or p.key in FOC_CR or p.key.startswith("spring12_") or p.module == 0  # noqa: E731

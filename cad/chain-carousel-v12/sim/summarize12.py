@@ -1,141 +1,117 @@
-"""Tables for sim/README.md from out/entry.json, out/entry_robust.json, out/exit.json and out/cycle.json (run11.py).
-
-    python summarize11.py > out/summary.md
-"""
+"""Tables for sim/README.md from out/*.json (run12.py's results): python summarize12.py > out/summary.md"""
 from __future__ import annotations
 
+import collections
 import json
-from collections import defaultdict
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parent / "out"
 
 
-def pct(n, d):
-    return f"{100 * n / d:.0f} %" if d else "-"
+def load(name):
+    p = OUT / f"{name}.json"
+    return json.loads(p.read_text())["runs"] if p.exists() else []
 
 
 def entry_tables():
-    E = json.loads((OUT / "entry.json").read_text())["runs"]
-    print("### Entry: outcomes by tolerance (12 starting phases each, the pinion free, 5 mN m auger drag)\n")
-    rows = defaultdict(list)
+    E = load("entry")
+    print("#### Entry: one index into the station, then the seek (12 arrival phases per row; the pinion free during the index)\n")
+    print("| Design | Clevis roll stiffness (N·m/rad) | Tolerance stack (mm) | Meshed on arrival | On the tips, cleared by the seek | ... by the second try | Left on the tips | Jammed | Peak chain force (N) | Centre distance after (mm) |")
+    print("|---|---|---|---|---|---|---|---|---|---|")
+    order = ["v12", "4 N spring", "pivot 10 mm nearer the gear", "leading arm", "one seat"]
+    for lab in order:
+        g0 = [r for r in E if r.get("label") == lab]
+        for kr in sorted({r["k_roll"] for r in g0}):
+            for e in sorted({r["a_err"] for r in g0 if r["k_roll"] == kr}):
+                g = [r for r in g0 if r["k_roll"] == kr and r["a_err"] == e]
+                c = collections.Counter(r["outcome"] for r in g)
+                n = len(g)
+                left = sum(v for k, v in c.items() if k.startswith("stub left"))
+                print(f"| {lab} | {kr:g} | {e:+.2f} | {c['meshed']}/{n} | {c['stub, cleared by the seek']}/{n} | {c['stub, cleared by the second try']}/{n} | "
+                      f"{left}/{n} | **{c['jam']}/{n}** | {max(r['chain_force_max_N'] for r in g):.1f} | "
+                      f"{min(r['cd_end'] for r in g):.2f}-{max(r['cd_end'] for r in g):.2f} |")
+    print()
+    tot = collections.Counter()
     for r in E:
-        if r["mode"] != "free" or abs(r["drag_mNm"] - 5.0) > 1e-6:
+        tot[(r["label"], r["outcome"])] += 1
+    for lab in order:
+        g = [r for r in E if r.get("label") == lab]
+        if not g:
             continue
-        rows[((f"spring-loaded {r.get('f_spring', 6):g} N" if r["spring"] else "as drawn"), r["k_roll"], r["a_err"])].append(r)
-    print("| Design | Clevis roll stiffness (N·m/rad) | Pinion offset (mm) | Meshed | Stubbed, cleared by the seek | Jammed | Peak tooth force, 2 ms avg (N) | Teeth at rest (N) |")
-    print("|---|---|---|---|---|---|---|---|")
-    for (sp, kr, e), rs in sorted(rows.items(), key=lambda kv: (kv[0][0], kv[0][1], kv[0][2])):
-        n = len(rs)
-        m = sum(r["outcome"] == "meshed" for r in rs)
-        s = sum(r["outcome"].startswith("stub") for r in rs)
-        j = sum(r["jam"] for r in rs)
-        ok = [r for r in rs if not r["jam"]]
-        fmax = max((r["tooth_force_2ms_max_N"] for r in ok), default=float("nan"))
-        rest = sorted(r["end_tooth_force_N"] for r in ok)
-        rest_s = f"{rest[len(rest) // 2]:.1f}" if rest else "-"
-        print(f"| {sp} | {kr:g} | {e:+.2f} | {m}/{n} | {s}/{n} | **{j}/{n}** | {fmax:.0f} | {rest_s} |")
+        c = collections.Counter(r["outcome"] for r in g)
+        hall_final = sum(1 for r in g if r["hall"][-1] == (not (r["cds"][-1] < 34.7)))
+        print(f"- **{lab}**: {len(g)} indexes, {c['meshed']} meshed on arrival, {c['stub, cleared by the seek']} cleared by the first seek, "
+              f"{c['stub, cleared by the second try']} by the second try, {sum(v for k, v in c.items() if k.startswith('stub left'))} left on the tips, "
+              f"**{c['jam']} jammed**; the switch's reading after the seek right in {hall_final}/{len(g)}.")
     print()
-    print("### Entry: pinion mode and auger drag (as drawn, clevis 10 N·m/rad, nominal)\n")
-    print("| Pinion during the index | Auger drag (mN·m) | Meshed | Stubbed | Jammed |")
-    print("|---|---|---|---|---|")
-    for mode, drag in (("free", 5.0), ("held", 5.0), ("seek", 5.0), ("free", 30.0)):
-        rs = [r for r in E if r["mode"] == mode and abs(r["drag_mNm"] - drag) < 1e-6 and not r["spring"] and r["k_roll"] == 10.0 and r["a_err"] == 0.0]
-        n = len(rs)
-        print(f"| {mode} | {drag:g} | {sum(r['outcome'] == 'meshed' for r in rs)}/{n} | {sum(r['outcome'].startswith('stub') for r in rs)}/{n} | "
-              f"**{sum(r['jam'] for r in rs)}/{n}** |")
-    print()
-    spr = [r for r in E if r["spring"]]
-    print(f"Spring-loaded, every run: {len(spr)} runs, {sum(r['jam'] for r in spr)} jams, "
-          f"{sum(r['outcome'].startswith('stub') for r in spr)} stubbed, of which {sum(r['outcome'] == 'stub, cleared by the seek' for r in spr)} cleared by the seek.\n")
 
 
 def robust_table():
-    p = OUT / "entry_robust.json"
-    if not p.exists():
+    R = load("entry_robust")
+    if not R:
         return
-    E = json.loads(p.read_text())["runs"]
-    print("### Entry: what the jams depend on (12 phases each, nominal tolerance)\n")
-    print("| Change | Design | Meshed | Stubbed (cleared) | Jammed |")
-    print("|---|---|---|---|---|")
-    groups = defaultdict(list)
-    for r in E:
-        c = dict(r["cfg"])
-        sp = c.pop("spring", False)
-        lab = ", ".join(f"{k} {v:g}" for k, v in c.items()) or "-"
-        if r["v"] != 50.0:
-            lab = f"index at {r['v']:g} mm/s" + ("" if lab == "-" else ", " + lab)
-        groups[(lab, sp)].append(r)
-    for (lab, sp), rs in sorted(groups.items()):
-        n = len(rs)
-        print(f"| {lab} | {'spring-loaded' if sp else 'as drawn'} | {sum(r['outcome'] == 'meshed' for r in rs)}/{n} | "
-              f"{sum(r['outcome'].startswith('stub') for r in rs)}/{n} ({sum(r['outcome'] == 'stub, cleared by the seek' for r in rs)}) | **{sum(r['jam'] for r in rs)}/{n}** |")
-    print()
-
-
-def seek2_table():
-    p = OUT / "entry_seek2.json"
-    if not p.exists():
-        return
-    E = json.loads(p.read_text())["runs"]
-    print("### Spring-loaded, with the seek reversing once (0.25 rev/s, 0.2 s forward then 0.2 s back)\n")
-    print("| Spring | Clevis (N·m/rad) | Offset (mm) | Meshed at the stop | Stubbed | Cleared by the seek | Left stubbed | Jammed |")
-    print("|---|---|---|---|---|---|---|---|")
-    rows = defaultdict(list)
-    for r in E:
-        rows[(r.get("f_spring", 6.0), r["k_roll"], r["a_err"])].append(r)
-    for (f, kr, e), rs in sorted(rows.items()):
-        n = len(rs)
-        print(f"| {f:g} N | {kr:g} | {e:+.2f} | {sum(r['outcome'] == 'meshed' for r in rs)}/{n} | {sum(r['outcome'].startswith('stub') for r in rs)}/{n} | "
-              f"{sum(r['outcome'] == 'stub, cleared by the seek' for r in rs)} | {sum(r['outcome'] == 'stub' for r in rs)} | **{sum(r['jam'] for r in rs)}** |")
+    print("#### Entry: what the outcome depends on (v12 as drawn, nominal tolerances, 12 arrival phases each)\n")
+    print("| Change | Meshed | On the tips, cleared by the seek | ... by the second try | Left | Jammed | Peak chain force (N) |")
+    print("|---|---|---|---|---|---|---|")
+    for lab in dict.fromkeys(r["label"] for r in R):
+        g = [r for r in R if r["label"] == lab]
+        c = collections.Counter(r["outcome"] for r in g)
+        n = len(g)
+        print(f"| {lab} | {c['meshed']}/{n} | {c['stub, cleared by the seek']}/{n} | {c['stub, cleared by the second try']}/{n} | "
+              f"{sum(v for k, v in c.items() if k.startswith('stub left'))}/{n} | **{c['jam']}/{n}** | {max(r['chain_force_max_N'] for r in g):.1f} |")
     print()
 
 
 def exit_table():
-    X = json.loads((OUT / "exit.json").read_text())["runs"]
-    print("### Exit: the next index pulls the gear out\n")
-    print("| Design | Pinion | Offset (mm) | Clevis (N·m/rad) | Peak chain force (N) | Peak tooth force (N) | Chain lag (mm) |")
-    print("|---|---|---|---|---|---|---|")
+    X = load("exit")
+    if not X:
+        return
+    print("#### Exit: the next index pulls the gear out\n")
+    print("| Pinion | Tolerance stack (mm) | Clevis (N·m/rad) | Peak chain force (N) | Peak tooth force (N) | Chain lag (mm) |")
+    print("|---|---|---|---|---|---|")
     for r in X:
-        print(f"| {'spring-loaded' if r.get('spring') else 'as drawn'} | {r['mode']} | {r.get('a_err', 0):+.2f} | {r.get('k_roll', 10):g} | "
-              f"{r['chain_force_max_N']:.1f} | {r['tooth_force_max_N']:.1f} | {r['chain_lag_max_mm']:.3f} |")
+        print(f"| {r['mode']} | {r['a_err']:+.2f} | {r['k_roll']:g} | {r['chain_force_max_N']:.1f} | {r['tooth_force_max_N']:.1f} | {r['chain_lag_max_mm']:.3f} |")
     print()
+
+
+def _cfg_name(c):
+    if not c:
+        return "v12 as drawn"
+    parts = []
+    for k, v in c.items():
+        parts.append({"cradle": "v11 as drawn (rigid)" if v is False else "", "a_err": f"tolerance {v:+g} mm", "k_roll": f"clevis {v:g} N·m/rad",
+                      "f_spring": f"{v:g} N spring", "piv_dz": f"pivot {v:g} mm nearer the gear", "piv_dy": "leading pivot" if v > 0 else "",
+                      "seats": f"{v} seat"}.get(k, f"{k} {v}"))
+    return ", ".join(p for p in parts if p)
 
 
 def cycle_tables():
-    C = json.loads((OUT / "cycle.json").read_text())["runs"]
-    print("### Station cycle: tilt to 30 deg, dose 1 s (30 rpm, 20 mN m with a slug per turn, 4 N solenoid taps every 0.25 s), on to 90 deg, "
-          "dose, back down, one reverse turn at rest\n")
-    print("| Case | Phase | Tilt reached (deg) | Centre distance (mm) | P16 force (N) | T on the lips (N) | Teeth, 10 ms avg max (N) | EC roll (deg) | EC sideways (mm) | Seat at the end (N) |")
-    print("|---|---|---|---|---|---|---|---|---|---|")
+    C = load("cycle")
+    if not C:
+        return
+    print("#### Station cycle: tilt to 30 deg, dose 1 s (30 rpm, 20 mN m with a slug per turn, 4 N solenoid taps every 0.25 s), on to 90 deg, dose, back down, one reverse turn at rest\n")
+    print("| Case | Phase | Tilt reached (deg) | Centre distance (mm) | P16 force (N) | T on the lips (N) | Teeth, 10 ms avg max (N) | EC roll (deg) | Seats at the end (N) |")
+    print("|---|---|---|---|---|---|---|---|---|")
     for r in C:
         if r["stall_at"] is not None:
             continue
-        c = r["cfg"]
-        lab = ("spring-loaded" if c.get("spring") else "as drawn") + "".join(f", {k} {v:g}" for k, v in c.items() if k != "spring")
+        nm = _cfg_name(r["cfg"])
         for ph, v in r["phases"].items():
-            print(f"| {lab} | {ph} | {v['tilt_end']:.1f} | {v['cd_mm'][0]:.2f}-{v['cd_mm'][1]:.2f} | {v['p16_N'][0]:.0f} to {v['p16_N'][1]:.0f} | "
-                  f"{v['t_contact_N'][1]:.0f} | {v.get('tooth_N_10ms_max', v['tooth_N_max']):.0f} | {v['ec_roll_deg'][0]:+.2f} to {v['ec_roll_deg'][1]:+.2f} | "
-                  f"{v['ec_lat_mm'][0]:+.2f} to {v['ec_lat_mm'][1]:+.2f} | {v['seat_N_end']:.1f} |")
-        print(f"| {lab} | tooth jumps over the cycle | {r['tooth_jumps']} | | | | | | | |")
+            print(f"| {nm} | {ph} | {v['tilt_end']} | {v['cd_mm'][0]:.2f}-{v['cd_mm'][1]:.2f} | {v['p16_N'][0]:.0f} to {v['p16_N'][1]:.0f} | "
+                  f"{v['t_contact_N'][1]:.0f} | {v['tooth_N_10ms_max']:.0f} | {v['ec_roll_deg'][0]:+.2f} to {v['ec_roll_deg'][1]:+.2f} | {v['seat_N_end']:.1f} |")
+        print(f"| {nm} | tooth jumps over the cycle | {r['tooth_jumps']} | | | | | | |")
     print()
-    print("### Stall ramps: the auger's load rises until something gives (30 rpm)\n")
-    print("| Design | Offset (mm) | Tilt (deg) | What gives | At (N·m at the auger) | Centre distance then (mm) |")
-    print("|---|---|---|---|---|---|")
-    for r in C:
-        if r["stall_at"] is None:
-            continue
-        c = r["cfg"]
-        st = r["steps"][0].get("stall", {}) if r["steps"] else {}
-        lab = ("spring-loaded" if c.get("spring") else "as drawn") + (f", {c.get('f_spring', 6):g} N" if c.get("spring") else "")
-        print(f"| {lab} | {c.get('a_err', 0.0):+.2f} | {r['stall_at']:g} | {st.get('mode') or 'held to 0.30'} | {st.get('load_Nm') if st.get('load_Nm') is not None else '-'} | "
-              f"{st.get('cd_mm', '-')} |")
+    print("#### Stall ramps: the auger's load rises until something gives (30 rpm, 450 mA)\n")
+    print("| Case | Tilt (deg) | What gives | At (N·m at the auger) | Centre distance then (mm) |")
+    print("|---|---|---|---|---|")
+    for r in sorted([r for r in C if r["stall_at"] is not None], key=lambda r: (_cfg_name(r["cfg"]), r["stall_at"])):
+        st = r["steps"][0].get("stall") or {}
+        print(f"| {_cfg_name(r['cfg'])} | {r['stall_at']:g} | {st.get('mode')} | {st.get('load_Nm')} | {st.get('cd_mm')} |")
     print()
 
 
 if __name__ == "__main__":
     entry_tables()
-    seek2_table()
     robust_table()
     exit_table()
     cycle_tables()

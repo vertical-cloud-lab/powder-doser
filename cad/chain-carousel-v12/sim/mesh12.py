@@ -600,7 +600,7 @@ def trapezoid(dist: float, v: float, a: float, t: float) -> tuple[float, float]:
 
 # ---------------------------------------------------------------- studies
 def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0, record=False, seek_rev_s=0.25, hold=0.12, post_seek=True,
-          seek_reverse=True, seek_t=0.2, tries=2):
+          seek_reverse=True, seek_t=0.2, tries=2, reindex=True):
     """One index into the station: the carriage arrives from Sam -y at the Pi driver's 50 mm/s and 250 mm/s^2, the gear slides into
     mesh with the pinion (the NEMA 11's driver off: the pinion free), the carriage stops at the station, everything settles. The pinion
     starts phase_frac of a pinion pitch off the angle that meshes at the station. Then v12's seek: the driver on, the pinion turned
@@ -671,7 +671,28 @@ def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0,
             if record and i % int(round(1 / 300 / DT)) == 0:
                 frames.append((d.time, d.qpos.copy()))
 
+    def reindex_once():
+        """v12 driver's fallback when the switch still reads lifted after both seeks: the chain backs off 3 mm (the way the module came)
+        and comes back, the NEMA 11 free, so the gear leaves the pinion's tips and re-enters at another phase; then one seek."""
+        S.mode = "free"
+        S.w_cmd = 0.0
+        y_a = S.chain_y
+        for seg in ((y_a, y_a - 3.0), (y_a - 3.0, y_a)):
+            n2 = int(0.25 / DT)
+            for i in range(n2):
+                tt = i / (n2 - 1)
+                S.chain_y = seg[0] + (seg[1] - seg[0]) * (0.5 - 0.5 * math.cos(math.pi * tt))
+                S.chain_v = (seg[1] - seg[0]) * 0.5 * math.pi * math.sin(math.pi * tt) / 0.25
+                S.step()
+                if record and i % int(round(1 / 300 / DT)) == 0:
+                    frames.append((d.time, d.qpos.copy()))
+        S.chain_v = 0.0
+        for i in range(int(0.1 / DT)):
+            S.step()
+        seek(+1)
+
     n_seeks = 0
+    reindexed = False
     if post_seek:
         for k in range(tries):
             if k > 0 and not S.lifted():
@@ -682,6 +703,12 @@ def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0,
             cds.append(S.centre_distance())
             if not seek_reverse:
                 break
+        if reindex and S.lifted():
+            reindex_once()
+            reindexed = True
+            n_seeks += 1
+            hall.append(bool(S.lifted()))
+            cds.append(S.centre_distance())
     A = np.array(log)
     lag = A[:, 1] - A[:, 2]
     near = np.abs(A[:, 2]) < 11.5
@@ -697,7 +724,7 @@ def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0,
                ec_roll_max_deg=round(float(np.abs(A[:, 9]).max()), 3), module_lift_max_deg=round(float(A[:, 10].max()), 3),
                end_tooth_force_N=round(float(S.tooth_force()), 2), end_seats_N=[round(float(f), 2) for f in S.seat_forces()],
                end_t_force_N=round(float(S.t_force()), 2), rest_seats_N=rest_seats, rest_lift_mm=round(rest_lift, 3),
-               lift_max_mm=round(lift_max, 3), end_lift_mm=round(S.lift(), 3), n_seeks=n_seeks,
+               lift_max_mm=round(lift_max, 3), end_lift_mm=round(S.lift(), 3), n_seeks=n_seeks, reindexed=reindexed,
                hall=hall, cds=[round(float(c), 3) for c in cds])
     res["jam"] = bool(res["chain_lag_max_mm"] > 0.25 or res["chain_force_max_N"] > 40.0)
     ok = lambda c: c < A0 + 0.70
@@ -712,8 +739,10 @@ def entry(cfg: Cfg, phase_frac: float, mode="free", y0=-18.0, v=50.0, acc=250.0,
         res["outcome"] = "meshed"
     elif len(cds) > 1 and ok(cds[1]):
         res["outcome"] = "stub, cleared by the seek"
-    elif len(cds) > 2 and ok(cds[2]):
+    elif len(cds) > 2 and ok(cds[2]) and not (reindexed and len(cds) == 3):
         res["outcome"] = "stub, cleared by the second try"
+    elif reindexed and ok(cds[-1]):
+        res["outcome"] = "stub, cleared by re-indexing"
     else:
         res["outcome"] = "stub left (the switch reads lifted)" if S.lifted() else "stub left, the switch reads seated"
     return (res, A, frames, S) if record else (res, A)

@@ -147,6 +147,8 @@ NEMA11_USTEPS = 200 * 16                           # DRV8825 at 1/16
 AUGER_CURRENT_MA = 450                             # DRV8825 current limit (Vref = mA / 2000 V on Pololu's carrier)
 SEEK_REV_S = -0.25                                 # v10 --seek: the pinion's rev/s while the chain moves (Rig.nema11)
 SEEK12_REV_S, SEEK12_T, SEEK12_TRIES = 0.25, 0.2, 2   # v12: the seek after every index: rev/s, s each way, tries (params.SEEK12)
+REINDEX12_MM = 3.0                                 # v12: if the switch still reads lifted after both seeks, back the chain off this far and
+                                                   # come back (the NEMA 11 free), then seek once more (sim/README: dry teeth)
 DOSE_HOLD_S = 0.5                                  # at the dose tilt after the auger stops (the tail falls)
 REVERSE_REVS = 1.0                                 # auger revolutions backwards at rest, after the P16 is back fully extended
 
@@ -333,10 +335,23 @@ class Rig:
             readings.append(self.cradle_lifted())
             self.say(f"seek {n} ({'forward, back' if d > 0 else 'back, forward'} at {SEEK12_REV_S:g} rev/s, {SEEK12_T:g} s each way): "
                      f"cradle switch reads {'LIFTED' if readings[-1] else 'seated'}")
+        if readings[-1]:                             # v12 fallback: the gear leaves the pinion's tips and comes back at another phase
+            back = round(REINDEX12_MM * self.steps_per_mm())
+            self.say(f"still lifted: back the chain off {REINDEX12_MM:g} mm and index again")
+            self.move_steps(-back, speed_mm_s=20.0, accel_mm_s2=200.0)
+            self.move_steps(back, speed_mm_s=20.0, accel_mm_s2=200.0)
+            self.nema11("held")
+            if self.sim_stub > 0:
+                self.sim_stub -= 1
+            self._turn(SEEK12_REV_S, SEEK12_T)
+            self._turn(-SEEK12_REV_S, SEEK12_T)
+            n += 1
+            readings.append(self.cradle_lifted())
+            self.say(f"re-indexed and seek {n}: cradle switch reads {'LIFTED' if readings[-1] else 'seated'}")
         self.last_seek = dict(hall_before=int(before), seeks=n, hall_after=int(readings[-1]))
         if readings[-1]:
-            raise SystemExit("the pinion is still on the gear's tips after the seek and a second try (the cradle's switch reads lifted): "
-                             "back the chain off 2 mm and index again, or turn the pinion by hand (TEST-PLAN T6a)")
+            raise SystemExit("the pinion is still on the gear's tips after the seek, a second try and a re-index (the cradle's switch reads "
+                             "lifted): turn the pinion by hand, and check the teeth's PTFE lube (TEST-PLAN T6a)")
         return self.last_seek
 
     def alarm(self) -> bool:

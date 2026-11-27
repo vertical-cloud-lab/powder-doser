@@ -85,13 +85,14 @@ def pivot_dowel_v12() -> cq.Workplane:
 def spring_v12(length: float) -> cq.Workplane:
     """The cradle's compression spring at a given length, along -z from z = 0 (its seat on the top bar's far face), Sam's frame offsets
     applied by layout."""
-    return P3.spring(SPRING12_OD, length, 0.6, 9).mirror("XY")
+    return P3.spring(SPRING12_OD, length, 0.56, 9).mirror("XY")
 
 
 def set_screw_m3x6() -> cq.Workplane:
-    """M3 x 6 cup-point set screw, its tip at z = 0, body along -z (it is screwed down through the lug from the loop's side)."""
-    s = _cyl(1.5, 6.0, 0, 0, -6.0)
-    return s.cut(_cyl(0.75, 2.0, 0, 0, -6.1)).cut(cq.Workplane("XY").polygon(6, 1.5 / math.cos(math.pi / 6)).extrude(1.6).translate((0, 0, -6.05)))
+    """M3 x 6 flat-point set screw (McMaster 92605A100), its tip at z = 0, body along -z (screwed down through the lug from the loop's
+    side): flat, so it doesn't dent the printed arm it stops on. A 1.5 mm hex socket in its top."""
+    s = _cyl(1.5, 6.0, 0, 0, -6.0).faces(">Z").chamfer(0.3)
+    return s.cut(cq.Workplane("XY").polygon(6, 1.5 / math.cos(math.pi / 6)).extrude(1.6).translate((0, 0, -6.05)))
 
 
 def hall_magnet_v12() -> cq.Workplane:
@@ -168,7 +169,7 @@ def ec_v12(sy_p16: float) -> cq.Workplane:
     # up-stop: a pad under the roof over the top bar's +y half, CRADLE12_LIFT at the pinion before it touches (the bar rises 26.5/18.5 as much)
     tzf = CRADLE12_TOP[4]
     lift_y8 = CRADLE12_LIFT * (8.0 - PY) / (0.0 - PY)
-    body = body.union(_box(rx1 - 6.0, rx1, 4.0, 9.0, rzn + 0.01, tzf - lift_y8 - 0.2))
+    body = body.union(_box(rx1 - 6.0, rx1, 4.0, 9.0, rzn - 0.01, tzf - lift_y8 - 0.2))   # 2026-11-27: rzn + 0.01 left it 0.01 mm off the roof (a second solid)
     # the switch's magnet post: a block off the +y post, the magnet's 6.4 mm hole along y, its face MAGNET12_GAP off the lug's +y face
     hx, hy, hz = HALL12_XYZ
     mz = hz + MAGNET12_DZ
@@ -226,3 +227,44 @@ def nema11_v12() -> cq.Workplane:
     past it, inside the EC's rail block (v11 skipped the EC-motor pair and hid it). Mounting face at z = 0, shaft +z."""
     env = PT.nema11_envelope()
     return env.cut(_cyl(3.0, 10.0, 0, 0, 15.0))
+
+
+# ---------------------------------------------------------------- 5. the outlet door's shutter: a boss the rod can be pressed into
+DOOR12_BOSS_R = 1.6                  # a round boss on the spring's axis (v4-v11: a 3.3 x 3 box that stood only 0.35 mm in front of the axis)
+DOOR12_ROD_HOLE_R = 0.775            # 1.55 mm: a press fit for the 1/16 in (1.59 mm) 316 rod, through the boss's 2 mm
+DOOR12_ROD_Z0 = -3.1                 # the rod's end, 0.1 mm short of the boss's far face (v11's rod stopped at -4.0, 1 mm into a boss it broke out of)
+
+
+def door_shutter_v12() -> cq.Workplane:
+    """v11's shutter (parts10.door_shutter_v10) with its spring boss made round, 3.2 mm across, on the spring's axis (x -2.85, y 0, z -5
+    to -3, door shut), and a 1.55 mm hole through it for the door rod. v11's rectangular boss ran from x -3.2 to the shutter's back face,
+    so a hole on the axis (x -2.85) left 0.35 mm in front: it broke out (README v11, "still open"). The round boss overlaps the shutter's
+    front face (x -1.4) by 0.15 mm, stays clear of the housing's front lips (|y| > 3.5) and slides 6 mm toward the cap with the door."""
+    s = P10.door_shutter_v10()
+    xs = P3.DOOR_SPRING_X
+    z0, z1 = -5.0, -3.0
+    s = s.cut(_box(P3.DOOR_XF - 1.81, P3.DOOR_XF - 0.0, -1.51, 1.51, z0 - 0.01, z1 + 0.01))      # the old boss's part in front of the shutter
+    boss = _cyl(DOOR12_BOSS_R, z1 - z0, xs, 0.0, z0)
+    s = s.union(boss)
+    return s.cut(_cyl(DOOR12_ROD_HOLE_R, z1 - z0 + 0.2, xs, 0.0, z0 - 0.1))
+
+
+def door_rod_v12() -> cq.Workplane:
+    """The door rod (v11's, 1/16 in 316) 0.9 mm longer, so it runs the boss's full 2 mm: 22.7 mm from the boss to the head's top."""
+    z1 = DOOR11_HEAD_Z0 - DOOR11_HEAD[2]
+    return _cyl(DOOR11_ROD_D / 2, DOOR12_ROD_Z0 - z1, P11.DOOR11_ROD_X, 0.0, z1)
+
+
+DOOR12_BORE_R = 1.8                  # the tower's bore round the spring (3.0 OD) and the shutter's new boss (3.2), 0.2 mm clear of the boss
+
+
+def door_housing_v12() -> cq.Workplane:
+    """v11's door housing (parts10.door_housing_v10) with the spring's tower bored out: v4-v11 drew the tower in front of the shutter
+    (x -4.6..-3.0, |y| < 4, from the cap down to z -3.5) solid, with the 3 mm spring and the rod's boss inside it (the check skipped
+    the spring and the shutter against the housing). v12: a 3.6 mm bore on the spring's axis from the cap's underside (z -16.5) to the
+    tower's end, open toward the shutter, and the tower's front carried 0.85 mm further forward so 0.8 mm of wall stays in front of it."""
+    h = P10.door_housing_v10()
+    xs = P3.DOOR_SPRING_X
+    z_cap = -(DOOR_TOP - 3.0)
+    h = h.union(_box(xs - DOOR12_BORE_R - 0.8, -4.0, -2.6, 2.6, -DOOR_TOP, -3.5))
+    return h.cut(_cyl(DOOR12_BORE_R, -2.9 - z_cap, xs, 0.0, z_cap))
