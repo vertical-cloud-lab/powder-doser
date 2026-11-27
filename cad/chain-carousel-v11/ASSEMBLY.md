@@ -1,6 +1,6 @@
 # Assembly: chain-carousel test rig v11
 
-Twelve steps in build order, then the test set-up. Each step's title is `layout.STEPS` and its render is v11's CAD (`xvfb-run -a python render.py --steps` writes `renders/steps/step_NN.png`): the parts from earlier steps are pale, and the step's new parts are in colour, lifted along the way they go in. The table under each render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). [`renders/assembly_steps.gif`](renders/assembly_steps.gif) runs through the twelve renders. The written instructions under each table are carried over from v4 and not yet rewritten for v11 (v11's station, module and balance are in the step titles, the BoM lines and the [README](README.md)).
+Twelve steps in build order, then the test set-up. Each step's title is `layout.STEPS` and its render is v11's CAD (`xvfb-run -a python render.py --steps` writes `renders/steps/step_NN.png`): the parts from earlier steps are pale, and the step's new parts are in colour, lifted along the way they go in. The table under each render is the BoM lines that step uses ([BOM.md](BOM.md) item numbers). [`renders/assembly_steps.gif`](renders/assembly_steps.gif) runs through the twelve renders. The written instructions under each table are v11's (rewritten 2026-11-27).
 
 Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop or band saw for the 2020 and the shafts, soldering iron, heat-set insert tip, e-clip pliers, feeler gauges.
 
@@ -17,16 +17,13 @@ Tools: chain breaker, metric hex keys, 8 mm and 7/16 in wrenches, M5 tap, chop o
 | 22 | 4 | Leveling foot, M6 x 40 stud, into a T-nut in the base rail |
 | 25 | 1 | Loctite 243 (blue, medium strength) for T-nut screws, set screws and the tensioner blocks' screws; Loctite 222 (purple, low strength) where a part is meant to come apart |
 
-The frame uses nine bars of one VEVOR 10-pack of 1000 mm 2020 (v4's frame is wider and taller than v3's, because
-the modules ride outside the loop). Cut four posts of 698 mm (one bar each; two of the offcuts give the cradle post,
-221 mm, and the station-rails post, 241 mm), four long rails of 457.7 mm (two per bar), and six rails of
-340 mm (two per bar): four cross rails and the two station rails. Square every cut.
+Cut the 2020 from one VEVOR 10-pack (BoM item 18): four posts of 697.5 mm, four long rails of 457.7 mm, four rungs of
+417.7 mm, three cross rails of 340 mm, the 405 mm station beam and the 380 mm front bar. Square every cut, and tap both ends of the
+station beam M5.
 
-Lay two long rails on the bench, 360 mm apart centre to centre, with a cross rail between them at each
-end, the actuator's station rail 131 mm behind the front chain's plane and the latch-rail post's station
-rail at 204 mm (two corner brackets each). Screw the
-four leveling feet up into T-nuts in the long rails' bottom slots, 15 mm in from each end. Blue Loctite on every
-screw that goes into a T-nut.
+The base is a U that the balance stands inside: lay two long rails on the bench and join them at the back with a cross rail (two
+corner brackets each corner, M5 x 10 into drop-in T-nuts, blue Loctite on every screw that goes into a T-nut). Leave the front open:
+the balance slides in there. Screw the four levelling feet up into T-nuts in the long rails' bottom slots, 15 mm in from each end.
 
 ## Step 2. Posts, top frame, and the ladder: two rungs between the front and back posts on each side (v11: under the back plate's lower edge)
 
@@ -40,12 +37,12 @@ screw that goes into a T-nut.
 | 21 | 78 | M5 drop-in T-nut, 2020 slot 6 (side plates and feet, counted; + 48 for the 24 corner brackets, 2 for the guide hanger in the station beam's bottom slot, v11: 2 for the P16's clevis in the front bar's bottom slot and 2 for the bar's screws in the front posts' front slots) |
 | 32 | 1 | M5 x 16 socket head screw, 18-8, pack of 100 (10 used: hold-downs and side tabs, through the side plates, 8; v10: one through each side plate into the station beam's tapped ends, 2), with blue threadlocker |
 
-Stand a post on each end of the long rails. Each post gets four corner brackets: at its foot, one on the
-long rail's top on the inner side and one on the cross rail's top; at its head, the same two under the top rails.
-Use M5 x 10 button heads into drop-in T-nuts. Put the two top long rails and two top cross rails on the posts the
-same way as the base, then square the box by its diagonals (equal within 1 mm) and tighten.
+Stand a post on each corner of the base and bracket it to the long rail and, at the back, to the cross rail. Put the top
+frame on the posts the same way: two long rails and two cross rails. Square the box by its diagonals (equal within 1 mm) and tighten.
 
-Don't put brackets on the posts' inner x faces between 226 and 712 mm: the side plates sit there.
+The ladder (Sam: "I love the ladder rungs"): on each side, two 417.7 mm rungs between the front and the back post, the lower at
+86 mm and the upper at 214 mm (centres over the bench). The lower rungs' brackets go under them, just over the posts' foot brackets;
+the upper rungs' tops sit 2.5 mm under the back side plate's lower edge. Nothing in v11 hangs on them; they stiffen the posts.
 
 ## Step 3. Side plates onto the posts (v11: the front plate's P16 slot and grommet hole)
 
@@ -57,14 +54,12 @@ Don't put brackets on the posts' inner x faces between 226 and 712 mm: the side 
 | 23 | 2 | Side plates, 1/4 in 6061: front 380 x 375 mm, back 380 x 485 mm (v4's frame is 136 mm wider than v3's), both from one 24 x 36 in plate; cut and drilled from dxf/ (BYU shop, or SendCutSend: price on upload) |
 | 24 | 1 | M5 x 12 button head screw, 18-8, pack of 50 (v11: 22 used: side plates to the posts' T-nuts 20, the latch cam 2), with blue threadlocker |
 
-Have the two side plates cut from one 24 x 36 in sheet of 1/4 in 6061 (`dxf/side_plate_front.dxf`,
-`dxf/side_plate_back.dxf`, by the BYU shop or SendCutSend). The front plate is 380 x 375 mm. The back
-plate runs down to 226 mm above the bench, 380 x 485 mm, because it carries the motor.
-Tap the four M5 holes under the top bearing slots on each plate.
+Have the two side plates cut and drilled from 1/4 in 6061 (`dxf/side_plate_front.dxf`, `dxf/side_plate_back.dxf`). v11's front
+plate has the P16's 22 x 68 mm slot and, under it, the 13/16 in (20.6 mm) hole for the wiring grommet; both plates have the station
+beam's end-screw hole. Tap the M5 holes under the top bearing slots.
 
-Bolt each plate to the inner faces of its two posts with M5 x 12 button heads from the inside into drop-in T-nuts.
-Set the front plate's bottom edge 336 mm above the bench and the back plate's 226 mm. The plates' inner
-faces end up 405 mm apart, 30 mm outside each chain.
+Bolt each plate to the inner faces of its two posts with M5 x 12 button heads into drop-in T-nuts (blue Loctite). The chains end up
+345 mm apart, centre plane to centre plane, 30 mm inside each plate.
 
 ## Step 4. Flange bearings and top-shaft tensioners on the side plates
 
@@ -80,14 +75,13 @@ faces end up 405 mm apart, 30 mm outside each chain.
 | 35 | 4 | M5 x 30 socket head screw (tensioner jack screws) |
 | 37 | 6 | Hold-downs (2) and tensioner blocks (4), PETG |
 
-Mount the eight SBSFL202-10 flange bearings on the plates' outer faces, bolt line horizontal, with
-1/4-20 x 1 in bolts and nylon-insert locknuts on the plates' inner faces. Each bearing's rear dome sits in its
-plate's 49 mm hole. The bottom shafts are 415.1 mm above the bench. Put the four top bearings at the bottom of their
-slots, 6 mm below the nominal 643.7 mm, which leaves room to fit the chains. Snug those bolts only.
+Mount the eight SBSFL202-10 flange bearings on the plates' outer faces, bolt line horizontal, with 1/4-20 x 1 in bolts and
+nylon-insert locknuts inside. Put the four top bearings at the bottom of their slots, which leaves slack to fit the chains; snug
+those bolts only.
 
-Under each top bearing, screw a printed tensioner block to the plate (two M5 x 10 into the tapped holes, blue
-Loctite). Drop an M5 nylon-insert locknut into the block's slot and run an M5 x 30 jack screw up through it until it
-touches the underside of the bearing's front dome. The locknut keeps the jack screw from turning with the vibration.
+Under each top bearing, screw a printed tensioner block to the plate (two M5 x 10 into the tapped holes, blue Loctite). Drop an M5
+nylon-insert locknut into the block's slot and run an M5 x 30 jack screw up through it to the bearing's front dome. The locknut
+stops the jack screw turning with vibration.
 
 ## Step 5. Corner shafts with their sprockets (back set screws loose)
 
@@ -99,14 +93,13 @@ touches the underside of the bearing's front dome. The locknut keeps the jack sc
 | 8 | 2 | Keyed shafting, 5/8 in x 72 in, 1018, 3/16 in keyway: cut 3 x 449.8 mm + 1 x 474.2 mm (the drive shaft). v11: 40 mm longer each (the chains are 345 mm apart), so the four no longer come out of one 72 in bar with the saw's kerf: two bars |
 | 10 | 1 | Key stock 3/16 x 3/16 in, 12 in (front sprockets and the 15T on the shaft; back sprockets locked by set screws after phasing) |
 
-Cut the 72 in keyed bar into three shafts of 449.8 mm and one of 474.2 mm. The long
-one is the drive shaft and goes in the bottom +y corner (B+). Each shaft carries two sprockets. Feed it through the
-front bearing, slide on the front sprocket with its hub toward the front, then the back sprocket with its hub toward
-the back, and push the shaft on through the back bearing.
+Cut the two 72 in keyed bars into three shafts of 449.8 mm and the 474.2 mm drive shaft (v11's are 40 mm longer, so they no
+longer come out of one bar). The drive shaft goes in the bottom +y corner (B+). On each shaft, feed it through the front bearing,
+slide on the front sprocket (hub toward the front), then the back sprocket (hub toward the back), and push it on through the back
+bearing.
 
-Centre each sprocket's teeth on its chain line, 345 mm apart, the front one 30 mm inside the front plate. Key
-the front sprocket and tighten its set screws (blue Loctite). Leave the back one's key out and its set screws loose:
-the carriages set its phase in step 10. Tighten the bearings' set screws on the shaft.
+Centre each sprocket's teeth on its chain line, 345 mm apart. Key the front sprocket and tighten its set screws (blue Loctite). Leave
+the back sprocket's key out and its set screws loose: the carriages set its phase in step 10. Tighten the bearings' set screws.
 
 ## Step 6. NEMA 34 on the back plate, 15T sprockets, drive chain
 
@@ -123,15 +116,12 @@ the carriages set its phase in step 10. Tighten the bearings' set screws on the 
 | 16 | 1 | M5 x 25 socket head screw, 18-8, pack of 50 (4 used: motor flange to the back plate, in slots) |
 | 17 | 1 | M5 nylon-insert locknut, 18-8, pack of 100 (8 used: 4 on the motor, 4 trapped in the tensioner blocks as jack-screw nuts) |
 
-Have the shop re-bore the 35BS15H-1/2 sprocket to 14 mm H7 with a 5 mm keyway, then slide it onto the NEMA 34's
-shaft, hub outward, over the key. Offer the motor up to the back plate's inner face from inside the frame, with its
-pilot in the plate's slot and the shaft and sprocket out the back. Bolt it on with four M5 x 25 from outside and
-nylon-insert locknuts on the flange. The motor's axis is 277.0 mm above the bench, right under the drive shaft.
-It is 6 kg, so support it while you fit the bolts.
+Have the 35BS15H-1/2 sprocket re-bored to 14 mm H7 with a 5 mm keyway, and slide it onto the NEMA 34's shaft over the key.
+Offer the motor up to the back plate's inner face from inside the frame and bolt it with four M5 x 25 and nylon-insert locknuts. It
+is 6 kg: support it while you fit the bolts.
 
-Key the 35BS15H-5/8 sprocket onto the drive shaft's stub, in line with the motor's sprocket. Cut 44 pitches from
-the 10 ft roll and close them round both sprockets. Pull the motor down in its slots (+-4 mm) until the
-chain has about 2 mm of play at mid-span, then tighten its bolts.
+Key the 35BS15H-5/8 sprocket onto the drive shaft's stub, in line with the motor's sprocket. Cut 44 pitches from the 10 ft roll and
+close them round both sprockets; pull the motor down in its slots until the drive chain has about 2 mm of play at mid-span.
 
 ## Step 7. Chains: 13 Nitro CL35-A1 links per chain, close both loops
 
@@ -145,16 +135,13 @@ chain has about 2 mm of play at mid-span, then tighten its bolts.
 | 3 | 1 | Spring clips for #35 connecting links, pack of 5 (spares) |
 | 4 | 1 | Roller chain breaker, #25-#60 (Dura-Roll #1) |
 
-**First measure the chain** (see the BoM note): about 4.78 mm between the inner plates and a 5.08 mm bushing
-means ANSI 35, which is what the sprockets are.
+**Measure the chain first** (BoM notes): about 4.78 mm between the inner plates and a 5.08 mm bushing is ANSI 35, which the
+sprockets are. ISO 06B looks the same and doesn't fit.
 
-Cut two loops of 104 pitches from the 10 ft roll. In each, take out an outer link every 8 pitches and fit an A-1
-attachment connecting link in its place, 13 per chain. On the front chain the tabs point back (+x, toward the
-other chain); on the back chain they point forward. Number the A-1 links 1-13 the same way on both chains.
-
-Wrap each chain round its four sprockets with the tabs on the outside of the loop, then close it with its 13th A-1
-link. Each spring clip's closed end points the way the chain travels (bottom run toward -y). The chains hang slack,
-because the top shafts are still at the bottom of their slots.
+Cut two loops of 104 pitches from the 10 ft roll. In each, replace an outer link every 8 pitches with a Nitro CL35-A1 attachment
+connecting link, 13 per chain, the tabs pointing toward the other chain. Number the A-1 links 1-13 the same way on both chains.
+Wrap each chain round its four sprockets with the tabs on the outside of the loop and close it with its 13th A-1 link, each spring
+clip's closed end pointing the way the chain travels (the bottom run toward -y). The chains hang slack until step 10.
 
 ## Step 8. Station: hold-downs, hall switches; the station beam inside the loop and the EC's guide on it; the front bar across the front posts and the P16-150's clevis under it; EC v11 (door ramp, solenoid over clip 1, straight rail, NEMA 11 and 24T pinion, the arm) on the P16's rod end, through the front plate's slot; the latch cam; the side tabs
 
@@ -190,32 +177,22 @@ because the top shafts are still at the bottom of their slots.
 | 112 | 1 | Nylon cable ties, 4 in, pack of 100: the bundle along the EC's arm and the P16's body, and outside down the -y front post and along the base rail |
 | 113 | 1 | Hook-up wire, 22 AWG stranded, 6 colours x 25 ft: extends the NEMA 11's 4, the solenoid's 2 and the P16's 5 leads from the EC out through the front side plate to the board behind the rig, about 2.3 m each |
 
-The station, under the bottom run:
+The station is inside the loop, over the bottom run:
 
-1. Hold-downs: as v2. Melt two M5 inserts into each printed hold-down, push a US5881 into each lip's pocket (INDEX
-   front, HOME back) and screw them to the plates' inner faces with two M5 x 16 (blue Loctite).
-2. Side tabs (item 5a) at the loading position (+y side, mid-height): the same way, two M5 inserts each, on the plates'
-   inner faces. Their lips cover only the bottom 8 mm of a tongue, so a carriage slid 10 mm up comes out.
-3. Actuator: the printed base clevis on the actuator's station rail (two M5 into T-nuts); the P16-150's rear tab on a
-   4 x 16 mm shoulder screw (McMaster 90265A123) and an M3 locknut.
-4. Electronics carriage v4 (print `stl/electronics_carriage_v4.stl`, Sam's carriage printed upside down with the new
-   features). It parks under the module and reaches up round the auger to the plate's auger side:
-   - press the four 1/4 in steel balls into the base's three pockets and into the +y arm's boss (ball C), 3.8 mm proud;
-   - push a D44-N52 magnet into the pocket behind the cone (+y arm), behind the vee (-y arm) and behind ball C, then press
-     the vee's two 1/8 x 5/16 in dowels in over its magnet. There is no electromagnet in v4: the module's own weight,
-     resting on the EC, and the three magnets hold the dock;
-   - fit the NEMA 11 and the solenoid as Sam's carriage; bond the KHK SS1-20A pinion (hub faced off) onto the motor shaft
-     with Loctite 638;
-   - put the P16's rod-end tab between the clevis cheeks and push a 4 x 20 mm shoulder screw through cheeks, two PTFE
-     washers each side and the tab; M3 locknut. The pin rides in 2 mm slots, so the actuator can stop short of the dock
-     or the seat without forcing either.
-5. Guide cradle (`stl/cradle.stl`, v3's turned over): press its two vee dowels in, bond the M4 washer into the flat pocket,
-   bolt the cradle's arm onto the cradle post's top end and the post onto the station rail beside the P16. Lower the EC
-   into it: its three balls sit in the cone, the vee and on the washer. It parks 28 mm below its dock, clear of the passing augers.
-6. Station rails (`stl/latch_rail.stl`, one part on its own post on the second station rail): the latch rail, whose face
-   runs along the travel 4.5 mm inside the carriages' latch followers' tips with 25 degree ramps at both ends,
-   and the tube rest, 0.5 mm under the passing augers' tubes behind the keeper. At the station the rail holds the latch
-   open and the module rests on the tube rest until the EC lifts it off.
+1. **Hold-downs and switches:** melt two M5 inserts into each printed hold-down, push a US5881 hall switch into each lip's pocket
+   (INDEX front, HOME back), and screw them to the plates' inner faces (M5 x 16, blue Loctite). The side tabs go on at the loading
+   position the same way.
+2. **The station beam:** the 405 mm 2020 from the front side plate to the back one, an M5 x 16 through each plate into its tapped
+   ends. The printed guide hangs from its bottom slot (two M5 x 10 into T-nuts): its seat is the cone the EC's shoe parks in.
+3. **The front bar and the P16:** the 380 mm 2020 across the front posts' front faces, an M5 x 35 through it into a T-nut in each
+   post's front slot (blue Loctite). The printed clevis hangs from its bottom slot (two M5 x 10). The P16-150's rear tab goes in the
+   clevis on the 4 x 16 shoulder screw and an M3 nylock; its rod runs back through the front plate's slot.
+4. **EC v11** (print `stl/ec11.stl`, on its side, with supports): bolt the NEMA 11 to its plate, shaft forward. The KHK SS1-24A
+   pinion (hub faced off) goes on the motor's 5 mm shaft over a slotted 5 x 6 mm brass sleeve, its M4 set screw through the slot,
+   Loctite 638. The solenoid goes in its collar over clip 1, plunger toward the plate. Pin the EC's arm to the P16's rod end on the
+   4 x 20 shoulder screw, a PTFE washer each side of the rod's tab, and an M3 nylock.
+5. **Set the P16** fully out (139.2 of its 150 mm) so the EC's shoe sits in the guide's seat with the EC level.
+6. **The latch cam** on the back side plate (two M5 x 12 through the plate).
 
 ## Step 9. Modules on the bench: plate v11 with its T-bracket, the auger into clips 1 and 2 and onto the cap saddle, the outlet door with its rod and head; plate pinned onto a carriage's outer face, latch bolt over the keeper
 
@@ -231,25 +208,22 @@ The station, under the bottom run:
 | 39 | 13 | Mounting plate v11: v10's (Sam's Oct 13 plate carried on to the cap's end: clip 2, cap saddle, the latch keeper, the door housing's inserts, the T-bracket's two M3 inserts), without v10's relief over the NEMA 11 (the 24T pinion keeps the motor 2.25 mm off it). Print all 13 flat |
 | 106 | 13 | T-bracket v11, PETG, one on every plate's underside (the key of the keyed rail): a 32 x 16 x 2 mm foot held by two M3 x 6 into heat-set inserts in the plate (items 107, 108), a 6 mm stem and a 16 x 16 x 3 mm head 6-9 mm past the plate's underside (v10: 10-13), its ends chamfered so it finds the EC's flared slot |
 | 83 | 39 | Outlet door v11, PETG, three parts per module: v10's housing (a 1.8 mm hole through its cap for the rod), v10's shutter (no push strip), and a 6 x 6 x 2.5 mm head pressed and glued on the rod's end (item 116), which the EC's door ramp draws 6 mm toward the loop to open the door |
-| 116 | 1 | Door rods (v11): 1.5 mm 316 stainless rod, a 300 mm length: 13 rods of 21.8 mm, pressed into each shutter's boss, up the spring's axis and out through the housing's cap to the printed head (no cable, sleeve or guide: Sam, "so it can directly open it") |
+| 116 | 1 | Door rods (v11): 1/16 in (1.59 mm) 316 stainless rod, 1 ft: 13 rods of 21.8 mm, each from the shutter up the spring's axis and out through the housing's cap to the printed head (no cable, sleeve or guide: Sam, "so it can directly open it"). Open (2026-11-27): the shutter has no hole for the rod, and its 1.8 mm boss is too small for one; until the housing is redrawn, glue it on |
 | 84 | 15 | Compression spring, 316 stainless, 3 mm OD, 15 mm free, 0.25 mm wire, 0.03 lbf/mm (0.13 N/mm), 7.3 mm long at its 0.2 lb max. load, pack of 1: 15 used (13 doors + 2 spare). Nearest McMaster spring to the 16 mm, 0.06 N/mm drawn, which no listed spring matches (none reaches the 5.5 mm open length): lengthen the spring pocket 2 mm (13.5 shut, 7.5 open: about 0.2 N shut, 0.9 N open); OD +/-0.4 mm, so a bore of about 3.6 mm |
 | 85 | 1 | M2 x 8 socket head screw, 18-8, pack of 100 (91292A832, $7.74) + M2 brass heat-set insert, 3.2 mm long for a 3.2 mm hole, pack of 50 (94459A767, $7.73): 26 of each used, the door housings to the plates (v10's door cable guides are gone) |
 | 61 | 13 | Auger, threaded storage (44T gear), and cap, lab design (PR #170): 13 from #134's batch of 16 |
 
-Modules on the bench (one per carriage, 13 in all):
+Build each module on the bench (13):
 
-1. Plate v4 (`stl/mounting_plate_v4.stl`: Sam's plate with the dock on its auger side, the latch keeper with its 4.2 mm
-   pin hole, two M2 insert holes). Press two 1/4 in balls into the pockets at Sam's (44, +-19.5) on the auger
-   side, 3.8 mm proud, and bond an M5 steel washer flush into the pocket at (64, 19.5) (the dock's flat).
-2. Outlet door (v3's, turned over: the shutter slides toward the plate to open): melt two M2 inserts into the plate beside
-   the tube, drop the shutter into the printed housing with the spring behind it, and screw the housing's two arms to the
-   plate (M2 x 8). The shutter covers the 3 mm exit; its push strip runs out past the auger, where the EC's finger meets it.
-3. Slide the lab auger into the plate's clamp rings (the 44T gear behind the rear ring), outlet against the door's
-   housing, and screw on the cap.
-4. Put the plate between a carriage v4's lugs on the carriage's outer face, hinge end at the front, and push a 5 mm clevis
-   pin through each lug into the plate's knuckles; e-clip on each pin's inner end. Pull the latch's follower back with a
-   finger, lay the plate down and let go: the latch's 4 mm pin goes 4 mm into the keeper's hole and holds the plate
-   both ways (the carriage's opening leaves nothing under the plate).
+1. Print the mounting plate v11 (5 per H2D plate). Melt in the two M3 inserts for the T-bracket and the two M2 inserts for the door
+   housing, flush with the underside.
+2. Screw the T-bracket on (two M3 x 6). Its chamfered head finds the EC's slot.
+3. The outlet door: the spring in the housing's pocket, the shutter over the exit, the housing on with two M2 x 8. The rod runs up the
+   spring's axis and out through the cap's 1.8 mm hole to its printed head (pressed on and glued). **Open item:** the shutter has no
+   hole for the rod yet, so glue the rod to the shutter's boss for now (README, "Not done").
+4. Snap the auger into clips 1 and 2, its cap on the saddle, and check it pulls straight out of the clips.
+5. Pin the plate to a carriage's outer face on its two 5 mm clevis pins (e-clips). Fit the latch bolt (its 4 x 12 dowel pressed into
+   the printed carrier) with its spring in the carriage's latch housing, so the pin sits in the plate's keeper.
 
 ## Step 10. Carriages onto the chain at the loading position, one index at a time; phase and tension
 
@@ -265,16 +239,15 @@ Modules on the bench (one per carriage, 13 in all):
 | 88 | 16 | Latch spring. v7: 3 mm OD, about 14 mm free, about 0.3 N/mm, solid under 3.5 mm: 11.5 mm long closed (0.75 N), 7.0 at the cam's 4.5 mm (2.1 N), 3.5 at the 8 mm hand release (3.2 N, 75 % of its free length). TO SELECT: the 3 mm OD stainless springs read from McMaster so far (8969T21, 8969T261: 15 mm free) stop at 7.3-8.2 mm at their maximum load, so neither reaches the cam's 7.0; if none does, drop the hand release (the cam alone needs 50 %). 16: 13 + 3 spare |
 | 54 | 14 | Neodymium disc magnet D42-N52, 1/4 x 1/8 in (13 index + 1 home; v10: none in the plates, which have no dock posts) |
 
-At the loading position (the +y side, mid-height), with the auger facing out toward the side hatch: hold the unit
-beside the two A-1 tabs, 10 mm
-up from position, push it in until the carriage plate touches the tabs, slide it 10 mm down so the printed hooks
-take the tabs and the tongues go under the side tabs' lips, and drive an M3 x 12 button head from outside through the
-plate and each tab into the locknut in the hook. Index one module (bottom run toward -y) and fit the next. After 13,
-tighten the back sprockets' set screws on the round of the shaft and spot a dimple under each.
+At the loading position (the +y side, behind the side hatch), with the auger facing out: hold the carriage beside the two
+A-1 tabs, 10 mm up from position, push it in until it touches the tabs, slide it 10 mm down so the printed hooks
+take the tabs and the tongues go under the side tabs' lips, and drive an M3 x 12 button head from outside through the carriage and
+each tab into the locknut in the hook. Index one module (8 pitches, bottom run toward -y) and fit the next.
 
-To tension, turn the four jack screws the same amount until each long side deflects 3-4 mm under a 5 N side push at
-mid-span (about 80 N per chain). Do the front and back together, so the top shafts stay level, then tighten the top
-bearings' bolts.
+After 13, tighten the back sprockets' set screws on the round of the shaft (blue Loctite) and spot a dimple under each: bolting the
+carriages across both chains has set their phase. To tension, turn the four jack screws the same amount until each long side deflects
+3-4 mm under a 5 N side push at mid-span (about 80 N per chain), front and back together so the top shafts stay level, then
+tighten the top bearings' bolts.
 
 ## Step 11. Electronics board: supply, driver, Pi, interface board, LAC, e-stop
 
@@ -297,27 +270,11 @@ bearings' bolts.
 | 112 | 1 | Nylon cable ties, 4 in, pack of 100: the bundle along the EC's arm and the P16's body, and outside down the -y front post and along the base rail |
 | 113 | 1 | Hook-up wire, 22 AWG stranded, 6 colours x 25 ft: extends the NEMA 11's 4, the solenoid's 2 and the P16's 5 leads from the EC out through the front side plate to the board behind the rig, about 2.3 m each |
 
-The electronics board sits on the bench behind the rig. Wire it like this:
-
-| From | To |
-|---|---|
-| Mains (IEC inlet, fuse, switch) | LRS-350-48 AC input |
-| LRS-350-48 +V | E-stop (NC) -> 10 A fuse -> CL86T +VDC |
-| LRS-350-48 -V | CL86T GND |
-| NEMA 34 A+/A-/B+/B- | CL86T A+/A-/B+/B- |
-| NEMA 34 encoder | CL86T encoder port |
-| Pi GPIO 17 / 27 / 22 | 74AHCT125 inputs 1A / 2A / 3A (VCC 5 V, OE tied low) |
-| 74AHCT125 outputs 1Y / 2Y / 3Y | CL86T PUL+ / DIR+ / ENA+ (logic selector at 5 V) |
-| CL86T PUL- / DIR- / ENA- | Pi GND |
-| Pi 3.3 V via 10k | GPIO 23 (INDEX), GPIO 24 (HOME), GPIO 25 (CL86T ALM+; ALM- to GND) |
-| Pi GPIO 18 | LAC RC input (1.0-2.0 ms = 0-150 mm); LAC on its 12 V supply |
-| Pi GPIO 13 / 21 | DRV8825 STEP / DIR for the NEMA 11 (current limit 0.45 A: Vref 0.225 V) |
-| Pi GPIO 12 | DRV8871 IN1 for the tap solenoid |
-| Pi UART RX/TX (GPIO 15 / 14) | MAX3232 -> HR-100A RS-232 (DB-9) |
-
-Set the CL86T DIP switches to 4000 pulses/rev and the motor current to 6.0 A. Run `sudo pigpiod`, then
-`python3 test/chain_rig.py --sim lap` to check the software and `python3 test/chain_rig.py home` to check the
-hardware. At 4000 pulses/rev one module is exactly 1000 steps.
+The electronics board stands behind the rig: the 48 V supply, the CL86T for the NEMA 34, the DRV8825 for the NEMA 11 (current
+limit 450 mA; its EN pin on a GPIO, so the motor is left free while a module slides into mesh), the DRV8871 for the solenoid, the
+Actuonix LAC for the P16, the Pi and the interface board, and the e-stop. The NEMA 11's, the solenoid's and the P16's leads run in one
+braided sleeve from the EC along its arm and the P16, out through the grommet in the front side plate, then down the post and along
+the base rail to the board. The hall switches run along the plates. `test/chain_rig.py --sim` checks the wiring map before power.
 
 ## Step 12. The balance with its tall draft cage on the bench through the front doorway, the dosing lid in its top, the pillar and beaker; acrylic panels on standoffs, the side hatch (swaps)
 
@@ -336,17 +293,12 @@ hardware. At 4000 pulses/rev one module is exactly 1000 steps.
 | 117 | 1 | Beaker pillar (v11), PETG: a 40 mm tube on a 60 mm foot on the pan, 210 mm tall, with a socket for the beaker; 0.85 mm walls (two 0.42 mm lines, printed normally: vase mode can't print the socket's floor) keep it to 29.9 g (Bambu Studio, 2026-11-27; the 1.6 mm walls drawn until then sliced to 53.6 g), so it and the beaker take about half of the HR-100A's 102 g |
 | 118 | 1 | Dosing lid (v11): 3 mm acrylic, 160 x 179 mm, set into the draft cage's top frame in place of the top door, flush with the frame, a 24 mm hole under the exit (laser cut from an offcut of item 89) |
 
-Enclosure (item 5): laser-cut the panels and the two hatch doors from 1/8 in clear cast acrylic (`dxf/panel_*.dxf`,
-`dxf/hatch_*.dxf`). Each panel stands 6 mm off the frame on nylon spacers (M5 x 16 button heads into T-nuts), so it
-clears the side runs' carriages and the side tabs; the back panel's spacers are 30 mm, past the drive sprocket. The front
-panel's hatch (300 x 330 mm, under the station) and the +y panel's hatch (400 x 230 mm, at the
-loading position) each get a door 4 mm larger all round on two stainless butt hinges, a printed knob and a turn
-button.
+Slide the balance in through the front doorway onto the bench, inside the base's U, touching nothing of the frame. Set the
+dosing lid in its top in place of the top door, its 24 mm hole under the exit, and the beaker's pillar on the pan, the beaker in its
+socket. (The lab's HR-100A has a round breeze break: its lid is a disc, and its pillar is 36.5 mm shorter; TEST-PLAN T8c.)
 
-The HR-100A: v4 draws the balance where it has to stand, its pan under the dose point. It doesn't fit there yet: the
-guide cradle, EC v4 and the P16 stand inside its breeze break's footprint (`check_interference.py --scale`,
-`checks/scale.json`, README item 6). Until the station is moved, test doses go into a beaker on a bench balance placed
-by hand under the dose point with the station parked.
+Then the enclosure: the acrylic panels on nylon standoffs, the front panel (with the balance's doorway) on 30 mm standoffs to clear the
+front bar and the P16; the side hatch's 408 x 238 mm door on its hinges with its knob and catch.
 
 ## Step 13. Test set-up (not in the CAD)
 

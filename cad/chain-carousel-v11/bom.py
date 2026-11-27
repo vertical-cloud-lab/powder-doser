@@ -229,8 +229,9 @@ ITEMS = [
      "hole through its cap for the rod), v10's shutter (no push strip), and a 6 x 6 x 2.5 mm head pressed and glued on the rod's end "
      "(item 116), which the EC's door ramp draws 6 mm toward the loop to open the door", "printed",
      "stl/door_housing.stl, stl/door_shutter.stl, stl/door_head11.stl", "", 0.08, "filament", (9,), "Printed"),
-    (116, None, 1, "Door rods (v11): 1.5 mm 316 stainless rod, a 300 mm length: 13 rods of 21.8 mm, pressed into each shutter's boss, up "
-     "the spring's axis and out through the housing's cap to the printed head (no cable, sleeve or guide: Sam, \"so it can directly open it\")",
+    (116, None, 1, "Door rods (v11): 1/16 in (1.59 mm) 316 stainless rod, 1 ft: 13 rods of 21.8 mm, each from the shutter up the spring's "
+     "axis and out through the housing's cap to the printed head (no cable, sleeve or guide: Sam, \"so it can directly open it\"). Open "
+     "(2026-11-27): the shutter has no hole for the rod, and its 1.8 mm boss is too small for one; until the housing is redrawn, glue it on",
      "McMaster-Carr", "8936K35", f"{MC}/8936K35/", 9.88,
      f"{MCV}: tight-tolerance 316 rod, 1/16 in (1.59 mm, +-0.0005 in), 1 ft long, $9.88; the family's metric sizes start at 2 mm, "
      "so there is no 1.5 mm: a 1/16 in rod still passes the cap's 1.8 mm hole", (9,), "Doors"),

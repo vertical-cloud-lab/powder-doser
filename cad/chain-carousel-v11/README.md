@@ -290,7 +290,6 @@ to $133.69 (was $473.94 before the vendor check of 2026-11-27, below).
 - **The door shutter's rod** (above): the shutter has no hole for the rod, and its boss is too small for one. Fixing it means
   re-laying the door housing's tower round a 3.1 mm boss.
 - **The spring-loaded pinion** and a second seat for the EC across the module are proposals from the simulations, not drawn.
-- **The assembly steps' written instructions** in `docs.py` are still v4's text; the step titles and renders are v11's.
 - **Estimated prices left ($133.69):** the clevis pins (no stock 5 mm grooved pin), the 3 × 25 dowels (priced as 3 × 24), the latch
   spring (no stock spring fits yet), the pinion's sleeve, the interface board's parts, the plywood board and the salt.
 - **The YouTube upload** of the walkthrough ([`walkthrough/`](walkthrough/)): this repo's `claude.yml` doesn't pass the upload
