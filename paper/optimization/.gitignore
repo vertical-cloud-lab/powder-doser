@@ -9,3 +9,5 @@
 *.fdb_latexmk
 __pycache__/
 mock_review/inputs/main.pdf
+mock_review_r2/inputs/main.pdf
+mock_review_r2/inputs/si.pdf
