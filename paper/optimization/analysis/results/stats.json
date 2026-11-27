@@ -1,0 +1,1045 @@
+{
+ "snapshot": {
+  "documents": 125,
+  "first_utc": "2026-09-29T01:47:34.670064+00:00",
+  "last_utc": "2026-10-20T22:15:23.980350+00:00",
+  "status_by_campaign_mode": {
+   "salt-20260929T014732Z|screen": {
+    "ok": 14,
+    "overshoot": 6,
+    "cycle-budget": 2
+   },
+   "salt-20260929T014732Z|recenter": {
+    "ok": 5,
+    "cycle-budget": 1
+   },
+   "salt-20260929T014732Z|bo": {
+    "ok": 12,
+    "overshoot": 2
+   },
+   "production-alsi10mg|production": {
+    "ok": 1
+   },
+   "production-al4047-9fxeqt|production": {
+    "no-result": 1,
+    "cycle-budget": 1,
+    "ok": 1
+   },
+   "salt-20260929T014732Z|validation": {
+    "ok": 18
+   },
+   "production-salt|production": {
+    "ok": 5,
+    "fw-error": 1
+   },
+   "salt-margin-20261013T191339Z|screen": {
+    "not-tared": 2,
+    "ok": 9,
+    "overshoot": 5,
+    "cycle-budget": 2
+   },
+   "salt-margin-20261013T191339Z|recenter": {
+    "fw-error": 2
+   },
+   "salt-margin-20261013T191339Z|bo": {
+    "fw-error": 4,
+    "ok": 10,
+    "cycle-budget": 4,
+    "stalled": 5
+   },
+   "production-al4047-atomizer-cups|manual": {
+    "reads-only": 2,
+    "overshoot": 1,
+    "stopped": 1,
+    "ok": 1
+   },
+   "production-al4047-atomizer-cups|production": {
+    "stalled": 5,
+    "timeout": 1,
+    "ok": 1
+   }
+  }
+ },
+ "salt": {
+  "doses": 42,
+  "by_group": {
+   "corner": 16,
+   "bo": 14,
+   "hand": 4,
+   "center": 4,
+   "anchor": 4
+  },
+  "status": {
+   "ok": 31,
+   "overshoot": 8,
+   "cycle-budget": 3
+  },
+  "status_by_group": {
+   "anchor": {
+    "ok": 3,
+    "cycle-budget": 1
+   },
+   "bo": {
+    "ok": 12,
+    "overshoot": 2
+   },
+   "center": {
+    "ok": 3,
+    "cycle-budget": 1
+   },
+   "corner": {
+    "ok": 9,
+    "overshoot": 6,
+    "cycle-budget": 1
+   },
+   "hand": {
+    "ok": 4
+   }
+  },
+  "wall_clock_h": 2.32,
+  "overshoots": {
+   "n": 8,
+   "err_min": 21.1,
+   "err_max": 83.2,
+   "by_group": {
+    "corner": 6,
+    "bo": 2
+   }
+  },
+  "hand": {
+   "t": {
+    "n": 4,
+    "median": 245.12,
+    "min": 179.79,
+    "max": 342.83,
+    "mean": 253.21499999999997,
+    "sd": 67.42700769474104
+   },
+   "err": {
+    "n": 4,
+    "median": -4.550000000000001,
+    "min": -4.8,
+    "max": -3.6,
+    "mean": -4.375,
+    "sd": 0.5439056290693572
+   },
+   "abs": {
+    "n": 4,
+    "median": 4.550000000000001,
+    "min": 3.6,
+    "max": 4.8,
+    "mean": 4.375,
+    "sd": 0.5439056290693572
+   },
+   "tau_s": [
+    0.3,
+    0.3,
+    0.8338,
+    0.8338
+   ],
+   "labels": [
+    "baseline-00",
+    "baseline-01",
+    "rebaseline-00",
+    "rebaseline-01"
+   ]
+  },
+  "center": {
+   "t": {
+    "n": 8,
+    "median": 240.71,
+    "min": 24.04,
+    "max": 391.28,
+    "mean": 227.2025,
+    "sd": 164.49765137272587
+   },
+   "labels": [
+    "center-00",
+    "center-01",
+    "center-02",
+    "center-03",
+    "recenter-00",
+    "recenter-01",
+    "recenter-02",
+    "recenter-03"
+   ]
+  }
+ },
+ "validation": {
+  "bo005": {
+   "t": {
+    "n": 8,
+    "median": 78.39,
+    "min": 60.48,
+    "max": 114.44,
+    "mean": 84.64875,
+    "sd": 20.125603052189163
+   },
+   "abs": {
+    "n": 8,
+    "median": 1.83,
+    "min": 0.8,
+    "max": 2.6,
+    "mean": 1.7874999999999999,
+    "sd": 0.559585305637768
+   },
+   "err": {
+    "n": 8,
+    "median": -1.83,
+    "min": -2.6,
+    "max": -0.8,
+    "mean": -1.7874999999999999,
+    "sd": 0.559585305637768
+   },
+   "t_median_ci": [
+    68.5,
+    109.59
+   ],
+   "abs_median_ci": [
+    1.34,
+    2.3
+   ],
+   "ok": 8,
+   "n": 8,
+   "delivered_sd_mg": 0.559585305637768,
+   "taps": {
+    "n": 8,
+    "median": 20.0,
+    "min": 14.0,
+    "max": 32.0,
+    "mean": 22.0,
+    "sd": 6.590035768383312
+   },
+   "p_ok_lower95_one_sided": 0.6876560219336322,
+   "p_overshoot_upper95_one_sided": 0.3123439780663678
+  },
+  "corner09": {
+   "t": {
+    "n": 8,
+    "median": 201.98,
+    "min": 47.08,
+    "max": 384.99,
+    "mean": 215.395,
+    "sd": 138.51122306255806
+   },
+   "abs": {
+    "n": 8,
+    "median": 2.6,
+    "min": 2.0,
+    "max": 2.8,
+    "mean": 2.5250000000000004,
+    "sd": 0.276457178290909
+   },
+   "err": {
+    "n": 8,
+    "median": -2.6,
+    "min": -2.8,
+    "max": -2.0,
+    "mean": -2.5250000000000004,
+    "sd": 0.276457178290909
+   },
+   "t_median_ci": [
+    99.24,
+    355.88
+   ],
+   "abs_median_ci": [
+    2.3,
+    2.8
+   ],
+   "ok": 8,
+   "n": 8,
+   "delivered_sd_mg": 0.276457178290909,
+   "taps": {
+    "n": 8,
+    "median": 74.0,
+    "min": 22.0,
+    "max": 131.0,
+    "mean": 77.75,
+    "sd": 44.72375527294511
+   },
+   "p_ok_lower95_one_sided": 0.6876560219336322,
+   "p_overshoot_upper95_one_sided": 0.3123439780663678
+  },
+  "n_zero_failure_for_p95": 59,
+  "n_zero_failure_for_p99": 299,
+  "bo005_vs_hand_time": {
+   "U": 0.0,
+   "p_exact_two_sided": 0.00404040404040404,
+   "hl_shift_s": -165.755,
+   "hl_ci_s": [
+    -261.88,
+    -103.96
+   ],
+   "hl_ci_achieved_conf": 0.9515151515151515,
+   "median_ratio_b_over_a": 3.126929455287664,
+   "median_ratio_ci95": [
+    2.072143525126431,
+    4.373389462941701
+   ]
+  },
+  "bo005_vs_hand_abs": {
+   "U": 0.0,
+   "p_exact_two_sided": 0.00404040404040404,
+   "median_a": 1.83,
+   "median_b": 4.550000000000001
+  },
+  "bo005_vs_corner09_time": {
+   "U": 14.0,
+   "p_exact_two_sided": 0.06495726495726495,
+   "hl_shift_s": -114.52,
+   "hl_ci_s": [
+    -268.03,
+    3.2700000000000102
+   ],
+   "hl_ci_achieved_conf": 0.9501165501165502,
+   "median_ratio_b_over_a": 2.5766041586937107,
+   "median_ratio_ci95": [
+    1.012595917185464,
+    4.726063060457044
+   ]
+  },
+  "bo005_vs_corner09_abs": {
+   "U": 6.0,
+   "p_exact_two_sided": 0.004662004662004662,
+   "median_a": 1.83,
+   "median_b": 2.6
+  },
+  "corner09_vs_hand_time": {
+   "U": 14.0,
+   "p_exact_two_sided": 0.8080808080808081,
+   "hl_shift_s": -59.33,
+   "hl_ci_s": [
+    -204.60000000000002,
+    133.31
+   ],
+   "hl_ci_achieved_conf": 0.9515151515151515,
+   "median_ratio_b_over_a": 1.2135855035151997,
+   "median_ratio_ci95": [
+    0.6062015286051479,
+    3.2245109104589917
+   ]
+  },
+  "corner09_vs_hand_abs": {
+   "U": 0.0,
+   "p_exact_two_sided": 0.00404040404040404,
+   "median_a": 2.6,
+   "median_b": 4.550000000000001
+  },
+  "bo005_prediction": {
+   "t_pred_mean": 91.0,
+   "t_pred_sd": 66.0,
+   "abs_pred_mean": 3.0,
+   "abs_pred_sd": 9.0,
+   "t_block_mean": 84.64875,
+   "abs_block_mean": 1.7874999999999999,
+   "z_time": -0.0962310606060605
+  }
+ },
+ "production_salt": {
+  "doses": [
+   {
+    "utc": "2026-10-06T16:48",
+    "target_g": 0.5,
+    "status": "ok",
+    "t_s": 113.96,
+    "err_mg": -2.28,
+    "taps": 32,
+    "final_g": 0.49772,
+    "firmware": "trickle_tap/2026-09-30b",
+    "bulk_s": 4.61,
+    "bulk_dm_g": 0.2982,
+    "bulk_rate_mgps": 64.69,
+    "bulk_mg_per_rev": 38.8
+   },
+   {
+    "utc": "2026-10-06T16:51",
+    "target_g": 1.5,
+    "status": "ok",
+    "t_s": 125.26,
+    "err_mg": -2.2,
+    "taps": 47,
+    "final_g": 1.4978,
+    "firmware": "trickle_tap/2026-09-30b",
+    "bulk_s": 12.05,
+    "bulk_dm_g": 1.3032,
+    "bulk_rate_mgps": 108.15,
+    "bulk_mg_per_rev": 64.9
+   },
+   {
+    "utc": "2026-10-06T16:55",
+    "target_g": 0.05,
+    "status": "ok",
+    "t_s": 304.97,
+    "err_mg": -2.56,
+    "taps": 94,
+    "final_g": 0.04744,
+    "firmware": "trickle_tap/2026-09-30b"
+   },
+   {
+    "utc": "2026-10-06T17:00",
+    "target_g": 0.005,
+    "status": "ok",
+    "t_s": 25.49,
+    "err_mg": -2.7,
+    "taps": 4,
+    "final_g": 0.0023,
+    "firmware": "trickle_tap/2026-09-30b"
+   },
+   {
+    "utc": "2026-10-06T17:11",
+    "target_g": 10.0,
+    "status": "fw-error",
+    "t_s": 242.87,
+    "err_mg": -2.48,
+    "taps": 178,
+    "final_g": 9.99752,
+    "firmware": "trickle_tap/2026-09-30b"
+   },
+   {
+    "utc": "2026-10-08T01:07",
+    "target_g": 0.5,
+    "status": "ok",
+    "t_s": 110.51,
+    "err_mg": -0.3,
+    "taps": 32,
+    "final_g": 0.4997,
+    "firmware": "trickle_tap/2026-09-30b",
+    "bulk_s": 4.79,
+    "bulk_dm_g": 0.3357,
+    "bulk_rate_mgps": 70.08,
+    "bulk_mg_per_rev": 42.0
+   }
+  ],
+  "abs_err_range_mg": [
+   0.3,
+   2.7
+  ],
+  "targets_g": [
+   0.005,
+   0.05,
+   0.5,
+   0.5,
+   1.5,
+   10.0
+  ]
+ },
+ "margin": {
+  "doses": 43,
+  "status": {
+   "ok": 19,
+   "cycle-budget": 6,
+   "fw-error": 6,
+   "overshoot": 5,
+   "stalled": 5,
+   "not-tared": 2
+  },
+  "by_mode": {
+   "bo": 23,
+   "screen": 18,
+   "recenter": 2
+  },
+  "by_date": {
+   "2026-10-13": 27,
+   "2026-10-15": 16
+  },
+  "status_by_mode": {
+   "bo": {
+    "ok": 10,
+    "stalled": 5,
+    "fw-error": 4,
+    "cycle-budget": 4
+   },
+   "recenter": {
+    "fw-error": 2
+   },
+   "screen": {
+    "ok": 9,
+    "overshoot": 5,
+    "not-tared": 2,
+    "cycle-budget": 2
+   }
+  },
+  "usable": 35,
+  "pairs": {
+   "n_pairs": 16,
+   "n_both_ok": 7,
+   "dt_mean_s": -56.184285714285714,
+   "dt_median_s": -11.980000000000004,
+   "dabs_mean_mg": 0.2257142857142857,
+   "wilcoxon_time": {
+    "W": 10.0,
+    "p": 0.578125
+   },
+   "overshoot_35": 6,
+   "overshoot_0": 5,
+   "ok_35": 9,
+   "ok_0": 9,
+   "discordant_overshoot": [
+    2,
+    1
+   ],
+   "mcnemar_exact_p": 1.0,
+   "bulk_rate_ratio_median": 0.9314001327496648,
+   "bulk_rate_wilcoxon_p": 0.02899169921875,
+   "bulk_rate_n": 16
+  },
+  "bo": {
+   "doses": 23,
+   "status": {
+    "ok": 10,
+    "stalled": 5,
+    "fw-error": 4,
+    "cycle-budget": 4
+   },
+   "ok_within_3mg": [
+    "bo-001",
+    "bo-002",
+    "bo-004",
+    "bo-009",
+    "bo-012",
+    "bo-014",
+    "bo-016"
+   ],
+   "best_ok": [
+    {
+     "label": "bo-006",
+     "t": 56.82,
+     "abs": 13.7
+    },
+    {
+     "label": "bo-009",
+     "t": 71.7,
+     "abs": 1.7
+    },
+    {
+     "label": "bo-012",
+     "t": 80.12,
+     "abs": 1.28
+    },
+    {
+     "label": "bo-001",
+     "t": 91.9,
+     "abs": 0.4
+    }
+   ]
+  }
+ },
+ "feed_40deg_20rpm_by_date": {
+  "2026-09-29": {
+   "n": 7,
+   "median_mgps": 41.41,
+   "min": 30.71,
+   "max": 55.45
+  },
+  "2026-10-06": {
+   "n": 8,
+   "median_mgps": 41.915,
+   "min": 38.51,
+   "max": 44.69
+  },
+  "2026-10-13": {
+   "n": 4,
+   "median_mgps": 41.515,
+   "min": 34.64,
+   "max": 53.21
+  },
+  "2026-10-15": {
+   "n": 9,
+   "median_mgps": 7.57,
+   "min": 1.0,
+   "max": 23.49
+  }
+ },
+ "feed_per_rev_by_date": {
+  "2026-09-29": {
+   "n": 42,
+   "median": 56.150000000000006,
+   "min": 31.9,
+   "max": 166.4,
+   "mean": 67.43571428571428,
+   "sd": 32.87437152457653
+  },
+  "2026-10-06": {
+   "n": 16,
+   "median": 76.95,
+   "min": 32.9,
+   "max": 134.1,
+   "mean": 80.59375,
+   "sd": 45.97907449771762
+  },
+  "2026-10-13": {
+   "n": 22,
+   "median": 45.4,
+   "min": 9.4,
+   "max": 159.6,
+   "mean": 58.01363636363636,
+   "sd": 43.35670756537091
+  },
+  "2026-10-15": {
+   "n": 13,
+   "median": 21.6,
+   "min": 3.0,
+   "max": 70.5,
+   "mean": 25.62307692307693,
+   "sd": 19.280955796076512
+  }
+ },
+ "metal": {
+  "rows": [
+   {
+    "campaign": "production-alsi10mg",
+    "mode": "production",
+    "utc": "2026-09-29T22:43",
+    "powder": "alsi10mg",
+    "target_g": 8.0,
+    "status": "ok",
+    "t_s": 314.54,
+    "err_mg": -7.23,
+    "final_g": 7.99277,
+    "auger_rev": 87.075,
+    "taps": 182,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": null,
+    "firmware": "trickle_tap/2026-09-25",
+    "bulk_s": 54.9,
+    "bulk_dm_g": 7.8831,
+    "bulk_rate_mgps": 143.59,
+    "bulk_mg_per_rev": 86.2,
+    "mean_mg_per_rev": 91.79
+   },
+   {
+    "campaign": "production-al4047-9fxeqt",
+    "mode": "production",
+    "utc": "2026-09-30T20:58",
+    "powder": "al4047-9fxeqt",
+    "target_g": 8.0,
+    "status": "no-result",
+    "t_s": null,
+    "err_mg": null,
+    "final_g": null,
+    "auger_rev": null,
+    "taps": null,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": null,
+    "firmware": null
+   },
+   {
+    "campaign": "production-al4047-9fxeqt",
+    "mode": "production",
+    "utc": "2026-09-30T21:21",
+    "powder": "al4047-9fxeqt",
+    "target_g": 4.5095,
+    "status": "cycle-budget",
+    "t_s": 802.73,
+    "err_mg": -319.61,
+    "final_g": 4.18989,
+    "auger_rev": 611.432,
+    "taps": 968,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": null,
+    "firmware": "trickle_tap/2026-09-30",
+    "bulk_s": 29.26,
+    "bulk_dm_g": 0.3257,
+    "bulk_rate_mgps": 11.13,
+    "bulk_mg_per_rev": 6.7,
+    "mean_mg_per_rev": 6.85
+   },
+   {
+    "campaign": "production-al4047-9fxeqt",
+    "mode": "production",
+    "utc": "2026-09-30T21:50",
+    "powder": "al4047-9fxeqt",
+    "target_g": 0.3189,
+    "status": "ok",
+    "t_s": 64.99,
+    "err_mg": 0.95,
+    "final_g": 0.31985,
+    "auger_rev": 61.007,
+    "taps": 104,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": true,
+    "firmware": "trickle_tap/2026-09-30b",
+    "bulk_s": 51.92,
+    "bulk_dm_g": 0.3168,
+    "bulk_rate_mgps": 6.1,
+    "bulk_mg_per_rev": 3.7,
+    "mean_mg_per_rev": 5.24
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "manual",
+    "utc": "2026-10-19T23:17",
+    "powder": "al4047",
+    "target_g": null,
+    "status": "reads-only",
+    "t_s": 788.0,
+    "err_mg": null,
+    "final_g": 0.2035,
+    "auger_rev": null,
+    "taps": 0,
+    "bulk_tilt": null,
+    "bulk_rpm": null,
+    "bulk_only": null,
+    "firmware": "trickle_tap/2026-10-15",
+    "hand_added_g": 0.0,
+    "auger_rev_fwd": 0.0,
+    "auger_rev_rev": 0.0
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "production",
+    "utc": "2026-10-19T23:24",
+    "powder": "al4047",
+    "target_g": 2.9904,
+    "status": "stalled",
+    "t_s": 124.52,
+    "err_mg": -2787.6,
+    "final_g": 0.2028,
+    "auger_rev": 197.914,
+    "taps": 237,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": true,
+    "firmware": "trickle_tap/2026-10-15",
+    "bulk_s": 118.41,
+    "bulk_dm_g": 0.2028,
+    "bulk_rate_mgps": 1.71,
+    "bulk_mg_per_rev": 1.0,
+    "mean_mg_per_rev": 1.02
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "manual",
+    "utc": "2026-10-20T01:15",
+    "powder": "al4047",
+    "target_g": null,
+    "status": "reads-only",
+    "t_s": 648.8,
+    "err_mg": null,
+    "final_g": 0.0083,
+    "auger_rev": null,
+    "taps": 0,
+    "bulk_tilt": null,
+    "bulk_rpm": null,
+    "bulk_only": null,
+    "firmware": "trickle_tap/2026-10-15",
+    "hand_added_g": 0.0,
+    "auger_rev_fwd": 0.0,
+    "auger_rev_rev": 0.0
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "production",
+    "utc": "2026-10-20T01:20",
+    "powder": "al4047",
+    "target_g": 0.5,
+    "status": "stalled",
+    "t_s": 20.38,
+    "err_mg": -497.5,
+    "final_g": 0.0025,
+    "auger_rev": 28.801,
+    "taps": 55,
+    "bulk_tilt": 60.0,
+    "bulk_rpm": 109.0,
+    "bulk_only": true,
+    "firmware": "trickle_tap/2026-10-15",
+    "bulk_s": 15.68,
+    "bulk_dm_g": 0.0024,
+    "bulk_rate_mgps": 0.15,
+    "bulk_mg_per_rev": 0.1,
+    "mean_mg_per_rev": 0.09
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "production",
+    "utc": "2026-10-20T01:23",
+    "powder": "al4047",
+    "target_g": 0.5,
+    "status": "stalled",
+    "t_s": 44.6,
+    "err_mg": -492.1,
+    "final_g": 0.0079,
+    "auger_rev": 73.146,
+    "taps": 170,
+    "bulk_tilt": 75.0,
+    "bulk_rpm": 109.0,
+    "bulk_only": true,
+    "firmware": "trickle_tap/2026-10-15",
+    "bulk_s": 40.18,
+    "bulk_dm_g": 0.0079,
+    "bulk_rate_mgps": 0.2,
+    "bulk_mg_per_rev": 0.1,
+    "mean_mg_per_rev": 0.11
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "manual",
+    "utc": "2026-10-20T02:33",
+    "powder": "al4047",
+    "target_g": 2.8247,
+    "status": "overshoot",
+    "t_s": 915.5,
+    "err_mg": 2.5,
+    "final_g": 2.8272,
+    "auger_rev": null,
+    "taps": 162,
+    "bulk_tilt": null,
+    "bulk_rpm": null,
+    "bulk_only": null,
+    "firmware": "trickle_tap/2026-10-15",
+    "hand_added_g": 2.8192,
+    "auger_rev_fwd": 4.0,
+    "auger_rev_rev": 41.395
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "manual",
+    "utc": "2026-10-20T21:07",
+    "powder": "al4047",
+    "target_g": 6.5674,
+    "status": "stopped",
+    "t_s": 2034.6,
+    "err_mg": -3895.1,
+    "final_g": 2.6723,
+    "auger_rev": null,
+    "taps": 150,
+    "bulk_tilt": null,
+    "bulk_rpm": null,
+    "bulk_only": null,
+    "firmware": "trickle_tap/2026-10-15",
+    "hand_added_g": 0.4302,
+    "auger_rev_fwd": 10.0,
+    "auger_rev_rev": 59.0
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "production",
+    "utc": "2026-10-20T21:07",
+    "powder": "al4047",
+    "target_g": 6.4674,
+    "status": "stalled",
+    "t_s": 260.32,
+    "err_mg": -4225.3,
+    "final_g": 2.2421,
+    "auger_rev": 423.938,
+    "taps": 508,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": true,
+    "firmware": "trickle_tap/2026-10-15",
+    "bulk_s": 254.02,
+    "bulk_dm_g": 2.2416,
+    "bulk_rate_mgps": 8.82,
+    "bulk_mg_per_rev": 5.3,
+    "mean_mg_per_rev": 5.29
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "production",
+    "utc": "2026-10-20T21:30",
+    "powder": "al4047",
+    "target_g": 3.7951,
+    "status": "timeout",
+    "t_s": 300.77,
+    "err_mg": -1552.2,
+    "final_g": 2.2429,
+    "auger_rev": 492.922,
+    "taps": 591,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": true,
+    "firmware": "trickle_tap/2026-10-15",
+    "bulk_s": 295.42,
+    "bulk_dm_g": 2.2429,
+    "bulk_rate_mgps": 7.59,
+    "bulk_mg_per_rev": 4.6,
+    "mean_mg_per_rev": 4.55
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "production",
+    "utc": "2026-10-20T21:36",
+    "powder": "al4047",
+    "target_g": 1.5455,
+    "status": "stalled",
+    "t_s": 167.77,
+    "err_mg": -1155.9,
+    "final_g": 0.3896,
+    "auger_rev": 271.744,
+    "taps": 325,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": true,
+    "firmware": "trickle_tap/2026-10-15",
+    "bulk_s": 162.68,
+    "bulk_dm_g": 0.3896,
+    "bulk_rate_mgps": 2.39,
+    "bulk_mg_per_rev": 1.4,
+    "mean_mg_per_rev": 1.43
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "manual",
+    "utc": "2026-10-20T22:12",
+    "powder": "al4047",
+    "target_g": 1.2007,
+    "status": "ok",
+    "t_s": 562.4,
+    "err_mg": 0.2,
+    "final_g": 1.2009,
+    "auger_rev": null,
+    "taps": 21,
+    "bulk_tilt": null,
+    "bulk_rpm": null,
+    "bulk_only": null,
+    "firmware": "trickle_tap/2026-10-15",
+    "hand_added_g": 0.0981,
+    "auger_rev_fwd": 8.65,
+    "auger_rev_rev": 0.0
+   },
+   {
+    "campaign": "production-al4047-atomizer-cups",
+    "mode": "production",
+    "utc": "2026-10-20T22:15",
+    "powder": "al4047",
+    "target_g": 1.1012,
+    "status": "ok",
+    "t_s": 48.07,
+    "err_mg": 1.6,
+    "final_g": 1.1028,
+    "auger_rev": 31.757,
+    "taps": 71,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0,
+    "bulk_only": true,
+    "firmware": "trickle_tap/2026-10-15",
+    "bulk_s": 35.77,
+    "bulk_dm_g": 1.0966,
+    "bulk_rate_mgps": 30.66,
+    "bulk_mg_per_rev": 18.4,
+    "mean_mg_per_rev": 34.73
+   }
+  ],
+  "alsi10mg": {
+   "final_g": 7.99277,
+   "target_g": 8.0,
+   "err_mg": -7.23,
+   "rel_err_pct": -0.090375,
+   "t_s": 314.54,
+   "mean_mg_per_rev": 91.79
+  },
+  "charges": [
+   {
+    "charge": "AlSi10Mg, 8 g (09-29)",
+    "target_g": 8.0,
+    "final_g": 7.9928,
+    "steps": "one dose, salt bo-005 settings",
+    "err_mg": -7.2
+   },
+   {
+    "charge": "Al 4047, 8 g (09-30)",
+    "target_g": 8.0,
+    "final_g": 8.001,
+    "steps": "dose stalled at 7.6811 g after 803 s (cycle budget); bulk-only top-up",
+    "err_mg": 1.0
+   },
+   {
+    "charge": "Al 4047, 7.5 wt% (10-19/20)",
+    "target_g": 3.0407,
+    "final_g": 3.0432,
+    "steps": "3 executor doses stalled (0.20 g); 13 reverse turns at 0 deg freed the outlet; stepwise reverse dosing",
+    "err_mg": 2.5
+   },
+   {
+    "charge": "Al 4047, 15 wt% (10-20)",
+    "target_g": 6.5674,
+    "final_g": 6.5676,
+    "steps": "3 doses stalled or timed out (5.31 g); operator removed large particles; 1 ok dose + 22-step top-up",
+    "err_mg": 0.2
+   }
+  ],
+  "al4047_bulk_rates": [
+   {
+    "utc": "2026-10-19T23:24",
+    "target_g": 2.9904,
+    "status": "stalled",
+    "bulk_s": 118.41,
+    "bulk_dm_g": 0.2028,
+    "bulk_rate_mgps": 1.71,
+    "bulk_mg_per_rev": 1.0,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0
+   },
+   {
+    "utc": "2026-10-20T01:20",
+    "target_g": 0.5,
+    "status": "stalled",
+    "bulk_s": 15.68,
+    "bulk_dm_g": 0.0024,
+    "bulk_rate_mgps": 0.15,
+    "bulk_mg_per_rev": 0.1,
+    "bulk_tilt": 60.0,
+    "bulk_rpm": 109.0
+   },
+   {
+    "utc": "2026-10-20T01:23",
+    "target_g": 0.5,
+    "status": "stalled",
+    "bulk_s": 40.18,
+    "bulk_dm_g": 0.0079,
+    "bulk_rate_mgps": 0.2,
+    "bulk_mg_per_rev": 0.1,
+    "bulk_tilt": 75.0,
+    "bulk_rpm": 109.0
+   },
+   {
+    "utc": "2026-10-20T21:07",
+    "target_g": 6.4674,
+    "status": "stalled",
+    "bulk_s": 254.02,
+    "bulk_dm_g": 2.2416,
+    "bulk_rate_mgps": 8.82,
+    "bulk_mg_per_rev": 5.3,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0
+   },
+   {
+    "utc": "2026-10-20T21:30",
+    "target_g": 3.7951,
+    "status": "timeout",
+    "bulk_s": 295.42,
+    "bulk_dm_g": 2.2429,
+    "bulk_rate_mgps": 7.59,
+    "bulk_mg_per_rev": 4.6,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0
+   },
+   {
+    "utc": "2026-10-20T21:36",
+    "target_g": 1.5455,
+    "status": "stalled",
+    "bulk_s": 162.68,
+    "bulk_dm_g": 0.3896,
+    "bulk_rate_mgps": 2.39,
+    "bulk_mg_per_rev": 1.4,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0
+   },
+   {
+    "utc": "2026-10-20T22:15",
+    "target_g": 1.1012,
+    "status": "ok",
+    "bulk_s": 35.77,
+    "bulk_dm_g": 1.0966,
+    "bulk_rate_mgps": 30.66,
+    "bulk_mg_per_rev": 18.4,
+    "bulk_tilt": 40.0,
+    "bulk_rpm": 100.0
+   }
+  ]
+ }
+}
