@@ -47,8 +47,8 @@ CHAPTERS = [
                "millimetres between their axes is set by where two separate parts sit: the module, on its hinge pins and latch shelf, and the "
                "electronics carriage, on its guide seat and the actuator's pin. During every index the motor's driver is off, so the pinion is "
                "free: as the gear slides in from the side, its teeth roll the pinion round about fifty degrees, like a rack. A MuJoCo model "
-               "with real tooth contact shows where this is fragile. In two of every twelve starting positions, and up to five near the "
-               "ends of the tolerance range, a gear tooth lands on the tip of a pinion tooth. Nothing in version eleven can give, so the chain "
+               "with real tooth contact shows where this is fragile. In about one index in four, a gear tooth lands on the tip of a "
+               "pinion tooth. Nothing in version eleven can give, so the chain "
                "drives the two tips together and the index jams. The model also shows that the centre distance has only a seven tenths of a "
                "millimetre window: below thirty-four millimetres the teeth bind, and above thirty-four point seven two the contact ratio "
                "drops below one."),
@@ -108,8 +108,8 @@ CHAPTERS = [
                "carrier that pivots in the electronics carriage, with a spring pressing the pinion into the gear with about six newtons, past "
                "a set-screw stop. Then the pinion always sits in tight mesh, whatever the tolerances. A tooth landing tip on tip lifts it "
                "instead of jamming, and a slow turn of the motor after the index, reversing once, drops it into the gap. In the model that "
-               "took the jams from about one index in five to none, in two hundred and sixteen indexes over a millimetre and a half of "
-               "tolerance. The preload stays above the mesh's separating force at the motor's stall, so the teeth stay engaged while it "
+               "took the jams from about one index in four to none, in every one of several hundred simulated indexes, over a millimetre "
+               "and a half of tolerance. The preload stays above the mesh's separating force at the motor's stall, so the teeth stay engaged while it "
                "doses. It isn't in version eleven's CAD; it is the first change proposed for the next version. Thanks for watching."),
          visuals=[dict(path="renders/v11/spring_pinion_v12.png", weight=1.5), dict(path="sim/out/entry_outcomes.png")]),
 ]

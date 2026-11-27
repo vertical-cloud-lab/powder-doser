@@ -103,13 +103,13 @@ find what the jams depend on, and 24 station cycles and stall ramps.
 - **Holding works as drawn.** No tooth jumped in any cycle (0°, 30°, 90°, dosing with the solenoid tapping, the pinion up to 0.5 mm
   too far or 0.3 mm too near). With the auger's load ramped, the NEMA 11 stalled first every time, at 0.077-0.090 N·m on the auger.
 - **Engaging is the weak moment.** When a gear tooth lands on the tip of a pinion tooth, nothing in v11 can give: the module can't
-  swing out past its shelf, and the EC can't rise off its pin and seat. **1 index in 6 jams at nominal tolerances** (6 of 36), and
-  44 of 180 over −0.3 to +0.5 mm of tolerance, the chain driving the tips together at 53-158 N. Leaving the pinion free, holding
-  it or seeking made no difference, and nor did indexing at 25 or 100 mm/s, or the motor's detent. As a stopgap for testing, backing
-  the chain off and turning the pinion half a tooth before re-indexing clears 38 of the 44 (all 6 at nominal tolerances), if the
-  NEMA 34 is slowed and its current lowered for the last 12 mm so a jam stalls it gently.
+  swing out past its shelf, and the EC can't rise off its pin and seat. **1 index in 4 jams at nominal tolerances** (9 of 36), and
+  46 of 180 over −0.3 to +0.5 mm of tolerance, the chain driving the tips together at 109-214 N. Leaving the pinion free, holding
+  it or seeking (2-4 in 12), indexing at 25 or 100 mm/s (4 in 12) and the motor's detent (2-3 in 12) all still jam. As a stopgap for
+  testing, backing the chain off and turning the pinion half a tooth before re-indexing clears 42 of the 46 (7 of the 9 at nominal),
+  if the NEMA 34 is slowed and its current lowered for the last 12 mm so a jam stalls it gently.
 - **At rest, gravity is still in play, on the EC.** Its pin and its shoe both sit on the arm, on one line 36 mm to the side of the
-  pinion, so its body rolls on the clevis's play until the pinion's teeth wedge into the gear's: 34.04-34.38 mm, up to 27 N on the
+  pinion, so its body rolls on the clevis's play until the pinion's teeth wedge into the gear's: 34.03-34.36 mm, up to 25 N on the
   teeth.
 - **The centre distance has a 0.72 mm window:** below 34.00 mm the teeth bind, above 34.72 mm the contact ratio drops below 1.
 
@@ -117,11 +117,12 @@ find what the jams depend on, and 24 station cycles and stall ramps.
 the gear (1 N/mm, about 6 N) past a set-screw stop 0.4 mm beyond tight mesh:
 - **0 jams in 216 indexes** (and 0 in 72 with a 4 N spring), over −0.5 to +1.0 mm of tolerance, at every clevis stiffness, friction,
   speed and detent tried;
-- the centre distance stays at 34.02-34.25 mm at every tilt, whatever the tolerance stack;
+- the centre distance stays at 34.03-34.25 mm at every tilt, whatever the tolerance stack;
 - still no tooth jumps; the motor stalls first, at 0.056-0.066 N·m on the auger (the preloaded mesh's friction costs about a quarter
   of the torque at 30 rpm; a 4 N spring 0.066-0.075);
-- a third of the indexes leave the pinion resting on the gear's tips, lifted on its spring; a slow turn of the pinion after the index
-  that reverses once (0.25 rev/s, 0.2 s each way) dropped every one into mesh: 88 stubs in 288 indexes, none left.
+- about a third of the indexes leave the pinion resting on the gear's tips, lifted on its spring, with nothing forced; a slow turn of
+  the pinion after the index that reverses once (0.25 rev/s, 0.2 s each way) dropped 98 of 99 into mesh (288 indexes, 0 jams). The one
+  left needs a second try; a hall switch on the spring's cradle would tell the driver.
 
 It isn't in v11's CAD. It is the first change I'd make for the next version, together with a second seat for the EC on the far side
 of the module, so the EC's body can't roll onto the gear.
@@ -253,10 +254,10 @@ to $133.69 (was $473.94 before the vendor check of 2026-11-27, below).
 1. **The P16-150 through the front plate (TEST-PLAN T6).** Print the clevis and check that the P16 swings freely through the slot
    over 0-90° and that the 30 mm lever at 90° holds the module and EC still (the module's weight is nearly over the hinge there).
 2. **The gear meets the pinion at rest, from the side (T6a): expect jams.** Every index slides a 44T gear into mesh with the
-   stationary pinion over its last 12 mm. The model ([`sim/README.md`](sim/README.md)) jams about 1 index in 6 at nominal tolerances,
+   stationary pinion over its last 12 mm. The model ([`sim/README.md`](sim/README.md)) jams about 1 index in 4 at nominal tolerances,
    whether the NEMA 11 is free, held or seeking, because nothing can give when a tooth lands tip-on-tip. Run T6a with the NEMA 34's
-   current turned down so a jam stalls it gently (the model drives the tips together at 53-158 N), and count. If jams come near that
-   rate, the fix is the spring-loaded pinion (above). Measure the centre distance at rest (*34.04-34.38 mm: the EC leans on the gear*)
+   current turned down so a jam stalls it gently (the model drives the tips together at 109-214 N), and count. If jams come near that
+   rate, the fix is the spring-loaded pinion (above). Measure the centre distance at rest (*34.03-34.36 mm: the EC leans on the gear*)
    and at 30° (*34.1-34.7*): the window is 34.00-34.72 mm.
 3. **The door rod (T8a).** Check that the door's spring (0.3-0.6 N) shuts it against the rod's friction in the cap's hole, upside
    down on the top run too, and that the head stays on its rod (glued) after 1000 passes through the ramp.

@@ -125,8 +125,8 @@ def entry_clip():
               "NEMA 11 free; the gear's teeth roll the pinion round"),
              ("As drawn: tip lands on tip, the index jams", M.Cfg(), 0.25,
               "nothing can give: the chain drives the tips together"),
-             ("Spring-loaded pinion (v12 candidate): lifts, then drops in", M.Cfg(spring=True), 0.0,
-              "tip on tip lifts the pinion 1.8 mm on its 6 N spring;\nthen the seek (a slow turn, reversing once) drops it in")]
+             ("Spring-loaded pinion (v12 candidate), the same arrival", M.Cfg(spring=True), 0.25,
+              "the gear lifts the pinion on its 6 N spring and it rides into mesh;\n(a third of arrivals stop on the tips: the seek turns them in)")]
     runs = []
     for title, cfg, ph, note in cases:
         r, A, frames, S = M.entry(cfg, ph, record=True, seek_reverse=True)
