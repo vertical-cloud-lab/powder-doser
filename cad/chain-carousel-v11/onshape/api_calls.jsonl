@@ -9,3 +9,13 @@
 {"run": "create-document-v11", "n": 9, "method": "GET", "path": "/assemblies/d/868943ea72f58c7a9d6e421e/w/b69337d1a5f8ee47f70e6908/e/951aa82be5a4c3bfe1ed5b08/shadedviews", "status": 200, "utc": "2026-11-26T07:31:59Z"}
 {"run": "create-document-v11", "n": 10, "method": "POST", "path": "/documents/d/868943ea72f58c7a9d6e421e/versions", "status": 200, "utc": "2026-11-26T07:31:59Z"}
 {"run": "confirm-public-v11", "n": 1, "method": "GET", "path": "/documents/868943ea72f58c7a9d6e421e", "status": 200, "utc": "2026-11-26T07:42:53Z"}
+{"run": "create-document-v11-rev-2026-11-27", "n": 1, "method": "GET", "path": "/companies", "status": 200, "utc": "2026-11-27T10:52:45Z"}
+{"run": "create-document-v11-rev-2026-11-27", "n": 2, "method": "POST", "path": "/documents", "status": 200, "utc": "2026-11-27T10:52:45Z"}
+{"run": "create-document-v11-rev-2026-11-27", "n": 3, "method": "POST", "path": "/blobelements/d/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca", "status": 200, "utc": "2026-11-27T10:52:47Z"}
+{"run": "create-document-v11-rev-2026-11-27", "n": 4, "method": "GET", "path": "/translations/6b0960ffe6f711b630048c12", "status": 200, "utc": "2026-11-27T10:54:17Z"}
+{"run": "create-document-v11-rev-2026-11-27", "n": 5, "method": "GET", "path": "/documents/d/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/elements", "status": 200, "utc": "2026-11-27T10:54:18Z"}
+{"run": "create-document-v11-rev-2026-11-27", "n": 6, "method": "GET", "path": "/assemblies/d/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/e/cd46c1a5e6c910443d6daad8/shadedviews", "status": 200, "utc": "2026-11-27T10:54:20Z"}
+{"run": "create-document-v11-rev-2026-11-27", "n": 7, "method": "GET", "path": "/assemblies/d/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/e/cd46c1a5e6c910443d6daad8/shadedviews", "status": 200, "utc": "2026-11-27T10:54:21Z"}
+{"run": "create-document-v11-rev-2026-11-27", "n": 8, "method": "POST", "path": "/documents/d/3e99376a80ac21e730425ec0/versions", "status": 200, "utc": "2026-11-27T10:54:22Z"}
+{"run": "supersede", "n": 1, "method": "POST", "path": "/documents/868943ea72f58c7a9d6e421e", "status": 200, "utc": "2026-11-27T10:54:23Z"}
+{"run": "confirm-public-v11-rev-2026-11-27", "n": 1, "method": "GET", "path": "/documents/3e99376a80ac21e730425ec0", "status": 200, "utc": "2026-11-27T10:54:32Z"}

@@ -24,8 +24,12 @@ STEP = ROOT / "step" / "chain_carousel_rig_v11.step"
 DOC_JSON = HERE / "onshape_document.json"
 RENDERS = ROOT / "renders" / "onshape"
 COMPANY_NAME = "Vertical Cloud Lab"
-DOC_NAME = "Multi-doser chain carousel - test rig v11, 0-90 deg with the station inside the loop, straight rail, tall-cage balance (#128)"
-DESCRIPTION = ("v10 (the station inside the loop) with Sam's 2026-11-25 notes: carriages 40 mm longer and the hinge 5 mm nearer the carriage "
+DOC_NAME_0 = "Multi-doser chain carousel - test rig v11, 0-90 deg with the station inside the loop, straight rail, tall-cage balance (#128)"
+DOC_NAME = DOC_NAME_0 + ", rev. 2026-11-27"   # the CAD fixes of 2026-11-27 (README: what slicing, the vendors and the checks found)
+FIXES = ("Revision of 2026-11-27: EC v11 made one solid (its spine stopped short of the 24T pinion, bars beside it), the guide shoe moved "
+         "behind the arm (the guide's seat had sat inside the arm), the door housing's arms joined to its rails, the T-bracket's head joined "
+         "to its stem, the pillar's wall 0.85 mm, the side hatch 400 mm, the grommet hole 13/16 in, the chain's plates to McMaster's CAD. ")
+DESCRIPTION = (FIXES + "v10 (the station inside the loop) with Sam's 2026-11-25 notes: carriages 40 mm longer and the hinge 5 mm nearer the carriage "
                "plate, so the module and the EC turn 0-90 deg and the 44T gear meets a 24T pinion at rest; one Actuonix P16-150 whose base is "
                "outside the front side plate (a clevis under a new 2020 bar across the front posts), through a slot in the plate; a straight "
                "keyed rail whose ends only flare (no lift); the EC reaching over the outlet to draw each door's rod open (no cable); the "
@@ -76,7 +80,7 @@ FRONT_ISO = "0.743,-0.669,0,0,0.339,0.376,0.862,0,-0.577,-0.641,0.507,0"
 
 
 def create() -> dict:
-    c = Onshape(budget=45, run="create-document-v11")
+    c = Onshape(budget=45, run="create-document-v11-rev-2026-11-27")
     cid = company_id(c)
     doc = c.post("/documents", json={"name": DOC_NAME, "ownerId": cid, "ownerType": 1, "isPublic": True,
                                      "description": DESCRIPTION})
@@ -101,8 +105,8 @@ def create() -> dict:
                 print("->", shaded(c, rec, name, view), flush=True)
             except RuntimeError as e:
                 print("view", name, "failed:", str(e)[:200])
-    v = c.post(f"/documents/d/{did}/versions", json={"documentId": did, "name": "v11 0-90 deg, straight rail, tall-cage balance",
-                                                      "description": "Import from cad/chain-carousel-v11 (#128, PR #185, 2026-11-25)"})
+    v = c.post(f"/documents/d/{did}/versions", json={"documentId": did, "name": "v11 rev. 2026-11-27 (CAD fixes)",
+                                                      "description": "Import from cad/chain-carousel-v11 (#128, PR #185): v11 of 2026-11-25 with the fixes of 2026-11-27"})
     rec["version"] = {"id": v["id"], "name": v["name"]}
     rec["api_calls"] = c.calls
     DOC_JSON.write_text(json.dumps(rec, indent=1))
@@ -115,9 +119,9 @@ def supersede(old_json: Path, new: dict) -> None:
     old = json.loads(old_json.read_text())
     c = Onshape(budget=2, run="supersede")
     c.post(f"/documents/{old['documentId']}", json={
-        "name": f"{DOC_NAME} - SUPERSEDED, see {new['documentId'][:8]}",
-        "description": f"Superseded by {new['url']} (the same rig with the station's latch rail cam moved to the followers' "
-                       "push side). Kept because the API key cannot delete documents."})
+        "name": f"{DOC_NAME_0} - SUPERSEDED, see {new['documentId'][:8]}",
+        "description": f"Superseded by {new['url']}: the same rig with the CAD fixes of 2026-11-27. " + FIXES +
+                       "Kept because the API key cannot delete documents."})
     old["superseded_by"] = new["url"]
     old_json.write_text(json.dumps(old, indent=1))
 

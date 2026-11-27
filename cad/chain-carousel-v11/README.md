@@ -15,9 +15,11 @@
 
 Nothing is built. Every number here is a prediction from the CAD.
 
-**Onshape (public):** [Multi-doser chain carousel, test rig v11](https://cad.onshape.com/documents/868943ea72f58c7a9d6e421e/w/b69337d1a5f8ee47f70e6908/e/951aa82be5a4c3bfe1ed5b08)
-(ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); 11 API calls in [`onshape/api_calls.jsonl`](onshape/api_calls.jsonl):
-10 for the import, 1 to confirm it is public). It was imported from `step/chain_carousel_rig_v11.step` by
+**Onshape (public):** [Multi-doser chain carousel, test rig v11, rev. 2026-11-27](https://cad.onshape.com/documents/3e99376a80ac21e730425ec0/w/9e9e05ab391f2d3a16998fca/e/cd46c1a5e6c910443d6daad8), with the CAD fixes of 2026-11-27
+(ids in [`onshape/onshape_document.json`](onshape/onshape_document.json); 10 API calls on 2026-11-27 in
+[`onshape/api_calls.jsonl`](onshape/api_calls.jsonl): 8 for the import, 1 to rename the first v11 document "SUPERSEDED", 1 to confirm
+the new one is public). The first v11 document ([868943ea](https://cad.onshape.com/documents/868943ea72f58c7a9d6e421e/w/b69337d1a5f8ee47f70e6908/e/951aa82be5a4c3bfe1ed5b08), 2026-11-26, 11 API calls) is kept, renamed
+SUPERSEDED: the API key can't delete documents. It was imported from `step/chain_carousel_rig_v11.step` by
 [`onshape/onshape_build.py`](onshape/onshape_build.py). Earlier versions:
 [v10](https://cad.onshape.com/documents/99bd983c585992043f2eff96/w/7b5725dc5dfb7fe370fa0c71/e/56a319b93daf812d262f5eab),
 [v9](https://cad.onshape.com/documents/9aadc21a931d5337ff05de71/w/1dea03d63eb704d060d84c2a/e/caa98ea728a9da9006767590),
@@ -289,8 +291,6 @@ to $133.69 (was $473.94 before the vendor check of 2026-11-27, below).
   re-laying the door housing's tower round a 3.1 mm boss.
 - **The spring-loaded pinion** and a second seat for the EC across the module are proposals from the simulations, not drawn.
 - **The assembly steps' written instructions** in `docs.py` are still v4's text; the step titles and renders are v11's.
-- **Onshape:** the public v11 document predates the fixes of 2026-11-27 (the EC, the door housing, the T-bracket, the pillar, the
-  side hatch, the chain's plates). The STEP in git has them.
 - **Estimated prices left ($133.69):** the clevis pins (no stock 5 mm grooved pin), the 3 × 25 dowels (priced as 3 × 24), the latch
   spring (no stock spring fits yet), the pinion's sleeve, the interface board's parts, the plywood board and the salt.
 - **The YouTube upload** of the walkthrough ([`walkthrough/`](walkthrough/)): this repo's `claude.yml` doesn't pass the upload
