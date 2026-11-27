@@ -3,6 +3,7 @@
     python export_printed.py                       # every design
     python export_printed.py paternoster           # one design
     python export_printed.py chain-carousel-v11    # v11 (PR #185): carriage, plate, T, door, latch carrier, EC, station, enclosure
+    python export_printed.py chain-carousel-v12    # v12 (PR #185): v11's set with EC v12, the pinion cradle and the second guide
 
 Each design's `layout.shape(key)` is the source (the same builder functions build.py uses), so this
 does not run either design's build.py. Quantities come from `layout.placements()` (the same count the
@@ -29,6 +30,10 @@ DESIGNS = {
     "chain-carousel-v11": ["carriage", "sam_mounting_plate", "t_bracket", "door_housing", "door_shutter", "door_head11", "latch_bolt",
                            "ec11", "pillar11", "p16_bracket11", "guide11", "latch_rail11", "hold_down", "tensioner_block", "side_tab",
                            "side_tab_m", "catch", "hatch_knob"],
+    # v12 (cad/chain-carousel-v12/build.py's PRINTED): v11's set with EC v12 for EC v11, plus the pinion cradle and the second guide
+    "chain-carousel-v12": ["carriage", "sam_mounting_plate", "t_bracket", "door_housing", "door_shutter", "door_head11", "latch_bolt",
+                           "ec12", "cradle12", "pillar11", "p16_bracket11", "guide11", "guide12", "latch_rail11", "hold_down",
+                           "tensioner_block", "side_tab", "side_tab_m", "catch", "hatch_knob"],
 }
 QTY_ADJUST = {("chain-carousel-v2", "sam_mounting_plate"): -1}     # BoM line 39: modules 2-13 (module 1 exists)
 # Print-only variants: the carriage's break-off webs under the tab-hook fingers (parts.tab_hook) are not in the assembly.
@@ -37,8 +42,13 @@ QTY_ADJUST = {("chain-carousel-v2", "sam_mounting_plate"): -1}     # BoM line 39
 PRINT_VARIANT = {("chain-carousel-v2", "carriage"): "PT.carriage(print_web=True)",
                  ("chain-carousel-v11", "carriage"): "V.carriage()",
                  ("chain-carousel-v11", "latch_bolt"): "V.latch_bolt()",
-                 ("chain-carousel-v11", "hatch_knob"): "V.hatch_knob()"}
-COUNT_AS = {("chain-carousel-v11", "hatch_knob"): "hatch_side"}     # one knob per side-hatch door
+                 ("chain-carousel-v11", "hatch_knob"): "V.hatch_knob()",
+                 # v12: the same three, from chain-carousel-v12/print_variants.py (v12's own builders)
+                 ("chain-carousel-v12", "carriage"): "V.carriage()",
+                 ("chain-carousel-v12", "latch_bolt"): "V.latch_bolt()",
+                 ("chain-carousel-v12", "hatch_knob"): "V.hatch_knob()"}
+COUNT_AS = {("chain-carousel-v11", "hatch_knob"): "hatch_side",     # one knob per side-hatch door
+            ("chain-carousel-v12", "hatch_knob"): "hatch_side"}
 
 WORKER = r"""
 import json, sys, collections

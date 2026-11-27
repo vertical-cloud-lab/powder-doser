@@ -2,7 +2,7 @@
 
 Every 3D-printed part of [`cad/paternoster/`](../paternoster/) and [`cad/chain-carousel-v2/`](../chain-carousel-v2/), plus Sam's mounting plate (printed for the extra modules in both), oriented, laid out on plates and sliced with Bambu Studio's own CLI. Quantities are the BoMs' (counted from each design's `layout.placements()`).
 
-[`cad/chain-carousel-v11/`](../chain-carousel-v11/) (PR #185) is sliced the same way in its own section: [chain-carousel-v11 (PR #185)](#chain-carousel-v11-pr-185).
+[`cad/chain-carousel-v11/`](../chain-carousel-v11/) (PR #185) is sliced the same way in its own section: [chain-carousel-v11 (PR #185)](#chain-carousel-v11-pr-185); [`cad/chain-carousel-v12/`](../chain-carousel-v12/) too: [chain-carousel-v12 (PR #185)](#chain-carousel-v12-pr-185).
 
 ![All plates](plates.png)
 
@@ -28,6 +28,11 @@ python report.py                                 # this README
 python export_printed.py chain-carousel-v11
 python slice.py --bambu squashfs-root --design chain-carousel-v11 --parts
 python previews.py chain-carousel-v11              # -> chain-carousel-v11/plates.png
+
+# chain-carousel-v12 (PR #185): the same; the parts identical to v11's keep v11's audit
+python export_printed.py chain-carousel-v12
+python slice.py --bambu squashfs-root --design chain-carousel-v12 --parts --reuse-audit chain-carousel-v11
+python previews.py chain-carousel-v12              # -> chain-carousel-v12/plates.png
 python report.py
 ```
 
@@ -39,6 +44,7 @@ python report.py
 | [`glxshim.c`](glxshim.c) | lets Studio's CLI render on an OSMesa context under Wayland (fakes the GLX calls its GLEW makes) |
 | [`previews.py`](previews.py) | draws each plate's extrusion moves from the G-code in its .gcode.3mf, coloured by feature (arcs included: Studio's arc fitting writes circles as G2/G3) |
 | [`chain-carousel-v11/print_variants.py`](chain-carousel-v11/print_variants.py) | v11's printed forms that differ from its assembly shapes (the carriage with its break-off webs, the latch carrier without its steel dowel, the side hatch's knob off its acrylic door), built from v11's own builders |
+| [`chain-carousel-v12/print_variants.py`](chain-carousel-v12/print_variants.py) | the same three variants for v12, built from v12's own builders |
 | [`check_changes.py`](check_changes.py) | intersects the material a change added with every neighbouring instance at the home pose |
 | [`before_after.py`](before_after.py) | close-ups of the changed parts before and after, in print orientation |
 
@@ -224,6 +230,53 @@ Found by splitting each exported mesh into its connected bodies, measuring the g
 6. **Beaker pillar** (`params.PILLAR11`), **fixed in v11.** Its 1.6 mm wall (3-4 lines) sliced to 53.6 g, not the BoM's "near 30 g" (item 117: "vase-mode walls (two 0.4 mm lines)"), and spiral vase mode can't print it: the deck and the beaker's socket need top layers, which vase mode doesn't print. Now `PILLAR11` = (40.0, 0.85), two 0.42 mm lines printed normally: 29.9 g, 3 h 47 min sliced.
 
 7. **Carriage** (not a defect; unchanged): it prints, but only on supports, about 21 g and 1 h 37 min more per carriage (13 times). Printing it flat with no support would need a flat inner face, e.g. the two tab hooks made as separate printed clips held by the tab's M3 screw, which changes how the carriage slides onto the tabs; not proposed here.
+
+## chain-carousel-v12 (PR #185)
+
+Every printed part of [`cad/chain-carousel-v12/`](../chain-carousel-v12/) (its `build.py`'s printed parts, Sam's mounting plate and the side hatch's knob), exported from v12's own builders by `export_printed.py` (with [`chain-carousel-v12/print_variants.py`](chain-carousel-v12/print_variants.py), v11's three print variants) and sliced with the settings above; quantities are v12's `layout.placements()` counts, as v11's. v12 is v11 with the spring-loaded pinion: EC v12 (`ec12`) replaces EC v11, and the pinion cradle (`cradle12`) and the second guide hanger (`guide12`) are new, one of each per rig. v12 also bores the door housing's spring tower and gives the shutter a round boss with the rod's hole (v11's item 5). The other 15 parts export byte-identical to v11's STLs and print in v11's orientations, so their audit is v11's above (`slice.py --reuse-audit chain-carousel-v11`); every plate is sliced again.
+
+![v12 plates](chain-carousel-v12/plates.png)
+
+### Plates
+
+| Plate | Printer | Parts (quantity) | Prints | Time (each) | PETG (each) | Layers | Support | Files |
+|---|---|---|---|---|---|---|---|---|
+| carriage | Bambu Lab H2D (left nozzle) | carriage x1 | 13 | 3 h 42 min | 77.56 g | 163 | tree, build plate only | [3mf](chain-carousel-v12/plates/carriage.gcode.3mf) [Studio](chain-carousel-v12/plates/carriage.png) [toolpaths](chain-carousel-v12/plates/carriage_toolpath.png) |
+| mounting_plates_5 | Bambu Lab H2D (left nozzle) | sam_mounting_plate x5 | 2 | 7 h 21 min | 249.93 g | 163 | off | [3mf](chain-carousel-v12/plates/mounting_plates_5.gcode.3mf) [Studio](chain-carousel-v12/plates/mounting_plates_5.png) [toolpaths](chain-carousel-v12/plates/mounting_plates_5_toolpath.png) |
+| mounting_plates_3 | Bambu Lab H2D (left nozzle) | sam_mounting_plate x3 | 1 | 4 h 28 min | 149.97 g | 163 | off | [3mf](chain-carousel-v12/plates/mounting_plates_3.gcode.3mf) [Studio](chain-carousel-v12/plates/mounting_plates_3.png) [toolpaths](chain-carousel-v12/plates/mounting_plates_3_toolpath.png) |
+| pillar | Bambu Lab H2D (left nozzle) | pillar11 x1 | 1 | 3 h 47 min | 29.86 g | 1060 | off | [3mf](chain-carousel-v12/plates/pillar.gcode.3mf) [Studio](chain-carousel-v12/plates/pillar.png) [toolpaths](chain-carousel-v12/plates/pillar_toolpath.png) |
+| module_parts | Bambu Lab A1 mini | t_bracket x13, latch_bolt x13, door_shutter x13, door_head11 x13 | 1 | 2 h 36 min | 46.46 g | 105 | off, 3 mm brim | [3mf](chain-carousel-v12/plates/module_parts.gcode.3mf) [Studio](chain-carousel-v12/plates/module_parts.png) [toolpaths](chain-carousel-v12/plates/module_parts_toolpath.png) |
+| station | Bambu Lab A1 mini | guide11 x1, hold_down x2, latch_rail11 x1, p16_bracket11 x1, side_tab x1, side_tab_m x1, tensioner_block x4, catch x1, hatch_knob x1 | 1 | 3 h 52 min | 86.04 g | 284 | off, 3 mm brim | [3mf](chain-carousel-v12/plates/station.gcode.3mf) [Studio](chain-carousel-v12/plates/station.png) [toolpaths](chain-carousel-v12/plates/station_toolpath.png) |
+| door_housings | Bambu Lab A1 mini | door_housing x13 | 1 | 3 h 09 min | 37.77 g | 123 | tree, build plate only | [3mf](chain-carousel-v12/plates/door_housings.gcode.3mf) [Studio](chain-carousel-v12/plates/door_housings.png) [toolpaths](chain-carousel-v12/plates/door_housings_toolpath.png) |
+| ec12 | Bambu Lab H2D (left nozzle) | ec12 x1, cradle12 x1, guide12 x1 | 1 | 3 h 55 min | 78.3 g | 415 | tree, build plate only | [3mf](chain-carousel-v12/plates/ec12.gcode.3mf) [Studio](chain-carousel-v12/plates/ec12.png) [toolpaths](chain-carousel-v12/plates/ec12_toolpath.png) |
+
+Totals, Studio's estimates: Bambu Lab H2D (left nozzle): 18 prints, 75 h 03 min, 1766 g; Bambu Lab A1 mini: 3 prints, 9 h 38 min, 170 g; together 21 prints, 84.7 h of printing, 1937 g of PETG.
+
+The carriage, EC and door-housing plates have tree supports from the build plate only, as v11's; the cradle and the second guide print with the EC. The two A1 mini plates of small parts get the 3 mm outer brim. Every H2D file uses filament 1 only, on one 0.4 mm nozzle (extruder 1, the left: `filament_map` 1,2), with no prime tower or wipe on the other nozzle ([slice_report.json](chain-carousel-v12/slice_report.json)).
+
+### What changed from v11
+
+* **EC v12** replaces EC v11; it prints on its +y side, not v11's -y side (see the audit), on the same H2D plate with tree supports, which now also carries the cradle and the second guide.
+* **The pinion cradle** (new) prints with the EC. Its first slice found a floating cantilever and a weak top bar, fixed in the CAD the same day (below); it now slices clean on its own.
+* **The second guide** (new) prints with the EC too: the A1 mini's station plate (v11's, unchanged) has no room for it.
+* **The door housing and shutter** are v12's (the bored tower; the round boss with the rod's hole, v11's item 5) in v11's orientations and plates.
+* Everything else, and the carriage, mounting-plate, pillar and station plates, is v11's.
+
+### Printability audit
+
+The parts whose files differ from v11's (door_housing, door_shutter, ec12, cradle12, guide12), as for the other designs: `audit.py` on the mesh in print orientation, and each part sliced alone with supports off.
+
+| Part | Qty | Orientation | On the bed (mm) | First layer | Overhang > 50 deg | Floating islands | Thin layers | Studio, supports off | Alone | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|
+| door_housing | 13 | as drawn: the cap's top face on the bed, rails and spring tower up (v12's bore through the tower vertical); the mounting arms, 22 mm cantilevers off the rails 6.5 mm up, on tree supports | 27.4 x 32.5 x 24.5 | 119.4 mm2 | 183.5 mm2 | 0 | 0 | It seems object door_housing_1 has floating cantilever. Please re-orient the object or enable support generation. | 34m 29s, 2.43 g | v12's housing (`parts12.door_housing_v12`): the spring's tower bored out (3.6 mm) and carried 0.85 mm forward; one solid (2189 mm3). As v11's: the cap's top face on the bed (119 mm2), the bore vertical; the mounting arms are 22 mm cantilevers 6.5 mm up (supports off: floating cantilever, as v11's), so the housings print on tree supports. |
+| door_shutter | 13 | +90 deg about y: flat: its 11.5 x 14 face on the bed; v12's round boss on top, the rod's 1.55 mm hole through it horizontal | 11.5 x 14 x 4.5 | 116.9 mm2 | 3.8 mm2 | 0 | 3 | no warnings | 8m 45s, 0.3 g | v12's shutter (`parts12.door_shutter_v12`): a round 3.2 mm boss with the rod's 1.55 mm hole (a press fit for the 1/16 in rod), which closes v11's item 5; one solid (187 mm3). Flat as v11's (117 mm2), the boss on top and its hole horizontal; clean. Thin layers: the boss's 0.83 mm wall round the hole. |
+| ec12 | 1 | -90 deg about x: on its +y side (the arm's outer face on the bed; v11's -y side would now stand on the second shoe alone): the rail's T-slot, the door ramp's lips and the P16's pin hole run vertical, so their working faces are walls; spine, collar and ramp over tree supports | 155.6 x 49.1 x 83 | 312.2 mm2 | 4103.5 mm2 | 2 | 0 | It seems object ec12_1 has floating cantilever. Please re-orient the object or enable support generation. | 2h 16m 43s, 39.54 g | EC v12 (`parts12.ec_v12`): v11's front half; behind the pinion the cradle's pivot bosses, an outer -y rail and a cross bar, the roof over the spring with its up-stop pad, the magnet's post, the slot for the P16's rod-end tab and the second guide shoe on the -y side. One solid (48 063 mm3; EC v11 45 068). EC v11 printed on its -y side, where EC v12 has only the second shoe and its bracket (125 mm2 on the bed), so EC v12 prints on its +y side, on the arm's outer face (312 mm2): the rail's T-slot, the door ramp's lips and the P16's pin hole stay vertical. Sliced alone on tree supports either way: 3 h 08 min and 56.8 g both, with less of Studio's automatic brim on the arm. As in v11, the door ramp's end and the solenoid collar start in mid-air (supports off: floating cantilever), so it prints on tree supports. |
+| cradle12 | 1 | -90 deg about y: the motor plate's front face on the bed: the 22.4 mm bore, the M2.5 holes and the dowels' bores vertical (round); the pivot tube, top bar, cheeks and lug stand up off the plate | 33.5 x 48 x 46.6 | 645.9 mm2 | 102.0 mm2 | 0 | 0 | no warnings | 1h 7m 58s, 9.92 g | The pinion cradle (`parts12.cradle_v12`), one per rig, one solid (9586 mm3 since the fix in item 1 below). On the motor plate's front face (646 mm2): the motor's 22.4 mm bore, the four M2.5 holes and both dowel bores vertical, so they print round; the pivot tube, top bar, cheeks and lug stand up off the plate; the lug's M3 insert hole and the spring's peg horizontal. Every other axis orientation has floating regions or over 700 mm2 of overhang. Clean with supports off since the fix; it prints with the EC, on that plate. |
+| guide12 | 1 | -90 deg about y: on its side: its L-shaped profile (flange, plate, seat block) on the bed; the cone and funnel mouth horizontal (45 deg walls) | 110.9 x 36.7 x 22 | 670.5 mm2 | 30.7 mm2 | 0 | 0 | no warnings | 37m 53s, 12.15 g | The second guide (`parts12.guide_hanger_v12`): guide11's hanger for the second beam, on the loop's other side; one per rig, one solid (13 756 mm3). On its side like guide11: its L-shaped profile on the bed (671 mm2), 22 mm tall; the seat's cone and funnel mouth on their side (45 deg walls), the flange's two M5 holes horizontal. Clean with supports off. It goes on the EC's plate because the A1 mini's station plate has no room left beside guide11. |
+
+### What the slicing found in v12's CAD, and what was changed
+
+1. **Pinion cradle** (`parts12.cradle_v12`, `params.CRADLE12_TOP`), **fixed in v12.** The first slice (supports off) warned "floating cantilever". The cause was the block at the top bar's far end (`_box(tx1 - 4.0, tx1, -16.0, -14.3, zf, PZ + 3.5)`: x 124-128, y -16 to -14.3, z -51.5 to -30.5 in Sam's frame), meant to join the bar to the tube: the bar was only |y| <= 9 wide, so the block missed it by 5.3 mm and hung 14 mm off the tube (printed plate-down: 34.1 mm up, 29 mm2 over nothing, up to 7 mm from anything below; a scratch copy without it sliced clean). The same gap kept both cheeks off the bar, so the bar (the spring's seat 22.5 mm out) hung on a 0.7 x 18 mm strip of the plate (the plate stopped at z -49); the +y cheek was 0.31 mm thick, under one line; and two M2.5 counterbores broke out of the plate's edges. Now the bar is |y| <= 16 and meets both cheeks and the block (which becomes a bridge), the plate runs from the bar's far face (z -51.5) to z -20.0 and out to y 14.5, the +y cheek is 1.7 mm (y 14.3-16.0), and only the two lower M2.5 heads are counterbored (r 2.3, 1.5 mm deep). Re-exported and re-sliced: one solid (9586 mm3, was 7705), no floating regions or thin layers, 102 mm2 of overhang (was 169), and clean with supports off (1 h 08 min, 9.9 g).
 
 ## Not verified
 

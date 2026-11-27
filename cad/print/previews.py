@@ -2,6 +2,7 @@
 
     python previews.py                       # after slice.py: paternoster and chain-carousel-v2 -> plates.png
     python previews.py chain-carousel-v11    # v11 -> chain-carousel-v11/plates.png
+    python previews.py chain-carousel-v12    # v12 -> chain-carousel-v12/plates.png
 
 Each plate's extrusion moves are drawn in an isometric view, oldest layer first, coloured by feature
 (Bambu's "; FEATURE:" comments), over the outline of the printable area (the H2D's left nozzle 325 x 320,

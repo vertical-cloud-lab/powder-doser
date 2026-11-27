@@ -185,35 +185,21 @@ def orient_txt(spec) -> str:
     return "as drawn" if not spec else ", ".join(f"{d:+d} deg about {a}" for a, d in spec)
 
 
-def v11_section(w) -> None:
-    """chain-carousel-v11 (PR #185): its plates, the per-part audit and the parts that are not printable as drawn."""
-    r = json.loads((HERE / V11 / "slice_report.json").read_text())
-    a = json.loads((HERE / V11 / "audit.json").read_text())
-    w("## chain-carousel-v11 (PR #185)\n")
-    w("Every printed part of [`cad/chain-carousel-v11/`](../chain-carousel-v11/) (its `bom.py`'s \"Printed\" lines: items 36-39, 77, 83, "
-      "86, 93, 106 and 117), exported from v11's own builders by `export_printed.py`: the same solids as v11's `stl/`, volume for volume (the carriage with "
-      "its break-off webs and the latch bolt's carrier as v11's `build.py` exports them, built here by "
-      "[`chain-carousel-v11/print_variants.py`](chain-carousel-v11/print_variants.py)), plus the side hatch's knob, which v11 draws as "
-      "part of the acrylic door. They are oriented, laid out and sliced with the settings above. Quantities are v11's `layout.placements()` counts: 13 of every module part and all 13 "
-      "mounting plates (BoM item 39: \"Print all 13\"). Identical plates are sliced once and printed as many times as the Prints column "
-      "says.\n")
-    w("![v11 plates](chain-carousel-v11/plates.png)\n")
-    blocked_plates = [p["plate"] for p in r["plates"] if p.get("blocked")]
-    if blocked_plates:
-        w("**Not printable as drawn:** " + ", ".join(blocked_plates) + " (see below). Their plates are sliced as drawn only for the time "
-          "and weight: don't print them until the CAD is fixed.\n")
-    else:
-        w("**Status, 2026-11-27:** the first slicing of v11 found the electronics carriage (EC v11) and the outlet door housing in "
-          "pieces, the T-bracket's head off its stem, the steel dowel printed as part of the latch carrier and the pillar twice the "
-          "BoM's weight. All of these were fixed in v11's CAD the same day (items 1-4 and 6 below) and everything here is re-exported "
-          "and re-sliced from the fixed CAD: every part is one solid and every plate is ready to print. Still open: the door shutter "
-          "has no hole for its rod (item 5).\n")
+def h2d_left_nozzle_only(r: dict) -> bool:
+    """Every H2D plate uses filament 1 only, on one 0.4 mm nozzle, with no prime tower or wipe (from slice_report.json)."""
+    h2d = [p for p in r["plates"] if p["printer_key"] == "h2d"]
+    return all([f["id"] for f in p.get("filaments_used", [])] == ["1"] and len(p.get("nozzles", [])) == 1
+               and all(float(n["diameter"]) == 0.4 for n in p.get("nozzles", [])) and not p.get("prime_tower_in_gcode") for p in h2d)
+
+
+def plate_table(w, r: dict, design: str) -> None:
+    """A design's plates table (one row per distinct plate, how many prints of it) and the totals line."""
     w("### Plates\n")
     w("| Plate | Printer | Parts (quantity) | Prints | Time (each) | PETG (each) | Layers | Support | Files |\n|---|---|---|---|---|---|---|---|---|")
     tot = {}
     for p in r["plates"]:
         parts = ", ".join(f"{k} x{v}" for k, v in p["parts"].items())
-        files = " ".join(f"[{lbl}]({V11}/{p[k]})" for k, lbl in (("gcode_3mf", "3mf"), ("studio_png", "Studio"), ("toolpath_png", "toolpaths")) if p.get(k))
+        files = " ".join(f"[{lbl}]({design}/{p[k]})" for k, lbl in (("gcode_3mf", "3mf"), ("studio_png", "Studio"), ("toolpath_png", "toolpaths")) if p.get(k))
         name = f"{p['plate']} (NOT PRINTABLE AS DRAWN)" if p.get("blocked") else p["plate"]
         sup = "tree, build plate only" if p.get("support_used") else ("off, 3 mm brim" if p.get("brim_mm") else "off")
         w(f"| {name} | {p['printer']} | {parts} | {p.get('copies', 1)} | {hm(p.get('print_time_s'))} | {p.get('filament_g')} g | "
@@ -239,9 +225,33 @@ def v11_section(w) -> None:
           + f". All: {r['total_print_time_h']} h, {r['total_filament_g']:.0f} g.\n")
     else:
         w(f"Totals, Studio's estimates: {parts_txt}; together {n} prints, {t / 3600:.1f} h of printing, {g:.0f} g of PETG.\n")
-    h2d = [p for p in r["plates"] if p["printer_key"] == "h2d"]
-    ok = all([f["id"] for f in p.get("filaments_used", [])] == ["1"] and len(p.get("nozzles", [])) == 1
-             and all(float(n["diameter"]) == 0.4 for n in p.get("nozzles", [])) and not p.get("prime_tower_in_gcode") for p in h2d)
+
+
+def v11_section(w) -> None:
+    """chain-carousel-v11 (PR #185): its plates, the per-part audit and the parts that are not printable as drawn."""
+    r = json.loads((HERE / V11 / "slice_report.json").read_text())
+    a = json.loads((HERE / V11 / "audit.json").read_text())
+    w("## chain-carousel-v11 (PR #185)\n")
+    w("Every printed part of [`cad/chain-carousel-v11/`](../chain-carousel-v11/) (its `bom.py`'s \"Printed\" lines: items 36-39, 77, 83, "
+      "86, 93, 106 and 117), exported from v11's own builders by `export_printed.py`: the same solids as v11's `stl/`, volume for volume (the carriage with "
+      "its break-off webs and the latch bolt's carrier as v11's `build.py` exports them, built here by "
+      "[`chain-carousel-v11/print_variants.py`](chain-carousel-v11/print_variants.py)), plus the side hatch's knob, which v11 draws as "
+      "part of the acrylic door. They are oriented, laid out and sliced with the settings above. Quantities are v11's `layout.placements()` counts: 13 of every module part and all 13 "
+      "mounting plates (BoM item 39: \"Print all 13\"). Identical plates are sliced once and printed as many times as the Prints column "
+      "says.\n")
+    w("![v11 plates](chain-carousel-v11/plates.png)\n")
+    blocked_plates = [p["plate"] for p in r["plates"] if p.get("blocked")]
+    if blocked_plates:
+        w("**Not printable as drawn:** " + ", ".join(blocked_plates) + " (see below). Their plates are sliced as drawn only for the time "
+          "and weight: don't print them until the CAD is fixed.\n")
+    else:
+        w("**Status, 2026-11-27:** the first slicing of v11 found the electronics carriage (EC v11) and the outlet door housing in "
+          "pieces, the T-bracket's head off its stem, the steel dowel printed as part of the latch carrier and the pillar twice the "
+          "BoM's weight. All of these were fixed in v11's CAD the same day (items 1-4 and 6 below) and everything here is re-exported "
+          "and re-sliced from the fixed CAD: every part is one solid and every plate is ready to print. Still open: the door shutter "
+          "has no hole for its rod (item 5).\n")
+    plate_table(w, r, V11)
+    ok = h2d_left_nozzle_only(r)
     w("The carriage, EC and door-housing plates have tree supports (Studio 2.08 turns `tree(auto)` into organic trees), from the build "
       "plate only. "
       "The two A1 mini plates of small parts get the 3 mm outer brim (door heads: 34 mm2 on the bed each). "
@@ -267,6 +277,88 @@ def v11_section(w) -> None:
         w(t_)
 
 
+
+V12 = "chain-carousel-v12"
+NOTES_V12 = {
+    "ec12": "EC v12 (`parts12.ec_v12`): v11's front half; behind the pinion the cradle's pivot bosses, an outer -y rail and a cross "
+        "bar, the roof over the spring with its up-stop pad, the magnet's post, the slot for the P16's rod-end tab and the second "
+        "guide shoe on the -y side. One solid (48 063 mm3; EC v11 45 068). EC v11 printed on its -y side, where EC v12 has only "
+        "the second shoe and its bracket (125 mm2 on the bed), so EC v12 prints on its +y side, on the arm's outer face (312 "
+        "mm2): the rail's T-slot, the door ramp's lips and the P16's pin hole stay vertical. Sliced alone on tree supports either "
+        "way: 3 h 08 min and 56.8 g both, with less of Studio's automatic brim on the arm. As in v11, the door ramp's end and the "
+        "solenoid collar start in mid-air (supports off: floating cantilever), so it prints on tree supports.",
+    "cradle12": "The pinion cradle (`parts12.cradle_v12`), one per rig, one solid (9586 mm3 since the fix in item 1 below). On the motor "
+        "plate's front face (646 mm2): the motor's 22.4 mm bore, the four M2.5 holes and both dowel bores vertical, so they print "
+        "round; the pivot tube, top bar, cheeks and lug stand up off the plate; the lug's M3 insert hole and the spring's peg "
+        "horizontal. Every other axis orientation has floating regions or over 700 mm2 of overhang. Clean with supports off since "
+        "the fix; it prints with the EC, on that plate.",
+    "guide12": "The second guide (`parts12.guide_hanger_v12`): guide11's hanger for the second beam, on the loop's other side; one per "
+        "rig, one solid (13 756 mm3). On its side like guide11: its L-shaped profile on the bed (671 mm2), 22 mm tall; the seat's "
+        "cone and funnel mouth on their side (45 deg walls), the flange's two M5 holes horizontal. Clean with supports off. It "
+        "goes on the EC's plate because the A1 mini's station plate has no room left beside guide11.",
+    "door_housing": "v12's housing (`parts12.door_housing_v12`): the spring's tower bored out (3.6 mm) and carried 0.85 mm forward; one solid "
+        "(2189 mm3). As v11's: the cap's top face on the bed (119 mm2), the bore vertical; the mounting arms are 22 mm "
+        "cantilevers 6.5 mm up (supports off: floating cantilever, as v11's), so the housings print on tree supports.",
+    "door_shutter": "v12's shutter (`parts12.door_shutter_v12`): a round 3.2 mm boss with the rod's 1.55 mm hole (a press fit for the 1/16 in "
+        "rod), which closes v11's item 5; one solid (187 mm3). Flat as v11's (117 mm2), the boss on top and its hole horizontal; "
+        "clean. Thin layers: the boss's 0.83 mm wall round the hole.",
+}
+V12_CHANGES = ("* **EC v12** replaces EC v11; it prints on its +y side, not v11's -y side (see the audit), on the same H2D plate with tree "
+    "supports, which now also carries the cradle and the second guide.\n"
+    "* **The pinion cradle** (new) prints with the EC. Its first slice found a floating cantilever and a weak top bar, fixed in "
+    "the CAD the same day (below); it now slices clean on its own.\n"
+    "* **The second guide** (new) prints with the EC too: the A1 mini's station plate (v11's, unchanged) has no room for it.\n"
+    "* **The door housing and shutter** are v12's (the bored tower; the round boss with the rod's hole, v11's item 5) in v11's "
+    "orientations and plates.\n"
+    "* Everything else, and the carriage, mounting-plate, pillar and station plates, is v11's.\n")
+V12_FINDINGS = [
+    "### What the slicing found in v12's CAD, and what was changed\n",
+    "1. **Pinion cradle** (`parts12.cradle_v12`, `params.CRADLE12_TOP`), **fixed in v12.** The first slice (supports off) warned \"floating cantilever\". The cause was the block at the top bar's far end (`_box(tx1 - 4.0, tx1, -16.0, -14.3, zf, PZ + 3.5)`: x 124-128, y -16 to -14.3, z -51.5 to -30.5 in Sam's frame), meant to join the bar to the tube: the bar was only |y| <= 9 wide, so the block missed it by 5.3 mm and hung 14 mm off the tube (printed plate-down: 34.1 mm up, 29 mm2 over nothing, up to 7 mm from anything below; a scratch copy without it sliced clean). The same gap kept both cheeks off the bar, so the bar (the spring's seat 22.5 mm out) hung on a 0.7 x 18 mm strip of the plate (the plate stopped at z -49); the +y cheek was 0.31 mm thick, under one line; and two M2.5 counterbores broke out of the plate's edges. Now the bar is |y| <= 16 and meets both cheeks and the block (which becomes a bridge), the plate runs from the bar's far face (z -51.5) to z -20.0 and out to y 14.5, the +y cheek is 1.7 mm (y 14.3-16.0), and only the two lower M2.5 heads are counterbored (r 2.3, 1.5 mm deep). Re-exported and re-sliced: one solid (9586 mm3, was 7705), no floating regions or thin layers, 102 mm2 of overhang (was 169), and clean with supports off (1 h 08 min, 9.9 g).\n",
+]
+
+
+def v12_section(w) -> None:
+    """chain-carousel-v12 (PR #185): its plates, what changed from v11, and the audit of the parts that differ from v11's."""
+    r = json.loads((HERE / V12 / "slice_report.json").read_text())
+    a = json.loads((HERE / V12 / "audit.json").read_text())
+    new = [k for k, v in a.items() if not v.get("audit_from")]
+    same = [k for k in a if k not in new]
+    w("## chain-carousel-v12 (PR #185)\n")
+    w("Every printed part of [`cad/chain-carousel-v12/`](../chain-carousel-v12/) (its `build.py`'s printed parts, Sam's mounting plate "
+      "and the side hatch's knob), exported from v12's own builders by `export_printed.py` (with "
+      "[`chain-carousel-v12/print_variants.py`](chain-carousel-v12/print_variants.py), v11's three print variants) and sliced with the "
+      "settings above; quantities are v12's `layout.placements()` counts, as v11's. v12 is v11 with the spring-loaded pinion: EC v12 "
+      "(`ec12`) replaces EC v11, and the pinion cradle (`cradle12`) and the second guide hanger (`guide12`) are new, one of each per rig. "
+      f"v12 also bores the door housing's spring tower and gives the shutter a round boss with the rod's hole (v11's item 5). The other "
+      f"{len(same)} parts export byte-identical to v11's STLs and print in v11's orientations, so their audit is v11's above "
+      "(`slice.py --reuse-audit chain-carousel-v11`); every plate is sliced again.\n")
+    w("![v12 plates](chain-carousel-v12/plates.png)\n")
+    plate_table(w, r, V12)
+    w("The carriage, EC and door-housing plates have tree supports from the build plate only, as v11's; the cradle and the second guide "
+      "print with the EC. The two A1 mini plates of small parts get the 3 mm outer brim. "
+      + ("Every H2D file uses filament 1 only, on one 0.4 mm nozzle (extruder 1, the left: `filament_map` 1,2), with no prime tower or "
+         "wipe on the other nozzle ([slice_report.json](chain-carousel-v12/slice_report.json))." if h2d_left_nozzle_only(r) else
+         "CHECK: an H2D file uses more than filament 1 on one 0.4 mm nozzle, or has a prime tower: see slice_report.json.") + "\n")
+    w("### What changed from v11\n")
+    w(V12_CHANGES)
+    w("### Printability audit\n")
+    w(f"The parts whose files differ from v11's ({', '.join(new)}), as for the other designs: `audit.py` on the mesh in print orientation, "
+      "and each part sliced alone with supports off.\n")
+    w("| Part | Qty | Orientation | On the bed (mm) | First layer | Overhang > 50 deg | Floating islands | Thin layers | Studio, supports off | Alone | Notes |")
+    w("|---|---|---|---|---|---|---|---|---|---|---|")
+    for k in new:
+        v = a[k]
+        m, s_ = v["mesh"], v["studio_supports_off"]
+        warn = "; ".join(s_.get("slicer_warnings") or []) or "no warnings"
+        sz = " x ".join(f"{x:g}" for x in m["size_mm"])
+        w(f"| {k} | {v['qty']} | {v['why'] if v['why'].startswith('as ') else orient_txt(v['orientation']) + ': ' + v['why']} | {sz} | "
+          f"{m.get('first_layer_mm2', '-')} mm2 | {m['overhang_area_mm2']} mm2 | {m.get('n_floating_islands', '-')} | "
+          f"{m.get('thin_wall_layers', '-')} | {warn} | {s_.get('print_time')}, {s_.get('filament_g')} g | {NOTES_V12.get(k, '')} |")
+    w("")
+    for t_ in V12_FINDINGS:
+        w(t_)
+
+
 def main() -> None:
     reps = {d: json.loads((HERE / d / "slice_report.json").read_text()) for d in DESIGNS}
     audits = {d: json.loads((HERE / d / "audit.json").read_text()) for d in DESIGNS}
@@ -278,7 +370,8 @@ def main() -> None:
       "plus Sam's mounting plate (printed for the extra modules in both), oriented, laid out on plates and sliced with Bambu "
       "Studio's own CLI. Quantities are the BoMs' (counted from each design's `layout.placements()`).\n")
     w("[`cad/chain-carousel-v11/`](../chain-carousel-v11/) (PR #185) is sliced the same way in its own section: "
-      "[chain-carousel-v11 (PR #185)](#chain-carousel-v11-pr-185).\n")
+      "[chain-carousel-v11 (PR #185)](#chain-carousel-v11-pr-185); [`cad/chain-carousel-v12/`](../chain-carousel-v12/) too: "
+      "[chain-carousel-v12 (PR #185)](#chain-carousel-v12-pr-185).\n")
     w("![All plates](plates.png)\n")
     w("## Re-running\n")
     w("```bash\n# Bambu Studio for Linux (no login), extracted\n"
@@ -297,7 +390,11 @@ def main() -> None:
       "# chain-carousel-v11 (PR #185): its own STLs, plates, audit and overview picture\n"
       "python export_printed.py chain-carousel-v11\n"
       "python slice.py --bambu squashfs-root --design chain-carousel-v11 --parts\n"
-      "python previews.py chain-carousel-v11              # -> chain-carousel-v11/plates.png\n"
+      "python previews.py chain-carousel-v11              # -> chain-carousel-v11/plates.png\n\n"
+      "# chain-carousel-v12 (PR #185): the same; the parts identical to v11's keep v11's audit\n"
+      "python export_printed.py chain-carousel-v12\n"
+      "python slice.py --bambu squashfs-root --design chain-carousel-v12 --parts --reuse-audit chain-carousel-v11\n"
+      "python previews.py chain-carousel-v12              # -> chain-carousel-v12/plates.png\n"
       "python report.py\n```\n")
     w("| File | What it does |\n|---|---|")
     for f, t in [("export_printed.py", "exports each printed part's STL in its CAD frame from the design's own builders (does not run build.py); "
@@ -313,6 +410,7 @@ def main() -> None:
                  ("chain-carousel-v11/print_variants.py", "v11's printed forms that differ from its assembly shapes (the carriage "
                   "with its break-off webs, the latch carrier without its steel dowel, the side hatch's knob off its acrylic door), "
                   "built from v11's own builders"),
+                 ("chain-carousel-v12/print_variants.py", "the same three variants for v12, built from v12's own builders"),
                  ("check_changes.py", "intersects the material a change added with every neighbouring instance at the home pose"),
                  ("before_after.py", "close-ups of the changed parts before and after, in print orientation")]:
         w(f"| [`{f}`]({f}) | {t} |")
@@ -385,6 +483,7 @@ def main() -> None:
       "* Press and pin holes (4.0 mm stub pin, 4.15 mm clevis pin, 7.0 mm bushings) are drawn at nominal size; printed holes run "
       "0.1-0.2 mm small, so plan to ream. Studio's circle compensation is off (stock).\n")
     v11_section(w)
+    v12_section(w)
     w("## Not verified\n")
     w("* Nothing here has been printed. Times and grams are Studio's estimates.\n"
       "* The plates use the H2D's left nozzle only; the bed type is assumed (Textured PEI) and must match the plate on the printer.\n"

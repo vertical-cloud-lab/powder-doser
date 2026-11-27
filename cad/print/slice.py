@@ -4,6 +4,7 @@
     python slice.py --bambu /tmp/bambu/squashfs-root          # all plates of every design
     python slice.py --bambu ... --design paternoster --parts  # also slice each part alone (audit)
     python slice.py --bambu ... --design chain-carousel-v11 --parts   # v11 (PR #185)
+    python slice.py --bambu ... --design chain-carousel-v12 --parts   # v12 (PR #185)
     python previews.py                                        # toolpath previews and plates.png
 
 Bambu Studio's own Linux AppImage (v02.08.02.61, `--appimage-extract`), no login. Presets are Bambu's
@@ -116,6 +117,22 @@ ORIENT_DESIGN = {
     (V11, "catch"): ([(X, 180)], "the tab on the bed, the spacer up"),
     (V11, "hatch_knob"): ([], "as drawn: the face bonded to the acrylic on the bed"),
 }
+# v12 (PR #185): v11's parts print as v11's (the same meshes); EC v12 replaces EC v11, and the pinion cradle and the second guide are new
+V12 = "chain-carousel-v12"
+ORIENT_DESIGN.update({(V12, k): v for (d, k), v in list(ORIENT_DESIGN.items()) if d == V11 and k != "ec11"})
+ORIENT_DESIGN.update({
+    (V12, "ec12"): ([(X, -90)], "on its +y side (the arm's outer face on the bed; v11's -y side would now stand on the second shoe "
+                    "alone): the rail's T-slot, the door ramp's lips and the P16's pin hole run vertical, so their working faces are "
+                    "walls; spine, collar and ramp over tree supports"),
+    (V12, "cradle12"): ([(Y, -90)], "the motor plate's front face on the bed: the 22.4 mm bore, the M2.5 holes and the dowels' "
+                        "bores vertical (round); the pivot tube, top bar, cheeks and lug stand up off the plate"),
+    (V12, "door_housing"): ([], "as drawn: the cap's top face on the bed, rails and spring tower up (v12's bore through the tower "
+                            "vertical); the mounting arms, 22 mm cantilevers off the rails 6.5 mm up, on tree supports"),
+    (V12, "door_shutter"): ([(Y, 90)], "flat: its 11.5 x 14 face on the bed; v12's round boss on top, the rod's 1.55 mm hole through "
+                            "it horizontal"),
+    (V12, "guide12"): ([(Y, -90)], "on its side: its L-shaped profile (flange, plate, seat block) on the bed; the cone and funnel "
+                       "mouth horizontal (45 deg walls)"),
+})
 
 
 def orient(design: str, key: str):
@@ -160,6 +177,27 @@ def plates(design: str, qty: dict) -> list[dict]:
         # one solid each since v11's 2026-11-27 fixes (they came apart before), but both need supports in every orientation
         out.append({"name": "door_housings", "printer": "a1m", "parts": [("door_housing", qty["door_housing"])], "support": True})
         out.append({"name": "ec11", "printer": "h2d", "parts": [("ec11", qty["ec11"])], "support": True})
+    elif design == V12:
+        # v11's plates; EC v12 for EC v11, and the cradle and the second guide go with the EC (the A1 mini's station plate has no room left
+        # for the second guide)
+        out.append({"name": "carriage", "printer": "h2d", "parts": [("carriage", 1)], "diagonal": True, "support": True,
+                    "copies": qty["carriage"]})
+        m, per = qty["sam_mounting_plate"], 5
+        full, rest = divmod(m, per)
+        if full:
+            out.append({"name": "mounting_plates_5", "printer": "h2d", "parts": [("sam_mounting_plate", per)], "copies": full})
+        if rest:
+            out.append({"name": f"mounting_plates_{rest}", "printer": "h2d", "parts": [("sam_mounting_plate", rest)]})
+        out.append({"name": "pillar", "printer": "h2d", "parts": [("pillar11", qty["pillar11"])]})
+        out.append({"name": "module_parts", "printer": "a1m", "brim": True,
+                    "parts": [(k, qty[k]) for k in ("t_bracket", "latch_bolt", "door_shutter", "door_head11")]})
+        out.append({"name": "station", "printer": "a1m", "brim": True,
+                    "parts": [(k, qty[k]) for k in ("guide11", "hold_down", "latch_rail11", "p16_bracket11", "side_tab", "side_tab_m",
+                                                    "tensioner_block", "catch", "hatch_knob")]})
+        out.append({"name": "door_housings", "printer": "a1m", "parts": [("door_housing", qty["door_housing"])], "support": True})
+        # 25 mm apart: at 8 mm the EC's tree supports and brim ran into the second guide's paths (Studio: "G-code conflicts", -101)
+        out.append({"name": "ec12", "printer": "h2d", "parts": [("ec12", qty["ec12"]), ("cradle12", qty["cradle12"]), ("guide12", qty["guide12"])],
+                    "support": True, "gap": 25.0})
     else:
         for i in range(qty["carriage"]):
             out.append({"name": f"carriage_{i + 1:02d}", "printer": "h2d", "parts": [("carriage", 1)], "diagonal": True})
@@ -219,19 +257,19 @@ def diag(m: trimesh.Trimesh) -> trimesh.Trimesh:
     return m
 
 
-def layout(items: list[tuple[str, trimesh.Trimesh]], bed: tuple[float, float]) -> list[tuple[str, float, float]]:
-    """Shelf packing, biggest first, rows along x; the block is then centred on the bed.
+def layout(items: list[tuple[str, trimesh.Trimesh]], bed: tuple[float, float], gap: float = GAP) -> list[tuple[str, float, float]]:
+    """Shelf packing, biggest first, rows along x, `gap` mm apart; the block is then centred on the bed.
     Returns (key, x, y) of each part's bbox centre."""
     order = sorted(range(len(items)), key=lambda i: -items[i][1].extents[1] * 1000 - items[i][1].extents[0])
     rows, cur, x, y, row_h = [], [], 0.0, 0.0, 0.0
     for i in order:
         w, h = items[i][1].extents[:2]
-        if cur and x + w > bed[0] - 2 * GAP:
+        if cur and x + w > bed[0] - 2 * gap:
             rows.append((cur, y, row_h))
-            y += row_h + GAP
+            y += row_h + gap
             cur, x, row_h = [], 0.0, 0.0
         cur.append((i, x + w / 2))
-        x += w + GAP
+        x += w + gap
         row_h = max(row_h, h)
     rows.append((cur, y, row_h))
     total_h = y + row_h
@@ -352,7 +390,7 @@ def slice_plate(bambu: Path, presets: dict, design: str, plate: dict, build: Pat
         files[key] = out / f"{key}.stl"
         m.export(files[key])
         items += [(key, m)] * n
-    pos = layout(items, pr["bed"])
+    pos = layout(items, pr["bed"], plate.get("gap", GAP))
     # one entry per copy: with "count" > 1 the H2D run put the copies off the bed ("partly inside", -52)
     objs = [{"path": str(files[key]), "count": 1, "filaments": [1], "pos_x": [round(x, 2)], "pos_y": [round(y, 2)], "pos_z": [0]}
             for key, x, y in pos]
@@ -387,15 +425,19 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--bambu", type=Path, default=Path("/tmp/bambu/squashfs-root"))
     ap.add_argument("--build", type=Path, default=Path("/tmp/slicebuild"))
-    ap.add_argument("--design", choices=["paternoster", "chain-carousel-v2", V11], action="append")
+    ap.add_argument("--design", choices=["paternoster", "chain-carousel-v2", V11, V12], action="append")
     ap.add_argument("--parts", action="store_true", help="also slice every part alone, supports off (per-part audit)")
     ap.add_argument("--only", nargs="*", help="slice only these plates")
+    ap.add_argument("--parts-only", nargs="*", metavar="PART", help="with --parts: audit only these parts and keep the design's other "
+                    "audit.json entries as they are (for a part whose CAD changed)")
+    ap.add_argument("--reuse-audit", metavar="DESIGN", help="with --parts: take a part's audit entry from DESIGN's audit.json when its STL "
+                    "is byte-identical to DESIGN's and printed in the same orientation (same mesh, settings and Studio: same result)")
     args = ap.parse_args()
     args.build.mkdir(parents=True, exist_ok=True)
     presets = write_presets(args.bambu, args.build)
     gl_setup(args.build)
     version = re.search(r"BambuStudio_\S*?-v([\d.]+)", " ".join(os.listdir(args.bambu.parent))) if args.bambu.parent.exists() else None
-    for design in args.design or ["paternoster", "chain-carousel-v2", V11]:
+    for design in args.design or ["paternoster", "chain-carousel-v2", V11, V12]:
         info = json.loads((HERE / design / "parts.json").read_text())
         qty = {k: v["qty"] for k, v in info.items()}
         dest = HERE / design / "plates"
@@ -403,7 +445,18 @@ def main() -> None:
         old = json.loads(rep_path.read_text()) if rep_path.exists() else {}
         if args.parts:
             audit = {}
+            prev = json.loads((HERE / args.reuse_audit / "audit.json").read_text()) if args.reuse_audit else {}
+            own = json.loads((HERE / design / "audit.json").read_text()) if args.parts_only and (HERE / design / "audit.json").exists() else {}
             for k in info:
+                if args.parts_only and k not in args.parts_only and k in own:
+                    audit[k] = {**own[k], "qty": qty[k]}
+                    continue
+                src = HERE / (args.reuse_audit or design) / "stl" / f"{k}.stl"
+                if (k in prev and src.is_file() and src.read_bytes() == (HERE / design / "stl" / f"{k}.stl").read_bytes()
+                        and [list(r) for r in orient(args.reuse_audit, k)[0]] == [list(r) for r in orient(design, k)[0]]):
+                    audit[k] = {**prev[k], "qty": qty[k], "audit_from": f"{args.reuse_audit} (identical STL and orientation)"}
+                    print(f"  {design}/{k}: audit as {args.reuse_audit}'s (identical STL and orientation)", flush=True)
+                    continue
                 mesh = trimesh.load(HERE / design / "stl" / f"{k}.stl")
                 a = A.audit(mesh, orient(design, k)[0])
                 ext = A.place(mesh, orient(design, k)[0]).extents
