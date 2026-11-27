@@ -1,0 +1,54 @@
+powder_id,source,launch,file,condition,stage,tilt_deg,time_utc,out_of_tube_g,spin_s,revs,gain_mg,taps,mg_per_rev
+salt,trial,launch1_1947Z,trial_01_2026-11-19_194721Z.csv,no taps,bulk,60.0,19:47:32.038,0.0,1.72,1.57,147.6,0,93.779
+salt,trial,launch1_1947Z,trial_01_2026-11-19_194721Z.csv,no taps,bulk,55.0,19:47:34.042,0.1562,5.93,5.44,10.0,0,1.839
+salt,trial,launch1_1947Z,trial_01_2026-11-19_194721Z.csv,no taps,bulk,50.0,19:47:40.257,0.1662,2.96,2.72,0.1,0,0.037
+salt,trial,launch1_1947Z,trial_01_2026-11-19_194721Z.csv,no taps,bulk,45.0,19:47:43.512,0.1664,1.81,1.66,0.1,0,0.06
+salt,trial,launch1_1947Z,trial_02_2026-11-19_194756Z.csv,no taps,bulk,60.0,19:48:06.742,0.1672,3.06,2.81,1.2,0,0.427
+salt,trial,launch1_1947Z,trial_02_2026-11-19_194756Z.csv,no taps,bulk,55.0,19:48:10.092,0.1685,2.97,2.72,0.0,0,0.0
+salt,trial,launch1_1947Z,trial_02_2026-11-19_194756Z.csv,no taps,bulk,50.0,19:48:13.351,0.1686,2.1,1.92,0.0,0,0.0
+salt,trial,launch2_1953Z,trial_01_2026-11-19_195354Z.csv,no taps,bulk,60.0,19:54:04.503,0.3864,3.06,2.8,1.0,0,0.357
+salt,trial,launch2_1953Z,trial_01_2026-11-19_195354Z.csv,no taps,bulk,55.0,19:54:07.848,0.3874,2.97,2.72,0.1,0,0.037
+salt,trial,launch2_1953Z,trial_01_2026-11-19_195354Z.csv,no taps,bulk,50.0,19:54:11.105,0.3875,20.28,18.59,54.9,0,2.953
+salt,trial,launch2_1953Z,trial_01_2026-11-19_195354Z.csv,no taps,bulk,45.0,19:54:31.661,0.4424,2.97,2.72,0.0,0,0.0
+salt,trial,launch2_1953Z,trial_01_2026-11-19_195354Z.csv,no taps,bulk,40.0,19:54:34.917,0.4424,2.4,2.2,0.0,0,0.0
+salt,trial,launch2_1953Z,trial_02_2026-11-19_195448Z.csv,no taps,bulk,60.0,19:54:58.640,0.4424,3.06,2.81,0.0,0,0.0
+salt,trial,launch2_1953Z,trial_02_2026-11-19_195448Z.csv,no taps,bulk,55.0,19:55:01.988,0.4425,2.96,2.72,0.2,0,0.074
+salt,trial,launch2_1953Z,trial_02_2026-11-19_195448Z.csv,no taps,bulk,50.0,19:55:05.238,0.4427,2.1,1.93,0.1,0,0.052
+salt,trial,launch1_2041Z,trial_01_2026-11-19_204116Z.csv,taps,bulk,60.0,20:41:26.779,0.4429,14.82,13.59,148.9,49,10.958
+salt,trial,launch1_2041Z,trial_01_2026-11-19_204116Z.csv,taps,bulk,55.0,20:41:41.894,0.5995,12.91,11.83,140.8,43,11.902
+salt,trial,launch1_2041Z,trial_01_2026-11-19_204116Z.csv,taps,bulk,50.0,20:41:55.090,0.7512,14.06,12.89,141.6,47,10.988
+salt,trial,launch1_2041Z,trial_01_2026-11-19_204116Z.csv,taps,bulk,45.0,20:42:09.434,0.8966,15.12,13.86,145.4,50,10.494
+salt,trial,launch1_2041Z,trial_01_2026-11-19_204116Z.csv,taps,bulk,40.0,20:42:24.826,1.0461,39.5,36.21,146.5,132,4.046
+salt,trial,launch1_2041Z,trial_01_2026-11-19_204116Z.csv,no taps,fine,30.0,20:43:07.002,1.198,7.37,3.07,0.3,0,0.098
+salt,trial,launch1_2041Z,trial_02_2026-11-19_204324Z.csv,taps,bulk,60.0,20:43:35.226,1.1986,3.05,2.79,1.1,10,0.394
+salt,trial,launch1_2041Z,trial_02_2026-11-19_204324Z.csv,taps,bulk,55.0,20:43:38.567,1.2003,58.52,53.64,81.7,196,1.523
+salt,trial,launch1_2041Z,trial_02_2026-11-19_204324Z.csv,taps,bulk,50.0,20:44:37.380,1.2824,15.21,13.94,18.6,51,1.334
+salt,trial,launch1_2041Z,trial_02_2026-11-19_204324Z.csv,taps,bulk,45.0,20:44:52.867,1.3015,126.9,116.33,242.4,423,2.084
+salt,trial,launch1_2041Z,trial_02_2026-11-19_204324Z.csv,taps,bulk,40.0,20:47:00.064,1.5441,187.06,171.47,404.0,624,2.356
+salt,trial,launch1_2041Z,trial_02_2026-11-19_204324Z.csv,no taps,fine,30.0,20:50:09.987,1.9524,31.46,13.11,4.7,0,0.359
+salt,trial,launch2_2052Z,trial_01_2026-11-19_205157Z.csv,taps,bulk,60.0,20:52:08.090,1.9571,64.74,59.35,74.2,215,1.25
+salt,trial,launch2_2052Z,trial_01_2026-11-19_205157Z.csv,taps,bulk,55.0,20:53:13.127,2.0317,5.73,5.25,2.8,19,0.533
+salt,trial,launch2_2052Z,trial_01_2026-11-19_205157Z.csv,taps,bulk,50.0,20:53:19.143,2.0349,14.44,13.24,18.3,48,1.383
+salt,trial,launch2_2052Z,trial_01_2026-11-19_205157Z.csv,taps,bulk,45.0,20:53:33.875,2.0533,2.97,2.72,0.6,9,0.22
+salt,trial,launch2_2052Z,trial_01_2026-11-19_205157Z.csv,taps,bulk,40.0,20:53:37.121,2.0543,430.15,394.31,652.8,1433,1.656
+salt,trial,launch2_2052Z,trial_01_2026-11-19_205157Z.csv,taps,fine,30.0,21:00:49.768,2.7114,73.63,30.68,91.5,245,2.982
+salt,trial,launch2_2052Z,trial_02_2026-11-19_210214Z.csv,taps,bulk,60.0,21:02:24.536,2.8053,20.09,18.41,18.7,66,1.016
+salt,trial,launch2_2052Z,trial_02_2026-11-19_210214Z.csv,taps,bulk,55.0,21:02:44.909,2.8247,17.59,16.13,13.6,58,0.843
+salt,trial,launch2_2052Z,trial_02_2026-11-19_210214Z.csv,taps,bulk,50.0,21:03:02.794,2.8388,7.08,6.49,6.9,24,1.063
+salt,trial,launch2_2052Z,trial_02_2026-11-19_210214Z.csv,taps,bulk,45.0,21:03:10.151,2.8464,6.7,6.14,4.7,21,0.765
+salt,trial,launch2_2052Z,trial_02_2026-11-19_210214Z.csv,taps,bulk,40.0,21:03:17.137,2.8513,343.23,314.63,243.0,1143,0.772
+salt,trial,launch2_2052Z,trial_03_2026-11-19_210911Z.csv,taps,bulk,60.0,21:09:21.397,3.0944,3.07,2.82,0.0,9,0.0
+salt,trial,launch2_2052Z,trial_03_2026-11-19_210911Z.csv,taps,bulk,55.0,21:09:24.755,3.0944,2.95,2.71,0.0,9,0.0
+salt,probe 11-19 19:52,launch2_1953Z,flow_probe_by_angle.csv,no taps,probe,55.0,19:52:42.352,0.3208,3.0,2.75,15.1,0,5.473
+salt,probe 11-19 19:52,launch2_1953Z,flow_probe_by_angle.csv,no taps,probe,50.0,19:52:50.194,0.3359,3.0,2.75,14.0,0,5.073
+salt,probe 11-19 19:52,launch2_1953Z,flow_probe_by_angle.csv,no taps,probe,45.0,19:52:58.043,0.3499,3.0,2.75,4.0,0,1.455
+salt,probe 11-19 19:52,launch2_1953Z,flow_probe_by_angle.csv,no taps,probe,40.0,19:53:05.877,0.354,3.0,2.75,3.7,0,1.345
+salt,probe 11-19 19:52,launch2_1953Z,flow_probe_by_angle.csv,no taps,probe,35.0,19:53:13.720,0.3577,3.0,2.75,12.2,0,4.436
+salt,probe 11-19 19:52,launch2_1953Z,flow_probe_by_angle.csv,no taps,probe,30.0,19:53:21.561,0.3699,3.0,2.75,13.5,0,4.909
+salt,probe 11-19 19:52,launch2_1953Z,flow_probe_by_angle.csv,no taps,probe,60.0,19:53:30.265,0.3833,3.0,2.75,1.9,0,0.691
+salt,probe 11-19 19:52,launch2_1953Z,flow_probe_by_angle.csv,no taps,probe,60.0,19:53:37.916,0.3852,3.0,2.75,1.1,0,0.4
+salt,prime 11-19 19:52,launch2_1953Z,prime_spin_0deg.csv,no taps,prime,0.0,19:52:08,0.169,24.6,22.5,147.0,0,6.533
+salt,check 11-19 21:11,primecheck_2111Z,prime_check_steps.csv,taps (check),prime,0.0,,3.0946,30.0,27.5,8.3,100,0.302
+salt,check 11-19 21:11,primecheck_2111Z,prime_check_steps.csv,no taps,probe,45.0,,3.1029,10.0,9.17,0.0,0,0.0
+salt,check 11-19 21:11,primecheck_2111Z,prime_check_steps.csv,taps (check),probe,45.0,,3.1029,10.0,9.17,2.2,34,0.24
+salt,check 11-19 21:11,primecheck_2111Z,prime_check_steps.csv,no taps,probe,45.0,,3.1051,10.0,9.17,0.0,0,0.0
