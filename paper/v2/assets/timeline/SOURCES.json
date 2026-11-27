@@ -1,0 +1,247 @@
+{
+  "ai_excavator.png": {
+    "branch": "copilot/initial-prototyping-mini-excavator",
+    "path": "docs/figures/cad/assembly.png",
+    "commit": "f78ec7272f43c55424b42441e845c80c8395e472",
+    "commit_date": "2026-04-24",
+    "note": "PR #2, excavator assembly, Copilot coding agent"
+  },
+  "ai_first_auger.png": {
+    "branch": "feature/archimedes-auger-attachment",
+    "path": "cad/auger/archimedes-auger-iso.png",
+    "commit": "3c4b80f7977e252cafc32ff16333919de6e62839",
+    "commit_date": "2026-05-15",
+    "note": "PR #16, first Archimedes auger Not used since the review of 17 Nov: Fig. 2a's 'First auger' (24 Apr, Claude Code, Sonnet 4.6) now shows the 24 Apr design itself, ai_first_auger_v2_xsec_2026-04-24.png."
+  },
+  "ai_first_auger_v2_xsec_2026-04-24.png": {
+    "branch": "feature/archimedes-auger-attachment (merged; in this branch's history)",
+    "path": "cad/auger/archimedes-auger.scad",
+    "commit": "f3e8aa47624158ae1c303569e69c10b5568702f4",
+    "commit_date": "2026-04-24",
+    "note": "PR #16, the first auger: Devora Najjar's v2 OpenSCAD Archimedes auger of 24 Apr (hackathon), co-authored by Claude Sonnet 4.6 run locally in Claude Code (commit trailer). 20 mm OD x 100 mm, helical fin, conical funnel to a 3 mm exit. Rendered for Fig. 2a on 18 Nov 2026 as a half-section (the half facing the viewer removed, as in the source's own commented-out cross-section view): xvfb-run openscad 2021.01 --render --imgsize=900,2400 --projection=p --colorscheme=Tomorrow --camera=0,0,50,62,0,22,260, on a wrapper that does use<archimedes-auger.scad> and subtracts y < 0; margins trimmed. Copilot's c3cfab1 (24 Apr, evening) made this design manifold for printing; the tube printed at the POSE workshop (eng_pose_tube.png) is this integrated design."
+  },
+  "ai_whole_module.png": {
+    "branch": "copilot/modular-single-channel-powder-doser-design",
+    "path": "design/cad/single-channel-module/renders/single_channel_module_side.png",
+    "commit": "2ddc6793bf3265bbe1bc5050f9187a40be666e30",
+    "commit_date": "2026-05-13",
+    "note": "PR #35, whole single-channel module"
+  },
+  "ai_cadsmith_plates.png": {
+    "branch": "copilot/design-mounting-plate-cadsmith",
+    "path": "design/cad/mounting-plate-assembly/renders/assembly_45deg_iso.png",
+    "commit": "569e833ac3e9ceb4e002e6ab127e509578edeb38",
+    "commit_date": "2026-05-15",
+    "note": "PR #59, CADSmith-authored hinged plate assembly"
+  },
+  "ai_cadsmith_baseplate.png": {
+    "branch": "copilot/design-mounting-plate-cadsmith",
+    "path": "design/cad/mounting-plate-assembly/cadsmith_runs/baseplate/baseplate_iter0_render.png",
+    "commit": "0653fc439383f136a8e7376fe28cf477e3a0845c",
+    "commit_date": "2026-05-18",
+    "note": "PR #59, CADSmith baseplate run, iteration 0"
+  },
+  "ai_cadsmith_mounting_plate.png": {
+    "branch": "copilot/design-mounting-plate-cadsmith",
+    "path": "design/cad/mounting-plate-assembly/cadsmith_runs/mounting_plate/mounting_plate_iter0_render.png",
+    "commit": "0653fc439383f136a8e7376fe28cf477e3a0845c",
+    "commit_date": "2026-05-18",
+    "note": "PR #59, CADSmith mounting-plate run, iteration 0"
+  },
+  "ai_zoo_auger.png": {
+    "branch": "copilot/explore-meta-tools-for-cad",
+    "path": "cad/meta-tools/zoo-output/renders/auger_mlephant_iso.png",
+    "commit": "2a03cd656eae64815f3158524ad1deaf20e4f6f3",
+    "commit_date": "2026-05-12",
+    "note": "PR #7, Zoo Text-to-CAD auger"
+  },
+  "ai_zoo_full_system.png": {
+    "branch": "copilot/explore-meta-tools-for-cad",
+    "path": "cad/meta-tools/zoo-output/renders/full_system_zoo.png",
+    "commit": "c48a9d078b05ab42497285d03d69cc3660b31f90",
+    "commit_date": "2026-05-15",
+    "note": "PR #7, Zoo Text-to-CAD whole system"
+  },
+  "ai_zoo_t2c_doser.png": {
+    "branch": "copilot/design-powder-dispensing-system-again",
+    "path": "cad/powder-doser-assembly/assembly/assembly_iso_az090_hires.png",
+    "commit": "12b1ab998374b268e97a0528c6635e61b9dfb3eb",
+    "commit_date": "2026-06-22",
+    "note": "PR #110, all 11 parts via the Zoo Text-to-CAD API"
+  },
+  "ai_bracket.png": {
+    "branch": "copilot/design-bracket-for-auger",
+    "path": "cad/auger-bracket/views/iso.png",
+    "commit": "e455a3a11e94d3875f604ede368854b95c5d98cd",
+    "commit_date": "2026-05-18",
+    "note": "CORRECTED 17 Nov 2026: this is PR #53, not PR #47. Branch copilot/design-bracket-for-auger is PR #53 (issue #52, 'Designing a simple part with zoo.dev', 15 May): the Copilot coding agent's OpenSCAD clamp bracket, v2 of 18 May (see the design log, PR #74, entry e064). It was used until 17 Nov as 'the bracket from the #46 drawing, 14 May' in Figs. 2a and 3c; those now use ai_bracket_pr47_2026-05-14.png. No longer used in a figure."
+  },
+  "ai_bracket_pr47_2026-05-14.png": {
+    "branch": "copilot/part-by-part-powder-doser",
+    "path": "design/cad/auger-bracket/renders/auger_bracket_iso.png",
+    "commit": "ff07420bb76486d109e7ca7b02ba67621632515a",
+    "commit_date": "2026-05-14",
+    "note": "PR #47, the Copilot coding agent's CadQuery bracket from Sam's dimensioned drawing in issue #46: v4 of 14 May, resized to the 25 mm auger of PR #16 (25.5 mm bore) on the same day as the drawing (design log, PR #74, entry e052). The first model (v1, commit 7ffcf97, same path) followed the drawing with an assumed bore; v5 (2e5060d, 15 May) thickened the plate for the geared auger. For Figs. 2a and 3c."
+  },
+  "ai_cadsmithstyle_bracket.png": {
+    "branch": "copilot/design-simple-bracket-cadsmith",
+    "path": "cad/auger-bracket/views/assembly.png",
+    "commit": "d8a619f56c27d6d7c00baffddf175010fce4e963",
+    "commit_date": "2026-05-18",
+    "note": "PR #55, 'CADSmith-style' bracket written by the coding agent"
+  },
+  "ai_first_auger_xsec_2026-05-13.png": {
+    "branch": "feature/archimedes-auger-attachment",
+    "path": "cad/auger/archimedes-auger-cutaway.png",
+    "commit": "5965950dde76ae1b5b39c34302f6bb3d45fdf129",
+    "commit_date": "2026-05-13",
+    "note": "PR #16, the first auger in section: the Copilot coding agent's 250 x 25 mm integrated auger (invoked as copilot+claude-opus-4.7), v4.2 with a central support shaft under the flight (design log, PR #74, entry e044). Sterling printed this STL on 13 May and ran it with NaCl on 14 May (issue #16 comments of 13 May 22:24 and 14 May 18:39 UTC), so it is the first auger printed and tested. The previous version (v4, 8382cd7, 12 May) failed to print; the next two (v5 68fb3b3, v6 3c4b80f) removed the flight and shaft and were not the ones tested on 14 May, although the design log attaches the NaCl test to v6. For Fig. 3b, first image (review of 17 Nov, point 3.2)."
+  },
+  "ai_storage_auger.png": {
+    "branch": "copilot/add-new-auger-design",
+    "path": "cad/auger-geared/threaded_archimedes-auger-storage-test-iso.png",
+    "commit": "361314e11a3b30603971d25d67f926299eaf1450",
+    "commit_date": "2026-06-16",
+    "note": "PR #49, threaded storage auger"
+  },
+  "ai_storage_auger_xsec.png": {
+    "branch": "copilot/add-new-auger-design",
+    "path": "cad/auger-geared/threaded-storage-cap-assembly-cross-section.png",
+    "commit": "361314e11a3b30603971d25d67f926299eaf1450",
+    "commit_date": "2026-06-16",
+    "note": "PR #49, storage auger and cap, section"
+  },
+  "ai_tap_collar_v1.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/tap_collar_v1_iso.png",
+    "commit": "c85e55d3579a866801981f577161f290f687a50d",
+    "commit_date": "2026-06-11",
+    "note": "PR #51, first AI tap collar"
+  },
+  "ai_plate_gap.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/plate_iter3_gap_top.png",
+    "commit": "c85e55d3579a866801981f577161f290f687a50d",
+    "commit_date": "2026-06-11",
+    "note": "PR #57, mounting plate iteration 3 (gap)"
+  },
+  "ai_onshape_assembly.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/assembly_iso_final.png",
+    "commit": "c85e55d3579a866801981f577161f290f687a50d",
+    "commit_date": "2026-06-11",
+    "note": "PR #170, the team's parts assembled through the Onshape API by Claude Code"
+  },
+  "eng_hackathon_sketch.jpg": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "powder-excavator-sketch.jpg",
+    "commit": "bf0cc222118e33a083f825a57e955c23324f0833",
+    "commit_date": "2026-04-23",
+    "note": "README / PR #2, hand sketch of the powder excavator"
+  },
+  "eng_hackathon_sketches2.jpg": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "PXL_20260423_231729467.jpg",
+    "commit": "c9e4a33b12b82eb2a85aa16e315b4ca2b46a7f7b",
+    "commit_date": "2026-04-23",
+    "note": "PR #2, sketches 23 Apr"
+  },
+  "eng_pose_tube.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "POSE_tube_xanthan_gum.png",
+    "commit": "d2a17c7654b4e63a5c19fd581ca62dbebe92720d",
+    "commit_date": "2026-05-08",
+    "note": "First printed auger dispensing xanthan gum at POSE"
+  },
+  "eng_bracket_drawing.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/example_drawing.png",
+    "commit": "a5e88177d7af34f570f0a5b857805bb764f97f01",
+    "commit_date": "2026-10-08",
+    "note": "Issue #46, dimensioned bracket drawing given to the agent"
+  },
+  "eng_fusion_auger.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/auger_cutaway.png",
+    "commit": "e451168379e72c21e1a6e1fb7665e7aaf649fc39",
+    "commit_date": "2026-10-08",
+    "note": "Fusion 360 auger with screw-on cap (team), cut-away rendered from STL"
+  },
+  "eng_glovebox_first_dose.jpg": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/as_built_first_dispense.jpg",
+    "commit": "209e25e9c83f81108e8bfcfcba8c66788a995ae1",
+    "commit_date": "2026-09-25",
+    "note": "Issue #165 / #117, first dose in the glove box, 24 Jul"
+  },
+  "eng_multidoser_sketch.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/multidoser_carriage_sketch.png",
+    "commit": "6de7786d7871bf8bf513b3101978f1f230315cb8",
+    "commit_date": "2026-10-01",
+    "note": "Issue #128, hand sketch of the auger carriage"
+  },
+  "eng_multidoser_onshape.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/multidoser_carriages_onshape.png",
+    "commit": "6de7786d7871bf8bf513b3101978f1f230315cb8",
+    "commit_date": "2026-10-01",
+    "note": "Issue #128, Onshape model of the carriages (team)"
+  },
+  "ai_tap_collar_revised.png": {
+    "branch": "copilot/draft-base-manuscript",
+    "path": "paper/figures/assets/tap_collar_final_iso.png",
+    "commit": "c85e55d3579a866801981f577161f290f687a50d",
+    "commit_date": "2026-06-11",
+    "note": "PR #51 tap collar after review iterations (coding agent; render copied on 11 Jun, c85e55d). NOT the Zoo Design Studio collar."
+  },
+  "eng_tapcollar_rig_2026-09-11.jpg": {
+    "branch": "",
+    "path": "assets/photos/rig_2026-09-11.jpg (crop)",
+    "commit": "",
+    "commit_date": "2026-09-11",
+    "note": "Tap collar and solenoid on the rig, crop of the #156 photo"
+  },
+  "eng_tapcollar_new_2026-10-08.jpg": {
+    "branch": "",
+    "path": "assets/photos/tapcollar_new_2026-10-08.jpg (crop)",
+    "commit": "",
+    "commit_date": "2026-10-08",
+    "note": "New tap-collar block and solenoid, #128 photo"
+  },
+  "eng_rig_2026-09-11.jpg": {
+    "branch": "",
+    "path": "assets/photos/rig_2026-09-11.jpg (crop)",
+    "commit": "",
+    "commit_date": "2026-09-11",
+    "note": "The doser as tested, crop of the #156 photo"
+  },
+  "ai_whole_module_iso.png": {
+    "branch": "copilot/modular-single-channel-powder-doser-design",
+    "path": "design/cad/single-channel-module/renders/single_channel_module_iso.svg",
+    "commit": "2ddc6793bf3265bbe1bc5050f9187a40be666e30",
+    "commit_date": "2026-05-13",
+    "note": "PR #35, whole single-channel module, isometric view (replaces the side view in Fig. 2a after the 11 Nov review: upright and sharper). SVG rendered with rsvg-convert -z 2, inverted to black on white, lines thickened with a 3 px minimum filter."
+  },
+  "eng_flexible_bracket_original.png": {
+    "branch": "claude/issue-197-20261103-0056",
+    "path": "cad/onshape-193/brackets-for-auger/flexible-bracket-original/iso.png",
+    "commit": "526f90b9a3d52b329ed5100f875e48fb3894998f",
+    "commit_date": "2026-11-13",
+    "note": "PR #200 (issue #193), the team's original flexible snap-in auger bracket, Onshape shaded view exported through the API. For Fig. 3c (review of 17 Nov): later bracket iterations. Placed in Fig. 3c on 18 Nov. Attribution: Sam's flexible bracket, the open C-clip on the rig behind the 44-tooth gear since at least 4 Aug and through the tests (PR #170 README, 17 Oct; Sam on #117, 31 Jul: 'the flexible brackets could be printed directly with the mounting plate'; #120 lists '(+ Flexible Brackets)' under Sam). In the Onshape document it is an imported part ('Flexible+Bracket (original)', importForeign), so the drawing came from outside Onshape (Fusion 360)."
+  },
+  "eng_flexible_bracket_current.png": {
+    "branch": "claude/issue-197-20261103-0056",
+    "path": "cad/onshape-193/brackets-for-auger/bracket-recreation/iso.png",
+    "commit": "526f90b9a3d52b329ed5100f875e48fb3894998f",
+    "commit_date": "2026-11-13",
+    "note": "PR #200 (issue #193), 'bracket-recreation', the flexible snap-in auger bracket as in the team's Onshape document on 13 Nov, Onshape shaded view. For Fig. 3c (review of 17 Nov): last image, the bracket on the current doser. Placed in Fig. 3c on 18 Nov. Attribution: Ethan; #193 (Ethan, 29 Oct) links this element, 'Bracket Recreation', as the current bracket, and Ethan's #193 comment of 1 Nov links his playlist of moving the existing parts from Fusion to Onshape. Inferred, not stated by Ethan; the Onshape document was last modified 7 Nov."
+  },
+  "eng_bracket_split_clamp_fusion.png": {
+    "branch": "claude/issue-165-20261001-1931 (PR #170)",
+    "path": "cad/full-assembly/reference/bracket_old_vs_current.png, panel (b), cropped",
+    "commit": "7f5b3b779e1d036f001c0cbf9f979721139b904d",
+    "commit_date": "2026-10-17",
+    "note": "The team's Fusion 360 recreation of the auger bracket, the bolted split clamp (Fusion share 'Auger Bracket Recorded', version 1, https://a360.co/46XtYN1), from the #120 recreation in July: #120 assigns the brackets (and the flexible brackets) to Sam. Render of brackets.step by PR #170. For Fig. 3c (review of 17 Nov, point 3.3)."
+  }
+}

@@ -1,0 +1,978 @@
+{
+ "source": "PR #170 pipeline, branch claude/issue-165-20261001-1931, commit 7f5b3b7, cad/full-assembly/assembly_bom.py (scene, bom, View, camera of assembly_exploded_bom.png)",
+ "size": [
+  2700,
+  2040
+ ],
+ "scale": 3,
+ "bom": [
+  {
+   "no": 1,
+   "name": "Mounting board",
+   "qty": 1,
+   "kind": "User-supplied"
+  },
+  {
+   "no": 2,
+   "name": "Baseplate",
+   "qty": 1,
+   "kind": "Printed (PLA)"
+  },
+  {
+   "no": 3,
+   "name": "#10\u00d71\u00bc in pan head wood screw",
+   "qty": 6,
+   "kind": "Fastener"
+  },
+  {
+   "no": 4,
+   "name": "Servo",
+   "qty": 2,
+   "kind": "Purchased"
+  },
+  {
+   "no": 5,
+   "name": "M3\u00d714 socket head screw",
+   "qty": 10,
+   "kind": "Fastener"
+  },
+  {
+   "no": 6,
+   "name": "M3 nylon-insert locknut",
+   "qty": 16,
+   "kind": "Fastener"
+  },
+  {
+   "no": 7,
+   "name": "Servo pinion",
+   "qty": 2,
+   "kind": "Printed (PLA)"
+  },
+  {
+   "no": 8,
+   "name": "M3\u00d710 socket head screw",
+   "qty": 2,
+   "kind": "Fastener"
+  },
+  {
+   "no": 9,
+   "name": "Mounting plate",
+   "qty": 1,
+   "kind": "Printed (PLA)"
+  },
+  {
+   "no": 10,
+   "name": "M5\u00d745 button head screw",
+   "qty": 2,
+   "kind": "Fastener"
+  },
+  {
+   "no": 11,
+   "name": "M5 nylon-insert locknut",
+   "qty": 2,
+   "kind": "Fastener"
+  },
+  {
+   "no": 12,
+   "name": "Stepper motor",
+   "qty": 1,
+   "kind": "Purchased"
+  },
+  {
+   "no": 13,
+   "name": "M2.5\u00d78 socket head screw",
+   "qty": 4,
+   "kind": "Fastener"
+  },
+  {
+   "no": 14,
+   "name": "Stepper pinion",
+   "qty": 1,
+   "kind": "Printed (PLA)"
+  },
+  {
+   "no": 15,
+   "name": "Tap-collar base",
+   "qty": 1,
+   "kind": "Printed (PLA)"
+  },
+  {
+   "no": 16,
+   "name": "M3\u00d725 button head screw",
+   "qty": 1,
+   "kind": "Fastener"
+  },
+  {
+   "no": 17,
+   "name": "M3\u00d730 flat head screw",
+   "qty": 1,
+   "kind": "Fastener"
+  },
+  {
+   "no": 18,
+   "name": "M3 hex nut",
+   "qty": 1,
+   "kind": "Fastener"
+  },
+  {
+   "no": 19,
+   "name": "Auger",
+   "qty": 1,
+   "kind": "Printed (PLA)"
+  },
+  {
+   "no": 20,
+   "name": "Bracket",
+   "qty": 2,
+   "kind": "Printed (PLA)"
+  },
+  {
+   "no": 21,
+   "name": "Tap collar",
+   "qty": 1,
+   "kind": "Printed (PLA)"
+  },
+  {
+   "no": 22,
+   "name": "M3\u00d720 button head screw",
+   "qty": 5,
+   "kind": "Fastener"
+  },
+  {
+   "no": 23,
+   "name": "Solenoid",
+   "qty": 1,
+   "kind": "Purchased"
+  },
+  {
+   "no": 24,
+   "name": "M3\u00d75 socket head screw",
+   "qty": 2,
+   "kind": "Fastener"
+  },
+  {
+   "no": 25,
+   "name": "Auger cap",
+   "qty": 1,
+   "kind": "Printed (PLA)"
+  }
+ ],
+ "parts": [
+  {
+   "id": 1,
+   "name": "Mounting board",
+   "item": "Mounting board",
+   "no": 1,
+   "item_name": "Mounting board",
+   "anchor": [
+    1308.9,
+    1599.5
+   ],
+   "pixels": 284293
+  },
+  {
+   "id": 2,
+   "name": "Baseplate",
+   "item": "Baseplate",
+   "no": 2,
+   "item_name": "Baseplate",
+   "anchor": [
+    1550.4,
+    1461.3
+   ],
+   "pixels": 96166
+  },
+  {
+   "id": 3,
+   "name": "Board screw (+X, y65)",
+   "item": "wood_10x1p25",
+   "no": 3,
+   "item_name": "#10\u00d71\u00bc in pan head wood screw",
+   "anchor": [
+    1694.6,
+    1483.3
+   ],
+   "pixels": 1
+  },
+  {
+   "id": 4,
+   "name": "Board screw (+X, y95)",
+   "item": "wood_10x1p25",
+   "no": 3,
+   "item_name": "#10\u00d71\u00bc in pan head wood screw",
+   "anchor": [
+    1626.3,
+    1452.1
+   ],
+   "pixels": 690
+  },
+  {
+   "id": 5,
+   "name": "Board screw (-X, y65)",
+   "item": "wood_10x1p25",
+   "no": 3,
+   "item_name": "#10\u00d71\u00bc in pan head wood screw",
+   "anchor": [
+    1350.9,
+    1666.0
+   ],
+   "pixels": 1751
+  },
+  {
+   "id": 6,
+   "name": "Board screw (-X, y95)",
+   "item": "wood_10x1p25",
+   "no": 3,
+   "item_name": "#10\u00d71\u00bc in pan head wood screw",
+   "anchor": [
+    1282.3,
+    1629.5
+   ],
+   "pixels": 1734
+  },
+  {
+   "id": 7,
+   "name": "Board screw (leg +X)",
+   "item": "wood_10x1p25",
+   "no": 3,
+   "item_name": "#10\u00d71\u00bc in pan head wood screw",
+   "anchor": [
+    1768.6,
+    1680.7
+   ],
+   "pixels": 1583
+  },
+  {
+   "id": 8,
+   "name": "Board screw (leg -X)",
+   "item": "wood_10x1p25",
+   "no": 3,
+   "item_name": "#10\u00d71\u00bc in pan head wood screw",
+   "anchor": [
+    1472.9,
+    1854.7
+   ],
+   "pixels": 1803
+  },
+  {
+   "id": 9,
+   "name": "Servo MG996R (+X)",
+   "item": "Servo",
+   "no": 4,
+   "item_name": "Servo",
+   "anchor": [
+    1766.6,
+    1107.6
+   ],
+   "pixels": 17407
+  },
+  {
+   "id": 10,
+   "name": "Servo MG996R (-X)",
+   "item": "Servo",
+   "no": 4,
+   "item_name": "Servo",
+   "anchor": [
+    1443.8,
+    1253.0
+   ],
+   "pixels": 20664
+  },
+  {
+   "id": 11,
+   "name": "Servo screw (+X, y12 z11)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1850.1,
+    1398.2
+   ],
+   "pixels": 574
+  },
+  {
+   "id": 12,
+   "name": "Servo screw (+X, y12 z21)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1851.4,
+    1373.0
+   ],
+   "pixels": 577
+  },
+  {
+   "id": 13,
+   "name": "Servo screw (+X, y60 z11)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1734.3,
+    1348.8
+   ],
+   "pixels": 548
+  },
+  {
+   "id": 14,
+   "name": "Servo screw (+X, y60 z21)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1735.3,
+    1324.0
+   ],
+   "pixels": 559
+  },
+  {
+   "id": 15,
+   "name": "Servo screw (-X, y12 z11)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1456.5,
+    1607.1
+   ],
+   "pixels": 718
+  },
+  {
+   "id": 16,
+   "name": "Servo screw (-X, y12 z21)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1456.8,
+    1580.1
+   ],
+   "pixels": 716
+  },
+  {
+   "id": 17,
+   "name": "Servo screw (-X, y60 z11)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1339.7,
+    1547.9
+   ],
+   "pixels": 698
+  },
+  {
+   "id": 18,
+   "name": "Servo screw (-X, y60 z21)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1339.6,
+    1521.4
+   ],
+   "pixels": 691
+  },
+  {
+   "id": 19,
+   "name": "Servo nut (+X, y12 z11)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1765.1,
+    1443.3
+   ],
+   "pixels": 358
+  },
+  {
+   "id": 20,
+   "name": "Servo nut (+X, y12 z21)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1766.3,
+    1417.7
+   ],
+   "pixels": 361
+  },
+  {
+   "id": 21,
+   "name": "Servo nut (+X, y60 z11)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1649.0,
+    1391.9
+   ],
+   "pixels": 86
+  },
+  {
+   "id": 22,
+   "name": "Servo nut (+X, y60 z21)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1649.8,
+    1366.7
+   ],
+   "pixels": 0
+  },
+  {
+   "id": 23,
+   "name": "Servo nut (-X, y12 z11)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1554.3,
+    1555.2
+   ],
+   "pixels": 392
+  },
+  {
+   "id": 24,
+   "name": "Servo nut (-X, y12 z21)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1554.9,
+    1528.6
+   ],
+   "pixels": 396
+  },
+  {
+   "id": 25,
+   "name": "Servo nut (-X, y60 z11)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1437.6,
+    1498.5
+   ],
+   "pixels": 371
+  },
+  {
+   "id": 26,
+   "name": "Servo nut (-X, y60 z21)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1437.8,
+    1472.4
+   ],
+   "pixels": 370
+  },
+  {
+   "id": 27,
+   "name": "Servo pinion (+X)",
+   "item": "Servo pinion",
+   "no": 7,
+   "item_name": "Servo pinion",
+   "anchor": [
+    1617.6,
+    1153.9
+   ],
+   "pixels": 3938
+  },
+  {
+   "id": 28,
+   "name": "Servo pinion (-X)",
+   "item": "Servo pinion",
+   "no": 7,
+   "item_name": "Servo pinion",
+   "anchor": [
+    1555.2,
+    1181.7
+   ],
+   "pixels": 4401
+  },
+  {
+   "id": 29,
+   "name": "Servo pinion screw (+X)",
+   "item": "shcs_m3x10",
+   "no": 8,
+   "item_name": "M3\u00d710 socket head screw",
+   "anchor": [
+    1569.9,
+    1175.1
+   ],
+   "pixels": 8
+  },
+  {
+   "id": 30,
+   "name": "Servo pinion screw (-X)",
+   "item": "shcs_m3x10",
+   "no": 8,
+   "item_name": "M3\u00d710 socket head screw",
+   "anchor": [
+    1603.2,
+    1160.3
+   ],
+   "pixels": 257
+  },
+  {
+   "id": 31,
+   "name": "Mounting plate",
+   "item": "Mounting plate",
+   "no": 9,
+   "item_name": "Mounting plate",
+   "anchor": [
+    1454.8,
+    981.3
+   ],
+   "pixels": 65604
+  },
+  {
+   "id": 32,
+   "name": "Hinge screw (+X)",
+   "item": "bhcs_m5x45",
+   "no": 10,
+   "item_name": "M5\u00d745 button head screw",
+   "anchor": [
+    1542.7,
+    1387.5
+   ],
+   "pixels": 1225
+  },
+  {
+   "id": 33,
+   "name": "Hinge screw (-X)",
+   "item": "bhcs_m5x45",
+   "no": 10,
+   "item_name": "M5\u00d745 button head screw",
+   "anchor": [
+    1620.1,
+    1349.4
+   ],
+   "pixels": 1063
+  },
+  {
+   "id": 34,
+   "name": "Hinge locknut (+X)",
+   "item": "locknut_m5",
+   "no": 11,
+   "item_name": "M5 nylon-insert locknut",
+   "anchor": [
+    1731.2,
+    1294.9
+   ],
+   "pixels": 665
+  },
+  {
+   "id": 35,
+   "name": "Hinge locknut (-X)",
+   "item": "locknut_m5",
+   "no": 11,
+   "item_name": "M5 nylon-insert locknut",
+   "anchor": [
+    1421.3,
+    1447.1
+   ],
+   "pixels": 744
+  },
+  {
+   "id": 36,
+   "name": "Stepper (NEMA 11)",
+   "item": "Stepper motor",
+   "no": 12,
+   "item_name": "Stepper motor",
+   "anchor": [
+    1098.0,
+    878.1
+   ],
+   "pixels": 16999
+  },
+  {
+   "id": 37,
+   "name": "Stepper screw (--)",
+   "item": "shcs_m2p5x8",
+   "no": 13,
+   "item_name": "M2.5\u00d78 socket head screw",
+   "anchor": [
+    1377.5,
+    999.1
+   ],
+   "pixels": 364
+  },
+  {
+   "id": 38,
+   "name": "Stepper screw (-+)",
+   "item": "shcs_m2p5x8",
+   "no": 13,
+   "item_name": "M2.5\u00d78 socket head screw",
+   "anchor": [
+    1323.6,
+    1020.0
+   ],
+   "pixels": 370
+  },
+  {
+   "id": 39,
+   "name": "Stepper screw (+-)",
+   "item": "shcs_m2p5x8",
+   "no": 13,
+   "item_name": "M2.5\u00d78 socket head screw",
+   "anchor": [
+    1377.7,
+    928.7
+   ],
+   "pixels": 368
+  },
+  {
+   "id": 40,
+   "name": "Stepper screw (++)",
+   "item": "shcs_m2p5x8",
+   "no": 13,
+   "item_name": "M2.5\u00d78 socket head screw",
+   "anchor": [
+    1323.5,
+    949.0
+   ],
+   "pixels": 374
+  },
+  {
+   "id": 41,
+   "name": "Stepper pinion",
+   "item": "Stepper pinion",
+   "no": 14,
+   "item_name": "Stepper pinion",
+   "anchor": [
+    1243.5,
+    933.5
+   ],
+   "pixels": 2877
+  },
+  {
+   "id": 42,
+   "name": "Tap collar base (AI)",
+   "item": "Tap-collar base",
+   "no": 15,
+   "item_name": "Tap-collar base",
+   "anchor": [
+    1487.6,
+    856.3
+   ],
+   "pixels": 13290
+  },
+  {
+   "id": 43,
+   "name": "Tap base screw (-)",
+   "item": "bhcs_m3x25",
+   "no": 16,
+   "item_name": "M3\u00d725 button head screw",
+   "anchor": [
+    1536.7,
+    1122.2
+   ],
+   "pixels": 659
+  },
+  {
+   "id": 44,
+   "name": "Tap base nut (-)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1543.2,
+    775.5
+   ],
+   "pixels": 358
+  },
+  {
+   "id": 45,
+   "name": "Tap base screw (+)",
+   "item": "fhcs_m3x30",
+   "no": 17,
+   "item_name": "M3\u00d730 flat head screw",
+   "anchor": [
+    1432.7,
+    763.0
+   ],
+   "pixels": 1167
+  },
+  {
+   "id": 46,
+   "name": "Tap base nut (+)",
+   "item": "hexnut_m3",
+   "no": 18,
+   "item_name": "M3 hex nut",
+   "anchor": [
+    1429.6,
+    1144.2
+   ],
+   "pixels": 192
+  },
+  {
+   "id": 47,
+   "name": "Auger",
+   "item": "Auger",
+   "no": 19,
+   "item_name": "Auger",
+   "anchor": [
+    1319.1,
+    407.7
+   ],
+   "pixels": 59950
+  },
+  {
+   "id": 48,
+   "name": "Bracket (front)",
+   "item": "Bracket",
+   "no": 20,
+   "item_name": "Bracket",
+   "anchor": [
+    1702.4,
+    516.8
+   ],
+   "pixels": 11667
+  },
+  {
+   "id": 49,
+   "name": "Tap collar",
+   "item": "Tap collar",
+   "no": 21,
+   "item_name": "Tap collar",
+   "anchor": [
+    1723.1,
+    441.7
+   ],
+   "pixels": 19748
+  },
+  {
+   "id": 50,
+   "name": "Bracket (rear)",
+   "item": "Bracket",
+   "no": 20,
+   "item_name": "Bracket",
+   "anchor": [
+    990.0,
+    330.9
+   ],
+   "pixels": 13650
+  },
+  {
+   "id": 51,
+   "name": "Bracket screw (rear, -)",
+   "item": "bhcs_m3x20",
+   "no": 22,
+   "item_name": "M3\u00d720 button head screw",
+   "anchor": [
+    1350.9,
+    1041.3
+   ],
+   "pixels": 0
+  },
+  {
+   "id": 52,
+   "name": "Bracket screw (rear, +)",
+   "item": "bhcs_m3x20",
+   "no": 22,
+   "item_name": "M3\u00d720 button head screw",
+   "anchor": [
+    1243.4,
+    1083.8
+   ],
+   "pixels": 625
+  },
+  {
+   "id": 53,
+   "name": "Bracket screw (front, -)",
+   "item": "bhcs_m3x20",
+   "no": 22,
+   "item_name": "M3\u00d720 button head screw",
+   "anchor": [
+    1499.2,
+    1100.0
+   ],
+   "pixels": 209
+  },
+  {
+   "id": 54,
+   "name": "Bracket screw (front, +)",
+   "item": "bhcs_m3x20",
+   "no": 22,
+   "item_name": "M3\u00d720 button head screw",
+   "anchor": [
+    1391.8,
+    1145.3
+   ],
+   "pixels": 459
+  },
+  {
+   "id": 55,
+   "name": "Bracket nut (rear, -)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1046.5,
+    325.9
+   ],
+   "pixels": 0
+  },
+  {
+   "id": 56,
+   "name": "Bracket nut (rear, +)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    932.7,
+    351.5
+   ],
+   "pixels": 304
+  },
+  {
+   "id": 57,
+   "name": "Bracket nut (front, -)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1758.3,
+    508.3
+   ],
+   "pixels": 14
+  },
+  {
+   "id": 58,
+   "name": "Bracket nut (front, +)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1644.4,
+    543.2
+   ],
+   "pixels": 422
+  },
+  {
+   "id": 59,
+   "name": "Bracket clamp screw (rear)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    933.3,
+    272.2
+   ],
+   "pixels": 617
+  },
+  {
+   "id": 60,
+   "name": "Bracket clamp nut (rear)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1035.0,
+    251.0
+   ],
+   "pixels": 340
+  },
+  {
+   "id": 61,
+   "name": "Bracket clamp screw (front)",
+   "item": "shcs_m3x14",
+   "no": 5,
+   "item_name": "M3\u00d714 socket head screw",
+   "anchor": [
+    1650.6,
+    451.8
+   ],
+   "pixels": 770
+  },
+  {
+   "id": 62,
+   "name": "Bracket clamp nut (front)",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1752.4,
+    422.8
+   ],
+   "pixels": 245
+  },
+  {
+   "id": 63,
+   "name": "Tap collar clamp screw",
+   "item": "bhcs_m3x20",
+   "no": 22,
+   "item_name": "M3\u00d720 button head screw",
+   "anchor": [
+    1700.8,
+    388.7
+   ],
+   "pixels": 968
+  },
+  {
+   "id": 64,
+   "name": "Tap collar clamp nut",
+   "item": "locknut_m3",
+   "no": 6,
+   "item_name": "M3 nylon-insert locknut",
+   "anchor": [
+    1634.7,
+    563.6
+   ],
+   "pixels": 386
+  },
+  {
+   "id": 65,
+   "name": "Solenoid (Adafruit 412)",
+   "item": "Solenoid",
+   "no": 23,
+   "item_name": "Solenoid",
+   "anchor": [
+    1822.4,
+    196.5
+   ],
+   "pixels": 11404
+  },
+  {
+   "id": 66,
+   "name": "Solenoid screw (lower)",
+   "item": "shcs_m3x5",
+   "no": 24,
+   "item_name": "M3\u00d75 socket head screw",
+   "anchor": [
+    1667.8,
+    369.5
+   ],
+   "pixels": 486
+  },
+  {
+   "id": 67,
+   "name": "Solenoid screw (upper)",
+   "item": "shcs_m3x5",
+   "no": 24,
+   "item_name": "M3\u00d75 socket head screw",
+   "anchor": [
+    1724.2,
+    337.9
+   ],
+   "pixels": 86
+  },
+  {
+   "id": 68,
+   "name": "Auger cap",
+   "item": "Auger cap",
+   "no": 25,
+   "item_name": "Auger cap",
+   "anchor": [
+    924.0,
+    305.4
+   ],
+   "pixels": 5966
+  }
+ ]
+}

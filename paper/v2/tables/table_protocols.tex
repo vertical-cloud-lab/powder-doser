@@ -1,0 +1,20 @@
+% Carried unchanged from paper/main.tex (\label{tbl:protocols}) by make_tables.py.
+\begin{table*}[t]
+\small
+  \caption{\ Test protocols. Every powder went through the same protocols in the same order with frozen settings, so results can be compared across powders. The sequence characterizes the powders and does not tune anything. Rotations and speeds refer to the auger, and tilts are the tube's angle above horizontal, from 0$^\circ$ (horizontal park) to 45$^\circ$ (the steepest used). A trial is one recorded measurement. SI Table~\siref{tbl:protocolrecords} gives the settings as the raw records store them and the number of records each protocol produced.}
+  \label{tbl:protocols}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{2.6cm}p{2.5cm}p{5.0cm}p{5.2cm}l}
+    \hline
+    Protocol & Varied & Fixed settings & What it measures & Trials \\
+    \hline
+    A \ Balance baseline & Nothing & Tilt 22.5$^\circ$; eight readings, no actuation & Noise floor of the run, against which every other protocol is read & 8 \\
+    B \ Static hold & Tilt (0, 22.5, 45$^\circ$) & 15~s hold at each tilt, no actuation & Whether any powder flows on its own (clean shut-off) & 3 \\
+    C \ Rotation & Tilt (0, 22.5, 45$^\circ$) & Six single revolutions per tilt at 30~rpm, with a settled reading after each & Mass per revolution and its revolution-to-revolution variation & 18 \\
+    D \ Speed sweep & Speed (15, 45, 90~rpm) & Tilt 22.5$^\circ$; three revolutions commanded per speed; balance streamed every 0.25~s & Delivery rate against speed; mass-against-time traces & 3 \\
+    E \ Tap & Tilt (0, 22.5$^\circ$) & Eight trials of a one-revolution re-feed followed by one 60~ms solenoid tap & Mass released by a single tap, with the re-feed logged separately & 32 \\
+    F \ Vibration & Tilt (0, 22.5$^\circ$) & As E, with three vibration bursts in place of the tap & Mass released by vibration (no data: driver fault) & 0 \\
+    G \ Closed-loop, 1~g & Nothing & Three doses of 1.000~g; three-phase controller & Dose error, time, and effort per phase & 3 doses \\
+    H \ Closed-loop, small & Target (50, 200~mg) & Three doses at each target; same controller & Dose error and time at small targets & 6 doses \\
+    \hline
+  \end{tabular*}
+\end{table*}
