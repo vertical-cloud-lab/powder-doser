@@ -16,6 +16,7 @@ Usage:  python scripts/validate_refs.py [path/to/refs.bib]
 from __future__ import annotations
 
 import difflib
+import os
 import re
 import sys
 import time
@@ -26,7 +27,10 @@ import bibtexparser
 import requests
 
 HERE = Path(__file__).resolve().parent.parent
-UA = {"User-Agent": "powder-doser-refcheck/1.0 (mailto:sterling.baird@byu.edu)"}
+# A contact address puts requests in Crossref's "polite" pool; it is optional and is read from the
+# environment so that no personal address is hard-coded or sent by default.
+UA = {"User-Agent": "powder-doser-refcheck/1.0" + (f" (mailto:{os.environ['CROSSREF_MAILTO']})"
+                                                   if os.environ.get("CROSSREF_MAILTO") else "")}
 TITLE_OK = 0.90  # fuzzy-ratio threshold for a title match
 
 
