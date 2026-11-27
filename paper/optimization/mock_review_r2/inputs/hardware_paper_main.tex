@@ -1,0 +1,471 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%This is the LaTeX ARTICLE template for RSC journals
+%Copyright The Royal Society of Chemistry 2016
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[twoside,twocolumn,9pt]{article}
+\usepackage{extsizes}
+\usepackage[super,sort&compress,comma]{natbib} 
+\usepackage[version=3]{mhchem}
+\usepackage[left=1.5cm, right=1.5cm, top=1.785cm, bottom=2.0cm]{geometry}
+\usepackage{balance}
+\usepackage{mathptmx}
+\usepackage{sectsty}
+\usepackage{graphicx} 
+\usepackage{lastpage}
+\usepackage[format=plain,justification=justified,singlelinecheck=false,font={stretch=1.125,small,sf},labelfont=bf,labelsep=space]{caption}
+\usepackage{float}
+\usepackage[labelformat=parens,labelfont=bf,font={footnotesize,sf},justification=centering]{subcaption}
+\usepackage{fancyhdr}
+\usepackage{fnpos}
+\usepackage[english]{babel}
+\addto{\captionsenglish}{%
+  \renewcommand{\refname}{Notes and references}
+}
+\usepackage{array}
+\usepackage{droidsans}
+\usepackage{charter}
+\usepackage[T1]{fontenc}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{setspace}
+\usepackage[compact]{titlesec}
+\usepackage{hyperref}
+%%%Please don't disable any packages in the preamble, as this may cause the template to display incorrectly.%%%
+
+
+\usepackage{epstopdf}%This line makes .eps figures into .pdf - please comment out if not required.
+
+% Cross-references into the Supplementary Information (si.tex). Build si.tex first so
+% that si.aux exists; \siref prints the SI number (e.g. S3) without a hyperlink.
+\usepackage{xr}
+\externaldocument[SI-]{si}
+\newcommand{\siref}[1]{\ref*{SI-#1}}
+
+\definecolor{cream}{RGB}{222,217,201}
+
+% (RSC template bibliography preamble removed: it printed instructions into the reference list.)
+
+\begin{document}
+
+\pagestyle{fancy}
+\thispagestyle{plain}
+\fancypagestyle{plain}{
+%%%HEADER%%%
+\renewcommand{\headrulewidth}{0pt}
+}
+%%%END OF HEADER%%%
+
+%%%PAGE SETUP - Please do not change any commands within this section%%%
+\makeFNbottom
+\makeatletter
+\renewcommand\LARGE{\@setfontsize\LARGE{15pt}{17}}
+\renewcommand\Large{\@setfontsize\Large{12pt}{14}}
+\renewcommand\large{\@setfontsize\large{10pt}{12}}
+\renewcommand\footnotesize{\@setfontsize\footnotesize{7pt}{10}}
+\makeatother
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand\footnoterule{\vspace*{1pt}% 
+\color{cream}\hrule width 3.5in height 0.4pt \color{black}\vspace*{5pt}} 
+\setcounter{secnumdepth}{5}
+
+\makeatletter 
+\renewcommand\@biblabel[1]{#1}            
+\renewcommand\@makefntext[1]% 
+{\noindent\makebox[0pt][r]{\@thefnmark\,}#1}
+\makeatother 
+\renewcommand{\figurename}{\small{Fig.}~}
+\sectionfont{\sffamily\Large}
+\subsectionfont{\normalsize}
+\subsubsectionfont{\bf}
+\setstretch{1.125} %In particular, please do not alter this line.
+\setlength{\skip\footins}{0.8cm}
+\setlength{\footnotesep}{0.25cm}
+\setlength{\jot}{10pt}
+\titlespacing*{\section}{0pt}{4pt}{4pt}
+\titlespacing*{\subsection}{0pt}{15pt}{1pt}
+%%%END OF PAGE SETUP%%%
+
+%%%FOOTER%%%
+\fancyfoot{}
+\fancyfoot[LO,RE]{\vspace{-7.1pt}\includegraphics[height=9pt]{head_foot/LF}}
+\fancyfoot[CO]{\vspace{-7.1pt}\hspace{13.2cm}\includegraphics{head_foot/RF}}
+\fancyfoot[CE]{\vspace{-7.2pt}\hspace{-14.2cm}\includegraphics{head_foot/RF}}
+\fancyfoot[RO]{\footnotesize{\sffamily{1--\pageref{LastPage} ~\textbar  \hspace{2pt}\thepage}}}
+\fancyfoot[LE]{\footnotesize{\sffamily{\thepage~\textbar\hspace{3.45cm} 1--\pageref{LastPage}}}}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\arrayrulewidth}{1pt}
+\setlength{\columnsep}{6.5mm}
+\setlength\bibsep{1pt}
+%%%END OF FOOTER%%%
+
+%%%FIGURE SETUP - please do not change any commands within this section%%%
+\makeatletter 
+\newlength{\figrulesep} 
+\setlength{\figrulesep}{0.5\textfloatsep} 
+
+\newcommand{\topfigrule}{\vspace*{-1pt}% 
+\noindent{\color{cream}\rule[-\figrulesep]{\columnwidth}{1.5pt}} }
+
+\newcommand{\botfigrule}{\vspace*{-2pt}% 
+\noindent{\color{cream}\rule[\figrulesep]{\columnwidth}{1.5pt}} }
+
+\newcommand{\dblfigrule}{\vspace*{-1pt}% 
+\noindent{\color{cream}\rule[-\figrulesep]{\textwidth}{1.5pt}} }
+
+\makeatother
+
+%%%TITLE, AUTHORS AND ABSTRACT%%%
+% Spelling "Carl Robison" confirmed by S.G.B. on PR #103 (21 Jun 2026) and on his GitHub profile.
+% Title and abstract: v6 of paper/v2/TITLE-ABSTRACT.md (v5 from the 27 Oct 2026 meeting, plus
+% the stepped-tilt and Al 4047 results of November); v5 is kept there for comparison.
+% TODO (human): author list (SUBMISSION-DECISIONS.md item 1; Sterling, 10 Oct: "might need to be
+% restricted to just Sam, Will, Luke, Sterling based on contributions").
+\twocolumn[
+  \begin{@twocolumnfalse}
+{\includegraphics[height=30pt]{head_foot/journal_name}\hfill\raisebox{0pt}[0pt][0pt]{\includegraphics[height=55pt]{head_foot/RSC_LOGO_CMYK}}\\[1ex]
+\includegraphics[width=18.5cm]{head_foot/header_bar}}\par
+\vspace{1em}
+\sffamily
+\begin{tabular}{m{4.5cm} p{13.5cm} }
+
+\includegraphics{head_foot/DOI} & \noindent\LARGE{\textbf{An open-source powder doser for autonomous alloy discovery, designed by engineers and modelled by AI agents$^\dag$}} \\
+\vspace{0.3cm} & \vspace{0.3cm} \\
+
+ & \noindent\large{Sam Charles,$^{\ast}$\textit{$^{a}$} Will Mulberry,\textit{$^{a}$} Luke Winters,\textit{$^{a}$} Carl Robison,\textit{$^{a}$} Gage Erickson,\textit{$^{a}$} and Sterling G. Baird$^{\ast}$\textit{$^{a,b}$}} \\
+
+\includegraphics{head_foot/dates} & \noindent\normalsize{Additive manufacturing of aerospace alloys depends on rapid, reproducible exploration of powder feedstocks, yet metering and blending dry metal powders remains largely manual in research laboratories. Commercial dispensers are costly and poorly matched to many-powder alloy workflows, and open-source designs have not been tested on feedstocks for laser powder bed fusion (L-PBF). We developed an open-source, low-cost, modular powder doser for a self-driving materials-discovery loop in which dosed powders feed ultrasonic atomization and L-PBF. The first module, a single channel built from 3D-printed parts and off-the-shelf electronics, cost under \$200 plus an analytical balance, roughly two orders of magnitude below commercial dosing heads. In closed loop, every 1~g dose on seven of 13 tested powders landed within $\pm$5\% of the target; smaller doses were less reliable. With a revised procedure that steps the tilt down as the cup fills, 20 consecutive 2~g doses of AlSi10Mg all landed within $\pm$5\%, 11 of them within $\pm$1~mg. The doser also ran in a glove box under an AI agent's control, and filled atomizer charges with AlSi10Mg and with Al~4047 from our own atomizer. Its parts were designed by engineers and, from April to July 2026, modelled by AI agents (GitHub Copilot with Claude Opus 4.7--4.8; Zoo Design Studio's Zookeeper): engineers supplied dimensions, sketches, and manufacturing constraints; AI modelled the parts as editable parametric scripts; and engineers reviewed, printed, and iterated. AI was most effective as a modelling assistant rather than an autonomous design agent.} \\
+
+\end{tabular}
+
+ \end{@twocolumnfalse} \vspace{0.6cm}
+
+  ]
+%%%END OF TITLE, AUTHORS AND ABSTRACT%%%
+
+%%%FONT SETUP - please do not change any commands within this section
+\renewcommand*\rmdefault{bch}\normalfont\upshape
+\rmfamily
+\section*{}
+\vspace{-1cm}
+
+
+%%%FOOTNOTES%%%
+
+\footnotetext{\textit{$^{a}$~Department of Mechanical Engineering, Brigham Young University, Provo, UT, USA. E-mail: samuelwcharles@gmail.com, sterling.baird@byu.edu}}
+\footnotetext{\textit{$^{b}$~Acceleration Consortium, University of Toronto, 80 St George St, Toronto, ON M5S 3H6, Canada.}}
+
+\footnotetext{\dag~Supplementary Information available: bill of materials and every part, with an exploded view and illustrated assembly steps; generative-CAD comparison; auger and outlet geometry, with the tested and AI-modelled augers compared; the AI-assisted CAD workflow and a summary of the design log; open-loop delivery for every powder; balance noise at rest and after actuation; human tasks in the test campaign; the closed-loop dose record, with every attempt accounted for, example traces and time per dose; the stepped-tilt trials; the Al~4047 atomizer doses; composition error from dosing error; the test protocols as recorded; run inventory; and AI usage log. See DOI: 00.0000/00000000.}
+
+%%%END OF FOOTNOTES%%%
+
+%%%MAIN TEXT%%%%
+
+\section{Introduction}
+
+Self-driving laboratories (SDLs) pair automated instruments with machine-learning planners that choose the next experiment, and they have sped up discovery in chemistry and materials science by an order of magnitude or more.\cite{Abolhasani2023Rise,Tom2024Self,Szymanski2023Autonomous,Seifrid2022Autonomous} Software for running them,\cite{Fei2024Alabos,Guzik2023Decade} methods for planning experiments,\cite{Baird2026Honegumi} and robots for handling liquids are now mature. Handling solids is not: most SDLs either work only with liquids or rely on a person to weigh out powders.\cite{Maffettone2023What,Canty2025Science} The gap matters most where the powders are the experiment. In alloy discovery by additive manufacturing (AM, the 3D printing of metal parts), each candidate composition is made by blending elemental or pre-alloyed powders,\cite{Li2018Combinatorial,Vecchio2021Throughput,Moorehead2020Throughput,Mooraj2024Additive,Nelaturu2024Multi} so weighing many different powders accurately and repeatably is the step that limits the whole workflow. In our own workflow, dosed powder is melted into new alloy powder by ultrasonic atomization and then printed by laser powder bed fusion (L-PBF), so each composition starts as a set of weighed powders.
+
+Commercial powder-dosing systems exist and work well, but their cost and size put them out of reach of most academic laboratories. Benchtop gravimetric (weight-based) dispensers such as the METTLER TOLEDO XPR/CHRONECT line, Labman dosing stations, and MTI's AM powder dispensers cost from tens of thousands to several hundred thousand dollars. They are built around pharmaceutical and quality-control work and usually dose one vial at a time from proprietary dosing heads.\cite{Besenhard2015Accuracy,Yang2007Metering} Pharmaceutical manufacturing meters powders at much higher flow rates with loss-in-weight feeders, which weigh the hopper continuously as it empties,\cite{Engisch2012Method,Engisch2015Feedrate,Hanson2018Control} and laboratory studies have dosed milligram quantities with capillaries, vibrating chutes, and augers.\cite{Besenhard2017Micro,Faulhammer2014Dose,Chianrabutra2014Powder,Alsenz2011Powderpicking} None of these is available as an open design that a laboratory can print, build, and modify. Open-source hardware has shown that 3D-printed instruments can reach research-grade performance at 1--10\% of the commercial price and keep improving through community contributions,\cite{Pearce2020Economic,Hohlbein2022Open,Wenzel2023Open,Stirling2022Hardops} and platforms such as Jubilee and low-cost SDL kits have brought that model to laboratory automation.\cite{Vasquez2020Jubilee,Subbaraman2024Duckbot}
+
+This paper describes the first module of such an instrument: a single-channel powder doser in which a 3D-printed auger delivers powder into a cup on an analytical balance, and a microcontroller turns, tilts, and taps the auger until the balance reads the requested mass (Fig.~\ref{fgr:v2doser}). Each powder lives in its own auger, and later versions will dose several powders without anyone swapping augers (Section~\ref{sec:future}). We report the design, a test campaign on 13 powders with very different flow behaviour, closed-loop dosing at three target masses, a set of 116 repeated doses with a revised procedure, and the doser's first use in our alloy workflow, including where the current design fails.
+
+This study's second contribution concerns how the doser was designed. Its parts were first designed without conventional CAD software such as SolidWorks or Fusion~360. The engineers decided what to build, wrote the specifications, and eventually supplied fully dimensioned drawings. AI agents turned those decisions into geometry: large language model (LLM) coding agents wrote each part as code in the project's public repository, and we also explored a chat-driven CAD tool, Zoo Design Studio. Research on generative CAD has produced large datasets and models,\cite{Wu2021Deepcad,Willis2021Fusion,Seff2021Vitruvion,Xu2024Brepgen} and LLMs can now write CAD code (scripts that CAD software turns into solid models) from written descriptions,\cite{Alrashedy2025Generating,Badagabettu2024Query2cad,Jansen2023Words,Rios2023Text} but published evaluations test benchmark shapes rather than the design of a working instrument from start to finish. Every prompt, generated part, review comment, and failure in this project is preserved in a public repository,\cite{NoteRepository} so the doser doubles as a documented case study of AI-assisted hardware design (Figs.~\ref{fgr:v2timeline} and \ref{fgr:v2redesign}). Once the AI-modelled doser worked, the engineers redrew the parts that were built and tested in Fusion~360 to obtain editable models for release, and recorded those sessions too. The doser used for the tests in this paper therefore runs on the engineers' versions of most parts, including the auger and its drive gears. We describe the workflow that worked best, the ways the AI tools failed, and what the approach cost and gained compared with conventional design. A project page collects the figures, videos, build files, and talks (\url{https://vertical-cloud-lab.github.io/powder-doser/}).
+
+\section{Results and discussion}
+
+\subsection{The doser}
+\label{sec:doser}
+
+Fig.~\ref{fgr:v2doser} shows the doser as tested and as designed. The printed auger tube is also the powder reservoir, so there is no separate hopper. Powder is poured in through the open upper end of the tube, which is then closed with a screw-on cap. The tube (25~mm outer diameter, 21~mm bore, 250~mm long) is printed as one piece. Along the third of its length nearest the outlet, a single-start screw (the flight, 10.4~mm pitch) winds around an 8~mm central core. The rest of the tube is plain and holds the powder (Fig.~\ref{fgr:v2doser}c). Two smaller augers, whose narrower inner channel is fed through a funnel at the top, hold about 3.3 and 9.2~mL, so the reservoir can be sized to the sample (SI Table~\siref{tbl:parts}). The whole piece turns together, like an Archimedes screw, rather than as a screw inside a fixed barrel. A NEMA-11 stepper motor turns it through a printed 20-tooth pinion and a 44-tooth gear printed on the outside of the tube, a 2.2:1 reduction. A push--pull solenoid taps the tube through a printed collar to help cohesive powders move. A small eccentric-rotating-mass (ERM) vibration motor was also planned, but its driver never worked (Section~\ref{sec:openloop}), so the doser as tested relies on rotation, tilt, and tapping. The tube rides on a hinged plate that two servos tilt through a 2:1 gear. The hinge axis runs about 12~mm behind the outlet, so the dose lands in nearly the same place at every angle: the tube can be parked horizontally, where nothing flows, and tipped up to dispense. The test protocols used tilts of 0--45$^\circ$, but the servos can tilt the tube further: the repeated doses of Section~\ref{sec:stepped} started at 60$^\circ$, and one attempt to clear a clog went to 75$^\circ$.
+
+An analytical balance (0.1~mg readability) weighs the collection cup and reports to a \$6 Raspberry Pi Pico~W microcontroller, which runs a three-phase dosing procedure (Section~\ref{sec:dose}). The structural parts are printed in polylactic acid (PLA), most of them with support material, and the remaining parts are commodity items. The bill of materials comes to under \$200 for a single channel, excluding the balance, which most laboratories already own, and the custom circuit board, which a breadboard can replace (SI Table~\siref{tbl:bom}). That is roughly two orders of magnitude below a commercial gravimetric dosing head. SI Fig.~\siref{fgr:v2exploded} numbers every part, and SI Fig.~\siref{fgr:steps} shows the build in 19 steps.
+
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{3.450in}\includegraphics{v2/figures/doser_a_photo.pdf}\caption{As tested}\end{subfigure}\hfill
+\begin{minipage}[b]{3.182in}
+\begin{subfigure}[b]{\linewidth}\includegraphics{v2/figures/doser_b_exploded.pdf}\caption{Exploded view}\end{subfigure}\\[6pt]
+\begin{subfigure}[b]{1.520in}\centering\includegraphics{v2/figures/doser_c_auger.pdf}\caption{Auger section}\end{subfigure}\hfill
+\begin{subfigure}[b]{1.644in}\includegraphics{v2/figures/doser_d_cam.pdf}\caption{Fixed camera}\end{subfigure}
+\end{minipage}
+\caption{The doser. One printed auger tube is both the powder reservoir and the dosing screw; the doser turns, tilts, and taps it over a cup on an analytical balance. (a) The doser as tested in the second round (photographed 11 September 2026), with its main parts labelled; the auger tube is shown in section in (c). (b) Exploded view of the current design, assembled in CAD from the team's parts, with the 13 main parts numbered as in the bill of materials (SI Fig.~\siref{fgr:v2exploded}): the auger (19) and its screw-on cap (25); the tap collar (21), its solenoid (23), and the tap-collar base (15); the two brackets that hold the auger (20); the hinged mounting plate (9); the stepper motor (12) and its pinion (14), which turn the auger's 44-tooth gear; the two tilt servos (4) and their pinions (7); the baseplate (2); and the mounting board (1). (c) Section through the tested auger and its screw-on cap, the team's Fusion~360 part: the flight fills only the outlet end, and the 44-tooth gear is on the outside of the tube. (d) The fixed camera's view of the cup after a 0.5~g NaCl dose (0.496~g delivered).}
+\label{fgr:v2doser}
+\end{figure*}
+
+\subsection{Engineers design, AI agents model}
+\label{sec:design}
+
+The project began at a two-day hackathon in April 2026 as a hand-sketched mechanical scoop (a ``powder excavator'') meant to ride on an existing computer-controlled (CNC) gantry. An AI-assisted survey of small-scale dosing mechanisms\cite{Besenhard2017Micro,Faulhammer2014Dose} produced eight candidates, among them a tap sieve, a metering wheel, a capillary wiper, and an auger. We chose the auger for its dose resolution, its printability, and its tolerance of different powders, in line with its wide use in commercial micro-feeders.\cite{Yang2007Metering,Besenhard2015Accuracy} Fig.~\ref{fgr:v2timeline} places the key designs of the following seven months on one date axis, with the AI-modelled designs above it and the engineers' work below. Every step is also recorded in a design log in the repository, which had 183 entries by mid-November 2026.
+
+The mechanical design went through four versions in its first six weeks. Before the second version, the team printed four outlet geometries for the auger (SI Fig.~\siref{fgr:nozzles}). The second version packaged the auger, frame, drive, and actuators as a self-contained channel, the repeating unit of a future multi-powder doser. The third version kept the mechanism and changed how we asked for the parts: instead of asking the AI tools for the whole module at once, we specified each part separately (auger, geared auger, bracket, tap collar, mounting plate, baseplate, and servo hinge). The AI tools modelled each part, and the engineers reviewed and printed it. The fourth version assembled these parts on the hinged baseplate with servo tilt. In June 2026, at the team's request, the coding agent also modelled a storage version of the auger, with the flight on only the third of the tube nearest the outlet, an open upper end, and a screw-on cap.
+
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{\textwidth}\centering\includegraphics{v2/figures/timeline_a.pdf}\caption{Designs over time}\end{subfigure}\\[4pt]
+\begin{subfigure}[b]{\textwidth}\centering\includegraphics{v2/figures/timeline_b_band.pdf}\caption{Agents and models}\end{subfigure}
+\caption{AI agents and engineers, April to November 2026. AI agents modelled the first parts from text and drawings; from July the engineers redrew in conventional CAD the parts that were built and tested, and the agents moved on to running the tests and assembling the CAD. (a) Key designs on one date axis, each joined to its date. Above the axis are the designs modelled by AI agents, each tagged with the agent (purple) and model (grey): the powder excavator and the first auger, from the hackathon (the first auger is the 24 April OpenSCAD design, in section); the whole module from a single request; the bracket the agent modelled from the team's dimensioned drawing, shown beside the drawing (grey frame; red arrow); the first tap collar and the collar after review; the storage auger with its screw cap; all 11 parts from one prompt through the Zoo Text-to-CAD API; and the team's parts assembled through the Onshape API. Below the axis is the engineers' work, each design tagged with who made it (green) and the tool (grey); photographs are labelled as photographs: the hackathon sketch, the first printed auger, the Fusion~360 auger, cap, and 44-tooth gear that turned in every test, the first dose in a glove box at the University of Utah, the multi-doser carriage sketch and Onshape model, and the doser as tested. The hackathon (22--24 April) and the 13-powder test campaign (4 August--15 September) are shaded. (b) When each agent and model was in use, on the same date axis. Claude Code ran locally at the hackathon and in GitHub Actions from 30 June; both are on one line. The engineers' conventional CAD is in green. Repository issue and pull-request numbers for every item are in Table~\ref{tbl:v2aitools} and the design log.}
+\label{fgr:v2timeline}
+\end{figure*}
+
+The specifications given to the AI grew steadily more detailed. The first requests described what the whole system had to do. Later requests described what each part had to do and how it met its neighbours: bolt patterns, shaft diameters, and mating faces. After that, the team supplied annotated engineering drawings, several of them fully dimensioned with the geometric relations between features (the bracket in Fig.~\ref{fgr:v2timeline}a). By the end, the AI's job had narrowed to modelling, that is, turning drawings into parametric CAD and working out derived dimensions and clearances. Every design decision stayed with the team.
+
+Most parts were produced by LLM coding agents (the GitHub Copilot coding agent, mostly running Claude Opus models) working directly in the repository (Table~\ref{tbl:v2aitools}). Given a task written as a GitHub issue, the agent wrote the part as parametric code (Python with CadQuery, or OpenSCAD). In the same session it ran scripts that rendered views of the part, exported printable STL mesh files, and checked the geometry. The agent then opened a pull request, and we reviewed the part from the rendered images. SI Section~\siref{sec:aicad} sets out this loop with an example drawing, the checklist of interfaces that requests specified, and when a part counted as finished. We also explored two commercial text-to-CAD tools on the same parts: CADSmith, and Zoo Design Studio, which pairs a code-based CAD engine, scripted in the KittyCAD Language (KCL), with a conversational design agent called Zookeeper. In Zoo Design Studio, too, parts were built mainly by chatting with the agent rather than by editing the model by hand.
+
+\input{v2/tables/table_ai_tools}
+
+\subsubsection{One part at a time}
+Early attempts asked the agent for the complete module from a description of its layout. The results looked plausible and did not work. Given the same whole-doser prompt, the coding agent, CADSmith, and the Zoo Text-to-CAD service each returned parts that did not make a working assembly (SI Fig.~\siref{fgr:v2cadcompare}a--c). The first tap collar merged several functions into one body, with overlapping features, wrong tolerances, and no room for the actuators it existed to carry, and an early bracket arrived with its two mounting plates unconnected. Requests at the level of the assembly repeatedly produced overlapping solids, floating parts, and changes nobody had asked for, and fixing one defect often introduced another. The agent produced usable parts once each request covered a single part and listed where it connected to its neighbours. This fits the known weakness of current LLMs at reasoning about how shapes fit together in space.\cite{Alrashedy2025Generating} Splitting a design into parts with defined interfaces is standard practice for human engineers, and when AI does the modelling it currently appears to be required. Table~\ref{tbl:aifail} lists the failure modes we met and what caught each one. Of the 76 entries up to October 2026 that made or changed a part model, the coding agent wrote 72 and 16 were printed. People reviewing renders caught 30 of the 41 recorded defects, printing or bench tests caught 6, and the agent's own checks caught 4 (SI Table~\siref{tbl:designlog}).
+
+\begin{table}[h]
+\small
+  \caption{\ Failure modes of the AI modelling tools observed in this project, and what caught or prevented each one.}
+  \label{tbl:aifail}
+  \begin{tabular*}{0.48\textwidth}{@{\extracolsep{\fill}}p{2.3cm}p{2.9cm}p{2.6cm}}
+    \hline
+    Failure & Example & Caught or prevented by \\
+    \hline
+    Parts that do not fit together & Whole-module prompts; first tap collar; bracket with unconnected plates (SI Fig.~\siref{fgr:v2cadcompare}a--d) & Asking for one part at a time, with interfaces listed \\
+    Unrequested changes & Fixing one defect altered an unrelated feature & Full re-inspection of rendered views at every iteration \\
+    Mislabelled variants & Two of four test nozzles swapped relative to their documentation & Human cross-check before printing \\
+    Sub-millimetre errors & Height mismatch of one print layer & Only the failed print \\
+    Designing around bad inputs & Out-of-date neighbouring parts led to a hole, platforms, then a gap (SI Fig.~\siref{fgr:v2cadcompare}i--l) & Supplying the correct upstream files \\
+    No sense of ``finished'' & Late iterations disturbed features that were already right & The team freezing the geometry \\
+    Wrong orientation & Solenoid mis-oriented on the tap collar over several coding-agent iterations & Switching the part to Zoo Design Studio \\
+    \hline
+  \end{tabular*}
+\end{table}
+
+\subsubsection{Checking the output}
+Most of the effort went into checking. Because any iteration could change geometry outside the part being edited, every generated part had to be re-inspected in full. In one case the agent produced four miniature test nozzles and swapped the labels on two of them, which would have invalidated a dispensing comparison had a person not noticed. Automated checks (that a part is a single solid, that its surface has no holes, and that key interface dimensions are correct) caught a useful share of defects cheaply. Small errors still escaped both the checks and visual review: a height mismatch of one print layer was found only when the part peeled off the print bed. AI-generated alternatives were valuable early, while the design was still open, but late in the project the agent could not tell how close a part was to finished and kept changing features that were already right. AI-modelled parts therefore tended to stop at ``good enough'', because each further round of edits cost time and risked breaking something that worked.
+
+\subsubsection{What replaced the AI parts}
+Every AI-modelled part was reviewed, printed, and tested, but the doser in this paper ran on later versions (Fig.~\ref{fgr:v2redesign}). The agent's tap collar was revised over several iterations, remodelled in Zoo Design Studio, and has since been replaced by a solenoid bracket that lets an auger be swapped without removing the tapper. The engineers redrew the storage auger in Fusion~360 with a 20:44 gear pair in place of the AI model's 16:48, a uniform 0.5~mm flight, and a slightly longer pitch (SI Table~\siref{tbl:augercompare}), and that auger turned in every test. The bracket went from the team's dimensioned drawing and the agent's model of it to a bolted split clamp and then a flexible clip. One AI-modelled part is still on the doser: the tap-collar base, a small plate whose raised stop keeps the collar from turning with the auger (see Experimental).
+
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{\textwidth}\centering\includegraphics{v2/figures/redesign_a_tapcollar.pdf}\caption{Tap collar}\end{subfigure}\\[6pt]
+\begin{subfigure}[b]{2.200in}\includegraphics{v2/figures/redesign_b_auger.pdf}\caption{Auger}\end{subfigure}\hfill
+\begin{subfigure}[b]{4.450in}\includegraphics{v2/figures/redesign_c_bracket.pdf}\caption{Bracket}\end{subfigure}
+\caption{The original AI parts and what replaced them. Every AI-modelled part was reviewed, printed, and tested, but the tested doser ran on later versions, and the parts have kept changing since. AI parts have purple frames, the team's grey; each image is tagged with who made it and in what. (a) Tap collar to solenoid bracket: the first AI collar (15 May) and the collar after review (by 10 June), the collar on the rig during the tests (11 September), and the solenoid bracket that mounts the solenoid on the plate without a collar, so that an auger can be swapped without taking the tapper off (first version 7 November, Onshape). (b) Auger, in section: the first auger to be printed and tested, begun at the hackathon and shown as the agent's version of 13 May with the flight on a central shaft; the agent's storage auger with 16:48 gears (16 June); and the team's Fusion~360 recreation of it with 20:44 gears (17 July), which turned in every test. (c) Bracket: the team's dimensioned drawing and the agent's model of it, both 14 May, then the team's own versions: a bolted split clamp (Fusion~360, July), the open flexible C-clip that was on the rig through the tests (from August), and its Onshape version on the current doser (October).}
+\label{fgr:v2redesign}
+\end{figure*}
+
+\subsubsection{Comparing the tools}
+We used the coding agent from April to June 2026, CADSmith in May and June, and Zoo Design Studio from May to early July, mostly in June, so the comparison below describes the tools as they were then. The coding-agent workflow was fully traceable and needed nothing beyond a web browser, but each iteration took minutes and every change had to be reviewed. CADSmith, which we tried on the mounting plate and baseplate, returned only simplified, blocky geometry and was no more useful than the coding agent (SI Fig.~\siref{fgr:v2cadcompare}g,h). Zoo Design Studio was the team's clear favourite. Its Zookeeper agent reasoned noticeably better about space, ran its own checks (such as counting solid bodies) before returning a result, and worked inside a live CAD view, so the team could inspect an editable model as it was built. Each iteration was slower, of the order of an hour, but on the parts we tried the team usually reached an acceptable design in fewer Zoo iterations, although we did not compare the two under controlled conditions. The final tap collar reached a usable design in three Zoo iterations after the same number of coding-agent iterations had failed to orient the solenoid correctly (SI Fig.~\siref{fgr:v2cadcompare}d--f). At the time of testing, Zoo also had limits: imported reference parts could not be edited, there were no constraints between parts in an assembly, and manual edits were largely limited to changing parameter values, so the work stayed conversational. These rankings are the team's impressions from one project, and we did not measure them. Because these tools are changing quickly, the ranking may not last. In our more recent work, agents that drive a full CAD package through its application programming interface (API) have been among the most successful: an agent working only through Onshape's API assembled the current design from the team's part files, and the exploded views in Fig.~\ref{fgr:v2doser}b and SI Fig.~\siref{fgr:v2exploded} were rendered from that assembly. Open-source projects such as text-to-cad\cite{TextToCad} are promising newer examples.
+
+We also judged that every AI route was slower, and gave lower-quality geometry, than experienced mechanical engineers working in conventional CAD software would have. The Fusion~360 recreations give a rough check. The narrated recordings for nine parts total about three hours of edited video,\cite{FusionPlaylist} roughly the length of a single Zoo Design Studio session. The AI route did leave documentation behind as a by-product of the work. Every design intent, constraint, and revision exists as text, so the design can be reproduced, its history traced, and the project handed over more easily than with conventional CAD files alone.
+
+\subsection{How a dose runs}
+\label{sec:dose}
+
+A dose can be requested in plain language. A person writes the request in a GitHub comment, an AI agent passes the target to the doser, and a three-phase controller on the microcontroller turns, tilts, and taps the auger until the balance reads the target (Fig.~\ref{fgr:v2dosing}). In the bulk phase the tube is tilted and the auger turns continuously; in the fine phase the tube is tilted less and the auger turns in small steps, with a settled reading after each; and in the tap phase the tube is level and solenoid taps release the last milligrams. The controller acts on the mass still to go, so the same procedure serves every target. In routine use, each powder has its own auger, filled once and stored loaded, so changing powder means swapping a tube rather than cleaning one (Fig.~\ref{fgr:v2use}). The dose lands directly in the container used for the next step; in the alloy workflow that is the cup of the atomizer, so the powder is never transferred.
+
+\begin{figure*}
+\centering
+\includegraphics{v2/figures/dosing.pdf}
+\caption{How a dose runs. A person asks the AI agent for a dose in a GitHub comment; a three-phase controller on the doser's microcontroller then turns, tilts, and taps the auger until the balance reads the target. (a) A request and the agent's reply (8~g of AlSi10Mg for an atomizer charge, 29 September 2026). (b) The control loop: the balance is read after every step, and the controller acts on the mass still to go. (c) One 1~g NaCl dose from the test campaign (12 August 2026), with its three phases shaded: bulk, fine, and tap. A brace above the trace spans each phase, under the tube position in that phase (CAD renders of the current design at 45$^\circ$, 22.5$^\circ$, and 0$^\circ$); the fixed camera's stills before and after a 0.5~g salt dose (15 September 2026) are at either end. The green band is the $\pm$5\% acceptance limit.}
+\label{fgr:v2dosing}
+\end{figure*}
+
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{1.127in}\includegraphics{v2/figures/use_a_fill.pdf}\caption{Fill}\end{subfigure}\hfill\raisebox{1.05in}{$\rightarrow$}\hfill
+\begin{subfigure}[b]{1.202in}\includegraphics{v2/figures/use_b_fit.pdf}\caption{Fit}\end{subfigure}\hfill\raisebox{1.05in}{$\rightarrow$}\hfill
+\begin{subfigure}[b]{1.202in}\includegraphics{v2/figures/use_c_ready.pdf}\caption{Over the cup}\end{subfigure}\hfill
+\begin{subfigure}[b]{2.610in}\includegraphics{v2/figures/use_d_augers.pdf}\caption{One auger per powder}\end{subfigure}
+\caption{Using the doser. Each powder has its own auger, filled once and stored loaded, so changing powder means swapping a tube. (a) Filling an auger with salt through its open end, then capping it (29 July 2026). (b) Fitting a filled auger to the doser, and (c) the doser ready over the cup, frames from the 30 September 2026 dose video: the powder falls through a paper funnel into an aluminium atomizer cup that stands in the glass beaker, so the dose lands directly in the cup used for the next step in making the alloy. (d) The eight augers of the food-safe set (seven powders), capped and labelled (17 November 2026), each with the mass one auger revolution delivered (at 22.5$^\circ$ tilt; Fig.~\ref{fgr:v2openloop}a).}
+\label{fgr:v2use}
+\end{figure*}
+
+\subsection{Open-loop delivery of 13 powders}
+\label{sec:openloop}
+
+We tested the doser on 13 powders (Table~\ref{tbl:v2powders}). Seven are food-safe surrogates, chosen to cover a wide range of flow behaviour cheaply and safely: table salt (NaCl, the control), calcium lactate, xanthan gum, carboxymethyl cellulose (CMC), sodium alginate, and white and brown rice flour. The other six are relevant to the alloy-discovery work the doser is meant to serve: a gas-atomized AlSi10Mg alloy powder (near-spherical particles made by spraying molten metal), a coarse and a fine grade of silicon, sodium sulfate, barium chloride, and fumed silica, a very light flow aid. We ran each powder through the same fixed sequence of test protocols with frozen settings (Table~\ref{tbl:protocols}), so that differences between powders reflect the powders rather than the settings. In the first test round (4--21 August 2026), the food-safe powders were tested on an open laboratory bench and the other powders in a shared fume hood. The balance became much noisier from 20 August: with nothing moving, eight successive readings varied by 0.0~mg on every run up to 12 August and by up to 88~mg afterwards (SI Fig.~\siref{fgr:bench}). Bench conditions are therefore confounded with powder group, because every research-relevant powder was measured in the noisier period.
+
+\input{v2/tables/table_powders}
+
+\begin{table*}[t]
+\small
+  \caption{\ Test protocols. Every powder went through the same protocols in the same order with frozen settings, so results can be compared across powders. The sequence characterizes the powders and does not tune anything. Rotations and speeds refer to the auger, and tilts are the tube's angle above horizontal, from 0$^\circ$ (horizontal park) to 45$^\circ$, the steepest used in these protocols. A trial is one recorded measurement. SI Table~\siref{tbl:protocolrecords} gives the settings as the raw records store them and the number of records each protocol produced.}
+  \label{tbl:protocols}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{2.6cm}p{2.5cm}p{5.0cm}p{5.2cm}l}
+    \hline
+    Protocol & Varied & Fixed settings & What it measures & Trials \\
+    \hline
+    A \ Balance baseline & Nothing & Tilt 22.5$^\circ$; eight readings, no actuation & Noise floor of the run, against which every other protocol is read & 8 \\
+    B \ Static hold & Tilt (0, 22.5, 45$^\circ$) & 15~s hold at each tilt, no actuation & Whether any powder flows on its own (clean shut-off) & 3 \\
+    C \ Rotation & Tilt (0, 22.5, 45$^\circ$) & Six single revolutions per tilt at 30~rpm, with a settled reading after each & Mass per revolution and its revolution-to-revolution variation & 18 \\
+    D \ Speed sweep & Speed (15, 45, 90~rpm) & Tilt 22.5$^\circ$; three revolutions commanded per speed; balance streamed every 0.25~s & Delivery rate against speed; mass-against-time traces & 3 \\
+    E \ Tap & Tilt (0, 22.5$^\circ$) & Eight trials of a one-revolution re-feed followed by one 60~ms solenoid tap & Mass released by a single tap, with the re-feed logged separately & 32 \\
+    F \ Vibration & Tilt (0, 22.5$^\circ$) & As E, with three vibration bursts in place of the tap & Mass released by vibration (no data: driver fault) & 0 \\
+    G \ Closed-loop, 1~g & Nothing & Three doses of 1.000~g; three-phase controller & Dose error, time, and effort per phase & 3 doses \\
+    H \ Closed-loop, small & Target (50, 200~mg) & Three doses at each target; same controller & Dose error and time at small targets & 6 doses \\
+    \hline
+  \end{tabular*}
+\end{table*}
+
+With one set of settings, the mass delivered per auger revolution at a 22.5$^\circ$ tilt varied 24-fold across the ten powders that conveyed a measurable amount, from 10~mg for sodium alginate to 231~mg for AlSi10Mg (Fig.~\ref{fgr:v2openloop}a). Seven powders (AlSi10Mg, coarse silicon, sodium sulfate, calcium lactate, barium chloride, xanthan gum, and salt) delivered 146--231~mg per revolution, and CMC, white rice flour, and sodium alginate delivered 10--26~mg. Three powders conveyed no reliably measurable amount at any tilt: brown rice flour, fine silicon, and fumed silica. The powder mattered far more than the settings. Splitting the variation in mass per revolution across all measured revolutions (on a log scale), 70\% came from which powder was loaded, 20\% from tilt, 4\% from how each powder responded to tilt, and 6\% from scatter between revolutions. Most powders varied by 2--18\% from one revolution to the next, and white rice flour by 37\% (SI Fig.~\siref{fgr:v2revvar}; SI Table~\siref{tbl:v2openloop}).
+
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{2.620in}\includegraphics{v2/figures/openloop_a_rev.pdf}\caption{Per revolution}\end{subfigure}\hfill
+\begin{subfigure}[b]{1.800in}\includegraphics{v2/figures/openloop_b_tap.pdf}\caption{Per tap}\end{subfigure}\hfill
+\begin{subfigure}[b]{2.020in}\includegraphics{v2/figures/openloop_c_time.pdf}\caption{In time}\end{subfigure}
+\caption{Open-loop delivery of 13 powders under one fixed set of settings. Ten powders moved, from 10 to 231~mg per auger revolution, and three delivered nothing measurable; one solenoid tap released up to 20~mg; and under continuous rotation the powder arrived in waves, one surge per auger revolution. Every panel was measured with the tube tilted at 22.5$^\circ$. (a) Mass per auger revolution (protocol C; mean $\pm$ standard error of six revolutions; log axis). (b) Mass released by one solenoid tap (protocol E): mean $\pm$ standard deviation of eight taps, the spread to expect from a single tap, drawn only where the tap was resolved (mean more than twice its standard error, as in SI Table~\siref{tbl:v2openloop}). Each row without a bar says why. For AlSi10Mg and the coarse silicon, the balance noise with nothing moving (standard deviation 29 and 20~mg) was far larger than a tap; a tap cannot remove powder, and their negative means ($-$1.9 and $-$3.5~mg) were that noise. For CMC, the two rice flours, and the fine silicon, most single taps read 0.0--0.1~mg. Fumed silica's only run failed screening. (c) Mass against time while the auger turned continuously at 15~rpm (protocol D), for four powders from the fastest (AlSi10Mg) to a slow one (CMC). AlSi10Mg and NaCl each arrived in surges of about 200~mg every 4~s, once per auger revolution, with little in between. Gridlines every 4~s mark the auger revolutions. Blue: food-safe surrogates; orange: research-relevant powders.}
+\label{fgr:v2openloop}
+\end{figure*}
+
+Delivery is not smooth. Balance readings streamed during continuous rotation rise in steps that recur about every 4~s at 15~rpm, once per auger revolution (Fig.~\ref{fgr:v2openloop}c). Across ten powders, the median period from autocorrelation was 3.94~s against a revolution time of 4.00~s. A single-start flight should behave this way, because each revolution carries one pocket of powder over the outlet. The pulsing limits how finely rotation alone can meter powder, and it is why the final approach to a requested mass uses taps. A single tap released between 0.2~mg (sodium alginate) and 20~mg (calcium lactate), or 0.6--10\% of one revolution's delivery (Fig.~\ref{fgr:v2openloop}b). The size of a tap does not simply follow throughput: barium chloride and calcium lactate delivered similar amounts per revolution (185 and 198~mg) but released 2.1 and 20~mg per tap. Tap increments could be resolved only on the quieter runs; on most fume-hood runs they were smaller than the bench noise.
+
+Tilt is the strongest setting the controller has. For the nine powders measured at all three angles, raising the tube from horizontal to 22.5$^\circ$ increased delivery by a median factor of 4.2, and raising it further to 45$^\circ$ added a median factor of 1.2 (SI Table~\siref{tbl:v2openloop}). The cohesive powders depended most on gravity: sodium alginate delivered 15 times more per revolution at 45$^\circ$ than horizontally and white rice flour 10 times more, against about 5 times for calcium lactate and sodium sulfate. Tilt was also the only setting that moved one of the non-conveying powders at all (fine silicon, at 45$^\circ$). With the auger stopped, nothing flowed on its own: in 33 fifteen-second holds, covering all three tilts on the 11 runs recorded up to 12 August, the balance reading changed by 0.0~mg every time (protocol B). Parking the tube horizontally therefore gives a clean shut-off, at least to the resolution of the quiet-bench runs. The vibration motor could not be characterized: its driver returned an input/output error in every run that asked for protocol F. The speed sweep (protocol D) suggests that delivery rate grows more slowly than speed, with a median exponent of 0.78 across ten powders for rate $\propto$ speed$^{\alpha}$ over 15--90~rpm, but each speed was measured once, in a fixed order, and a firmware timing error let the auger turn 15--54\% further than commanded, so we treat these exponents as an indication only.
+
+The two ends of the range are consistent with particle shape. Gas-atomized AlSi10Mg consists of near-spherical particles in a narrow size range, the properties L-PBF requires, and it was the fastest powder tested. The fine silicon is milled, angular, and smaller than 44~$\mu$m (it passes a 325-mesh sieve). It did not move at all at 0$^\circ$ or 22.5$^\circ$, and at 45$^\circ$ it produced a single 7~mg pulse in six revolutions. The coarse silicon, the same material at roughly 75--150~$\mu$m, delivered 211~mg per revolution. Forces that make particles stick together matter more relative to their weight as particles get smaller, which fits this sharp difference between the two silicon grades. We read the three powders that conveyed no measurable amount as a limit of this auger geometry rather than a fixed property of the powders; a wider flight, a larger pitch, or a taller fin would move that limit. The failures also differ in kind. Fine silicon moved slightly at the steepest tilt, so for it the driving force was too weak to overcome cohesion. Fumed silica, which is extremely light and fluffy, never delivered more than a few milligrams per revolution at any tilt and varied wildly from one revolution to the next, which points instead to trapped air.
+
+\subsection{Closed-loop dosing at three targets}
+\label{sec:closedloop}
+
+With the controller settings tuned by hand on salt and then frozen for every powder, we ran three doses of 1~g (protocol G) on each powder whose bench conditions allowed it in the first test round. A second round, from 3 to 15 September 2026, added three doses each of 50~mg and 200~mg (protocol H) and the 1~g doses that bench noise had prevented for the research-relevant powders. Doses are scored against acceptance limits fixed before testing: $\pm$10\% of the requested mass below 100~mg and $\pm$5\% at or above it. If dose errors are spread evenly within these limits, the composition error of an equimolar five-component blend\cite{Vecchio2021Throughput,Moorehead2020Throughput} is 0.5 atomic percent (one standard deviation), with a worst case of 1.6 atomic percent; the aluminium-rich blends planned for our alloy work, in batches of 10--500~g, stay near 0.4 atomic percent even in the worst case (SI Section~\siref{sec:comperror}). Each delivered mass is also recorded, so the as-dosed composition is known to within 0.1 atomic percent. Processing can shift composition far more: directed energy deposition from elemental powders has shifted it by 5--10 atomic percent.\cite{Moorehead2020Throughput,Chen2020Elemental} Failed doses stay in every count, and SI Table~\siref{tbl:doseaccount} accounts for every attempt, including those excluded and the combinations never run.
+
+\begin{figure*}
+\centering
+\includegraphics{v2/figures/closedloop.pdf}
+\caption{Closed-loop doses at three targets with one frozen set of controller settings (protocols G and H). Doses of 1~g landed within $\pm$5\% for every powder that delivered at least 26~mg per revolution; smaller doses missed more often, fast powders tending to overshoot and slow ones to fall short. Error of every valid dose from both test rounds; each marker is one dose. One row per powder, ordered by mass per revolution (fastest at the top). The green band is the acceptance limit: $\pm$10\% below 100~mg, $\pm$5\% at and above. Barium chloride has no valid closed-loop dose (it caked in the tube) and fumed silica was not dosed. Times per dose are in Table~\ref{tbl:v2closedloop} and SI Fig.~\siref{fgr:v2dosetime}.}
+\label{fgr:v2closedloop}
+\end{figure*}
+
+{\setlength{\tabcolsep}{2pt}\input{v2/tables/table_closed_loop}}
+
+At 1~g, 24 of the 39 valid doses finished within the $\pm$5\% limit (Fig.~\ref{fgr:v2closedloop}; Table~\ref{tbl:v2closedloop}). They were every dose on the seven free-flowing and moderately slow powders: salt, calcium lactate, xanthan gum, CMC, AlSi10Mg, coarse silicon, and sodium sulfate. The three research-relevant powders among them were the most accurate: all nine of their 1~g doses finished within 10~mg (1\%) of the target, with a median time of 111~s. The four powders that failed at 1~g failed for two different reasons. Fine silicon and brown rice flour delivered almost nothing, as in the open-loop tests. White rice flour and sodium alginate did move, but too slowly: they used up the controller's budget of 200 small rotations and stopped 14\% and 29\% short of the target after about 14 minutes.
+
+Smaller doses were harder, in different ways for fast and slow powders. At 200~mg, 18 of 30 doses finished within $\pm$5\%, including all three for AlSi10Mg, xanthan gum, and white rice flour. At 50~mg, 14 of 30 finished within $\pm$10\%, although most of these passes lie within the balance noise of the limit (Section~\ref{sec:limits}). The fast powders now overshot: of the 14 doses on free-flowing powders that missed the limit at 50 or 200~mg, 13 were overshoots, including all three sodium sulfate doses at 50~mg. For these powders a single 45$^\circ$ turn of the auger delivered a median of 30~mg, against 2~mg for the slow powders, and delivery arrives in pulses. The last step of a 50~mg dose on a free-flowing powder therefore added a median of 46~mg, enough to step over the whole acceptance band. The controller also had a flaw at small targets. It was meant to skip continuous rotation, but because the threshold for that phase equalled the target, a tared reading a fraction of a milligram below zero started a brief continuous spin. This happened in 19 of the 60 valid 50 and 200~mg doses and delivered up to 103~mg (SI Fig.~\siref{fgr:dosetraces} shows representative traces). Slow powders undershot instead, for the same reason as at 1~g. Overshoot cannot be undone in powder dosing, so for small targets a finer final increment matters more than a faster one.
+
+Time was the main cost of accuracy. Doses that finished within the limit took a median of 52~s at 50~mg, 152~s at 200~mg, and 185~s at 1~g (Table~\ref{tbl:v2closedloop}). Slow powders took much longer: white rice flour needed 11--13 minutes for each 200~mg dose. Two features of the controller explain most of the remaining failures. First, it never returns to an earlier phase. Once the tap phase begins, it cannot rotate the auger to refill the outlet, apart from 5$^\circ$ nudges that proved too small for the slower powders. Second, its stopping band was $\pm$5~mg at every target. At 1~g that is ten times tighter than the $\pm$50~mg acceptance limit, so the firmware logged some doses as stalled although they met the specification. We report every dose against the acceptance limit and keep the firmware's own label in the per-dose record (SI Table~\siref{tbl:doses}).
+
+\subsection{Repeated doses with a stepped tilt}
+\label{sec:stepped}
+
+Protocols G and H used three doses per condition. To measure repeatability, we later ran up to 30 consecutive doses per powder on a revised procedure (18--20 November 2026; Table~\ref{tbl:stepped}). The bulk phase turned the auger at 80~rpm with a solenoid tap every 300~ms, and stepped the tilt down from 60$^\circ$ through 55, 50, and 45 to 40$^\circ$ in equal mass bands as the cup filled. The fine phase turned the auger steadily at 25~rpm with the tube at 30$^\circ$, again with taps, and the controller's tap phase finished each dose to within $\pm$1~mg. The settings were developed on salt over 17 trials, in which a tube filled to the brim plugged at the steepest tilts and a newly printed tube fed poorly, and were then frozen for six powders: 116 trials and 103 completed doses (SI Section~\siref{sec:steppedtilt}).
+
+\begin{table*}[t]
+\small
+  \caption{\ Repeated closed-loop doses on the stepped-tilt procedure (settings frozen; 18--20 November 2026). A dose is a trial that reached its target; trials that did not were priming trials while powder reached the outlet, trials after the tube ran dry, one balance overload, and barium chloride, which had caked in its tube. Errors are over the completed doses. The $\pm$5\% column is the acceptance limit used throughout; $\pm$1~mg is the controller's own stopping band. Fig.~\ref{fgr:stepped} shows every dose, and SI Section~\siref{sec:steppedtilt} the procedure.}
+  \label{tbl:stepped}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccccc}
+    \hline
+    Powder & Target & Trials & Doses & Within $\pm$5\% & Within $\pm$1~mg & Median error & Mean $\pm$ SD of error & Median time \\
+    \hline
+    AlSi10Mg (gas-atomized) & 2~g & 26 & 20 & 20 & 11 & +0.7~mg & +7.6 $\pm$ 13.6~mg & 47~s \\
+    Sodium sulfate & 1.5~g & 23 & 23 & 12 & 1 & +65.5~mg & +90 $\pm$ 74~mg & 12~s \\
+    Calcium lactate & 2~g & 18 & 18 & 14 & 1 & +46.5~mg & +48 $\pm$ 43~mg & 24~s \\
+    Barium chloride & 1.5~g & 4 & 0 & -- & -- & -- & -- & -- \\
+    Xanthan gum & 2~g & 18 & 18 & 18 & 3 & +5.0~mg & +17.4 $\pm$ 23.5~mg & 62~s \\
+    Sodium chloride (NaCl) & 1~g & 27 & 24 & 23 & 3 & +7.3~mg & +15.6 $\pm$ 17.4~mg & 27~s \\
+    \hline
+    All & & 116 & 103 & 87 & 19 & & & \\
+    \hline
+  \end{tabular*}
+\end{table*}
+
+\begin{figure*}
+\centering
+\begin{subfigure}[b]{4.02in}\includegraphics[page=1]{v2/figures/steppedtilt.pdf}\caption{Final error}\end{subfigure}\hfill
+\begin{subfigure}[b]{2.11in}\includegraphics[page=2]{v2/figures/steppedtilt.pdf}\caption{Time per dose}\end{subfigure}
+\caption{Repeated doses on the stepped-tilt procedure. With the settings frozen, 87 of 103 doses on five powders landed within $\pm$5\%, and AlSi10Mg was the most accurate: all 20 of its 2~g doses within $\pm$5\%, 11 within $\pm$1~mg. (a) Final error of every completed dose (delivered minus target), on a symmetric logarithmic axis that is linear within $\pm$1~mg. The dark green band is the controller's $\pm$1~mg stopping band and the light green bands the $\pm$5\% acceptance limit of each target; every dose was above $-$1~mg, so the lower limits are off the axis. Marker shape gives the phase in which the dose ended and open markers lie outside $\pm$5\%. Rows are ordered by mass per revolution in protocol C (fastest at the top); the target is given with each powder. (b) Time per dose. Every sodium sulfate dose ended in the bulk phase, in 11--13~s, because powder still in flight when the auger stopped carried it past the target.}
+\label{fgr:stepped}
+\end{figure*}
+
+With the settings frozen, 87 of the 103 doses finished within $\pm$5\% (Table~\ref{tbl:stepped}; Fig.~\ref{fgr:stepped}). AlSi10Mg, the alloy powder, did best: all 20 of its 2~g doses finished within $\pm$5\%, 11 of them within the controller's own $\pm$1~mg band, with a median error of +0.7~mg and a median time of 47~s. Xanthan gum landed all 18 doses within $\pm$5\% and salt 23 of 24. The doses that ended in the tap phase were accurate: for AlSi10Mg, 9 of the 11 that reached it finished within $\pm$1~mg, against a median of 1.7~mg added per tap cycle. Almost all the remaining error was overshoot from powder that kept falling after the auger stopped. The fine phase stopped the auger 20~mg before its hand-over point, but a median of 28--40~mg still landed afterwards, so 43 doses ended in the fine phase at or above the target. Sodium sulfate, which fed about three times faster than the others in the bulk phase (0.36 against 0.09--0.17~g~s$^{-1}$), ended every dose in the bulk phase itself and overshot by a median of 66~mg. Calcium lactate overshot by a median of 47~mg. Barium chloride, which had absorbed moisture and caked in its tube, delivered nothing in about 113 revolutions. Because powder still in flight is roughly proportional to the flow rate when the auger stops (0.8--0.9~s of flow for salt and AlSi10Mg), a stopping margin set from each powder's own flow rate, rather than a fixed 20~mg, is the obvious next step. The salt development runs also showed that the state of the tube matters as much as the settings: the tube that plugged at 60$^\circ$ when filled to the brim on 18 November fed 24 doses in a row the next day, with taps in the bulk phase and a faster auger, until it ran dry.
+
+\subsection{Dosing for the alloy workflow}
+\label{sec:alloy}
+
+The doser is already used in our alloy workflow. In late September 2026, with settings from a separate optimization of the controller, it weighed 7.993~g of AlSi10Mg for an 8~g request into the cup of a custom charge, which the lab's ultrasonic atomizer then turned into new powder. It then dosed Al~4047 powder made by the same atomizer into an 8~g charge and into two cups for a composition spread, at 7.5 and 15 weight percent of the filled cup (SI Section~\siref{sec:al4047}). Each container was filled by a sequence of closed-loop doses, ten in all, run by an AI agent on request in the repository. Unlike the gas-atomized feedstock, this powder contained coarse agglomerates that lodged in the 3~mm outlet. Steeper tilt (60$^\circ$ and 75$^\circ$), faster rotation, and faster tapping did not clear the blockage, but about 13 reverse turns of the auger with the tube level did, after which the tube fed 60--80~mg per turn in either direction. Once a team member had cleared the larger particles from the auger, a single bulk dose fed 1.10~g at about 25~mg~s$^{-1}$ without stalling. With hand-driven steps between closed-loop doses where needed, the three containers finished at 8.0010~g (target 8.0000~g), 3.0432~g (3.0407~g), and 6.5676~g (6.5674~g), that is, within 2.5~mg or 0.08\% of the target. Two lessons carry over: a powder made in the laboratory should be sieved before it is loaded, and reversing the auger is a simple, effective way to clear an outlet.
+
+Before the test campaign, on 24 July 2026, the doser also had a short qualitative trial inside an inert-atmosphere glove box in a polymer chemistry laboratory at the University of Utah. Team members typed requests to an AI agent in a GitHub issue, and the agent sent the commands to the doser over the network, so nobody had to reach into the glove box to run it. The first 1~g dose of salt needed two runs of the controller and ended 4.4~mg short. In the smallest auger, chunks of a solid norbornene monomer dispensed well, whereas fine, hair-like azobisisobutyronitrile (AIBN, a polymerization initiator) appeared to clog and delivered nothing. Static charge in the dry atmosphere made salt cling to the inside of the auger, and vibration slowly loosened the nuts until the gears no longer meshed; locknuts, and brackets printed in one piece with the plate, address the loosening.
+
+\subsection{Limits of the current design}
+\label{sec:limits}
+
+Several limits follow from these results. First, the design covers doses from tens of milligrams to grams. Doses of 0.1--10~mg, which some chemistry applications need, are out of reach for now; they would require per-powder calibration, better isolation from vibration, and a smaller auger. Second, three of the 13 powders conveyed no measurable amount, so the current geometry sets a floor on how cohesive or how light a powder can be, and coarse agglomerates can block the outlet. Third, the outcome of a dose depends on how much powder sits in the screw near the outlet when the dose starts, and on how full and how compacted the tube is. There is no defined starting state, and in routine use the auger would never be reset between doses, so this variability is part of the real performance. Fourth, all masses were weighed in the cup, so powder that left the tube but missed the cup is not counted, and the tube's fill level was not controlled. Fifth, the doser ran each set of doses unattended, but people filled and mounted the augers, emptied the cup between runs, and recovered from faults, most of which involved the balance or its surroundings (SI Table~\siref{tbl:operator}). Finally, the balance sets the noise floor. Idle readings drifted by up to tens of milligrams in late August. In the second round, readings at rest scattered by less than 0.4~mg, but readings taken right after the doser moved scattered by 5--19~mg on half of the runs with small doses (SI Fig.~\siref{fgr:noiseact}). Only one of the 14 passing 50~mg doses lay more than twice that noise inside its limit, so the 50~mg pass rate is uncertain, while the failures are clear. Isolating the balance from the doser's motion is therefore as important as refining the controller.
+
+\subsection{Cost and accessibility}
+
+The single-channel module (printed parts, motors, drivers, and microcontroller) costs under \$200 in single quantities, excluding the balance (SI Table~\siref{tbl:bom}), and prints in under 24~h on a consumer printer. Commercial automated gravimetric dosing modules are quoted at \$30k--\$300k depending on configuration. Even where commercial instruments are more accurate, a cost gap of two orders of magnitude changes what a laboratory can do. It can dedicate one printed auger to each powder so that powders never mix, throw away and reprint the parts the powder touches, and replace a failed channel within a day. This is the economic argument for open-source laboratory hardware\cite{Pearce2020Economic,Hohlbein2022Open} applied to the solid-handling gap in SDLs. % TODO (human): DD's hardware editorial asks for a side-by-side comparison with commercial and open alternatives (dose range, accuracy, time per dose, powders, price, build time); SUBMISSION-DECISIONS.md item 12.
+
+\section{Experimental}
+\label{sec:methods}
+
+\subsection{Fabrication and build files}
+We printed all parts in PLA on a Bambu Lab H2D printer (0.2~mm layers, four perimeters, 25\% infill), most of them with support material. The auger used in every test is a single printed piece modelled by the team in Fusion~360 (Fig.~\ref{fgr:v2doser}c). It is a tube 250~mm long, with a 25~mm outer diameter and a 21~mm bore. An 8~mm central core and a single-start flight, 0.5~mm thick with a 10.4~mm pitch, run along the 83~mm nearest the outlet, which tapers to a 3~mm exit hole. A 44-tooth gear (module 1) is printed on the outside of the tube 78--88~mm from the outlet, and an external thread at the upper end carries the screw-on cap through which the tube is filled. A 20-tooth pinion on the stepper drives the 44-tooth gear (2.2:1 reduction), and the servos drive the tilt plate through a 2:1 gear. The auger, its cap, and the stepper pinion were each modelled in a narrated recording.\cite{FusionPlaylist} The first AI-modelled geared auger (May 2026) instead had a flight along its whole length, four loading slots in its closed top end, and a 16:48 gear pair (3:1); the agent's later storage version already had the capped upper end and the flight confined to the outlet third, so the team's main changes were the gear pair, the flight, and the cap thread (SI Table~\siref{tbl:augercompare}). One AI-modelled part is still on the doser: the tap-collar base, which the coding agent wrote as parametric Python code in May 2026. SI Table~\siref{tbl:parts} links the design file of every printed part, and SI Section~\siref{sec:build} gives the build in 19 steps. The current parts are also public Onshape documents, one per part, with their print settings, and the AI-modelled parts' source files (CadQuery, OpenSCAD, and KCL), printable STL files, and renders for every iteration are in the repository. Purchased parts: a NEMA-11 stepper motor (auger drive), two MG996R-class servos (tilt), a 12~V push--pull solenoid (tapping), a coin-type ERM motor (vibration; unused), and an A\&D HR-100A analytical balance (0.1~mg readability). The auger turns in printed collars, without bearings.
+% TODO (human): which of the other Fusion 360 parts (plates, brackets, tap collar, servo pinions) were on the rig during the August and September tests (MEETING-DECISIONS.md item 1).
+
+\subsection{Electronics and firmware}
+A Raspberry Pi Pico~W runs MicroPython firmware with commands to rotate by a given angle, tap, vibrate, tilt to an angle, and read the mass. A Pololu Tic T500 drives the stepper over a serial (UART) link, a DRV8871 H-bridge drives the solenoid, and a DRV2605L haptic driver runs the vibration motor over I$^2$C. The balance is read over RS-232 through an SP3232 transceiver board. The electronics began on a breadboard and now sit on a custom printed circuit board (PCB). Schematics, board files, the wiring guide, and the firmware are in the repository (\texttt{hardware/}). The dosing firmware includes both gear ratios, so its rotation commands and records are in auger revolutions, auger rpm, and tube degrees. The one exception is the test battery, whose raw records store the tilt as a servo setting; the 2:1 tilt gear halves that setting, so the battery's three tilts are tube angles of 0$^\circ$, 22.5$^\circ$, and 45$^\circ$. We report tube angles throughout and convert the raw settings once, in the analysis scripts (SI Section~\siref{sec:protocols}). The auger ratio is confirmed independently by the protocol-D traces, whose pulses recur once per commanded auger revolution (3.94 against 4.00~s).
+
+\subsection{Powders and test protocols}
+Table~\ref{tbl:v2powders} lists the 13 powders. Each powder had its own printed auger and cap, labelled with the powder's name, so no auger carried two powders. We filled each auger once through its capped upper end, without controlling the fill level or weighing it, and stored it loaded with tape over the outlet. A run began by mounting the filled auger and removing the tape, with occasional top-ups. Within a run nobody acted between doses: each dose was weighed from its own tare with earlier powder left in the cup, and the cup was emptied between runs. SI Table~\siref{tbl:operator} lists every task a person did in the campaign. The test protocols (Table~\ref{tbl:protocols}) ran in a fixed order with frozen settings, identically for every powder. Each protocol emitted machine-readable trial records over the serial link, and we archived them as versioned CSV files stamped with the powder, firmware version, and settings, so every number in this paper can be traced to its raw balance record. Protocol D streamed the balance every 0.25~s nominally (0.29--0.39~s in practice) while the auger turned continuously; its timing loop advanced by the nominal poll interval rather than the elapsed time, so masses and rates from protocol D use the elapsed time.
+
+We screened each run for quality before analysis. For example, we excluded a run with a failed tilt servo, a deliberate stress test of the bench, and runs in which the balance could not be read. One run per powder is shown in Fig.~\ref{fgr:v2openloop}: the newest run that passed screening, preferring runs whose protocols C and E agreed. We report a mean as a measurement only if it exceeds twice its standard error, and otherwise report the powder as not having moved. Fumed silica is the one exception to screening. Its only run failed screening because the outlet could not be seen on camera to rule out a blockage, so its result (an average of at most 0.25~mg per revolution over 350 revolutions) is reported but is less certain than the others. The noise floor of each run is the spread of its eight protocol-A readings.
+
+\subsection{Closed-loop dosing procedures}
+\emph{Protocols G and H.} The controller has three phases, with settings that were the same for every powder and every dose. In the bulk phase it tilts the tube to 45$^\circ$ and turns the auger continuously at 55~rpm, stopping 0.12~g early to allow for powder still in flight, until less than 0.5~g remains. In the fine phase it tilts the tube to 22.5$^\circ$ and turns the auger in 45$^\circ$ steps, waiting 1.5~s for a settled reading after each, until less than 50~mg remains. In the tap phase it lowers the tube to horizontal and fires two 60~ms solenoid taps per cycle, again reading the balance after each cycle, until the reading is within $\pm$5~mg of the target. If three tap cycles in a row add no mass, it turns the auger forward 5$^\circ$ to refill the outlet, up to ten times. For the smaller protocol-H doses, the hand-over points were capped at the target mass (bulk) and at half the target (fine). A dose ends when the reading is within the $\pm$5~mg band (``ok''), when it exceeds the target by more than the band (overshoot), when tapping and nudging add nothing more (stalled), after 200 cycles of one phase (cycle budget), or after 900~s. We tuned the settings by hand on salt and then froze them, and no dose outcome was used to retune them. In the first round the controller used a reading only once the balance flagged it as stable; after the move to a second fume hood, the balance rarely reported stability while the rig was running, so the second round averaged a bracket of five readings taken 0.25~s apart instead. Before each set of doses, the balance had to stay within the dose tolerance while nothing moved, and runs that could not pass this check were postponed. Our reporting follows the gravimetric structure that ISO 8655-6 prescribes for piston pipettes, as adapted for an open-hardware pipette:\cite{Yoshikawa2023Pipette,Yoshikawa2026Commit} replicate doses at several target masses, each summarized by its systematic error (mean deviation from target), random error (standard deviation), overshoot rate, and time. Every dose, including failures and the firmware's own termination label, is listed in the per-dose record (\texttt{paper/figures/data/doses\_all.csv}) and summarized by powder and target in SI Table~\siref{tbl:doses}.
+
+\emph{Stepped-tilt procedure.} A script running on the microcontroller wrapped the same three-phase controller. In the bulk phase the auger turned at 80~rpm with one 60~ms tap every 300~ms while the tube stepped down through 60, 55, 50, 45, and 40$^\circ$, one step per equal mass band or after 3~s without flow, until 0.25~g remained. In the fine phase the tube was at 30$^\circ$ and the auger turned steadily at 25~rpm with the same taps, stopping 20~mg before the hand-over at 25~mg to go. The tap phase was the controller's own, at 0$^\circ$: one tap and a 15$^\circ$ auger turn per cycle, a 1.5~s settle, and a 5$^\circ$ nudge after three cycles without gain, until the reading was within $\pm$1~mg. A trial stalled after 8~s without a 2~mg gain. The balance was logged at about 9--10 readings per second, and each trial was saved to its own CSV file. A run stopped itself after two failed trials in a row, at a cap on the mass in the beaker, or on a balance overload.
+
+\emph{Atomizer doses.} The Al~4047 doses used a bulk-only mode added for them: the tube at 40$^\circ$, the auger at 100~rpm with two taps per second, slowing linearly over the last 100~mg and speeding up again whenever flow stopped for 3~s, and halting when the reading plus the recent flow rate times 0.83~s (the measured time for which powder keeps falling after the auger stops) reached the target. Between closed-loop doses, the agent ran stepwise doses and reverse turns through the same command interface, with a stable balance reading after each step (SI Section~\siref{sec:al4047}).
+
+\subsection{Safety}
+Several of the powders are hazardous, and anyone repeating this work should handle them as their safety data sheets direct. Fine metal and semimetal powders, such as AlSi10Mg, Al~4047, and the $-$325 mesh silicon, are combustible dusts: keep the quantities small, avoid raising dust clouds, and keep them away from sparks. The stepper motor, the solenoid, and static charge on the printed PLA parts are possible ignition sources. Barium chloride is toxic if swallowed and harmful if inhaled. Fumed silica, fine silicon, and the flours form fine dusts that should not be breathed in, so handle them in a fume hood or another ventilated enclosure. The AIBN used in the glove-box trial can catch fire if heated. The gears and the tilt hinge are pinch points while the doser is moving.
+
+\subsection{AI design workflow and logging}
+LLM coding agents carried out tasks written as GitHub issues: the GitHub Copilot coding agent from April to June 2026, when the AI-modelled parts were made, and Anthropic's Claude Code agent from the end of June 2026 (Table~\ref{tbl:v2aitools}). Each design session produced a pull request containing the generated CAD code, rendered orthographic and isometric views, and STL files, which the team reviewed in the browser. We ran literature and design-review queries through Edison Scientific. We explored CADSmith (May and June 2026) and Zoo Design Studio (mainly June 2026, after trials of Zoo's text-to-CAD service from May) on the same part specifications; in Zoo Design Studio, modelling was done through its Zookeeper agent. No conventional CAD software was used in first designing the parts; the Fusion~360 recreations came afterwards. Claude Code also ran the tests on the doser, on requests that team members wrote in pull requests, and wrote the analysis and figure scripts. AI tools also helped prepare this paper: Claude Code drafted and revised the manuscript and SI from team members' requests and review comments on the manuscript pull request (\#97) and linked issues, and Edison Scientific ran literature searches and mock reviews of drafts. References were checked against their DOI records where these exist (\texttt{paper/references\_validation.md}). In line with \textit{Digital Discovery}'s guidance on the use of LLMs, the prompts and responses (issues, pull-request threads, and Zoo Design Studio transcripts) are public in the repository, with the date of every exchange, and are summarized in the SI. The raw agent session logs kept by GitHub Actions expire after 90 days. Those from April to early July had expired by October 2026; the later logs and the Claude Code session transcripts were downloaded then and are part of the archived release. Over the project, team members addressed the two coding agents 754 times, and the agents authored 90\% of all commits, including those for firmware, analysis, and writing (SI Fig.~\siref{fgr:aiusage}).
+
+\section{Conclusions}
+
+A single-channel powder doser with closed-loop weighing can be built from printed parts and commodity electronics for under \$200 plus a balance. With one fixed set of settings, it delivered 10--231~mg per auger revolution for ten of 13 powders and no measurable amount of the other three. In closed loop, 24 of 39 doses of 1~g finished within $\pm$5\% of the target, including every dose on the seven fastest-flowing powders dosed, while doses of 50 and 200~mg met their limits in only 14 and 18 of 30. A revised procedure that steps the tilt down as the cup fills landed 87 of 103 repeated doses within $\pm$5\%, including all 20 of 2~g on AlSi10Mg, 11 of them within $\pm$1~mg. The doser has filled atomizer charges with AlSi10Mg (7.993~g for 8~g) and with Al~4047 from our own atomizer (each container within 2.5~mg of its target). Its main limits are an auger geometry that cannot move very fine or very light powders and can be blocked by coarse agglomerates, a controller whose fixed stopping margin lets fast powders overshoot, and a balance whose noise sets the floor for small doses.
+
+The design process is the second result, although it comes from one team and one project. Generating a whole assembly with AI did not work. Generating one part at a time against dimensioned drawings, with automated checks and human review, worked better, and it left behind a complete written record of every decision. AI was most effective as a modelling assistant rather than an autonomous design agent, and the engineers redrew the parts that were built and tested. The design log, with 183 entries and every failure included, is itself a dataset for studying AI-assisted hardware design.
+
+\label{sec:future}
+This module is the first of several planned stages. The first extension is a multi-powder doser that doses many powders without anyone swapping augers. The team is designing it in conventional CAD; one design carries the auger modules on a roller chain past a single station that turns, taps, tilts, and weighs them, and another holds three modules around one cup. Neither has been tested, and they will be reported separately. The second is automatic calibration for each powder: Bayesian optimization of the phase thresholds, tilt angles, speeds, and tap schedules, subject to the constraint that an overshoot cannot be undone, is under way and should make small doses more reliable and set each powder's stopping margin from the powder that keeps falling after the auger stops. The third is a public database of tuned settings for many powders, linked to measured powder properties. The test protocols may help build it: the mass per revolution and its variation come from protocol C alone, which takes about 2~min per powder, so if they track independent measurements such as bulk and tapped density, the doser could classify a new powder as a side effect of dosing it, although that idea is still untested. We also plan changes to the auger geometry aimed at the powders that did not convey, transparent augers to watch the flight fill and empty, and continued evaluation of generative design tools, including AI tools for laying out printed circuit boards like the one that now carries the doser's electronics.
+
+\section*{Author contributions}
+% CRediT roles (https://credit.niso.org), proposed 10 Oct 2026 from the GitHub record in
+% paper/submission/CREDIT.md, which lists the evidence for each role. Each author must confirm
+% their own roles, and anyone who critically reviews the final draft should also get
+% "writing -- review & editing" (ICMJE). The author list is still open
+% (paper/submission/SUBMISSION-DECISIONS.md, item 1).
+% TODO (human): Xavier Zaitzeff requested and steered the November stepped-tilt trials (PR #131),
+% and Ethan Webster made the solenoid bracket (#203) and the Onshape parts (#193);
+% add to the author list or the Acknowledgements.
+S.C.: conceptualization, methodology, investigation, validation, data curation, writing -- original draft, writing -- review \& editing. W.M.: methodology, software, investigation, formal analysis, validation. L.W.: software, investigation, resources. C.R.: investigation. G.E.: investigation. S.G.B.: conceptualization, methodology, software, formal analysis, visualization, resources, supervision, project administration, funding acquisition, writing -- original draft, writing -- review \& editing.
+
+\section*{Conflicts of interest}
+There are no conflicts to declare.
+
+\section*{Data availability}
+% TODO (human, at submission): tag v1.0.0, archive it on Zenodo, and put the version DOI in
+% the Charles2026Release entry of references.bib. The dataset upload (scripts/zenodo_dataset.py)
+% was tested on the Zenodo sandbox only (records 627392 and 627395); nothing is on zenodo.org yet.
+% TODO (human): name the licences once chosen (SUBMISSION-DECISIONS.md, item 5); DD prefers an
+% open-hardware licence such as CERN-OHL for the hardware files. The repository has only MIT.
+% TODO (human): PR #74 (design log) and PR #170 (Fusion 360 STEP files) are not merged into main.
+Data for this article, including the raw test-protocol records, the per-dose record, the stepped-tilt trials, the atomizer dose records, the tidy datasets behind Figs.~\ref{fgr:v2openloop}, \ref{fgr:v2closedloop} and \ref{fgr:stepped}, the design log, and the AI prompt and response logs, are available in the powder-doser repository at \url{https://github.com/vertical-cloud-lab/powder-doser} and in its archived release on Zenodo.\cite{Charles2026Release} The code for the doser firmware (MicroPython), the analysis and figure scripts (Python, and gawk with pgfplots for Fig.~\ref{fgr:stepped}), and the parametric CAD source (CadQuery, OpenSCAD, and KCL) can be found at the same repository and release. The version of the code employed for this study is version 1.0.0. The repository also holds the team's Fusion~360 parts as STEP and STL files, renders, an animated assembly guide, and the KiCad schematics and board files. The current parts are public Onshape documents, listed with their print settings on the project page (\url{https://vertical-cloud-lab.github.io/powder-doser/}), and each printed part tested has a public Fusion~360 link (SI Table~\siref{tbl:parts}). The scripts in \texttt{paper/v2/} rebuild the figures and tables, and those in \texttt{paper/figures/data/} the SI tables. Hardware designs, code, and data are released under the open licenses stated in the repository. References cited in the SI are listed in this article's reference list.
+
+\section*{Acknowledgements}
+% Ron Darling confirmed by S.G.B. on PR #97 (8 Oct 2026). Nasa Sinnott-Armstrong is the
+% "Nasa" credited with the Ultimaker print in the POSE deck (commit 3023f0e). "Jacob" in the
+% 24 July 2026 glove-box notes (issue #117) is taken to be Jacob J. Lessard; confirm.
+% TODO (human): funding statement (SUBMISSION-DECISIONS.md item 6).
+We thank Devora Najjar and Ron Darling, who started this project with one of us (S.G.B.) at a two-day hackathon in April 2026. Devora Najjar wrote the first auger model there, and Nasa Sinnott-Armstrong helped print it. We thank Philip Lampkin and Jacob Lessard (Department of Chemistry, University of Utah) for hosting the glove-box trial and for their advice on dosing in synthetic chemistry, Ethan Webster for the solenoid bracket and the Onshape versions of the parts, and Xavier Zaitzeff for designing the stepped-tilt trials. Generative AI tools were used extensively and deliberately in this work, both as objects of study and as assistants (Table~\ref{tbl:v2aitools}). During the preparation of this study and manuscript, the authors used the following tools. Three LLM tools wrote CAD code, firmware, and analysis and figure scripts, ran the tests, and drafted and revised the text of the manuscript and SI: the GitHub Copilot coding agent (GitHub; mostly Claude Opus~4.7 and Opus~4.8, April to July 2026), a local Claude session (Claude Sonnet~4.6, April 2026), and Claude Code (Anthropic; Claude Opus~4.8, Opus~5, Opus~5.5, Fable~5, and Fable~5.1, June to November 2026). Edison Scientific searched the literature, compiled references, and ran mock reviews of designs, data, and drafts. CADSmith, the Zoo Text-to-CAD API, and Zoo Design Studio (through its Zookeeper agent) served as text-to-CAD tools, and GitHub Copilot code review reviewed pull requests automatically. The authors have reviewed and edited the output and take full responsibility for the content of this publication.
+
+\balance
+
+\renewcommand\refname{Notes and references}
+
+\bibliography{references}
+\bibliographystyle{rsc}
+
+\end{document}

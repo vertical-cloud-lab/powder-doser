@@ -1,0 +1,346 @@
+Publishing ethics | Elsevier policy
+
+[Skip to main content](https://www.elsevier.com/about/policies-and-standards/publishing-ethics#main-content)
+
+Unfortunately we don't fully support your browser. If you have the option to, please upgrade to a newer version or use [Mozilla Firefox](https://www.mozilla.org/en-GB/firefox), [Microsoft Edge](https://www.microsoft.com/en-us/edge), [Google Chrome](https://www.google.co.uk/chrome), or Safari 14 or newer. If you are unable to, and need support, please [send us your feedback](https://www.elsevier.com/support).
+
+[![Elsevier](https://www.elsevier.com/images/elsevier-logo-orange.svg "width=171 | height=48")](https://www.elsevier.com/)
+
+* [Academic & Government](https://www.elsevier.com/academic-and-government)
+* [Health](https://www.elsevier.com/health)
+* [Industry](https://www.elsevier.com/industry)
+* [Insights](https://www.elsevier.com/connect)
+* [About](https://www.elsevier.com/about)
+* [Support](https://www.elsevier.com/support)
+* [Security](https://www.elsevier.com/security)
+
+[Publish with us](https://www.elsevier.com/publishing)
+
+[Elsevier policies](https://www.elsevier.com/about/policies-and-standards)
+
+1. [Home](https://www.elsevier.com/)
+2. [About](https://www.elsevier.com/about)
+3. [Elsevier policies](https://www.elsevier.com/about/policies-and-standards)
+4. Publishing ethics
+
+# Publishing ethics
+
+* [Publishing ethics](https://www.elsevier.com/about/policies-and-standards/publishing-ethics#0-publishing-ethics)
+* [Duties of the Publisher](https://www.elsevier.com/about/policies-and-standards/publishing-ethics#1-duties-of-the-publisher)
+* [Duties of Editors](https://www.elsevier.com/about/policies-and-standards/publishing-ethics#2-duties-of-editors)
+* [Duties of Reviewers](https://www.elsevier.com/about/policies-and-standards/publishing-ethics#3-duties-of-reviewers)
+* [Duties of Authors](https://www.elsevier.com/about/policies-and-standards/publishing-ethics#4-duties-of-authors)
+
+The formal component of the scholarly communication system, that is to say the publication of an article in a peer reviewed learned journal, serves many purposes outside of simple communication. It is a building block in the development of a coherent and respected network of knowledge. It is prima facie evidence for the quality and impact of the research work of its authors and by extension the institutions that support them. It supports, and is itself an example, of the scientific method. For all these reasons and more, it is important to lay down standards of expected ethical behaviour by all parties involved in the act of publishing: the author, the journal editor, the peer reviewer, the publisher and the society for society-owned or sponsored journals.
+
+These guidelines are designed specifically for primary research journals, but may also be relevant for review and other professional publications as well. Individual journals will often have more elaborate or more distinct ethical procedures, generally reflected in their Guide for Authors, and many journals also accept and are in many cases founding participants with respect to discipline-specific standards or standard-setting bodies, such as the [International Council of Medical Journal Editors (ICMJE)opens in new tab/window](https://www.icmje.org/) and [Consolidated Standards of Reporting Trials (CONSORT)opens in new tab/window](https://www.consort-spirit.org/).
+
+**Respectful and Professional Behavior**
+
+At Elsevier, we believe in forging positive working relationships that help us build trust in science and protect the integrity of the scholarly record. We expect our staff as well as authors, reviewers, editors, and readers to treat one another with respect and dignity at all times. We do not tolerate disrespectful, inappropriate or unprofessional behavior, or any form of discrimination, harassment, bullying, or retaliation directed against Elsevier staff. We reserve the right to bring repeated breaches or serious cases to the attention of employers or the appropriate authorities, and may cease to interact with or otherwise engage with individuals who repeatedly or materially violate this policy.
+
+Quick links:
+
+* [Publishing Ethics Resource Kit (PERK)](https://www.elsevier.com/editor/perk)
+* [Ethics on Researcher Academyopens in new tab/window](https://researcheracademy.elsevier.com/publication-process/ethics)
+
+## Duties of the Publisher
+
+### Guardianship of the scholarly record
+
+These guidelines have been written with all these requirements in mind but especially recognising that it is an important role of the publisher to support the huge efforts made by journal editors, and the often unsung volunteer work undertaken by peer reviewers, in maintaining the integrity of the scholarly record. Although ethical codes inevitably concentrate on the infractions that sometimes occur, it is a tribute to scholarly practice that the system works so well and that problems are comparatively rare. The publisher has a supporting, investing and nurturing role in the scholarly communication process but is also ultimately responsible for ensuring that best practice is followed in its publications (see the [STM Trade Association International Ethical Principles for Scholarly Publicationopens in new tab/window](https://stm-assoc.org/document/stm-ethical-principles-for-scholarly-publication/) and the [COPE Codes of Conductopens in new tab/window](https://publicationethics.org/resources/code-conduct)).
+
+Elsevier, as the world's leading journal publisher, takes its duties of guardianship over the scholarly record extremely seriously. Our journals record "the minutes of science" and we recognise our responsibilities as the keeper of those "minutes" in all our policies, not least the ethical guidelines that we have adopted here.
+
+Elsevier is adopting these policies and procedures to support editors, reviewers and authors in performing their ethical duties under these guidelines. We work with other publishers and industry associations to set standards for best practices on ethical matters, errors and retractions.
+
+**Systematic manipulation of the publishing process**
+
+Elsevier does not tolerate systematic manipulation. This may involve, for example, subverting or unduly influencing the submission, peer review or publication process; authorship integrity violations; citation manipulation; or fabricated, reused or implausible content.
+
+Consistent with COPE guidance, if the burden of evidence (including direct and/or circumstantial) supports suspicions that submissions or publications have been affected by efforts to manipulate the process, we reserve the right to take action to reject (pre-publication) or retract (post-publication) an article or groups of articles. To avoid the disclosure of information that could compromise the integrity of our publishing processes and systems, findings of our investigations may not be disclosed to all parties involved.
+
+We may notify an author's institution, employer, or funder where appropriate, and may refuse to interact with, or consider manuscript submissions from, individuals who repeatedly or seriously violate our policies .
+
+Even where authors do not respond to a post-publication investigation, Elsevier may take corrective action to protect the scholarly record.
+
+**Pre-publication integrity screening**
+
+The Publisher has various processes in place to detect potential breaches of research integrity or publishing ethics, independent of editorial review.
+
+Decisions to reject manuscripts for such potential breaches of research integrity or publishing ethics do not reflect a judgment about the scientific merit of the work. Rather, they are intended to uphold the integrity of the scholarly record, protect authors, reviewers, editors and readers from harm, and avoid the publication of material that would, if published, necessitate corrective action.
+
+The grounds on which the Publisher may reject a manuscript include, but are not limited to: evidence of fabrication or falsification of data, results, images or methods; plagiarism or undisclosed text re-use; undisclosed duplicate or redundant submission; manipulation of peer review; misrepresentation of authorship; failure to obtain required ethical approvals; or other conduct that calls into question the validity of the research process, results, or conclusions.
+
+### Safeguard editorial independence
+
+We are committed to ensuring that the potential for advertising, reprint or other commercial revenue has no impact or influence on editorial decisions (see Elsevier's ["Editorial independence" policy](https://www.elsevier.com/about/policies-and-standards/editorial-independence)).
+
+### Collaborate to set industry best practice
+
+We promote best practice by offering editors membership of the Committee on Publication Ethics (COPE) and providing editors with Crossref Similarity Check reports for all submissions to our editorial systems.
+
+### Provide editors with technical, procedural & legal support
+
+We support editors in communications with other journals and/or publishers where this is useful to editors and are prepared to provide specialised legal review and counsel if necessary.
+
+### Educate researchers on publishing ethics
+
+We also provide extensive education and advice on publishing ethics standards, particularly for early career researchers (see our [educational content in Researcher Academyopens in new tab/window](https://researcheracademy.elsevier.com/publication-process/ethics)).
+
+### Competing interests for editors who are employees of Elsevier
+
+Editors of Elsevier’s journals who are employees are required to report any competing or conflicting interests that could affect, or be perceived to affect, their editorial judgement. Competing interests must be reported as soon as they arise, and in any case through an annual declaration, so that they can be assessed and mitigated or resolved. Editorial competing interests may be disclosed on the journal’s website for ongoing competing interests (such as holding a patent), and/or on published papers for competing interests related to the specific paper.
+
+Competing interests for editors include both financial and non-financial interests, such as:
+
+* Current academic affiliations or other editorial roles. Examples include: employment, consultancies, professional affiliations, advisory positions, board memberships, or acting as an expert witness (in each case whether paid or unpaid).
+* Financial interests, including patents or patent applications, travel grants, ownership, directorship. Minor investments in publicly traded stock (less than 1% of the outstanding shares of the publicly traded company) or investments through mutual funds/pension funds/401Ks are excluded.
+
+Editors who are Elsevier employees are required to comply with Elsevier’s policy on the publication of research articles in Elsevier journals which discourages them from submitting research papers for publication in Elsevier journals, other than when the research was conducted before they joined Elsevier or in exceptional situations such as where the work was presented at a conference and the full conference proceedings are eventually published in an Elsevier journal. In all cases where a research paper is submitted for publication in an Elsevier journal, the Elsevier employee must disclose the conflict to the editor of the journal upon submission and the journal will ensure that all editorial processes are fully independent of the editor-author. If the article is accepted for publication, the article’s declaration of interest statement should disclose that Elsevier is the current employer of an author and that the peer review was fully independent of said author. 
+
+All such editors must also comply with Elsevier’s policy regarding non-involvement of editors in papers which they have written or which have been written by family members or colleagues or which relate to products or services in which the editor has an interest. 
+
+In addition, editorial staff are forbidden to use information acquired through their work for personal gain.
+
+## Duties of Editors
+
+### Publication decisions
+
+The editor of a learned journal is solely and independently responsible for deciding which of the articles submitted to the journal should be published, often working in conjunction with the relevant society (for society-owned or sponsored journals) (see Elsevier's ["Editorial independence" policy](https://www.elsevier.com/about/policies-and-standards/editorial-independence) and the COPE [Codes of Conductopens in new tab/window](https://publicationethics.org/membership/code-of-conduct)). The validation of the work in question and its importance to researchers and readers must always underwrite such decisions. The editor may be guided by the policies of the journal's editorial board and constrained by such legal requirements as shall then be in force regarding issues such as libel, copyright infringement and plagiarism. The editor may confer with other editors or reviewers (or society officers) in making these decisions.
+
+### Peer review
+
+The editor shall ensure that the peer review process is fair, unbiased, and timely. Research articles must typically be reviewed by at least two external and independent reviewers, and where necessary the editor should seek additional opinions.
+
+The editor shall select reviewers who have suitable expertise in the relevant field. The editor shall follow best practice in avoiding the selection of fraudulent peer reviewers (see [WAMEopens in new tab/window](http://www.wame.org/about/policy-statements)). The editor shall review all disclosures of potential conflicts of interest and suggestions for self-citation made by reviewers in order to determine whether there is any potential for bias.
+
+When writing reviewer reports, reviewers are asked to treat authors and their work as they would like to be treated themselves and to observe good reviewing etiquette. Editors may edit reviews in their editorial decision letter or not share reviews with authors if those reviews do not follow Elsevier’s policies (see [Duties of Reviewers](https://www.elsevier.com/about/policies-and-standards/publishing-ethics#3-duties-of-reviewers)).
+
+### Fair play
+
+The editor should evaluate manuscripts for their intellectual content without regard to race, gender, sexual orientation, religious belief, ethnic origin, citizenship, or political philosophy of the authors.
+
+The editorial policies of the journal should encourage transparency and complete, honest reporting, and the editor should ensure that peer reviewers and authors have a clear understanding of what is expected of them. The editor shall use the journal’s standard electronic submission system for all journal communications.
+
+The editor shall establish, along with the publisher, a transparent mechanism for appeal against editorial decisions.
+
+### Citations and journal metrics
+
+The editor must not attempt to influence journal rankings by artificially increasing any journal metric. In particular, the editor shall not require that references to that (or any other) journal’s articles be included except for genuine scholarly reasons and authors should not be required to include references to any editors’ or reviewers’ articles or products and services in which the editor or their associates have an interest. Editors may remove suggested inappropriate citations from reviewer comments before sharing with the authors.
+
+### Confidentiality
+
+The editor must protect the confidentiality of all material submitted to the journal and all communications with reviewers, unless otherwise agreed with the relevant authors and reviewers. In exceptional circumstances and in consultation with the publisher, the editor may share limited information with editors of other journals, institutions, and other organizations that investigate cases of research misconduct where deemed necessary to investigate suspected ethical breaches (see the [COPE guidelineopens in new tab/window](https://publicationethics.org/guidance/guideline/sharing-information-among-editors-chief-about-possible-misconduct)).
+
+Unless the journal is operating an open peer-review system and/or reviewers have agreed to disclose their names, the editor must protect reviewers’ identities.
+
+Unpublished materials disclosed in a submitted manuscript must not be used in an editor's own research without the express written consent of the author. Privileged information or ideas obtained through peer review must be kept confidential and not used for personal advantage.
+
+### The use of generative AI and AI-assisted technologies in the journal editorial process
+
+Visit the [generative AI policies for journals page](https://www.elsevier.com/about/policies-and-standards/generative-ai-policies-for-journals) to review our generative AI policy for editors.
+
+### Declaration of competing interests
+
+Any potential editorial conflicts of interest should be declared to the publisher in writing prior to the appointment of the editor, and then updated if and when new conflicts arise. The publisher may publish such declarations in the journal.
+
+The editor must not be involved in decisions about papers which they have written themselves or have been written by family members or colleagues or which relate to products or services in which the editor has an interest. Further, any such submission must be subject to all of the journal’s usual procedures, peer review must be handled independently of the relevant author/editor and their research groups, and there should be a clear statement to this effect on any such paper that is published.
+
+The editor shall apply Elsevier’s policy relating to the disclosure of potential conflicts of interest by authors and reviewers, e.g. the [ICMJE guidelinesopens in new tab/window](http://www.icmje.org/).
+
+### Vigilance over the published record
+
+The editor should work to safeguard the integrity of the published record by reviewing and assessing reported or suspected misconduct (research, publication, reviewer and editorial), in conjunction with the publisher (or society).
+
+Such measures will generally include contacting the author of the manuscript or paper and giving due consideration to the respective complaint or claims made, but may also include further communications to the relevant institutions and research bodies. The editor shall further make appropriate use of the publisher’s systems for the detection of misconduct, such as plagiarism.
+
+An editor presented with convincing evidence of misconduct should coordinate with the publisher (and/or society) to arrange the prompt publication of a correction, retraction, expression of concern, or other correction to the record, as may be relevant (see [Elsevier's policies](https://www.elsevier.com/about/policies-and-standards/article-withdrawal)).
+
+The editor should remain up to date on all relevant policies and procedures designed to protect the integrity of the publication record, including policies that pertain to their duties and also those that pertain to the reviewers and authors.
+
+## Duties of Reviewers
+
+### Contribution to editorial decisions
+
+Peer review assists the editor in making editorial decisions and through the editorial communications with the author may also assist the author in improving the paper. Peer review is an essential component of formal scholarly communication and lies at the heart of the scientific method. 
+
+In addition to completing a scientific evaluation of the manuscript, a reviewer should also be alert to potential ethical issues in the paper and should bring these to the attention of the editor, including any substantial similarity or overlap between the manuscript under consideration and any other published paper of which the reviewer has personal knowledge. Any statement that an observation, derivation, or argument had been previously reported should be accompanied by the relevant citation.
+
+When writing reviewer reports, reviewers are asked to treat authors and their work as they would like to be treated themselves and to observe good reviewing etiquette. Editors reserve the right to edit reviews in their editorial decision letter or to not share reviews with authors if those reviews do not follow Elsevier’s policies. This includes but is not limited to: hostile or unprofessional reviews or comments that are not scientifically constructive; biased reviews; evidence of plagiarism; evidence of genAI use against policy; evidence of citation manipulation or citation recommendations against policy; undeclared conflicts of interest; suspected systematic manipulation; or evidence of fictitious or falsified identity, or identity theft.
+
+Any selected referee who feels unqualified to review the research reported in a manuscript or knows that its prompt review will be impossible should notify the editor and decline to participate in the review process.
+
+### Standards of objectivity and competing interests
+
+Reviews should be conducted objectively. Personal criticism of the author is inappropriate, and reviewers should express their views clearly with supporting arguments. 
+
+Reviewers should declare potential conflicts of interest to the editor before agreeing to review a manuscript and should discuss with the editor whether they need to recuse themselves because there may be a concern of potential bias. Examples of potential conflicts of interest include (but are not limited to) collaborations between the reviewer and author(s) in the previous three years, reviewers and author(s) who are based in the same institution, and reviewers and authors who have close personal relationships or associations.
+
+### Citations
+
+Reviewers should not suggest citations to the reviewer’s (or their associates’) work unless the suggested citations are for genuine scientific reasons. Citation recommendations should not be made with the intention of increasing the reviewer’s citation count or enhancing the visibility of their work (or that of their associates). Requests for such citations can raise ethical concerns and may be seen as a conflict of interest or a source of bias.
+
+To ensure transparency and enable editorial oversight, reviewers who suggest citations must provide complete bibliographic details and a clear justification for each recommended reference. Editors may remove citations that, in their view, are inappropriate from reviewer comments.
+
+### Confidentiality
+
+Any manuscript received for review must be treated as a confidential document. Reviewers must not share the review or information about the paper with anyone or contact the authors directly without permission from the editor. Reviewers must also respect the confidentiality of the peer review process by complying with Elsevier’s policy on the use of generative AI and AI assisted technologies in the peer review process. 
+
+Some editors encourage discussion with colleagues or co-reviewing exercises, but reviewers should first discuss this with the editor in order to ensure that confidentiality is observed and that participants receive suitable credit.
+
+Unpublished materials disclosed in a submitted manuscript must not be used in a reviewer’s own research without the express written consent of the author. Privileged information or ideas obtained through peer review must be kept confidential and not used for personal advantage.
+
+### The use of generative AI and AI-assisted technologies in the journal peer review process
+
+Visit the [generative AI policies for journals page](https://www.elsevier.com/about/policies-and-standards/generative-ai-policies-for-journals) to review our generative AI policy for reviewers.
+
+### [Further resourcesopens in new tab/window](https://publicationethics.org/resources/guidelines/cope-ethical-guidelines-peer-reviewers)
+
+## Duties of Authors
+
+### Reporting standards
+
+Authors of reports of original research should present an accurate account of the work performed as well as an objective discussion of its significance. Underlying data should be represented accurately in the paper. A paper should contain sufficient detail and references to permit others to replicate the work. Fraudulent or knowingly inaccurate statements constitute unethical behaviour and are unacceptable.
+
+Review and professional publication articles should also be accurate and objective, and editorial ‘opinion’ works should be clearly identified as such.
+
+### Data access and retention
+
+Authors may be asked to provide the research data supporting their paper for editorial review and/or to comply with the open data requirements of the journal. Authors should be prepared to provide public access to such data, if practicable, and should be prepared to retain such data for a reasonable number of years after publication. Authors may refer to their journal’s Guide for Authors for further details.
+
+### Originality and acknowledgement of sources
+
+The authors should ensure that they have written entirely original works, and if the authors have used the work and/or words of others, that this has been appropriately cited or quoted and permission has been obtained where necessary.
+
+Proper acknowledgment of the work of others must always be given. Authors should cite publications that have influenced the reported work and that give the work appropriate context within the larger scholarly record. Information obtained privately, as in conversation, correspondence, or discussion with third parties, must not be used or reported without explicit, written permission from the source.
+
+Plagiarism takes many forms, from ‘passing off’ another’s paper as the author’s own paper, to copying or paraphrasing substantial parts of another’s paper (without attribution), to claiming results from research conducted by others. Plagiarism in all its forms constitutes unethical behaviour and is unacceptable.
+
+### Multiple, redundant or concurrent publication
+
+An author should not in general publish manuscripts describing essentially the same research in more than one journal of primary publication. Submitting the same manuscript to more than one journal concurrently constitutes unethical behaviour and is unacceptable.
+
+In general, an author should not submit for consideration in another journal a paper that has been published previously, except in the form of an abstract or as part of a published lecture or academic thesis or as an electronic preprint.
+
+Publication of some kinds of articles (e.g. clinical guidelines, translations) in more than one journal is sometimes justifiable, provided certain conditions are met. The authors and editors of the journals concerned must agree to the secondary publication, which must reflect the same data and interpretation of the primary document. The primary reference must be cited in the secondary publication. Further detail on acceptable forms of secondary publication can be found from the [ICMJEopens in new tab/window](https://www.icmje.org/).
+
+### Citations
+
+Authors must cite relevant, timely, and verified literature to support the claims made in their article. Citations should generally be peer-reviewed. Authors should:
+
+* Ensure that statements in their article which rely on external sources are cited accurately.
+* Avoid excessive and inappropriate citations to their own work.
+* Avoid excessive and inappropriate citations to the work of other authors or institutions and not enter into arrangements to cite the work of other authors or author groups.
+* Avoid excessive citations to support a single statement in their article.
+
+We encourage the use of Digital Object Identifiers (DOIs) as reference links as they provide a permanent link to the electronic article referenced.
+
+Editors and reviewers may recommend that authors consult (and potentially cite) additional sources during the peer-review process for scientific reasons. If the editor or reviewer suggests that an author includes citations to the editor’s or reviewer’s (or their associates’) work, this must be for genuine scientific reasons and not with the intention of increasing the editor’s or reviewer’s citation count or enhancing the visibility of their work (or that of their associates). Requests for such citations can raise ethical concerns and may be seen as a conflict of interest or a source of bias. If an author suspects citations have been suggested against this policy, then they should inform the editor (if suggested by a reviewer) or contact Elsevier’s [Researcher Supportopens in new tab/window](https://www.elsevier.support/publishing/category/10643) (if suggested by an editor).
+
+### Confidentiality
+
+Information obtained in the course of confidential services, such as refereeing manuscripts or grant applications, must not be used without the explicit written permission of the author of the work involved in these services.
+
+### Authorship of the paper
+
+Authorship should be limited to those who have made a significant contribution to the conception, design, execution, or interpretation of the reported study. All those who have made substantial contributions should be listed as co-authors.
+
+Where there are others who have participated in certain substantive aspects of the paper (e.g. language editing or medical writing), they should be recognised in the acknowledgements section.
+
+The corresponding author should ensure that all appropriate co-authors and no inappropriate co-authors are included on the paper, and that all co-authors have seen and approved the final version of the paper and have agreed to its submission for publication.
+
+Authors are expected to consider carefully the list and order of authors before submitting their manuscript and provide the definitive list of authors at the time of the original submission. Only in exceptional circumstances will the Editor consider (at their discretion) the addition, deletion or rearrangement of authors after the manuscript has been submitted and the author must clearly flag any such request to the Editor. All authors must agree with any such addition, removal or rearrangement. Elsevier journals do not allow authorship changes after acceptance.
+
+Authors take collective responsibility for the work. Each individual author is accountable for ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved.
+
+Individual journals may have particular definitions of authorship (e.g. medical journals may follow the [ICMJE definition of authorshipopens in new tab/window](https://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html)) and authors should ensure that they comply with the policies of the relevant journal.
+
+**Group Authorship**
+
+Group authorship refers to the attribution of an article to a defined and named group of authors whose members have contributed to the work. Examples include but are not limited to research consortia, clinical trial groups, collaborative networks, task forces or working groups, expert panels or consensus groups, and participatory research groups.
+
+* Group authorship must be declared on the title page *at submission.* When available, the submitting author should include the group under “Collaborative Author Groups” in the submission system.
+* A corresponding author who agrees to coordinate all communications on behalf of the group must be designated.
+* The group name will be included in the author list on the published article (e.g., “on behalf of the \[Consortium Name]”).
+* All group members associated with the work should be listed in a dedicated section, preferably an appendix.
+* All listed authors, whether in the article head or appendix, are expected to follow the chosen journal’s authorship and authorship change policies.
+* The group must maintain a transparent internal process for determining authorship and resolving disputes. All authorship disputes must be resolved within the group.
+
+**Deceased and Incapacitated Authors**
+
+When an author dies or becomes incapacitated during the writing, submission, or peer review of a manuscript, inclusion in the final publication may still be appropriate. The co-authors should identify the deceased or incapacitated author in a footnote (if before acceptance) or a corrigendum (if after acceptance) and should ensure their contributions are correctly recorded in a [CRediT statementopens in new tab/window](https://credit.niso.org/). If journal publication agreements were not signed prior to death or incapacitation, authors should seek permission from the author’s next of kin or nominated representative. If the deceased or incapacitated author is the corresponding author, co-authors should assign a new or co-corresponding author.
+
+### The use of generative AI and AI-assisted technologies in scientific writing and in figures, images and artwork
+
+Visit the [generative AI policies for journals page](https://www.elsevier.com/about/policies-and-standards/generative-ai-policies-for-journals) to review our generative AI policies for authors.
+
+### Jurisdictional claims
+
+Elsevier respects the decisions taken by its authors as to how they choose to designate territories and identify their affiliations in their published content. Elsevier’s policy is to take a neutral position with respect to territorial disputes or jurisdictional claims, including, but not limited to, maps and institutional affiliations. For journals that Elsevier publishes on behalf of a third party owner, the owner may set its own policy on these issues.
+
+* Maps: Readers should be able to locate any study areas shown within maps using common mapping platforms. Maps should only show the area actually studied and authors should not include a location map which displays a larger area than the bounding box of the study area. Authors should add a note clearly stating that "map lines delineate study areas and do not necessarily depict accepted national boundaries”. During the review process, Elsevier’s editors may request authors to change maps if these guidelines are not followed.
+* Institutional affiliations: Authors should use either the full, standard title of their institution or the standard abbreviation of the institutional name so that the institutional name can be independently verified for research integrity purposes.
+
+### Hazards and human or animal subjects
+
+If the work involves chemicals, procedures or equipment that have any unusual hazards inherent in their use, the author must clearly identify these in the manuscript.
+
+If the work involves the use of human participants, living or deceased, including their data and/or biological materials (e.g. organs, tissues), authors must follow Elsevier’s policy on [Human Research](https://www.elsevier.com/about/policies-and-standards/research-ethics#0-human-research).
+
+If the work involves animal studies, authors must follow Elsevier’s policy on [Animal Research](https://www.elsevier.com/about/policies-and-standards/research-ethics#2-animal-research).
+
+### Declaration of competing interests
+
+WAME define conflict of interest as “a divergence between an individual’s private interests (competing interests) and his or her responsibilities to scientific and publishing activities, such that a reasonable observer might wonder if the individual’s behavior or judgment was motivated by considerations of his or her competing interests” (see full [WAME statementopens in new tab/window](https://wame.org/conflict-of-interest-in-peer-reviewed-medical-journals)). All authors should disclose in their manuscript any financial and personal relationships with other people or organisations that could be viewed as inappropriately influencing (bias) their work.
+
+All sources of financial support for the conduct of the research and/or preparation of the article should be disclosed, as should the role of the sponsor(s), if any, in study design; in the collection, analysis and interpretation of data; in the writing of the report; and in the decision to submit the article for publication. If the funding source(s) had no such involvement then this should be stated.
+
+Examples of potential conflicts of interest which should be disclosed include employment, consultancies, stock ownership, honoraria, paid expert testimony, patent applications/registrations, and grants or other funding. Potential conflicts of interest should be disclosed at the earliest possible stage.
+
+### Notification of fundamental errors
+
+When an author discovers a significant error or inaccuracy in their own published work, it is the author’s obligation to promptly notify the journal editor or publisher and cooperate with the editor to retract or correct the paper if deemed necessary by the editor. If the editor or the publisher learn from a third party that a published work contains an error, it is the obligation of the author to cooperate with the editor, including providing evidence to the editor where requested.
+
+### Image integrity
+
+It is not acceptable to enhance, obscure, move, remove, or introduce a specific feature within an image. Adjustments of brightness, contrast, or color balance are acceptable if and as long as they do not obscure or eliminate any information present in the original. Manipulating images for improved clarity is accepted, but manipulation for other purposes could be seen as scientific ethical abuse and will be dealt with accordingly.
+
+Authors should comply with any specific policy for graphical images applied by the relevant journal, e.g. providing the original images as supplementary material with the article, or depositing these in a suitable repository
+
+### Clinical trial transparency
+
+Elsevier supports clinical trial transparency. For relevant journals, authors are expected to conform to industry best standards in in clinical trial registration and presentation, for example the [CONSORT guidelinesopens in new tab/window](https://www.consort-spirit.org/), as further set out in the policies of the relevant journal.
+
+## Footer navigation
+
+### Useful links
+
+* [Submit your paper](https://www.elsevier.com/publishing/publish-in-a-journal)
+* [Shop Books & Journalsopens in new tab/window](https://shop.elsevier.com/)
+* [View all products](https://www.elsevier.com/products)
+* [Elsevier Connect](https://www.elsevier.com/connect)
+* [Elsevier Stories](https://stories.elsevier.com/)
+
+### About
+
+* [About Elsevier](https://www.elsevier.com/about)
+* [Careers](https://www.elsevier.com/about/careers)
+* [Open access](https://www.elsevier.com/open-access)
+* [Global Media Relations](https://www.elsevier.com/about/global-press-office)
+* [Advertising, reprints & supplementsopens in new tab/window](https://www.elsmediakits.com/?utm_source=elsevier.com&utm_medium=referral&dgcid=4168448395)
+
+### Support
+
+* [Customer support](https://www.elsevier.com/support)
+* [Trust Centeropens in new tab/window](https://trust.elsevier.com/)
+* [Modern slavery act statementopens in new tab/window](https://www.relx.com/~/media/Files/R/RELX-Group/documents/responsibility/relx-slavery-statement-2026.pdf)
+* [Modern slavery act statement (CA)opens in new tab/window](https://media.ffycdn.net/eu/elsevier/d/3eb20e9a13b54a3ea9ec86f3cc9ee459)
+*
+
+[LinkedIn opens in new tab/window](https://www.linkedin.com/company/elsevier)[Twitter opens in new tab/window](https://twitter.com/ElsevierConnect)[Facebook opens in new tab/window](https://www.facebook.com/ElsevierConnect)[YouTube opens in new tab/window](https://www.youtube.com/c/elsevier)
+
+[![](https://www.elsevier.com/images/elsevier-logo-white.svg "width=130 | height=38")](https://www.elsevier.com/)[![](https://www.elsevier.com/images/relx-logo.svg "width=120 | height=36")opens in new tab/window](https://www.relx.com/)
+
+Copyright © 2026 Elsevier, its licensors, and contributors. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
