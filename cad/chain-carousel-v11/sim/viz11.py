@@ -126,10 +126,10 @@ def entry_clip():
              ("As drawn: tip lands on tip, the index jams", M.Cfg(), 0.25,
               "nothing can give: the chain drives the tips together"),
              ("Spring-loaded pinion (v12 candidate): lifts, then drops in", M.Cfg(spring=True), 0.0,
-              "tip on tip lifts the pinion 1.8 mm on its 6 N spring;\nthe post-index seek turns it into the gap")]
+              "tip on tip lifts the pinion 1.8 mm on its 6 N spring;\nthen the seek (a slow turn, reversing once) drops it in")]
     runs = []
     for title, cfg, ph, note in cases:
-        r, A, frames, S = M.entry(cfg, ph, record=True)
+        r, A, frames, S = M.entry(cfg, ph, record=True, seek_reverse=True)
         runs.append((title, cfg, frames, note, r))
         print(title, r["outcome"], flush=True)
     n = max(len(f[2]) for f in runs)
@@ -212,8 +212,23 @@ def draw_side(ax, S, txt_lines, title):
     ax.plot([tx - 7, tx, tx + 7], [-(tz + 0.5) + 7, -(tz + 0.5), -(tz + 0.5) + 7], color=ORANGE, lw=2)
     ax.plot([shoe[0]], [-shoe[2]], "v", color=GREEN, ms=8)
     ax.text(-145, 285, title, fontsize=12, weight="bold", va="top")
-    ax.text(-145, 268, "\n".join(txt_lines), fontsize=9.5, va="top", family="DejaVu Sans Mono")
-    ax.text(-62 + 2, 612 - 366.5 - 30, "", fontsize=8)
+    ax.text(118, 262, "\n".join(txt_lines), fontsize=9.5, va="top", family="DejaVu Sans Mono",
+            bbox=dict(boxstyle="round,pad=0.4", fc="white", ec="#bbb"))
+    # labels on the parts (text placed off to the side, arrows to the parts' current positions)
+    lab = dict(fontsize=8.5, color="#222", arrowprops=dict(arrowstyle="-", color="#888", lw=0.8))
+    tip = _tf(S, "module", [[230.0, 0.0, 0.0]])[0]
+    ax.annotate("module: plate + auger\n(hangs on its hinge pins)", (tip[0], -tip[2]), (215, -45), **lab)
+    g = _tf(S, "module", [[83.4, 0.0, 15.0]])[0]
+    ax.annotate("44T gear", (g[0], -g[2]), (150, -45), **lab)
+    pn = _tf(S, "pinion", [[0.0, 0.0, -11.0]])[0]
+    ax.annotate("24T pinion on the NEMA 11", (pn[0], -pn[2]), (-140, 140), **lab)
+    t_ = _tf(S, "module", [[60.0, 0.0, -25.5]])[0]
+    ax.annotate("T's head on the EC's lips", (t_[0], -t_[2]), (-140, 112), **lab)
+    ec_ = _tf(S, "ec", [[10.0, 0.0, -35.0]])[0]
+    ax.annotate("electronics carriage (EC)", (ec_[0], -ec_[2]), (-140, 84), **lab)
+    ax.annotate("guide seat", (tx, -(tz + 0.5) + 3), (150, 5), **lab)
+    ax.annotate("hinge", (0, 0), (-60, -30), **lab)
+    ax.annotate("P16-150, to its base\non the front bar", (bx + 0.35 * (pp[0] - bx), -(bz + 0.35 * (pp[2] - bz))), (-60, 210), **lab)
 
 
 def tilt_clip():
@@ -242,7 +257,7 @@ def tilt_clip():
                  f"T on lips     {np.mean(A[lo:k + 1, 7]):6.1f} N",
                  f"EC on seat    {np.mean(A[lo:k + 1, 6]):6.1f} N",
                  f"teeth         {np.mean(A[lo:k + 1, 5]):6.1f} N"]
-        draw_side(ax, S, lines, "v11 station, side view: what keeps the gear in mesh (MuJoCo, as drawn)")
+        draw_side(ax, S, lines, "v11 station, side view: what keeps the gear in mesh (MuJoCo, as drawn; real time)")
         fig.canvas.draw()
         img = np.asarray(fig.canvas.buffer_rgba())[..., :3].copy()
         writer.append_data(img)
@@ -289,34 +304,34 @@ def contact_window_plot():
 
 
 def outcome_plots():
+    """Per tolerance offset, pooled over the three clevis stiffnesses (36 indexes each): as drawn, the share that jams; spring-loaded,
+    the share that jams (none) and the share left on the tips until the seek."""
     E = json.loads((OUT / "entry.json").read_text())["runs"]
-    groups = {}
-    for r in E:
-        if r["mode"] != "free" or r["drag_mNm"] != 5.0:
-            continue
-        lab = ("spring 6 N" if r["spring"] else "as drawn") + f", clevis {r['k_roll']:g} N·m/rad"
-        groups.setdefault(lab, {}).setdefault(r["a_err"], []).append(r)
-    fig, ax = plt.subplots(figsize=(10, 4.8), dpi=120)
-    keys = sorted(groups)
-    w = 0.8 / max(1, len(keys))
-    errs = sorted({e for g in groups.values() for e in g})
-    for j, k in enumerate(keys):
-        xs, jam, stub = [], [], []
-        for i, e in enumerate(errs):
-            rs = groups[k].get(e, [])
-            if not rs:
-                continue
-            xs.append(i + (j - len(keys) / 2) * w + w / 2)
-            jam.append(100 * sum(r["jam"] for r in rs) / len(rs))
-            stub.append(100 * sum(r["outcome"].startswith("stub") for r in rs) / len(rs))
-        ax.bar(xs, jam, w * 0.95, color="#c33" if "as drawn" in k else "#e9a", label=f"{k}: jams")
-        ax.bar(xs, stub, w * 0.95, bottom=jam, color="#888" if "as drawn" in k else "#bbb", hatch="//", label=f"{k}: stubbed, cleared by the seek")
+    E = [r for r in E if r["mode"] == "free" and abs(r["drag_mNm"] - 5.0) < 1e-6 and r.get("k_roll") in (3.0, 10.0, 100.0)]
+    errs = sorted({r["a_err"] for r in E})
+    fig, ax = plt.subplots(figsize=(10, 4.6), dpi=120)
+    w = 0.38
+    for i, e in enumerate(errs):
+        a = [r for r in E if not r["spring"] and r["a_err"] == e]
+        b = [r for r in E if r["spring"] and r["a_err"] == e and r.get("f_spring", 6.0) == 6.0]
+        if a:
+            ja = 100 * sum(r["jam"] for r in a) / len(a)
+            ax.bar(i - w / 2, ja, w * 0.95, color="#c33", label="as drawn: jams" if i == 1 else None)
+            ax.text(i - w / 2, ja + 1, f"{sum(r['jam'] for r in a)}/{len(a)}", ha="center", fontsize=8, color="#a22")
+        if b:
+            jb = 100 * sum(r["jam"] for r in b) / len(b)
+            sb = 100 * sum(r["outcome"].startswith("stub") for r in b) / len(b)
+            ax.bar(i + w / 2, sb, w * 0.95, bottom=jb, color="#bbb", hatch="//", label="spring-loaded: left on the tips, cleared by the seek" if i == 0 else None)
+            ax.text(i + w / 2, sb + 1, f"0 jams\n{sum(r['outcome'].startswith('stub') for r in b)}/{len(b)} stubs", ha="center", fontsize=7.5, color="#555")
     ax.set_xticks(range(len(errs)))
     ax.set_xticklabels([f"{e:+.2f}" for e in errs])
-    ax.set_xlabel("pinion placed this far from its drawn position, away from the gear (mm): the tolerance stack")
-    ax.set_ylabel("% of 12 starting phases")
-    ax.set_title("One index into the station: how often the gear fails to slide into mesh")
-    ax.legend(fontsize=7, ncol=2, loc="upper right")
+    ax.set_ylim(0, 60)
+    ax.set_xlabel("pinion this far from its drawn place, away from the gear (mm): the tolerance stack")
+    ax.set_ylabel("% of indexes")
+    ax.set_title("One index into the station (MuJoCo, real teeth): jams as drawn, none with a 6 N spring-loaded pinion", fontsize=11)
+    ax.text(0.99, 0.97, "as drawn: 12 phases x 3 clevis stiffnesses per offset\nspring 6 N: 12 phases x 2 clevis stiffnesses", transform=ax.transAxes,
+            ha="right", va="top", fontsize=8, color="#555")
+    ax.legend(fontsize=8.5, loc="upper left")
     fig.tight_layout()
     fig.savefig(OUT / "entry_outcomes.png")
     plt.close(fig)

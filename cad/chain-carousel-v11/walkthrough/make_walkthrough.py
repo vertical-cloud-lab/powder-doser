@@ -126,10 +126,33 @@ def sentences(text: str) -> list[str]:
     return [x for x in s if x]
 
 
-def chapter_frames(ch: dict, dur: float, idx: int, n: int):
+def card(title: str, lines: list[str], out: Path) -> Path:
+    """A text card (white, a title and bullet lines) for chapters without a single picture."""
+    img = Image.new("RGB", (W, H - BAR_H - CAP_H), (255, 255, 255))
+    d = ImageDraw.Draw(img)
+    d.text((60, 36), title, font=font(34, True), fill=(28, 46, 92))
+    y = 104
+    f = font(25)
+    for ln in lines:
+        for k, w_ in enumerate(wrap(ln, f, W - 170)):
+            d.text((90 if k else 66, y), ("" if k else "\u2022  ") + w_, font=f, fill=(25, 25, 25))
+            y += 36
+        y += 12
+    img.save(out)
+    return out
+
+
+def _source(v: dict, tmp: Path, k: int) -> "Source":
+    if "card" in v:
+        p = card(v["card"]["title"], v["card"]["lines"], tmp / f"card_{k}_{abs(hash(v['card']['title'])) % 10**8}.png")
+        return Source(p)
+    path = V11 / v["path"] if not str(v["path"]).startswith("/") else Path(v["path"])
+    return Source(path, v.get("start", 0.0), v.get("end"), v.get("loop", False), v.get("speed", 1.0))
+
+
+def chapter_frames(ch: dict, dur: float, idx: int, n: int, tmp: Path = Path(tempfile.gettempdir())):
     """Yield (PIL frame) for one chapter of length dur."""
-    srcs = [Source(V11 / s["path"] if not str(s["path"]).startswith("/") else Path(s["path"]), s.get("start", 0.0), s.get("end"),
-                   s.get("loop", False), s.get("speed", 1.0)) for s in ch["visuals"]]
+    srcs = [_source(v, tmp, k) for k, v in enumerate(ch["visuals"])]
     # share the chapter's time among its sources: clips get their own length (or a share), stills share what is left
     weights = [s.get("weight", 1.0) for s in ch["visuals"]]
     clip_d = [src.duration() for src in srcs]
@@ -196,7 +219,7 @@ def main():
                             macro_block_size=8)
     for i, (ch, d) in enumerate(zip(chs, durs)):
         num = (a.only or 0) if a.only else i + 1
-        for fr in chapter_frames(ch, d, num, n):
+        for fr in chapter_frames(ch, d, num, n, tmp):
             wr.append_data(np.asarray(fr))
         print(f"chapter {i + 1} pictures done", flush=True)
     wr.close()
@@ -232,6 +255,8 @@ def main():
                 k += 1
             t += d
         (HERE / "chapters.txt").write_text("\n".join(chap_lines) + "\n")
+        head = (HERE / "description_head.txt").read_text() if (HERE / "description_head.txt").exists() else ""
+        (HERE / "description.txt").write_text(head + "\n".join(chap_lines) + "\n")
         (HERE / "walkthrough_v11.srt").write_text("\n".join(srt))
         print(f"total {t / 60:.1f} min", flush=True)
     print("wrote", a.out)

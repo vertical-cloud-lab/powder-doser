@@ -26,7 +26,11 @@ NPH = 12
 def _entry(args):
     kw, ph, mode = args
     r, _ = M.entry(M.Cfg(**kw), ph, mode=mode)
-    return {k: r[k] for k in KEYS}
+    out = {k: r[k] for k in KEYS}
+    if kw.get("spring"):
+        c = M.Cfg(**kw)
+        out["f_spring"], out["stop_deep"] = c.f_spring, c.stop_deep
+    return out
 
 
 def _exit(args):
@@ -129,6 +133,8 @@ def _entry_rev(args):
     r, _ = M.entry(M.Cfg(**kw), ph, seek_reverse=True)
     out = {k: r[k] for k in KEYS}
     out["seek"] = "forward 0.2 s, back 0.2 s"
+    c = M.Cfg(**kw)
+    out["f_spring"], out["stop_deep"] = c.f_spring, c.stop_deep
     return out
 
 

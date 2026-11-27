@@ -5642,7 +5642,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -5668,7 +5670,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.29,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -5694,7 +5698,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -5720,7 +5726,9 @@
 "ec_roll_max_deg": 1.099,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.65,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -5746,7 +5754,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.98,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -5772,7 +5782,9 @@
 "ec_roll_max_deg": 1.074,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.2,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -5798,7 +5810,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.23,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -5824,7 +5838,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.98,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -5850,7 +5866,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.34,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -5876,7 +5894,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.33,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -5902,7 +5922,9 @@
 "ec_roll_max_deg": 1.066,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 22.47,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -5928,7 +5950,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.7,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -5954,7 +5978,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.49,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -5980,7 +6006,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -6006,7 +6034,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -6032,7 +6062,9 @@
 "ec_roll_max_deg": 1.067,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.31,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -6058,7 +6090,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 19.79,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -6084,7 +6118,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -6110,7 +6146,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.66,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -6136,7 +6174,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.36,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -6162,7 +6202,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.48,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -6188,7 +6230,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.02,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -6214,7 +6258,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.5,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -6240,7 +6286,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.1,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -6266,7 +6314,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -6292,7 +6342,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.2,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -6318,7 +6370,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -6344,7 +6398,9 @@
 "ec_roll_max_deg": 1.171,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.66,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -6370,7 +6426,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 22.93,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -6396,7 +6454,9 @@
 "ec_roll_max_deg": 1.089,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.33,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -6422,7 +6482,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.31,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -6448,7 +6510,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.08,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -6474,7 +6538,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.16,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -6500,7 +6566,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.35,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -6526,7 +6594,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.36,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -6552,7 +6622,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": 0.043,
 "end_tooth_force_N": 23.21,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -6578,7 +6650,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -6604,7 +6678,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.02,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -6630,7 +6706,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -6656,7 +6734,9 @@
 "ec_roll_max_deg": 1.175,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.37,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -6682,7 +6762,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -6708,7 +6790,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.31,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -6734,7 +6818,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.95,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -6760,7 +6846,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -6786,7 +6874,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.47,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -6812,7 +6902,9 @@
 "ec_roll_max_deg": 1.016,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.36,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -6838,7 +6930,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -6864,7 +6958,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.25,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -6890,7 +6986,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.39,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -6916,7 +7014,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.14,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -6942,7 +7042,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -6968,7 +7070,9 @@
 "ec_roll_max_deg": 1.138,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.42,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -6994,7 +7098,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -7020,7 +7126,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.42,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -7046,7 +7154,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -7072,7 +7182,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.38,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -7098,7 +7210,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.37,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -7124,7 +7238,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.0,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -7150,7 +7266,9 @@
 "ec_roll_max_deg": 1.174,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 21.47,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -7176,7 +7294,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.38,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -7202,7 +7322,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.48,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -7228,7 +7350,9 @@
 "ec_roll_max_deg": 1.141,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 20.61,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -7254,7 +7378,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -7280,7 +7406,9 @@
 "ec_roll_max_deg": 1.064,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.4,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -7306,7 +7434,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.04,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -7332,7 +7462,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.98,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -7358,7 +7490,9 @@
 "ec_roll_max_deg": 1.019,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.59,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -7384,7 +7518,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.48,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -7410,7 +7546,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.47,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -7436,7 +7574,9 @@
 "ec_roll_max_deg": 1.018,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.76,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -7462,7 +7602,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.48,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -7488,7 +7630,9 @@
 "ec_roll_max_deg": 1.017,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.33,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -7514,7 +7658,9 @@
 "ec_roll_max_deg": 0.077,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 21.88,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -7540,7 +7686,9 @@
 "ec_roll_max_deg": 0.066,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.99,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -7566,7 +7714,9 @@
 "ec_roll_max_deg": 0.069,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.26,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -7592,7 +7742,9 @@
 "ec_roll_max_deg": 0.072,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.29,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -7618,7 +7770,9 @@
 "ec_roll_max_deg": 0.068,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 20.63,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -7644,7 +7798,9 @@
 "ec_roll_max_deg": 0.065,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.97,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -7670,7 +7826,9 @@
 "ec_roll_max_deg": 0.068,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -7696,7 +7854,9 @@
 "ec_roll_max_deg": 0.08,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.55,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -7722,7 +7882,9 @@
 "ec_roll_max_deg": 0.075,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.87,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -7748,7 +7910,9 @@
 "ec_roll_max_deg": 0.076,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -7774,7 +7938,9 @@
 "ec_roll_max_deg": 0.078,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -7800,7 +7966,9 @@
 "ec_roll_max_deg": 0.078,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.67,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -7826,7 +7994,9 @@
 "ec_roll_max_deg": 0.077,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 21.68,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -7852,7 +8022,9 @@
 "ec_roll_max_deg": 0.071,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.11,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -7878,7 +8050,9 @@
 "ec_roll_max_deg": 0.072,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.95,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -7904,7 +8078,9 @@
 "ec_roll_max_deg": 0.072,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.65,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -7930,7 +8106,9 @@
 "ec_roll_max_deg": 0.064,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.62,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -7956,7 +8134,9 @@
 "ec_roll_max_deg": 0.073,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 21.58,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -7982,7 +8162,9 @@
 "ec_roll_max_deg": 0.068,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 19.12,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -8008,7 +8190,9 @@
 "ec_roll_max_deg": 0.122,
 "module_lift_max_deg": 0.005,
 "end_tooth_force_N": 21.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -8034,7 +8218,9 @@
 "ec_roll_max_deg": 0.075,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.43,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -8060,7 +8246,9 @@
 "ec_roll_max_deg": 0.077,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.41,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -8086,7 +8274,9 @@
 "ec_roll_max_deg": 0.078,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.47,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -8112,7 +8302,9 @@
 "ec_roll_max_deg": 0.08,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.63,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -8138,7 +8330,9 @@
 "ec_roll_max_deg": 0.077,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 21.88,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -8164,7 +8358,9 @@
 "ec_roll_max_deg": 0.162,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.04,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -8190,7 +8386,9 @@
 "ec_roll_max_deg": 0.064,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.94,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -8216,7 +8414,9 @@
 "ec_roll_max_deg": 0.071,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.66,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -8242,7 +8442,9 @@
 "ec_roll_max_deg": 0.072,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.01,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -8268,7 +8470,9 @@
 "ec_roll_max_deg": 0.075,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -8294,7 +8498,9 @@
 "ec_roll_max_deg": 0.069,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.92,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -8320,7 +8526,9 @@
 "ec_roll_max_deg": 0.106,
 "module_lift_max_deg": 0.001,
 "end_tooth_force_N": 20.62,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -8346,7 +8554,9 @@
 "ec_roll_max_deg": 0.076,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -8372,7 +8582,9 @@
 "ec_roll_max_deg": 0.075,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.41,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -8398,7 +8610,9 @@
 "ec_roll_max_deg": 0.078,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.45,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -8424,7 +8638,9 @@
 "ec_roll_max_deg": 0.065,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.83,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -8450,7 +8666,9 @@
 "ec_roll_max_deg": 0.073,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 24.05,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -8476,7 +8694,9 @@
 "ec_roll_max_deg": 0.072,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.73,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -8502,7 +8722,9 @@
 "ec_roll_max_deg": 0.067,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.83,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -8528,7 +8750,9 @@
 "ec_roll_max_deg": 0.074,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.94,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -8554,7 +8778,9 @@
 "ec_roll_max_deg": 0.067,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.2,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -8580,7 +8806,9 @@
 "ec_roll_max_deg": 0.07,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -8606,7 +8834,9 @@
 "ec_roll_max_deg": 0.077,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.8,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -8632,7 +8862,9 @@
 "ec_roll_max_deg": 0.08,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -8658,7 +8890,9 @@
 "ec_roll_max_deg": 0.075,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.51,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -8684,7 +8918,9 @@
 "ec_roll_max_deg": 0.073,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -8710,7 +8946,9 @@
 "ec_roll_max_deg": 0.124,
 "module_lift_max_deg": 0.006,
 "end_tooth_force_N": 20.83,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -8736,7 +8974,9 @@
 "ec_roll_max_deg": 0.066,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 21.15,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -8762,7 +9002,9 @@
 "ec_roll_max_deg": 0.066,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.95,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -8788,7 +9030,9 @@
 "ec_roll_max_deg": 0.084,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.84,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -8814,7 +9058,9 @@
 "ec_roll_max_deg": 0.071,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.62,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -8840,7 +9086,9 @@
 "ec_roll_max_deg": 0.067,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.66,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -8866,7 +9114,9 @@
 "ec_roll_max_deg": 0.073,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.81,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -8892,7 +9142,9 @@
 "ec_roll_max_deg": 0.071,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.72,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -8918,7 +9170,9 @@
 "ec_roll_max_deg": 0.075,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.5,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -8944,7 +9198,9 @@
 "ec_roll_max_deg": 0.067,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.45,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -8970,7 +9226,9 @@
 "ec_roll_max_deg": 0.069,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.5,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -8996,7 +9254,9 @@
 "ec_roll_max_deg": 0.07,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.49,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -9022,7 +9282,9 @@
 "ec_roll_max_deg": 0.115,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 20.81,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -9048,7 +9310,9 @@
 "ec_roll_max_deg": 0.077,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 10.45,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -9074,7 +9338,9 @@
 "ec_roll_max_deg": 0.072,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.03,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.08333333333333333,
@@ -9100,7 +9366,9 @@
 "ec_roll_max_deg": 0.071,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.93,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.16666666666666666,
@@ -9126,7 +9394,9 @@
 "ec_roll_max_deg": 0.07,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 22.93,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.25,
@@ -9152,7 +9422,9 @@
 "ec_roll_max_deg": 0.069,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 23.77,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.3333333333333333,
@@ -9178,7 +9450,9 @@
 "ec_roll_max_deg": 0.067,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.79,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.4166666666666667,
@@ -9204,7 +9478,9 @@
 "ec_roll_max_deg": 0.068,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.82,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5,
@@ -9230,7 +9506,9 @@
 "ec_roll_max_deg": 0.073,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 23.92,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.5833333333333334,
@@ -9256,7 +9534,9 @@
 "ec_roll_max_deg": 0.078,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.41,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.6666666666666666,
@@ -9282,7 +9562,9 @@
 "ec_roll_max_deg": 0.077,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.46,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.75,
@@ -9308,7 +9590,9 @@
 "ec_roll_max_deg": 0.073,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 10.45,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.8333333333333334,
@@ -9334,7 +9618,9 @@
 "ec_roll_max_deg": 0.142,
 "module_lift_max_deg": 0.005,
 "end_tooth_force_N": 20.65,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.9166666666666666,
@@ -9360,7 +9646,9 @@
 "ec_roll_max_deg": 0.067,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 20.76,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 6.0,
+"stop_deep": 0.4
 },
 {
 "phase": 0.0,
@@ -9386,7 +9674,9 @@
 "ec_roll_max_deg": 0.554,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.6,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.08333333333333333,
@@ -9412,7 +9702,9 @@
 "ec_roll_max_deg": 0.556,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.39,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.16666666666666666,
@@ -9438,7 +9730,9 @@
 "ec_roll_max_deg": 0.553,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.49,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.25,
@@ -9464,7 +9758,9 @@
 "ec_roll_max_deg": 0.554,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.64,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.3333333333333333,
@@ -9490,7 +9786,9 @@
 "ec_roll_max_deg": 0.554,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.65,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.4166666666666667,
@@ -9516,7 +9814,9 @@
 "ec_roll_max_deg": 0.553,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.34,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5,
@@ -9542,7 +9842,9 @@
 "ec_roll_max_deg": 0.639,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.26,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5833333333333334,
@@ -9568,7 +9870,9 @@
 "ec_roll_max_deg": 0.552,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.26,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.6666666666666666,
@@ -9594,7 +9898,9 @@
 "ec_roll_max_deg": 0.553,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 18.02,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.75,
@@ -9620,7 +9926,9 @@
 "ec_roll_max_deg": 0.552,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.32,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.8333333333333334,
@@ -9646,7 +9954,9 @@
 "ec_roll_max_deg": 0.552,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.28,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.9166666666666666,
@@ -9672,7 +9982,9 @@
 "ec_roll_max_deg": 0.554,
 "module_lift_max_deg": 0.0,
 "end_tooth_force_N": 17.95,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.0,
@@ -9698,7 +10010,9 @@
 "ec_roll_max_deg": 0.573,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.65,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.08333333333333333,
@@ -9724,7 +10038,9 @@
 "ec_roll_max_deg": 0.574,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 16.39,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.16666666666666666,
@@ -9750,7 +10066,9 @@
 "ec_roll_max_deg": 0.574,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.63,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.25,
@@ -9776,7 +10094,9 @@
 "ec_roll_max_deg": 0.572,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.62,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.3333333333333333,
@@ -9802,7 +10122,9 @@
 "ec_roll_max_deg": 0.573,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.62,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.4166666666666667,
@@ -9828,7 +10150,9 @@
 "ec_roll_max_deg": 0.576,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.87,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5,
@@ -9854,7 +10178,9 @@
 "ec_roll_max_deg": 0.573,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.67,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5833333333333334,
@@ -9880,7 +10206,9 @@
 "ec_roll_max_deg": 0.573,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.38,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.6666666666666666,
@@ -9906,7 +10234,9 @@
 "ec_roll_max_deg": 0.571,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.3,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.75,
@@ -9932,7 +10262,9 @@
 "ec_roll_max_deg": 0.572,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.4,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.8333333333333334,
@@ -9958,7 +10290,9 @@
 "ec_roll_max_deg": 0.572,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.28,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.9166666666666666,
@@ -9984,7 +10318,9 @@
 "ec_roll_max_deg": 0.573,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.8,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.0,
@@ -10010,7 +10346,9 @@
 "ec_roll_max_deg": 0.628,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 14.84,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.08333333333333333,
@@ -10036,7 +10374,9 @@
 "ec_roll_max_deg": 0.627,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.59,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.16666666666666666,
@@ -10062,7 +10402,9 @@
 "ec_roll_max_deg": 0.628,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.65,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.25,
@@ -10088,7 +10430,9 @@
 "ec_roll_max_deg": 0.628,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.47,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.3333333333333333,
@@ -10114,7 +10458,9 @@
 "ec_roll_max_deg": 0.629,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.62,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.4166666666666667,
@@ -10140,7 +10486,9 @@
 "ec_roll_max_deg": 0.632,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.64,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5,
@@ -10166,7 +10514,9 @@
 "ec_roll_max_deg": 0.627,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.67,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5833333333333334,
@@ -10192,7 +10542,9 @@
 "ec_roll_max_deg": 0.624,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.26,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.6666666666666666,
@@ -10218,7 +10570,9 @@
 "ec_roll_max_deg": 0.627,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.34,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.75,
@@ -10244,7 +10598,9 @@
 "ec_roll_max_deg": 0.627,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.3,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.8333333333333334,
@@ -10270,7 +10626,9 @@
 "ec_roll_max_deg": 0.628,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.28,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.9166666666666666,
@@ -10296,7 +10654,9 @@
 "ec_roll_max_deg": 0.627,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.54,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.0,
@@ -10322,7 +10682,9 @@
 "ec_roll_max_deg": 0.633,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.42,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.08333333333333333,
@@ -10348,7 +10710,9 @@
 "ec_roll_max_deg": 0.631,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.58,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.16666666666666666,
@@ -10374,7 +10738,9 @@
 "ec_roll_max_deg": 0.632,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.68,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.25,
@@ -10400,7 +10766,9 @@
 "ec_roll_max_deg": 0.632,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.66,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.3333333333333333,
@@ -10426,7 +10794,9 @@
 "ec_roll_max_deg": 0.633,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.67,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.4166666666666667,
@@ -10452,7 +10822,9 @@
 "ec_roll_max_deg": 0.635,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.57,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5,
@@ -10478,7 +10850,9 @@
 "ec_roll_max_deg": 0.632,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.44,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5833333333333334,
@@ -10504,7 +10878,9 @@
 "ec_roll_max_deg": 0.635,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.29,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.6666666666666666,
@@ -10530,7 +10906,9 @@
 "ec_roll_max_deg": 0.633,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.3,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.75,
@@ -10556,7 +10934,9 @@
 "ec_roll_max_deg": 0.631,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.29,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.8333333333333334,
@@ -10582,7 +10962,9 @@
 "ec_roll_max_deg": 0.634,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.28,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.9166666666666666,
@@ -10608,7 +10990,9 @@
 "ec_roll_max_deg": 0.631,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 19.02,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.0,
@@ -10634,7 +11018,9 @@
 "ec_roll_max_deg": 0.632,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.49,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.08333333333333333,
@@ -10660,7 +11046,9 @@
 "ec_roll_max_deg": 0.633,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 16.68,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.16666666666666666,
@@ -10686,7 +11074,9 @@
 "ec_roll_max_deg": 0.631,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.48,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.25,
@@ -10712,7 +11102,9 @@
 "ec_roll_max_deg": 0.631,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.67,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.3333333333333333,
@@ -10738,7 +11130,9 @@
 "ec_roll_max_deg": 0.631,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.3,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.4166666666666667,
@@ -10764,7 +11158,9 @@
 "ec_roll_max_deg": 0.633,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.69,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5,
@@ -10790,7 +11186,9 @@
 "ec_roll_max_deg": 0.631,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.89,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5833333333333334,
@@ -10816,7 +11214,9 @@
 "ec_roll_max_deg": 0.632,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.27,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.6666666666666666,
@@ -10842,7 +11242,9 @@
 "ec_roll_max_deg": 0.631,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.29,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.75,
@@ -10868,7 +11270,9 @@
 "ec_roll_max_deg": 0.63,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.3,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.8333333333333334,
@@ -10894,7 +11298,9 @@
 "ec_roll_max_deg": 0.632,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.28,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.9166666666666666,
@@ -10920,7 +11326,9 @@
 "ec_roll_max_deg": 0.63,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.49,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.0,
@@ -10946,7 +11354,9 @@
 "ec_roll_max_deg": 0.623,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.64,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.08333333333333333,
@@ -10972,7 +11382,9 @@
 "ec_roll_max_deg": 0.624,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.9,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.16666666666666666,
@@ -10998,7 +11410,9 @@
 "ec_roll_max_deg": 0.624,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.47,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.25,
@@ -11024,7 +11438,9 @@
 "ec_roll_max_deg": 0.622,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.62,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.3333333333333333,
@@ -11050,7 +11466,9 @@
 "ec_roll_max_deg": 0.62,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.33,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.4166666666666667,
@@ -11076,7 +11494,9 @@
 "ec_roll_max_deg": 0.623,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.59,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5,
@@ -11102,7 +11522,9 @@
 "ec_roll_max_deg": 0.657,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 15.64,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.5833333333333334,
@@ -11128,7 +11550,9 @@
 "ec_roll_max_deg": 0.628,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.26,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.6666666666666666,
@@ -11154,7 +11578,9 @@
 "ec_roll_max_deg": 0.624,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.39,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.75,
@@ -11180,7 +11606,9 @@
 "ec_roll_max_deg": 0.625,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.29,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.8333333333333334,
@@ -11206,7 +11634,9 @@
 "ec_roll_max_deg": 0.624,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 8.28,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 },
 {
 "phase": 0.9166666666666666,
@@ -11232,7 +11662,9 @@
 "ec_roll_max_deg": 0.624,
 "module_lift_max_deg": -0.0,
 "end_tooth_force_N": 17.87,
-"end_seat_N": 0.0
+"end_seat_N": 0.0,
+"f_spring": 4.0,
+"stop_deep": 0.2
 }
 ]
 }

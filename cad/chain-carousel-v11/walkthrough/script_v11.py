@@ -7,7 +7,7 @@ CHAPTERS = [
     dict(title="What v11 is",
          text=("This is the multi-doser chain carousel, version eleven. Thirteen auger dosing modules ride on two roller chains in a "
                "vertical loop. One station, inside the loop, takes each module in turn, tilts it, and doses straight down into a beaker on "
-               "an analytical balance. Version eleven follows Sam's notes of November twenty-fifth: the augers tilt all the way to ninety "
+               "an analytical balance. Version eleven follows the design notes of November twenty-fifth: the augers tilt all the way to ninety "
                "degrees, the keyed rail no longer lifts the module, the electronics carriage opens each outlet door itself, and the balance "
                "keeps its tall draft cage. Nothing has been built yet, so every number in this video is a prediction from the CAD and the "
                "simulations."),
@@ -21,7 +21,7 @@ CHAPTERS = [
          visuals=[dict(path="renders/steps/step_05.png"), dict(path="renders/steps/step_07.png"), dict(path="renders/v11/chain_nitro_v11.png"),
                   dict(path="renders/rig_back_iso.png")]),
     dict(title="A module",
-         text=("Each module is Sam's mounting plate, carried on to the auger's cap so it supports the whole tube. The auger snaps into two "
+         text=("Each module is the lab's mounting plate, carried on to the auger's cap so it supports the whole tube. The auger snaps into two "
                "clips and rests on a saddle under the cap. A printed T-bracket under the plate is the key that the station's rail catches. "
                "A spring-loaded shutter covers the three millimetre outlet, with a stainless rod up its spring that the station pulls to open "
                "it. The plate hangs on two hinge pins on its carriage's outer face, and a spring latch at its back end holds it, even upside "
@@ -34,10 +34,26 @@ CHAPTERS = [
                "it six millimetres, which slides the shutter off the outlet."),
          visuals=[dict(path="renders/v11/rail_v11.mp4", weight=1.6), dict(path="renders/v11/rail_profile_v11.mp4"), dict(path="renders/v11/door_v11.mp4")]),
     dict(title="How the gear meets the pinion",
-         text="",          # filled in from the study's numbers (see sim/README.md)
-         visuals=[dict(path="renders/rig_gear.png"), dict(path="renders/v11/mesh_entry_v11.mp4", weight=2.4), dict(path="sim/out/centre_distance_window.png")]),
+         text=("The auger's forty-four tooth gear pokes up through the carriage's opening, and the electronics carriage holds a twenty-four "
+               "tooth steel pinion on its NEMA eleven motor just above it. Nothing presses the two together. The thirty-four and a quarter "
+               "millimetres between their axes is set by where two separate parts sit: the module, on its hinge pins and latch shelf, and the "
+               "electronics carriage, on its guide seat and the actuator's pin. During every index the motor's driver is off, so the pinion is "
+               "free: as the gear slides in from the side, its teeth roll the pinion round about fifty degrees, like a rack. A MuJoCo model "
+               "with real tooth contact shows where this is fragile. In two of every twelve starting positions, and up to five near the "
+               "ends of the tolerance range, a gear tooth lands on the tip of a pinion tooth. Nothing in version eleven can give, so the chain "
+               "drives the two tips together and the index jams. The model also shows that the centre distance has only a seven tenths of a "
+               "millimetre window: below thirty-four millimetres the teeth bind, and above thirty-four point seven two the contact ratio "
+               "drops below one."),
+         visuals=[dict(path="renders/rig_gear.png"), dict(path="renders/v11/mesh_entry_v11.mp4", weight=2.6), dict(path="sim/out/entry_outcomes.png"),
+                  dict(path="sim/out/centre_distance_window.png")]),
     dict(title="What holds the mesh while it doses",
-         text="",
+         text=("When the actuator pulls, the electronics carriage lifts off its seat, and after two tenths of a millimetre the lips under "
+               "the T's head pick up the module. From then on the module, the T, the electronics carriage and the pinion turn about the hinge "
+               "as one piece. The teeth's own separating force pushes the gear away from the pinion, but the T's head is already resting on "
+               "the lips, so the gear has nowhere to go. That captured T is what replaces gravity, and it works the same at ninety degrees, "
+               "where the module's weight acts along the auger and helps nothing. In the model, no tooth jumped in any tilt and dose cycle, "
+               "at thirty or ninety degrees, with the solenoid tapping. When the auger's load was ramped up, the motor stalled before any "
+               "tooth jumped, every time. The actuator needed under thirty newtons, well inside its rating."),
          visuals=[dict(path="renders/v11/mesh_hold_v11.mp4", weight=3.0)]),
     dict(title="Tilting to ninety degrees",
          text=("The longer carriages put the hinge seventy-three millimetres behind the front chain, so the module and the electronics "
@@ -59,6 +75,12 @@ CHAPTERS = [
          text="",
          visuals=[]),
     dict(title="Next: a spring-loaded pinion",
-         text="",
+         text=("The simulations point to one change above all: a spring. Put the NEMA eleven and its pinion on a small "
+               "carrier that pivots in the electronics carriage, with a spring pressing the pinion into the gear with about six newtons, past "
+               "a set-screw stop. Then the pinion always sits in tight mesh, whatever the tolerances. A tooth landing tip on tip lifts it "
+               "instead of jamming, and a slow turn of the motor after the index, reversing once, drops it into the gap. In the model that "
+               "took the jams from about one index in five to none, in two hundred and sixteen indexes over a millimetre and a half of "
+               "tolerance. The preload stays above the mesh's separating force at the motor's stall, so the teeth stay engaged while it "
+               "doses. It isn't in version eleven's CAD; it is the first change proposed for the next version. Thanks for watching."),
          visuals=[dict(path="renders/v11/spring_pinion_v12.png", weight=1.5), dict(path="sim/out/entry_outcomes.png")]),
 ]

@@ -22,7 +22,7 @@ def entry_tables():
     for r in E:
         if r["mode"] != "free" or abs(r["drag_mNm"] - 5.0) > 1e-6:
             continue
-        rows[(r["spring"], r["k_roll"], r["a_err"])].append(r)
+        rows[((f"spring-loaded {r.get('f_spring', 6):g} N" if r["spring"] else "as drawn"), r["k_roll"], r["a_err"])].append(r)
     print("| Design | Clevis roll stiffness (N·m/rad) | Pinion offset (mm) | Meshed | Stubbed, cleared by the seek | Jammed | Peak tooth force, 2 ms avg (N) | Teeth at rest (N) |")
     print("|---|---|---|---|---|---|---|---|")
     for (sp, kr, e), rs in sorted(rows.items(), key=lambda kv: (kv[0][0], kv[0][1], kv[0][2])):
@@ -34,7 +34,7 @@ def entry_tables():
         fmax = max((r["tooth_force_2ms_max_N"] for r in ok), default=float("nan"))
         rest = sorted(r["end_tooth_force_N"] for r in ok)
         rest_s = f"{rest[len(rest) // 2]:.1f}" if rest else "-"
-        print(f"| {'spring-loaded' if sp else 'as drawn'} | {kr:g} | {e:+.2f} | {m}/{n} | {s}/{n} | **{j}/{n}** | {fmax:.0f} | {rest_s} |")
+        print(f"| {sp} | {kr:g} | {e:+.2f} | {m}/{n} | {s}/{n} | **{j}/{n}** | {fmax:.0f} | {rest_s} |")
     print()
     print("### Entry: pinion mode and auger drag (as drawn, clevis 10 N·m/rad, nominal)\n")
     print("| Pinion during the index | Auger drag (mN·m) | Meshed | Stubbed | Jammed |")
@@ -70,6 +70,24 @@ def robust_table():
         n = len(rs)
         print(f"| {lab} | {'spring-loaded' if sp else 'as drawn'} | {sum(r['outcome'] == 'meshed' for r in rs)}/{n} | "
               f"{sum(r['outcome'].startswith('stub') for r in rs)}/{n} ({sum(r['outcome'] == 'stub, cleared by the seek' for r in rs)}) | **{sum(r['jam'] for r in rs)}/{n}** |")
+    print()
+
+
+def seek2_table():
+    p = OUT / "entry_seek2.json"
+    if not p.exists():
+        return
+    E = json.loads(p.read_text())["runs"]
+    print("### Spring-loaded, with the seek reversing once (0.25 rev/s, 0.2 s forward then 0.2 s back)\n")
+    print("| Spring | Clevis (N·m/rad) | Offset (mm) | Meshed at the stop | Stubbed | Cleared by the seek | Left stubbed | Jammed |")
+    print("|---|---|---|---|---|---|---|---|")
+    rows = defaultdict(list)
+    for r in E:
+        rows[(r.get("f_spring", 6.0), r["k_roll"], r["a_err"])].append(r)
+    for (f, kr, e), rs in sorted(rows.items()):
+        n = len(rs)
+        print(f"| {f:g} N | {kr:g} | {e:+.2f} | {sum(r['outcome'] == 'meshed' for r in rs)}/{n} | {sum(r['outcome'].startswith('stub') for r in rs)}/{n} | "
+              f"{sum(r['outcome'] == 'stub, cleared by the seek' for r in rs)} | {sum(r['outcome'] == 'stub' for r in rs)} | **{sum(r['jam'] for r in rs)}** |")
     print()
 
 
@@ -117,6 +135,7 @@ def cycle_tables():
 
 if __name__ == "__main__":
     entry_tables()
+    seek2_table()
     robust_table()
     exit_table()
     cycle_tables()
