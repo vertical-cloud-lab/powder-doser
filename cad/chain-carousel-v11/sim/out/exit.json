@@ -1,0 +1,152 @@
+{
+"n": 15,
+"runs": [
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": false,
+"chain_force_max_N": 4.11,
+"tooth_force_max_N": 49.01,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": false,
+"chain_force_max_N": 3.81,
+"tooth_force_max_N": 46.47,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": false,
+"chain_force_max_N": 4.4,
+"tooth_force_max_N": 48.06,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": false,
+"chain_force_max_N": 4.86,
+"tooth_force_max_N": 36.36,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": false,
+"chain_force_max_N": 3.49,
+"tooth_force_max_N": 41.14,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": false,
+"chain_force_max_N": 3.53,
+"tooth_force_max_N": 34.44,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": false,
+"chain_force_max_N": 2.19,
+"tooth_force_max_N": 12.52,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": false,
+"chain_force_max_N": 2.58,
+"tooth_force_max_N": 10.77,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": false,
+"chain_force_max_N": 3.3,
+"tooth_force_max_N": 9.44,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": false,
+"chain_force_max_N": 3.33,
+"tooth_force_max_N": 11.55,
+"chain_lag_max_mm": 0.001,
+"k_roll": 3.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": false,
+"chain_force_max_N": 1.83,
+"tooth_force_max_N": 2.48,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": false,
+"chain_force_max_N": 1.65,
+"tooth_force_max_N": 0.55,
+"chain_lag_max_mm": 0.001,
+"k_roll": 100.0,
+"mode": "held"
+},
+{
+"phase": 0.0,
+"a_err": -0.3,
+"spring": true,
+"chain_force_max_N": 1.82,
+"tooth_force_max_N": 32.33,
+"chain_lag_max_mm": 0.001,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.0,
+"spring": true,
+"chain_force_max_N": 1.69,
+"tooth_force_max_N": 34.79,
+"chain_lag_max_mm": 0.001,
+"mode": "free"
+},
+{
+"phase": 0.0,
+"a_err": 0.5,
+"spring": true,
+"chain_force_max_N": 1.82,
+"tooth_force_max_N": 33.47,
+"chain_lag_max_mm": 0.001,
+"mode": "free"
+}
+]
+}
