@@ -9,8 +9,8 @@ Status: **done** = in the draft now; **open** = someone has to act (owner in bra
 
 | Requirement | Status |
 |---|---|
-| 5,000–13,000 words for the whole manuscript, including references and figure captions | **at risk**: about 9,000 words before the references and 12,700 with the 80 references (a `pdftotext` count of `main.pdf`, graphical abstract and highlights excluded). The planned multi-task, DEM and property results would push it past 13,000, so plan to cut about 1,500 words: move the DEM model details and the fixed-setting descriptors to the SI and trim the references. Recount in Word or iThenticate before submitting |
-| Abstract of at most 250 words, no references, stands alone | **done**: 247 words; one orange placeholder sentence still to replace |
+| 5,000–13,000 words for the whole manuscript, including references and figure captions | **done for now**: about 8,500 words of text and captions plus 2,700 in the 80 references, 11,200 in all (counted from the LaTeX source; a `pdftotext` count of the PDF is higher because it also picks up the text inside the vector figures). The planned multi-task, DEM and property results would add 1,500–2,500 words, so moving the DEM model details and the fixed-setting descriptors to the SI is the first cut if needed. Recount in Word or iThenticate before submitting |
+| Abstract of at most 250 words, no references, stands alone | **done**: 249 words; one orange placeholder sentence still to replace |
 | 1–7 keywords | **done**: 7 |
 | 3–5 highlights of at most 85 characters each, as a separate file named with "highlights" | text **done** (5, longest 84 characters); separate file **open** (export at submission) |
 | Graphical abstract (encouraged), separate file, TIFF/EPS/PDF | **open**: `figures/graphical_abstract.pdf` exists but still shows the old DEM-centred story; redraw once the scope is fixed |
@@ -41,5 +41,5 @@ Status: **done** = in the draft now; **open** = someone has to act (owner in bra
 
 ## Content still owed (see OUTLINE.md, Section 4)
 
-Orange placeholders in `main.tex`: 24 (multi-task results, DEM inference, measured properties, data DOI,
+Orange placeholders in `main.tex`: 26 (multi-task results, DEM inference, measured properties, data DOI,
 CRediT, funding, hardware facts). Synthetic panels: Fig. 5 (both panels), Fig. 6b–c, Fig. 7c.

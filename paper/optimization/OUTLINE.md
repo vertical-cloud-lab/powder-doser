@@ -29,7 +29,7 @@ Every number in the text comes from [`analysis/results/stats.json`](analysis/res
   - the DEM forward model.
 - **Placeholders:** multi-task results (Fig. 5, synthetic), DEM inference (Fig. 6b–c), measured
   properties (Fig. 7c), hardware facts (tube ID, exit geometry, capacity), supplier and lot, CRediT,
-  funding, the data DOI. There are 24 orange markers in all.
+  funding, the data DOI. There are 26 orange markers in all.
 - **Journal requirements:** checked against the live guide in [`SUBMISSION.md`](SUBMISSION.md). The
   cover letter draft is [`cover_letter.md`](cover_letter.md).
 
@@ -82,7 +82,7 @@ charge accuracies (`4b6cd5b`). The two papers are kept apart as follows:
 
 | Section | State |
 |---|---|
-| Abstract (246 words), highlights (5), keywords (7) | Written from real data; one placeholder sentence for multi-task and DEM inference |
+| Abstract (249 words), highlights (5), keywords (7) | Written from real data; one placeholder sentence for multi-task and DEM inference |
 | 1 Introduction | Written; four questions, each tied to its evidence |
 | 2.1–2.3 Doser, powders, dose records | Written; tube ID, exit geometry, capacity, supplier and lot are placeholders |
 | 2.4 Campaign 1 | Written, with the corrections of 27 Nov (the cup was never emptied; 2 Sobol + 12 model doses; baseline at two τ values) |
