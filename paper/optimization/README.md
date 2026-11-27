@@ -13,6 +13,8 @@ Manufacturing* (Elsevier, `elsarticle`). Where it stands and what is missing: [`
 | [`si.tex`](si.tex) / [`si.pdf`](si.pdf) | Supplementary information: every dose, the model checks, the ML-requirements table, the property table |
 | [`OUTLINE.md`](OUTLINE.md) | Where it stands, claim-by-claim status, the boundary with the hardware paper (#97), and **what is missing, with run counts, owners and dates** |
 | [`SUBMISSION.md`](SUBMISSION.md) | The journal's requirements (live guide, 27 Nov 2026) and what is done or open |
+| [`ROUTES.md`](ROUTES.md) | Three ways to scope the paper (focused article, Methods paper, full scope), with experiments, rig days and dates, for the scope decision |
+| [`mock_review_r2/`](mock_review_r2/) | Second Edison mock review (27 Nov): editor, three reviewers, statistics audit, overlap audit against the hardware paper |
 | [`cover_letter.md`](cover_letter.md) | Cover-letter draft (not sent) |
 | [`analysis/`](analysis/) | `opt_stats.py` (every number in the text, into `results/stats.json`), `gp_diagnostics.py` (leave-one-out checks of the GP model), `si_tables.py`, `export_opt_trials.py` (re-exports the MongoDB snapshot) |
 | [`refs.bib`](refs.bib), [`references_validation.md`](references_validation.md) | Bibliography (DOI entries built from Crossref metadata) and the per-entry check |

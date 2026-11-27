@@ -218,6 +218,7 @@ Item & Where and how \\
 \end{tabularx}
 \end{table}
 
+
 \section{Powder properties used in the correlations}
 
 \begin{table}[h]
@@ -239,6 +240,28 @@ Powder & Bulk (g/mL) & Tapped (g/mL) & Hausner & $d_{50}$ (\si{\micro\metre}) & 
 \tabinput{analysis/results/tables/si_properties.tex}
 \bottomrule
 \end{tabular}
+\end{table}
+
+\section{Records shared with the companion hardware paper}
+
+\begin{table}[h]
+\centering
+\caption{Records that this paper and the companion hardware paper (Charles et al.) both draw on, and what each
+does with them. Record IDs are the trial UUIDs of MongoDB \texttt{opt\_trials} (first eight characters) or the
+protocol names of the companion study.}
+\label{tab:shared}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{3.3cm}p{2.7cm}XX@{}}
+\toprule
+Records & IDs & Companion paper & This paper \\
+\midrule
+13-powder fixed-setting battery (Aug--Sep 2026) & protocols A--H & Primary: delivery per revolution, tilt and tap responses, closed-loop doses at 50~mg, 200~mg and 1~g & Secondary analysis only: rank correlations with literature properties (Fig.~7, Section~3.6); one measured point per tilt in Fig.~6a \\
+AlSi10Mg 8~g atomizer charge (29 Sep) & \texttt{64714f7c} & Primary: the charge and its final mass (7.993~g) & Cites the charge; reports only its bulk feed (Fig.~4a, Table~S5) \\
+Al~4047 atomizer charges (30 Sep; 19--20 Oct) & 10 executor doses, 5 hand-driven sessions (Table~S5) & Primary: how the three containers were filled, the clearing of the outlet, final masses & Cites the charges; reports only the bulk feed and its time course (Fig.~4a--b) \\
+Salt campaigns 1 and 2, validation, dose range (29 Sep -- 15 Oct) & Tables~S2--S4 & Mentioned as work under way & Primary \\
+Stepped-tilt trials (18--24 Nov) & PR \#131 & Primary & Not used \\
+\bottomrule
+\end{tabularx}
 \end{table}
 
 \end{document}
