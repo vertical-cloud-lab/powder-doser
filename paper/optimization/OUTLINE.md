@@ -193,19 +193,22 @@ paper** (the review's preferred route for the present data) or to *Powder Techno
 
 ### D. Realistic schedule
 
+The hardware paper (#97) plans to submit on 18 Dec 2026 (its status note of 27 Nov), and Will has tasks
+there too. This schedule therefore keeps December for decisions, code and the bench reset, and puts the
+rig sessions in January.
+
 | Window | Work |
 |---|---|
-| 30 Nov – 11 Dec | Scope and author decisions (Sterling); C1–C9 and D1–D7 (Claude, Will reviews); E0 bench reset; buy the sensor, weight and funnel set; sieve Al 4047 |
-| 14–18 Dec | E1 salt session (pilot) |
-| 5–23 Jan | E2 AlSi10Mg and E3 sieved Al 4047 sessions; E5 in-house characterization; ship E7 shear-cell samples |
-| 26 Jan – 13 Feb | E4 prospective session; multi-task benchmark; E8 DEM inference on salt |
-| 16 Feb – 5 Mar | Write-up, figures, Edison mock review, author review |
+| 30 Nov – 18 Dec | Scope, article type and authors (Sterling). Code C1–C9 and decisions D1–D7 (Claude; Will reviews). E0 bench reset. Buy the T/RH sensor, calibration weight and funnel set. Sieve Al 4047. Ask a contract lab or collaborator for shear-cell quotes |
+| 5–29 Jan | E1 salt, E2 AlSi10Mg and E3 sieved/unsieved Al 4047 sessions (3 rig days); E5–E6 in-house characterization; ship E7 samples. For the full scope, also E4 |
+| 1–19 Feb | Analysis and figures; the AM-facing outcome (small E9 or charge composition accuracy); for the full scope, the multi-task benchmark and E8 |
+| 22 Feb – 5 Mar | Write-up, Edison mock review round 3, author review |
 | 14–18 Mar | TMS 2027 talk |
-| **Submit** | **Full scope: about 2 April 2027**, if the shear-cell results are back by early March. **Minimum version: about 12 February 2027.** |
+| **Submit** | **Minimum version: about 26 February 2027.** **Full scope: about 16 April 2027**, after TMS, if the shear-cell results are back by mid-March. |
 
-The dates assume the single working doser is free for 4 rig days in December and January. Will must be
-available for sample handling: one person per session, a cup return every 10 doses. The BYU winter
-break (about 18 Dec – 5 Jan) is left free.
+The dates assume the single working doser is free for 3–4 rig days in January. Will (or another person)
+must be at the rig for each session: one person, a cup return every 10 doses. The BYU winter break (about
+18 Dec – 5 Jan) is left free.
 
 ## 4b. Edison mock review (2026-10-13) and what was done with it
 

@@ -1,0 +1,5 @@
+- Calibrating an auger powder doser is cast as multi-objective Bayesian optimization
+- Validated settings dosed 0.5 g of salt three times faster than hand-tuned ones
+- The best single screening dose did not repeat; the model's recommendation did
+- Feed rate at fixed settings flagged oversized particles in an Al 4047 feedstock
+- Delivery per revolution ranked 12 powders like their angle of repose
