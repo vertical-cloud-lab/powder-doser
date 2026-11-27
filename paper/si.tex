@@ -339,6 +339,30 @@ then a gap, until the correct files were supplied.}
 \label{fgr:v2cadcompare}
 \end{figure}
 
+Table~\ref{tbl:aifail} lists the failure modes of the AI modelling tools that
+the main text describes (Section~\ref{M-sec:design}), with an example of each
+and what caught or prevented it.
+
+\begin{table}[htbp]
+\small
+  \caption{Failure modes of the AI modelling tools observed in this project, and
+  what caught or prevented each one.}
+  \label{tbl:aifail}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{3.4cm}p{7.0cm}p{5.2cm}}
+    \hline
+    Failure & Example & Caught or prevented by \\
+    \hline
+    Parts that do not fit together & Whole-module prompts; first tap collar; bracket with unconnected plates (Fig.~\ref{fgr:v2cadcompare}a--d) & Asking for one part at a time, with interfaces listed \\
+    Unrequested changes & Fixing one defect altered an unrelated feature & Full re-inspection of rendered views at every iteration \\
+    Mislabelled variants & Two of four test nozzles swapped relative to their documentation & Human cross-check before printing \\
+    Sub-millimetre errors & Height mismatch of one print layer & Only the failed print \\
+    Designing around bad inputs & Out-of-date neighbouring parts led to a hole, platforms, then a gap (Fig.~\ref{fgr:v2cadcompare}i--l) & Supplying the correct upstream files \\
+    No sense of ``finished'' & Late iterations disturbed features that were already right & The team freezing the geometry \\
+    Wrong orientation & Solenoid mis-oriented on the tap collar over several coding-agent iterations & Switching the part to Zoo Design Studio \\
+    \hline
+  \end{tabular*}
+\end{table}
+
 Table~\ref{tbl:designlog} summarizes the CAD entries of the design log. Of the
 76 entries up to October 2026 that made or changed a part model, the coding agent wrote 72, and 16
 were printed. The log records 41 defects. People reviewing renders, slicer
