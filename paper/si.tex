@@ -33,8 +33,8 @@ Gage Erickson, and Sterling G. Baird}
 \section{Bill of materials}
 \label{sec:bom}
 
-Table~\ref{tbl:bom} lists the parts for one channel, plus the items a platform
-needs only once whatever its number of channels. Prices are single-unit US
+Table~\ref{tbl:bom} lists the electronics and purchased parts for one channel, plus the items a platform
+needs only once whatever its number of channels, and Table~\ref{tbl:mechbom} lists every mechanical part and fastener. Prices are single-unit US
 dollars as of September 2026 and should be checked at order time; vendor links
 are kept in \texttt{hardware/} in the repository
 (\url{https://github.com/vertical-cloud-lab/powder-doser}).
@@ -70,6 +70,44 @@ Pololu D24V22F5 5~V buck regulator & 1 & 19 & Pololu \#2858 \\
 Headers and wiring & --- & 10 & generic \\
 \midrule
 \multicolumn{2}{l}{\textbf{Total, single-channel platform}} & \textbf{$\approx$185} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Mechanical parts and fasteners of the current design, numbered as in Fig.~\ref{fgr:v2exploded} and in build order (\texttt{cad/full-assembly/BOM.md}, pull request \#170). Printed parts are listed with their design files in Table~\ref{tbl:parts}; electronics are in Table~\ref{tbl:bom}. 25 line items: 11 printed parts, 4 purchased parts, 52 fasteners, and one board supplied by the user.}
+\label{tbl:mechbom}
+\begin{tabular}{rp{5.2cm}rp{2.0cm}p{5.0cm}r}
+\toprule
+No. & Part & Qty & Type & Source & Step \\
+\midrule
+1 & Mounting board & 1 & User-supplied & any flat board or bench top, 38 mm (1.5 in) thick (drawn 250 x 220 mm) & 1 \\
+2 & Baseplate & 1 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} & 1 \\
+3 & \#10 $\times$ 1\,1/4 in pan head wood screw & 6 & Fastener & McMaster-Carr 93360A609 & 2 \\
+4 & Servo & 2 & Purchased & MG996R metal-gear servo & 3 \\
+5 & M3$\times$14 socket head screw & 10 & Fastener & McMaster-Carr 91292A027 & 4 \\
+6 & M3 nylon-insert locknut & 16 & Fastener & McMaster-Carr 93625A100 & 4 \\
+7 & Servo pinion & 2 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} & 5 \\
+8 & M3$\times$10 socket head screw & 2 & Fastener & McMaster-Carr 91292A113 & 5 \\
+9 & Mounting plate & 1 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} & 6 \\
+10 & M5$\times$45 button head screw & 2 & Fastener & McMaster-Carr 92095A223 & 7 \\
+11 & M5 nylon-insert locknut & 2 & Fastener & McMaster-Carr 93625A200 & 7 \\
+12 & Stepper motor & 1 & Purchased & NEMA 11, StepperOnline 11HS18-0674S & 8 \\
+13 & M2.5$\times$8 socket head screw & 4 & Fastener & McMaster-Carr 91292A012 & 8 \\
+14 & Stepper pinion & 1 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} & 9 \\
+15 & Tap-collar base & 1 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} (AI-modelled, PR \#51) & 10 \\
+16 & M3$\times$25 button head screw & 1 & Fastener & McMaster-Carr 92095A186 & 10 \\
+17 & M3$\times$30 flat head screw & 1 & Fastener & McMaster-Carr 92125A140 & 10 \\
+18 & M3 hex nut & 1 & Fastener & McMaster-Carr 91828A211 & 10 \\
+19 & Auger & 1 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} & 11 \\
+20 & Bracket & 2 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} & 12 \\
+21 & Tap collar & 1 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} & 13 \\
+22 & M3$\times$20 button head screw & 5 & Fastener & McMaster-Carr 92095A185 & 16 \\
+23 & Solenoid & 1 & Purchased & Adafruit 412, 12 V push-pull & 18 \\
+24 & M3$\times$5 socket head screw & 2 & Fastener & McMaster-Carr 91292A110 & 18 \\
+25 & Auger cap & 1 & Printed (PLA) & printed; design file in Table~\ref{tbl:parts} & 19 \\
 \bottomrule
 \end{tabular}
 \end{table}
