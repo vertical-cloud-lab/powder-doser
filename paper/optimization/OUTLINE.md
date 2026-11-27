@@ -155,7 +155,7 @@ E0–E3, E5 and E6, as the round-2 mock review also concluded (§4c). The review
 - add **one quantitative AM-facing outcome**, either a small E9 (blade-spread layers of the two Al 4047
   states) or the composition accuracy of atomizer charges against a tolerance.
 
-That is about 220 doses in 3 rig days, or about 175 if the two dose-range blocks per session are dropped
+That is about 230 doses in 3 rig days, or about 180 if the two dose-range blocks per session are dropped
 along with the dose-range claim. It is an *Additive Manufacturing* full-length article only if the sieved
 and unsieved Al 4047 are told apart beyond the measurement scatter. Otherwise submit it as an AM **Methods
 paper** (the review's preferred route for the present data) or to *Powder Technology*.
