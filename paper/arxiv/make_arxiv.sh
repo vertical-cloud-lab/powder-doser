@@ -113,7 +113,21 @@ while read -r f; do
   [ -f "$PAPER/v2/$f" ] || die "figure $f not found in paper/v2/"
   cp "$PAPER/v2/$f" "$SRC/$f"
 done
-cp si.pdf "$SRC/anc/si.pdf"
+# SI: the journal SI, unless si-edits.sed has arXiv-only edits. Then an edited copy of si.tex
+# is built in a scratch directory that links to everything else in paper/ (figures, tables,
+# references.bib, rsc.bst) and to the journal main.aux, which xr reads for main-text numbers.
+if grep -q '^[^#]' "$ARX/si-edits.sed" 2>/dev/null; then
+  SIB=$(mktemp -d)
+  for e in "$PAPER"/*; do b=$(basename "$e"); case "$b" in si.*|main.*) ;; *) ln -s "$e" "$SIB/$b";; esac; done
+  cp main.aux "$SIB/"; sed -f "$ARX/si-edits.sed" si.tex > "$SIB/si.tex"
+  cmp -s si.tex "$SIB/si.tex" && die "si-edits.sed changed nothing in si.tex"
+  ( cd "$SIB" && $PDFLATEX si >/dev/null && bibtex si >/dev/null && $PDFLATEX si >/dev/null && $PDFLATEX si >/dev/null ) \
+    || die "arXiv SI build failed; see $SIB/si.log"
+  grep -q 'undefined' "$SIB/si.log" && die "undefined references in the arXiv SI build"
+  cp "$SIB/si.pdf" "$SRC/anc/si.pdf"; rm -rf "$SIB"
+else
+  cp si.pdf "$SRC/anc/si.pdf"
+fi
 
 # --- .bbl: one full build with BibTeX outside the bundle -------------------------------------
 cp -r "$SRC/ms.tex" "$SRC/figures" references.bib rsc.bst "$BUILD/"

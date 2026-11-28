@@ -1,7 +1,7 @@
 \providecommand*{\mcitethebibliography}{\thebibliography}
 \csname @ifundefined\endcsname{endmcitethebibliography}
 {\let\endmcitethebibliography\endthebibliography}{}
-\begin{mcitethebibliography}{44}
+\begin{mcitethebibliography}{43}
 \providecommand*{\natexlab}[1]{#1}
 \providecommand*{\mciteSetBstSublistMode}[1]{}
 \providecommand*{\mciteSetBstMaxWidthForm}[2]{}
@@ -373,17 +373,6 @@ N.~Yoshikawa, K.~Darvish, M.~G. Vakili, A.~Garg and A.~Aspuru-Guzik,
 N.~Yoshikawa, K.~Angers, K.~Darvish, S.~Okhovatian, D.~Bannerman, I.~Yakavets,
   M.~Radisic and A.~Aspuru-Guzik, \emph{Digital Discovery}, 2026, \textbf{5},
   93--97\relax
-\mciteBstWouldAddEndPuncttrue
-\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
-{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
-\EndOfBibitem
-\bibitem[Charles \emph{et~al.}(2026)Charles, Mulberry, Winters, Robison,
-  Erickson, and Baird]{Charles2026Release}
-S.~Charles, W.~Mulberry, L.~Winters, C.~Robison, G.~Erickson and S.~G. Baird,
-  \emph{powder-doser: design files, firmware, test data, design log, and AI
-  interaction history for an open-source auger powder doser}, Zenodo, tagged
-  release of \url{https://github.com/vertical-cloud-lab/powder-doser}, 2026,
-  DOI to be assigned when the release is archived at submission\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
