@@ -85,13 +85,21 @@ Then:
 
 1. Paste `BADGE_POWDER_DOSER` and `CHAPTER` from `longform_chapter.py` into `vertical-lab/longform.py`, with the
    chapter right after `alloy4` in `CHAPTERS`. Each part has a label, which `longform.py` turns into a YouTube
-   chapter inside the chapter.
+   chapter. The first (Hall and Carney flow) merges into the chapter's own line, because the 6 s card is under
+   the 10 s minimum.
 2. Add the lines of `narration.json` to `vertical-lab/narration.json`. Each one starts at a step of its clip and ends
    before the clip does.
 3. Run `python3 longform.py plan` to see the parts in order and their lengths.
 
 The clips come to about 4 min (25–31 s each). They are already rendered, so the long-form needs no new 3-D work
 for them.
+
+**Checked with byu-vcl's own code.** In a scratch clone of PR #318's branch at `0425020`, with the chapter pasted
+in and the clips fetched as above, `python3 longform.py plan` puts the chapter at 55:23 with all eight parts at
+their full lengths: 3:55 with the card. That takes the plan's total from 1:30:07 to 1:34:02 (a fresh clone lacks a
+few of round 16's clips, so its plan is shorter than the 1:31:05 upload). It lists these YouTube
+chapters: the chapter's title (the card and the Hall clip), then density, angle of repose, sieving, laser
+diffraction, moisture, FT4 and ring shear.
 
 **For the highlight ([PR #390](https://github.com/vertical-cloud-lab/byu-vcl/pull/390))**, `manifest.json` gives
 one shot per clip (`highlight_shot`: in and out points and a still, in seconds of the clip). `band_top` is 640: each
