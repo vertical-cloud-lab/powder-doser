@@ -68,7 +68,7 @@ only.
 
 **Notes:** Decided by Sterling on PR #97, 28 Nov 2026, for the arXiv preprint and the
 journal version alike. The Acknowledgements thank Carl Robison for testing eight powders by
-hand on video, and Gage Erickson for sizing a glove box for the doser, discussing auger
+hand with videos, and Gage Erickson for sizing a glove box for the doser, discussing auger
 capacity and particle size, and suggesting the angle of repose (evidence in
 [`CREDIT.md`](CREDIT.md)). `CITATION.cff` and `.zenodo.json`, which describe the software and
 data release rather than the article, still list all six as creators: say if they should

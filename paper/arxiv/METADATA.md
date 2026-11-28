@@ -27,10 +27,16 @@ references are the same as `../main.tex` on this branch, with these exceptions:
   SI items cited in the text ("SI Table S3") are typed in as numbers, read from `si.aux`.
 - The `\input` tables are pasted in, and all TeX comments are removed, because arXiv makes the
   source public. The comments held internal TODO notes.
-- [`arxiv-edits.sed`](arxiv-edits.sed) lists any arXiv-only text edits, each with its reason.
+- Statements that are not true yet are reworded, in the preprint only
+  ([`arxiv-edits.sed`](arxiv-edits.sed), each edit with its reason): the Data availability
+  statement no longer claims an archived Zenodo release or a version 1.0.0, neither of which
+  exists on 28 Nov 2026 (it now says a tagged release "will be archived on Zenodo"), and the
+  October session logs "will be" part of the archived release rather than "are". If you
+  archive v1.0.0 before posting, delete those edits, add the DOI to `Charles2026Release` in
+  `../references.bib`, and rebuild. [`LINK-CHECK.md`](LINK-CHECK.md) lists every check.
 
-`anc/si.pdf` is the journal SI (`../si.pdf`), rebuilt today with the four-author title page.
-It has no journal branding.
+`anc/si.pdf` is the journal SI (`../si.tex`, four-author title page, no journal branding)
+with the same "will be part of the archived release" edit ([`si-edits.sed`](si-edits.sed)).
 
 ## Metadata for the arXiv form
 
