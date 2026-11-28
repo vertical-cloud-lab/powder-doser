@@ -1,0 +1,654 @@
+{
+ "what": "powder-doser PR #190's powder-test animations, packaged for byu-vcl's vertical-lab long-form (PR #318) as 'ext' parts",
+ "made": "2026-11-28",
+ "repo": "vertical-cloud-lab/powder-doser",
+ "pr": 190,
+ "commits": [
+  "afccaf150bf07a0d1ea0be0aa0655449c7975df4"
+ ],
+ "format": "H.264 MP4, 1280 x 720, 30 fps, no audio (the long-form's own format, so its join repeats no frames)",
+ "chapter": {
+  "key": "powdertests",
+  "title": "The powder tests by the standards: powder-doser's renders",
+  "after": "alloy4"
+ },
+ "clips": [
+  {
+   "name": "hall_flow",
+   "title": "Hall flowmeter and Carney funnel: flow rate",
+   "standards": [
+    "ASTM B213-25",
+    "ASTM B964"
+   ],
+   "label": "Hall and Carney flow",
+   "file": "docs/powder-tests/animations/hall_flow.mp4",
+   "commit": "afccaf150bf07a0d1ea0be0aa0655449c7975df4",
+   "url": "https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/afccaf150bf07a0d1ea0be0aa0655449c7975df4/docs/powder-tests/animations/hall_flow.mp4",
+   "sha256": "a8b4f774df9502a9274f920e1694c195e8ebb9bcd940ab25e7d2be269a211b9c",
+   "bytes": 1048730,
+   "frames": 888,
+   "fps": 30.0,
+   "size": [
+    1280,
+    720
+   ],
+   "seconds": 29.6,
+   "byu_vcl": {
+    "dest": "vertical-lab/out/mp4/ext/powder_tests/hall_flow.mp4",
+    "part": "ext/powder_tests/hall_flow.mp4",
+    "badge": "POWDER-DOSER'S OWN RENDER",
+    "caption": "Hall and Carney flow (ASTM B213, B964), by hand: seconds for 50 g to run out. The twin's psd.flow() predicts both; the lab doesn't measure them"
+   },
+   "highlight_shot": {
+    "t0": 6.6,
+    "t1": 17.0,
+    "still": 14.5,
+    "band_top": 640
+   },
+   "steps": [
+    {
+     "t0": 0.0,
+     "t1": 4.0,
+     "text": "Assemble: levelled stand, Hall funnel in its holder, receiver underneath"
+    },
+    {
+     "t0": 4.0,
+     "t1": 6.6,
+     "text": "Block the orifice with a dry finger and pour in 50.0 g of powder"
+    },
+    {
+     "t0": 6.6,
+     "t1": 7.2,
+     "text": "Remove the finger and start the timer"
+    },
+    {
+     "t0": 7.2,
+     "t1": 15.1,
+     "text": "Powder runs out through the 2.54 mm orifice"
+    },
+    {
+     "t0": 15.1,
+     "t1": 16.8,
+     "text": "Stop when the last powder leaves the orifice: report s/50 g"
+    },
+    {
+     "t0": 16.8,
+     "t1": 19.6,
+     "text": "A cohesive powder (e.g. AlSi10Mg) arches over the orifice: no flow"
+    },
+    {
+     "t0": 19.6,
+     "t1": 22.0,
+     "text": "Swap in the Carney funnel (5.08 mm orifice, ASTM B964); refill"
+    },
+    {
+     "t0": 22.0,
+     "t1": 26.2,
+     "text": "Release and time 50 g through the larger orifice"
+    },
+    {
+     "t0": 26.2,
+     "t1": 29.6,
+     "text": "Report both: 'no flow' in Hall is a result, not a missing value"
+    }
+   ],
+   "vertical_lab": {
+    "model": "Not shown.",
+    "plan": "Not planned. The plan's flow numbers come from the doser: V_g and I_stop, as in [`docs/flowability/`](https://github.com/vertical-cloud-lab/powder-doser/blob/0030e0d/docs/flowability/README.md) on this repo's branch at `0030e0d`.",
+    "twin": "[`psd.flow()`](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/instruments/psd.py#L408-L443) gives Hall and Carney times for 50 g, with no Hall flow below *ff*<sub>c</sub> 3.5 and no Carney flow below 2.2 (assumed there); round 6 calls it only from a test. The proposals' lab books powder QC at a station named \"Powder size and flow (sieve analysis, Hall funnel)\" ([`facility.py` L76](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/facility.py#L76)); the vertical lab's `psd` station is the Mastersizer and XRF instead ([L133](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/facility.py#L133))."
+   }
+  },
+  {
+   "name": "density",
+   "title": "Apparent and tap density to the Hausner ratio",
+   "standards": [
+    "ASTM B212-25",
+    "ASTM B527-24"
+   ],
+   "label": "Apparent and tap density, Hausner ratio",
+   "file": "docs/powder-tests/animations/density.mp4",
+   "commit": "afccaf150bf07a0d1ea0be0aa0655449c7975df4",
+   "url": "https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/afccaf150bf07a0d1ea0be0aa0655449c7975df4/docs/powder-tests/animations/density.mp4",
+   "sha256": "2b2628799bd27e1bfcc91cadfc1a53efd3c7d7e8e65dbbf246572b96e61abbd3",
+   "bytes": 1548410,
+   "frames": 855,
+   "fps": 30.0,
+   "size": [
+    1280,
+    720
+   ],
+   "seconds": 28.5,
+   "byu_vcl": {
+    "dest": "vertical-lab/out/mp4/ext/powder_tests/density.mp4",
+    "part": "ext/powder_tests/density.mp4",
+    "badge": "POWDER-DOSER'S OWN RENDER",
+    "caption": "Apparent and tap density (ASTM B212, B527) give the Hausner ratio, which the lab's runs plan takes in a graduated cylinder within a week of a run"
+   },
+   "highlight_shot": {
+    "t0": 17.8,
+    "t1": 28.4,
+    "still": 27.0,
+    "band_top": 640
+   },
+   "steps": [
+    {
+     "t0": 0.0,
+     "t1": 3.2,
+     "text": "Assemble: levelled stand, Hall funnel 25 mm above a 25 cm³ cup"
+    },
+    {
+     "t0": 3.2,
+     "t1": 5.0,
+     "text": "Block the orifice and load the funnel with powder"
+    },
+    {
+     "t0": 5.0,
+     "t1": 9.6,
+     "text": "Release: powder fills the cup and overflows into the tray"
+    },
+    {
+     "t0": 9.6,
+     "t1": 10.8,
+     "text": "Swing the funnel aside without jarring the cup"
+    },
+    {
+     "t0": 10.8,
+     "t1": 12.7,
+     "text": "Strike off the heap: one pass of a spatula, blade upright"
+    },
+    {
+     "t0": 12.7,
+     "t1": 15.0,
+     "text": "Weigh the powder: apparent density = mass ÷ 25 cm³"
+    },
+    {
+     "t0": 15.0,
+     "t1": 17.8,
+     "text": "Tap density: weighed sample into a 25 mL graduated cylinder"
+    },
+    {
+     "t0": 17.8,
+     "t1": 24.4,
+     "text": "A cam lifts the cylinder and drops it on the anvil, over and over"
+    },
+    {
+     "t0": 24.4,
+     "t1": 28.5,
+     "text": "Hausner = TD/AD = 1.14 (above ~1.25 suggests a cohesive powder)"
+    }
+   ],
+   "vertical_lab": {
+    "model": "Not shown.",
+    "plan": "\"Doser flowability, Hausner ratio\", within a week of each run, 0.5–1 h ([DAL #256](https://github.com/vertical-cloud-lab/digital-alloy-lab/issues/256)); the Hausner ratio from a graduated cylinder ([runs plan](https://github.com/vertical-cloud-lab/byu-vcl/blob/cad4e6d/atomizer-runs/plan-adv-mater/measurements.md#L97-L103)).",
+    "twin": "`psd.flow()` returns an apparent density ([L425](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/instruments/psd.py#L425)); no tapped density."
+   }
+  },
+  {
+   "name": "angle_of_repose",
+   "title": "Angle of repose, fixed funnel",
+   "standards": [
+    "ISO 4324",
+    "USP <1174>"
+   ],
+   "label": "Angle of repose",
+   "file": "docs/powder-tests/animations/angle_of_repose.mp4",
+   "commit": "afccaf150bf07a0d1ea0be0aa0655449c7975df4",
+   "url": "https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/afccaf150bf07a0d1ea0be0aa0655449c7975df4/docs/powder-tests/animations/angle_of_repose.mp4",
+   "sha256": "c93780a5141cf52721b33d0a430f8aba51bfa4a21cf89ab0b8e1d0f9f535fe42",
+   "bytes": 1791408,
+   "frames": 825,
+   "fps": 30.0,
+   "size": [
+    1280,
+    720
+   ],
+   "seconds": 27.5,
+   "byu_vcl": {
+    "dest": "vertical-lab/out/mp4/ext/powder_tests/angle_of_repose.mp4",
+    "part": "ext/powder_tests/angle_of_repose.mp4",
+    "badge": "POWDER-DOSER'S OWN RENDER",
+    "caption": "Angle of repose (ISO 4324, USP <1174>), by hand: a cone on a fixed base, free-flowing then cohesive. Neither the lab nor the twin has it yet"
+   },
+   "highlight_shot": {
+    "t0": 3.4,
+    "t1": 14.2,
+    "still": 13.5,
+    "band_top": 640
+   },
+   "steps": [
+    {
+     "t0": 0.0,
+     "t1": 3.4,
+     "text": "Assemble: fixed-diameter base, funnel clamped at a fixed height"
+    },
+    {
+     "t0": 3.4,
+     "t1": 7.4,
+     "text": "Pour powder through the funnel; a cone builds on the base"
+    },
+    {
+     "t0": 7.4,
+     "t1": 10.0,
+     "text": "Once the cone covers the base, the excess rolls off the edge"
+    },
+    {
+     "t0": 10.0,
+     "t1": 14.2,
+     "text": "Measure the cone height h: angle of repose = arctan(h / r)"
+    },
+    {
+     "t0": 14.2,
+     "t1": 15.8,
+     "text": "Clear the base; repeat with a cohesive powder (e.g. AlSi10Mg)"
+    },
+    {
+     "t0": 15.8,
+     "t1": 20.6,
+     "text": "A cohesive powder builds a steeper, rougher cone"
+    },
+    {
+     "t0": 20.6,
+     "t1": 24.4,
+     "text": "Steeper cone, larger angle: 47° ('poor') vs 32° ('good')"
+    },
+    {
+     "t0": 24.4,
+     "t1": 27.5,
+     "text": "Rank on the USP <1174> flow scale: lower angle, freer flow"
+    }
+   ],
+   "vertical_lab": {
+    "model": "Not shown (heaps in the lab model sit at an assumed angle).",
+    "plan": "Not planned.",
+    "twin": "None."
+   }
+  },
+  {
+   "name": "sieve",
+   "title": "Sieve analysis",
+   "standards": [
+    "ASTM B214",
+    "ASTM E11"
+   ],
+   "label": "Sieve analysis",
+   "file": "docs/powder-tests/animations/sieve.mp4",
+   "commit": "afccaf150bf07a0d1ea0be0aa0655449c7975df4",
+   "url": "https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/afccaf150bf07a0d1ea0be0aa0655449c7975df4/docs/powder-tests/animations/sieve.mp4",
+   "sha256": "d3e38c571be1d1353332395004f47e71a76d6ac0b8a5040c614070c73b903b22",
+   "bytes": 4471194,
+   "frames": 942,
+   "fps": 30.0,
+   "size": [
+    1280,
+    720
+   ],
+   "seconds": 31.4,
+   "byu_vcl": {
+    "dest": "vertical-lab/out/mp4/ext/powder_tests/sieve.mp4",
+    "part": "ext/powder_tests/sieve.mp4",
+    "badge": "POWDER-DOSER'S OWN RENDER",
+    "caption": "Sieve analysis (ASTM B214): five 8 in. sieves, 150 to 45 µm, 15 min on a tapping shaker. Chapter 3's cell splits the powder; this sizes it"
+   },
+   "highlight_shot": {
+    "t0": 13.0,
+    "t1": 25.6,
+    "still": 25.0,
+    "band_top": 640
+   },
+   "steps": [
+    {
+     "t0": 0.0,
+     "t1": 4.2,
+     "text": "Nest 200 mm test sieves, coarsest on top, pan at the bottom"
+    },
+    {
+     "t0": 4.2,
+     "t1": 6.6,
+     "text": "Pour about 100 g (90–110 g) onto the top sieve"
+    },
+    {
+     "t0": 6.6,
+     "t1": 8.0,
+     "text": "Fit the lid, clamp the stack and lower the tapping hammer"
+    },
+    {
+     "t0": 8.0,
+     "t1": 17.0,
+     "text": "Shake 15 min: gyratory motion plus a tap on the lid"
+    },
+    {
+     "t0": 17.0,
+     "t1": 19.4,
+     "text": "Stop, unclamp and unstack the sieves"
+    },
+    {
+     "t0": 19.4,
+     "t1": 25.6,
+     "text": "Weigh the powder retained on each sieve and in the pan"
+    },
+    {
+     "t0": 25.6,
+     "t1": 28.4,
+     "text": "Report mass % per size band and cumulative % passing"
+    },
+    {
+     "t0": 28.4,
+     "t1": 31.4,
+     "text": "Below about 45 µm dry sieving fails: use laser diffraction"
+    }
+   ],
+   "vertical_lab": {
+    "model": "Chapter 3 (\"sieve and print\"): the sieving cell, a Retsch AS 200 in a downdraft enclosure that splits the powder into jars ([`sieve_station.py`](https://github.com/vertical-cloud-lab/byu-vcl/blob/0425020/vertical-lab/sieve_station.py)).",
+    "plan": "No. 60, 230 and 325 and the pan, by hand, 10–20 g at a time ([runs plan](https://github.com/vertical-cloud-lab/byu-vcl/blob/cad4e6d/atomizer-runs/plan-adv-mater/measurements.md#L55-L65)), within 48 h of a run ([DAL #256](https://github.com/vertical-cloud-lab/digital-alloy-lab/issues/256)).",
+    "twin": "The proposals' lab has a Retsch AS 200 and a `psd` station for \"sieve analysis, Hall funnel\" ([`facility.py` L75-L76](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/facility.py#L75-L76)); the vertical lab has the sieve cell with its wash ([L132](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/facility.py#L132))."
+   }
+  },
+  {
+   "name": "laser_diffraction",
+   "title": "Laser diffraction",
+   "standards": [
+    "ASTM B822",
+    "ISO 13320"
+   ],
+   "label": "Laser diffraction",
+   "file": "docs/powder-tests/animations/laser_diffraction.mp4",
+   "commit": "afccaf150bf07a0d1ea0be0aa0655449c7975df4",
+   "url": "https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/afccaf150bf07a0d1ea0be0aa0655449c7975df4/docs/powder-tests/animations/laser_diffraction.mp4",
+   "sha256": "e9bb5a1c049979e665b0fcca994f099215691340720da9ca43af97c9009c0570",
+   "bytes": 2453967,
+   "frames": 828,
+   "fps": 30.0,
+   "size": [
+    1280,
+    720
+   ],
+   "seconds": 27.6,
+   "byu_vcl": {
+    "dest": "vertical-lab/out/mp4/ext/powder_tests/laser_diffraction.mp4",
+    "part": "ext/powder_tests/laser_diffraction.mp4",
+    "badge": "POWDER-DOSER'S OWN RENDER",
+    "caption": "Laser diffraction (ASTM B822, ISO 13320), drawn with a wet cell; tray E's Mastersizer disperses dry. The twin's psd.py models the same optics"
+   },
+   "highlight_shot": {
+    "t0": 12.8,
+    "t1": 23.0,
+    "still": 22.5,
+    "band_top": 640
+   },
+   "steps": [
+    {
+     "t0": 0.0,
+     "t1": 4.8,
+     "text": "Assemble: laser, beam expander, flow cell, Fourier lens, detectors"
+    },
+    {
+     "t0": 4.8,
+     "t1": 7.2,
+     "text": "Fill the dispersion unit with water + surfactant; pump and stir"
+    },
+    {
+     "t0": 7.2,
+     "t1": 9.8,
+     "text": "Laser on: record the background with clean liquid"
+    },
+    {
+     "t0": 9.8,
+     "t1": 12.8,
+     "text": "Add powder until obscuration is in range (about 5–15 %)"
+    },
+    {
+     "t0": 12.8,
+     "t1": 18.2,
+     "text": "Particles scatter light: large ones at small angles, small at wide"
+    },
+    {
+     "t0": 18.2,
+     "t1": 23.0,
+     "text": "A Mie (or Fraunhofer) model inverts the pattern into sizes"
+    },
+    {
+     "t0": 23.0,
+     "t1": 27.6,
+     "text": "Report volume-weighted D10, D50, D90; compare like with like"
+    }
+   ],
+   "vertical_lab": {
+    "model": "Chapter 4 (\"the powder, checked\"): the Malvern Mastersizer 3000 with the Aero S dry disperser on tray E ([`alloy_powder.py`](https://github.com/vertical-cloud-lab/byu-vcl/blob/0425020/vertical-lab/alloy_powder.py)).",
+    "plan": "A cross-check on one half \"if a laser-diffraction instrument can be used without an ME Order\" ([runs plan](https://github.com/vertical-cloud-lab/byu-vcl/blob/cad4e6d/atomizer-runs/plan-adv-mater/measurements.md#L66-L67)). Utah's PSSC lab charges $5.10–$9.10 a sample, dry (this PR's costs).",
+    "twin": "[`psd.py`](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/instruments/psd.py) simulates the Mastersizer: optics, dispersion, sampling and the inversion."
+   }
+  },
+  {
+   "name": "moisture_lod",
+   "title": "Moisture by loss on drying",
+   "standards": [
+    "USP <731>"
+   ],
+   "label": "Moisture, loss on drying",
+   "file": "docs/powder-tests/animations/moisture_lod.mp4",
+   "commit": "afccaf150bf07a0d1ea0be0aa0655449c7975df4",
+   "url": "https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/afccaf150bf07a0d1ea0be0aa0655449c7975df4/docs/powder-tests/animations/moisture_lod.mp4",
+   "sha256": "6756fb2153479b05fe3c9d5ae7bd0abca14929655e85bb51a89f59d53f2e97aa",
+   "bytes": 1751544,
+   "frames": 855,
+   "fps": 30.0,
+   "size": [
+    1280,
+    720
+   ],
+   "seconds": 28.5,
+   "byu_vcl": {
+    "dest": "vertical-lab/out/mp4/ext/powder_tests/moisture_lod.mp4",
+    "part": "ext/powder_tests/moisture_lod.mp4",
+    "badge": "POWDER-DOSER'S OWN RENDER",
+    "caption": "Moisture by loss on drying (USP <731>): weigh, dry at 105 °C, cool, reweigh to constant mass. Neither the lab nor the twin has it yet"
+   },
+   "highlight_shot": {
+    "t0": 15.6,
+    "t1": 28.4,
+    "still": 27.5,
+    "band_top": 640
+   },
+   "steps": [
+    {
+     "t0": 0.0,
+     "t1": 3.6,
+     "text": "Lay out: analytical balance, oven at 105 °C, desiccator, T/RH logger"
+    },
+    {
+     "t0": 3.6,
+     "t1": 6.6,
+     "text": "Weigh the dried, empty weighing bottle with its lid"
+    },
+    {
+     "t0": 6.6,
+     "t1": 9.6,
+     "text": "Add about 10 g from the jar being dosed, spread thin, weigh"
+    },
+    {
+     "t0": 9.6,
+     "t1": 11.2,
+     "text": "Into the oven with the lid off"
+    },
+    {
+     "t0": 11.2,
+     "t1": 15.6,
+     "text": "Dry at 105 °C: water and other volatiles leave the powder"
+    },
+    {
+     "t0": 15.6,
+     "t1": 18.2,
+     "text": "Lid on, cool to room temperature in the desiccator"
+    },
+    {
+     "t0": 18.2,
+     "t1": 20.6,
+     "text": "Reweigh"
+    },
+    {
+     "t0": 20.6,
+     "t1": 24.0,
+     "text": "Dry 1 h more, cool, reweigh: repeat until two weighings agree"
+    },
+    {
+     "t0": 24.0,
+     "t1": 28.5,
+     "text": "LOD = mass lost ÷ moist sample mass; record T/RH with it"
+    }
+   ],
+   "vertical_lab": {
+    "model": "Not shown.",
+    "plan": "Not planned (the plan records how many days each sample was stored, for oxygen pick-up).",
+    "twin": "None."
+   }
+  },
+  {
+   "name": "ft4_shear",
+   "title": "FT4 shear cell: yield locus and flow function",
+   "standards": [
+    "ASTM D7891-24"
+   ],
+   "label": "FT4 shear cell",
+   "file": "docs/powder-tests/animations/ft4_shear.mp4",
+   "commit": "afccaf150bf07a0d1ea0be0aa0655449c7975df4",
+   "url": "https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/afccaf150bf07a0d1ea0be0aa0655449c7975df4/docs/powder-tests/animations/ft4_shear.mp4",
+   "sha256": "df9b29c22ac32621780132e824957e67f7a70b049a7a9a527fa710abc75586cd",
+   "bytes": 1470937,
+   "frames": 930,
+   "fps": 30.0,
+   "size": [
+    1280,
+    720
+   ],
+   "seconds": 31.0,
+   "byu_vcl": {
+    "dest": "vertical-lab/out/mp4/ext/powder_tests/ft4_shear.mp4",
+    "part": "ext/powder_tests/ft4_shear.mp4",
+    "badge": "POWDER-DOSER'S OWN RENDER",
+    "caption": "FT4 shear cell (ASTM D7891): the yield locus and the flow function ffc. The twin estimates ffc from a Bond number; this is how it's measured"
+   },
+   "highlight_shot": {
+    "t0": 18.0,
+    "t1": 30.9,
+    "still": 30.0,
+    "band_top": 640
+   },
+   "steps": [
+    {
+     "t0": 0.0,
+     "t1": 4.6,
+     "text": "Assemble: base with load-cell seat, drive tower, split glass vessel"
+    },
+    {
+     "t0": 4.6,
+     "t1": 7.0,
+     "text": "Fill the 25 mm split vessel with powder"
+    },
+    {
+     "t0": 7.0,
+     "t1": 10.2,
+     "text": "Condition: blade spirals down and up for a uniform, loose packing"
+    },
+    {
+     "t0": 10.2,
+     "t1": 13.2,
+     "text": "Vented piston consolidates the bed to 9 kPa; air escapes"
+    },
+    {
+     "t0": 13.2,
+     "t1": 15.2,
+     "text": "Split the vessel: excess powder leaves a level 10 mL bed"
+    },
+    {
+     "t0": 15.2,
+     "t1": 16.6,
+     "text": "Bladed shear head moves down; its blades enter the bed"
+    },
+    {
+     "t0": 16.6,
+     "t1": 26.6,
+     "text": "Pre-shear at 9 kPa; shear to failure at e.g. 7, 6, 5, 4, 3 kPa"
+    },
+    {
+     "t0": 26.6,
+     "t1": 31.0,
+     "text": "Yield locus + Mohr circles give σc and σ1; ffc = σ1 / σc"
+    }
+   ],
+   "vertical_lab": {
+    "model": "Not shown.",
+    "plan": "Not planned; a send-out ($650 a sample at Micromeritics, this PR's costs).",
+    "twin": "`psd.flow()` sets *ff*<sub>c</sub> = 3.7 Bo<sup>−0.27</sup> from a Bond number (Capece et al., \"as recalled; check\" there; [L424](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/instruments/psd.py#L424)), and gates Hall and Carney flow on it."
+   }
+  },
+  {
+   "name": "ring_shear",
+   "title": "Schulze ring shear tester: yield locus and flow function",
+   "standards": [
+    "ASTM D6773-22"
+   ],
+   "label": "Ring shear tester",
+   "file": "docs/powder-tests/animations/ring_shear.mp4",
+   "commit": "afccaf150bf07a0d1ea0be0aa0655449c7975df4",
+   "url": "https://raw.githubusercontent.com/vertical-cloud-lab/powder-doser/afccaf150bf07a0d1ea0be0aa0655449c7975df4/docs/powder-tests/animations/ring_shear.mp4",
+   "sha256": "14eb0ba8b55d73f4a1ee859927eb2544892f0b168bc8997763609d7093e62aac",
+   "bytes": 1702980,
+   "frames": 738,
+   "fps": 30.0,
+   "size": [
+    1280,
+    720
+   ],
+   "seconds": 24.6,
+   "byu_vcl": {
+    "dest": "vertical-lab/out/mp4/ext/powder_tests/ring_shear.mp4",
+    "part": "ext/powder_tests/ring_shear.mp4",
+    "badge": "POWDER-DOSER'S OWN RENDER",
+    "caption": "Schulze ring shear tester (ASTM D6773): the same ffc, for a cohesive powder. Sent out at about $650 a sample; no station in the lab"
+   },
+   "highlight_shot": {
+    "t0": 11.0,
+    "t1": 24.5,
+    "still": 24.0,
+    "band_top": 640
+   },
+   "steps": [
+    {
+     "t0": 0.0,
+     "t1": 4.0,
+     "text": "Assemble: drive base, turntable, annular shear cell with floor bars"
+    },
+    {
+     "t0": 4.0,
+     "t1": 6.6,
+     "text": "Fill the ring, then scrape the powder level with the rim"
+    },
+    {
+     "t0": 6.6,
+     "t1": 8.6,
+     "text": "Lay the annular lid, bars down, on the powder"
+    },
+    {
+     "t0": 8.6,
+     "t1": 11.0,
+     "text": "Tie rods hold the lid; weights add the normal load"
+    },
+    {
+     "t0": 11.0,
+     "t1": 20.0,
+     "text": "Ring turns, lid is held: pre-shear at 6 kPa, shear at 4.5, 3, 1.5 kPa"
+    },
+    {
+     "t0": 20.0,
+     "t1": 24.6,
+     "text": "Yield locus + Mohr circles give σc and σ1; ffc = σ1 / σc"
+    }
+   ],
+   "vertical_lab": {
+    "model": "Not shown.",
+    "plan": "Not planned; a send-out, as for the FT4.",
+    "twin": "As for the FT4."
+   }
+  }
+ ]
+}

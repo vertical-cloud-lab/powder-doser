@@ -1,0 +1,43 @@
+{
+ "hall_flow.mp4": {
+  "source": "vertical-cloud-lab/powder-doser PR #190 @ afccaf1, docs/powder-tests/animations/hall_flow.mp4",
+  "what": "Hall flowmeter and Carney funnel: flow rate (ASTM B213-25, ASTM B964): powder-doser's schematic walkthrough of the test, by hand at a bench. Every number on screen is illustrative, not a measurement.",
+  "url": "https://github.com/vertical-cloud-lab/powder-doser/blob/afccaf1/docs/powder-tests/README.md"
+ },
+ "density.mp4": {
+  "source": "vertical-cloud-lab/powder-doser PR #190 @ afccaf1, docs/powder-tests/animations/density.mp4",
+  "what": "Apparent and tap density to the Hausner ratio (ASTM B212-25, ASTM B527-24): powder-doser's schematic walkthrough of the test, by hand at a bench. Every number on screen is illustrative, not a measurement.",
+  "url": "https://github.com/vertical-cloud-lab/powder-doser/blob/afccaf1/docs/powder-tests/README.md"
+ },
+ "angle_of_repose.mp4": {
+  "source": "vertical-cloud-lab/powder-doser PR #190 @ afccaf1, docs/powder-tests/animations/angle_of_repose.mp4",
+  "what": "Angle of repose, fixed funnel (ISO 4324, USP <1174>): powder-doser's schematic walkthrough of the test, by hand at a bench. Every number on screen is illustrative, not a measurement.",
+  "url": "https://github.com/vertical-cloud-lab/powder-doser/blob/afccaf1/docs/powder-tests/README.md"
+ },
+ "sieve.mp4": {
+  "source": "vertical-cloud-lab/powder-doser PR #190 @ afccaf1, docs/powder-tests/animations/sieve.mp4",
+  "what": "Sieve analysis (ASTM B214, ASTM E11): powder-doser's schematic walkthrough of the test, by hand at a bench. Every number on screen is illustrative, not a measurement.",
+  "url": "https://github.com/vertical-cloud-lab/powder-doser/blob/afccaf1/docs/powder-tests/README.md"
+ },
+ "laser_diffraction.mp4": {
+  "source": "vertical-cloud-lab/powder-doser PR #190 @ afccaf1, docs/powder-tests/animations/laser_diffraction.mp4",
+  "what": "Laser diffraction (ASTM B822, ISO 13320): powder-doser's schematic walkthrough of the test, by hand at a bench. Every number on screen is illustrative, not a measurement.",
+  "url": "https://github.com/vertical-cloud-lab/powder-doser/blob/afccaf1/docs/powder-tests/README.md"
+ },
+ "moisture_lod.mp4": {
+  "source": "vertical-cloud-lab/powder-doser PR #190 @ afccaf1, docs/powder-tests/animations/moisture_lod.mp4",
+  "what": "Moisture by loss on drying (USP <731>): powder-doser's schematic walkthrough of the test, by hand at a bench. Every number on screen is illustrative, not a measurement.",
+  "url": "https://github.com/vertical-cloud-lab/powder-doser/blob/afccaf1/docs/powder-tests/README.md"
+ },
+ "ft4_shear.mp4": {
+  "source": "vertical-cloud-lab/powder-doser PR #190 @ afccaf1, docs/powder-tests/animations/ft4_shear.mp4",
+  "what": "FT4 shear cell: yield locus and flow function (ASTM D7891-24): powder-doser's schematic walkthrough of the test, by hand at a bench. Every number on screen is illustrative, not a measurement.",
+  "url": "https://github.com/vertical-cloud-lab/powder-doser/blob/afccaf1/docs/powder-tests/README.md"
+ },
+ "ring_shear.mp4": {
+  "source": "vertical-cloud-lab/powder-doser PR #190 @ afccaf1, docs/powder-tests/animations/ring_shear.mp4",
+  "what": "Schulze ring shear tester: yield locus and flow function (ASTM D6773-22): powder-doser's schematic walkthrough of the test, by hand at a bench. Every number on screen is illustrative, not a measurement.",
+  "url": "https://github.com/vertical-cloud-lab/powder-doser/blob/afccaf1/docs/powder-tests/README.md"
+ },
+ "note": "Fetched from powder-doser PR #190 (docs/powder-tests/vertical-lab/fetch.py, which checks each sha256 against its manifest.json). Schematics, not vendor CAD; the procedures are paraphrased from public summaries of the standards."
+}

@@ -15,9 +15,9 @@ The vertical lab is byu-vcl's 3-D model of an automated alloy lab built around a
   [PR #427](https://github.com/vertical-cloud-lab/byu-vcl/pull/427).
 
 Its powder checks (chapter 4 of the long-form, "the powder, checked") show the Mastersizer, XRD, XRF and SEM. Chapter
-3's sieving cell splits the powder into the cuts it prints. No clip in it shows a flow, density, moisture or shear
-test, but the twin uses three of their results: Hall and Carney flow times, apparent density and *ff*<sub>c</sub>.
-The eight clips here fill that gap.
+3's sieving cell splits the powder into the cuts it prints. No clip in the long-form shows a flow, density, moisture
+or shear test. The twin has a model for three of their results (`psd.flow()`: Hall and Carney flow times, apparent density
+and *ff*<sub>c</sub>), though round 6 calls it only from a test. The eight clips here fill that gap.
 
 ## Where each clip fits
 
@@ -29,7 +29,7 @@ it cites. "Twin" is round 6's code at
 
 | Clip | Lab model | The lab's plan | Twin |
 |---|---|---|---|
-| Hall and Carney flow (B213, B964) | Not shown | Not planned; its flow numbers come from the doser ([`docs/flowability/` at `0030e0d`](https://github.com/vertical-cloud-lab/powder-doser/blob/0030e0d/docs/flowability/README.md)) | [`psd.flow()`](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/instruments/psd.py#L408-L443) predicts both times. The proposals' lab books them at its `psd` station, "Powder size and flow (sieve analysis, Hall funnel)" ([`facility.py` L76](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/facility.py#L76)) |
+| Hall and Carney flow (B213, B964) | Not shown | Not planned; its flow numbers come from the doser ([`docs/flowability/` at `0030e0d`](https://github.com/vertical-cloud-lab/powder-doser/blob/0030e0d/docs/flowability/README.md)) | [`psd.flow()`](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/instruments/psd.py#L408-L443) predicts both times. The proposals' lab books powder QC at a station named "Powder size and flow (sieve analysis, Hall funnel)" ([`facility.py` L76](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/facility.py#L76)) |
 | Apparent and tap density, Hausner ratio (B212, B527) | Not shown | "Doser flowability, Hausner ratio" within a week of each run, 0.5–1 h; the Hausner ratio from a graduated cylinder | `psd.flow()` returns an apparent density ([L425](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/instruments/psd.py#L425)); no tapped density |
 | Angle of repose (ISO 4324, USP <1174>) | Not shown | Not planned | None |
 | Sieve analysis (B214) | Chapter 3's sieving cell (Retsch AS 200), which splits rather than sizes | No. 60, 230, 325 and pan, by hand, 10–20 g at a time, within 48 h of a run | The proposals' `psd` station (above); the vertical lab's sieve cell with its wash ([L132](https://github.com/vertical-cloud-lab/byu-vcl/blob/938115f/vertical-lab/twin/facility.py#L132)) |
@@ -39,7 +39,7 @@ it cites. "Twin" is round 6's code at
 | Ring shear tester (D6773) | Not shown | Not planned | As for the FT4 |
 
 So the clips can do two jobs in the long-form. They show the steps the real lab does by hand (sieving, the Hausner
-ratio), and they show how the numbers the twin assumes are measured (Hall and Carney times, apparent density,
+ratio), and they show how the numbers the twin models are measured (Hall and Carney times, apparent density,
 *ff*<sub>c</sub>). `manifest.json` has the same mapping per clip, with links.
 
 ## What changed for the vertical lab
@@ -84,13 +84,14 @@ python3 /tmp/powder-tests/fetch.py        # -> vertical-lab/out/mp4/ext/powder_t
 Then:
 
 1. Paste `BADGE_POWDER_DOSER` and `CHAPTER` from `longform_chapter.py` into `vertical-lab/longform.py`, with the
-   chapter right after `alloy4` in `CHAPTERS`. Each clip has its own label, so each becomes a YouTube chapter.
+   chapter right after `alloy4` in `CHAPTERS`. Each part has a label, which `longform.py` turns into a YouTube
+   chapter inside the chapter.
 2. Add the lines of `narration.json` to `vertical-lab/narration.json`. Each one starts at a step of its clip and ends
    before the clip does.
 3. Run `python3 longform.py plan` to see the parts in order and their lengths.
 
-The clips are about 4 min in all (25–31 s each), and they render as committed, so the long-form needs no new 3-D
-work for them.
+The clips come to about 4 min (25–31 s each). They are already rendered, so the long-form needs no new 3-D work
+for them.
 
 **For the highlight ([PR #390](https://github.com/vertical-cloud-lab/byu-vcl/pull/390))**, `manifest.json` gives
 one shot per clip (`highlight_shot`: in and out points and a still, in seconds of the clip). `band_top` is 640: each

@@ -61,9 +61,9 @@ CLIPS = [
                         "[`docs/flowability/`](https://github.com/vertical-cloud-lab/powder-doser/blob/0030e0d/docs/"
                         "flowability/README.md) on this repo's branch at `0030e0d`.",
                    twin=f"[`psd.flow()`]({PSD}#L408-L443) gives Hall and Carney times for 50 g, with no Hall "
-                        f"flow below *ff*<sub>c</sub> 3.5 and no Carney flow below 2.2 (assumed there). The "
-                        f"proposals' lab books it at its `psd` station, \"Powder size and flow (sieve analysis, Hall "
-                        f"funnel)\" ([`facility.py` L76]({FAC}#L76)); the vertical lab's `psd` station is the "
+                        f"flow below *ff*<sub>c</sub> 3.5 and no Carney flow below 2.2 (assumed there); round 6 calls it only "
+                        f"from a test. The proposals' lab books powder QC at a station named \"Powder size and flow "
+                        f"(sieve analysis, Hall funnel)\" ([`facility.py` L76]({FAC}#L76)); the vertical lab's `psd` station is the "
                         f"Mastersizer and XRF instead ([L133]({FAC}#L133)).")),
     dict(name="density", label="Apparent and tap density, Hausner ratio",
          title="Apparent and tap density to the Hausner ratio", standards=["ASTM B212-25", "ASTM B527-24"],
@@ -132,10 +132,10 @@ CLIPS = [
                    twin="None.")),
     dict(name="ft4_shear", label="FT4 shear cell",
          title="FT4 shear cell: yield locus and flow function", standards=["ASTM D7891-24"],
-         caption="FT4 shear cell (ASTM D7891): the yield locus and the flow function ffc. The twin assumes ffc "
-                 "from a Bond number; this is how it is measured",
+         caption="FT4 shear cell (ASTM D7891): the yield locus and the flow function ffc. The twin estimates ffc "
+                 "from a Bond number; this is how it's measured",
          narration=(4.6, "A shear cell measures the strength of a consolidated powder. The points where it fails "
-                         "give the yield locus, and two Mohr circles give the flow function. The twin assumes this "
+                         "give the yield locus, and two Mohr circles give the flow function. The twin estimates this "
                          "number; this is how it's measured."),
          shot=(18.0, 30.9, 30.0),
          vlab=dict(model="Not shown.",
@@ -158,7 +158,7 @@ CHAPTER = dict(
     key="powdertests", title="The powder tests by the standards: powder-doser's renders",
     card=["Eight standard tests of a powder's flow, density, size, moisture and strength, drawn by the powder-doser "
           "project at a bench, by hand. The lab model has no station for most of them. The lab's plan sieves by "
-          "hand and takes the Hausner ratio in a cylinder; the twin assumes Hall flow, apparent density and ffc.",
+          "hand and takes the Hausner ratio in a cylinder; the twin models Hall flow, apparent density and ffc.",
           "Schematics, not vendor CAD. Every number on screen is illustrative, for 316L, AlSi10Mg or table salt, "
           "not the lab's own powders."],
     narration=(0.5, "Next, eight standard powder tests, each done by hand, in the powder doser project's renders."))
