@@ -28,7 +28,9 @@ from PIL import Image, ImageDraw, ImageFont  # noqa: E402
 HERE = Path(__file__).resolve().parent
 OUT = HERE.parent / "animations"
 W, H = 1280, 720
-FPS = 24
+# 30 fps matches the vertical lab's long-form on byu-vcl (1280 x 720 at 30 fps, PR #318), so its join doesn't
+# repeat frames; the first renders were 24 fps. FPS=24 python3 <scene>.py renders them that way again.
+FPS = int(os.environ.get("FPS", "30"))
 GIF_MAX = 4_800_000    # bytes; GitHub's camo proxy refuses images over 5 MiB
 G_VIS = 9810.0 / 14.0  # "visual" gravity (mm/s^2) so falling grains stay on screen for a few frames
 

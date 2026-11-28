@@ -19,6 +19,20 @@ approximate, and every number on screen is illustrative, not a measurement.
 | [`ft4_shear`](animations/ft4_shear.gif) ([MP4](animations/ft4_shear.mp4)) | FT4 shear cell | ASTM D7891-24 | Yield locus, *ff*<sub>c</sub> |
 | [`ring_shear`](animations/ring_shear.gif) ([MP4](animations/ring_shear.mp4)) | Schulze ring shear tester | ASTM D6773-22 | Yield locus, *ff*<sub>c</sub> |
 
+The MP4s are 1280 × 720 at 30 fps. The GIFs are smaller and slower (8–12 fps), to stay under GitHub's 5 MiB limit
+for images.
+
+## For the vertical lab (byu-vcl)
+
+[`vertical-lab/`](vertical-lab/) packages the eight MP4s for the vertical lab's long-form on byu-vcl
+([#303](https://github.com/vertical-cloud-lab/byu-vcl/issues/303),
+[PR #318](https://github.com/vertical-cloud-lab/byu-vcl/pull/318); the highlight is
+[PR #390](https://github.com/vertical-cloud-lab/byu-vcl/pull/390) and the digital twin
+[PR #393](https://github.com/vertical-cloud-lab/byu-vcl/pull/393) onward). The long-form shows the Mastersizer and a
+sieving cell but none of the flow, density, moisture or shear tests, though the twin predicts Hall and Carney times,
+apparent density and *ff*<sub>c</sub>. Its [README](vertical-lab/README.md) says where each clip fits, and has a
+chapter, narration and credits in the long-form's own formats and a fetch script that checks each file's sha256.
+
 ## Approximate costs (28 Oct 2026)
 
 [`costs.csv`](costs.csv) has 126 rows, each with the price text as shown, the source URL, the
@@ -49,6 +63,8 @@ PYTHON=.venv/bin/python render/render_all.sh              # all scenes, 3 at a t
 PYTHON=.venv/bin/python render/render_all.sh hall_flow    # one scene
 # quick stills while editing a scene:
 cd render && PREVIEW="2,8.5,20" PREVIEW_DIR=/tmp/preview xvfb-run -a python hall_flow.py
+# the first renders' frame rate (30 is the default, to match the vertical lab's long-form):
+FPS=24 PYTHON=.venv/bin/python render/render_all.sh
 ```
 
 If several renders crash on their first frame under load, give each its own X display and
