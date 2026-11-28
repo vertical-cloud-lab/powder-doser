@@ -5,8 +5,13 @@ before Carl, Gage or the test campaign had any recorded activity. Each author mu
 their own roles before submission ([`HUMAN-TODOS.md`](HUMAN-TODOS.md), items G3 and A1).
 
 The evidence is the GitHub record only. Printing, assembly, lab time, meetings and Slack are
-not on GitHub, so a missing tick can mean "not recorded" rather than "not done". The author
-list itself is still open ([`SUBMISSION-DECISIONS.md`](SUBMISSION-DECISIONS.md), item 1).
+not on GitHub, so a missing tick can mean "not recorded" rather than "not done".
+
+> **Author list decided, 28 Nov 2026** ([`SUBMISSION-DECISIONS.md`](SUBMISSION-DECISIONS.md),
+> item 1): four authors, S.C., W.M., L.W. and S.G.B. Carl Robison and Gage Erickson are now
+> thanked in the Acknowledgements of `main.tex` and the arXiv version, using the evidence below,
+> so the C.R. and G.E. columns are kept for the record only and no longer appear in the
+> CRediT statement.
 
 Roles use the 14 CRediT terms (<https://credit.niso.org>). ✓ = proposed; ? = plausible but
 not shown by the record, so the author should say.

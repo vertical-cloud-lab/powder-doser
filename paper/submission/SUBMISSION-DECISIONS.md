@@ -13,6 +13,12 @@ commit straight to the branch. Then ask `@claude` on PR #97 to implement it.
 The background for most items is the guidelines audit,
 [`GUIDELINES-AUDIT.md`](GUIDELINES-AUDIT.md). **Item 9 is urgent** (credentials in public files). Items 1, 5, 10 and 16 matter most after that.
 
+> **Decided, 28 Nov 2026 (Sterling, PR #97).** Item 1: four authors (Sam, Will, Luke and
+> Sterling); Carl Robison and Gage Erickson are thanked in the Acknowledgements, with what
+> each did. Item 15: an arXiv preprint, posted before the journal submission (bundle in
+> [`../arxiv/`](../arxiv/)). Both are applied in `main.tex`, `si.tex`, the cover letter and the
+> arXiv version.
+
 > **Update, 10 Oct 2026 (later session).** The submission package for the New Hardware
 > Developments collection (due 13 Nov) is now in this folder: every remaining human TODO with
 > its owner ([`HUMAN-TODOS.md`](HUMAN-TODOS.md)), the proposed CRediT roles with evidence
@@ -55,12 +61,18 @@ only.
 - The CRediT roles in the draft were written by an AI agent on 11 Jun, before Carl or
   Gage had any recorded activity. They now use standard CRediT names (item 2).
 
-- [x] Keep all six authors (current)
-- [ ] Four authors: Sam, Will, Luke and Sterling; thank Carl and Gage in the Acknowledgements
+- [ ] Keep all six authors
+- [x] Four authors: Sam, Will, Luke and Sterling; thank Carl and Gage in the Acknowledgements (current)
 - [ ] Five authors: keep Carl; thank Gage in the Acknowledgements
 - [ ] Other (Notes)
 
-**Notes:**
+**Notes:** Decided by Sterling on PR #97, 28 Nov 2026, for the arXiv preprint and the
+journal version alike. The Acknowledgements thank Carl Robison for testing eight powders by
+hand on video, and Gage Erickson for sizing a glove box for the doser, discussing auger
+capacity and particle size, and suggesting the angle of repose (evidence in
+[`CREDIT.md`](CREDIT.md)). `CITATION.cff` and `.zenodo.json`, which describe the software and
+data release rather than the article, still list all six as creators: say if they should
+change too.
 
 ### 2. Author roles (CRediT)
 
@@ -235,6 +247,8 @@ style example experiment".
 **Choose one.** The manuscript PDFs are already public in the repository, which the
 cover letter discloses.
 
+- [x] Post on arXiv before the journal submission (Sterling, PR #97, 28 Nov 2026; bundle
+  and metadata in [`../arxiv/`](../arxiv/); licence CC BY 4.0)
 - [ ] Post on ChemRxiv at submission
 - [ ] No preprint
 

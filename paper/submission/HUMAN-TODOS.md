@@ -33,7 +33,7 @@ something that is not yet true. "No" means it can wait for revision or is option
 | # | TODO | Where | Due | Blocks? |
 |---|---|---|---|---|
 | G1 | **Corresponding-author line and affiliations.** Confirm the footnote: both corresponding authors under BYU Mechanical Engineering (with both e-mails), and the Acceleration Consortium as your second affiliation. Confirm Sam's address (`samuelwcharles@gmail.com` or the BYU student address). | `main.tex:132,152-153`; items 3, 4 | 14 Oct | Yes |
-| G2 | Author list: six authors, or four (Sam, Will, Luke, Sterling) with Carl and Gage in the Acknowledgements. Settle before submission; RSC accepts later changes only in exceptional cases. | item 1; `main.tex:132` | 14 Oct | Yes |
+| G2 | ✅ **Done 28 Nov:** four authors (Sam, Will, Luke, Sterling); Carl and Gage are thanked in the Acknowledgements. | item 1; `main.tex` | — | No |
 | G3 | Confirm the CRediT roles proposed in `main.tex` (evidence in [`CREDIT.md`](CREDIT.md)), including "funding acquisition" for yourself if there is no funder | item 2; `main.tex:398-403` | 14 Oct | Yes |
 | G4 | Licences: hardware (CERN-OHL-S/W/P or MIT), data (CC BY, CC0 or MIT); add the licence files | item 5; `main.tex:417` | 14 Oct | Yes (DD "strong preference") |
 | G5 | Funding statement: "no specific grant" or funder plus grant number | item 6 | 14 Oct | Yes |
@@ -43,7 +43,7 @@ something that is not yet true. "No" means it can wait for revision or is option
 | G9 | Confirm the collection: its exact title and the 13 Nov deadline, from the invitation or call. No public DD page lists it (checked 10 Oct). | cover letter | 14 Oct | Yes |
 | G10 | Cover letter: addressee (Editor-in-Chief or Executive Editor; the Consortium tie), title line, signature | item 16; cover letter | 6 Nov | Yes |
 | G11 | Vet 4-6 suggested reviewers (drop DD Associate Editors and recent co-authors) and collect institutional e-mails | item 16; GUIDELINES-AUDIT R12 | 6 Nov | Yes (entered in ScholarOne) |
-| G12 | Preprint: ChemRxiv at submission or none | item 15 | 4 Nov | Yes (cover letter states it) |
+| G12 | ✅ **Done 28 Nov:** arXiv preprint before the journal submission (`paper/arxiv/`). Put the arXiv identifier in the cover letter once it is announced. | item 15; cover letter | 30 Nov | No |
 | G13 | Zenodo: tag `v1.0.0`, archive it, add the version DOI to `Charles2026Release` (DD requires the DOIs by acceptance; the draft says archived at submission) | item 11; `main.tex:413` | 9 Nov | No (yes if the text keeps "at submission") |
 | G14 | Fig. 1b shows a METTLER TOLEDO logo: blur, swap the photo, or leave it to the editor | item 8 | 23 Oct | No |
 | G15 | Commercial comparison table and a "hello world" test in the SI (DD hardware editorial): yes or no | items 12, 13 | 14 Oct | Partly (editorial asks for both) |

@@ -15,7 +15,7 @@ Schrier, *Digital Discovery*, 2024, **3**, 447-448). Owners and dates refer to
 |---|---|---|---|---|
 | 1.1 | Upload the SI with the original submission; it is peer reviewed | RSC SI | ✅ | Upload `si.pdf` with the manuscript (C7) |
 | 1.2 | One document, with S-numbered sections, tables and figures | RSC SI | ✅ | S1-S11, Tables S1-S12, Figs. S1-S8 |
-| 1.3 | Title page with the article title and every author | RSC SI | ✅ | Must match `main.tex` if the author list changes (G2) |
+| 1.3 | Title page with the article title and every author | RSC SI | ✅ | Matches `main.tex`: four authors (G2, decided 28 Nov) |
 | 1.4 | The main text says what the SI contains (the † note) | DD template | ✅ | Updated today to list the new test-protocol section |
 | 1.5 | References cited in the SI listed in the main reference list, and the Data availability statement says so | DD guidelines | ✅ | `main.tex` Data availability, last sentence |
 | 1.6 | Main text cites SI items by number without hard-coding | house rule (`xr`) | ✅ | `\siref{}` throughout; build `si.tex` before `main.tex` |

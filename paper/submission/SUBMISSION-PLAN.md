@@ -30,7 +30,7 @@ submission system's themed-collection field.
 
 ### Wed 14 Oct: decisions (Sterling, Sam)
 - [ ] G9 Confirm the collection's exact title and deadline
-- [ ] G1 Corresponding-author line and affiliations; G2 author list; G3 CRediT roles
+- [ ] G1 Corresponding-author line and affiliations; G3 CRediT roles (G2 author list: done 28 Nov, four authors)
 - [ ] G4 licences; G5 funding; G6 conflicts; G15 comparison table and "hello world": yes or no
 - [ ] Answer the rest of [`SUBMISSION-DECISIONS.md`](SUBMISSION-DECISIONS.md) in the GitHub editor (items 1-6, 11-16), then ask `@claude` to implement
 - [ ] S1 Sam posts the 1 Oct meeting video link (anyone with the link, no expiry, no password)
@@ -60,13 +60,13 @@ submission system's themed-collection field.
 
 ### Fri 30 Oct: frozen draft to all authors
 - [ ] C6 Figure text at 6-7 pt and photos at 600 dpi (or defer to revision, item 17)
-- [ ] Circulate `main.pdf`, `si.pdf` and the cover letter to all six authors
+- [ ] Circulate `main.pdf`, `si.pdf` and the cover letter to all four authors
 - [ ] S10 Sam's part-2 video review of the draft
 
 ### Wed 4 Nov: approvals
 - [ ] A1 Every author confirms their CRediT roles and approves submission (keep the e-mails)
 - [ ] Add "writing – review & editing" for every author who reviewed
-- [ ] G12 Preprint decision
+- [x] G12 Preprint decision (28 Nov: arXiv, before the journal submission)
 
 ### Fri 6 Nov: submission details (Sterling, Sam)
 - [ ] G10 Cover letter addressee and title line; S11 and Sterling's signatures
@@ -76,7 +76,7 @@ submission system's themed-collection field.
 
 ### Mon 9 Nov: archive (Sterling, Claude)
 - [ ] G13 Tag `v1.0.0`, archive it on Zenodo, put the version DOI into `Charles2026Release`; note the all-versions DOI too
-- [ ] If posting a preprint, post it on ChemRxiv today (moderation takes about one to two working days)
+- [ ] Preprint: arXiv, submitted by Sterling by Mon 30 Nov from `paper/arxiv/` (replaces the ChemRxiv option)
 
 ### Tue 10 Nov: final build (Claude)
 - [ ] C7 Strip the `TODO` comments; rebuild; build the upload ZIP of 20 files or fewer

@@ -24,7 +24,7 @@
 % Every number in the letter is stated in main.tex. Uses only standard packages (pdflatex).
 %
 % Items for a person are marked "TODO (human)" in comments. Visible [TODO: ...] text in the PDF:
-% the two signatures, the Zenodo DOI and the preprint status.
+% the two signatures, the Zenodo DOI and the arXiv identifier.
 
 \documentclass[11pt]{letter}
 \usepackage[letterpaper,margin=1in]{geometry}
@@ -90,7 +90,7 @@ Royal Society of Chemistry}
 
 \opening{Dear Professor Aspuru-Guzik,}
 
-On behalf of all authors, we submit the manuscript entitled ``An open-source powder doser for autonomous alloy discovery, designed by engineers and modelled by AI agents,'' by Sam Charles, Will Mulberry, Luke Winters, Carl Robison, Gage Erickson, and Sterling G.\ Baird, for consideration in \textit{Digital Discovery} as a Full paper describing open-source scientific hardware. \TODO{If the editors confirm that the New Hardware Developments collection (deadline 13 November 2026) still accepts it, add: ``and ask that it be considered for the journal's New Hardware Developments collection.''}
+On behalf of all authors, we submit the manuscript entitled ``An open-source powder doser for autonomous alloy discovery, designed by engineers and modelled by AI agents,'' by Sam Charles, Will Mulberry, Luke Winters, and Sterling G.\ Baird, for consideration in \textit{Digital Discovery} as a Full paper describing open-source scientific hardware. \TODO{If the editors confirm that the New Hardware Developments collection (deadline 13 November 2026) still accepts it, add: ``and ask that it be considered for the journal's New Hardware Developments collection.''}
 % TODO (human): confirm the collection's exact title and deadline (13 Nov 2026) from the
 % invitation or call. On 10 Oct 2026 no public Digital Discovery page (journal home, news blog,
 % July 2026 newsletter) listed it; the open calls shown were the 2026 AI4X - Accelerate
@@ -103,7 +103,9 @@ The second contribution is a documented case study of AI-assisted hardware desig
 
 We believe the paper suits \textit{Digital Discovery} for two reasons. First, it brings open-source hardware to a step that most self-driving laboratories either avoid or leave to people, in part because commercial dosing systems cost tens to hundreds of thousands of dollars. Built for alloy discovery by metal 3D printing, the doser is already in use beyond the tests reported: it filled an atomizer charge with 7.993~g of AlSi10Mg for an 8~g request, and three containers with Al~4047 made by our own ultrasonic atomizer, each to within 2.5~mg of its target; an AI agent also ran it inside a glove box. Second, its design record, including a 183-entry design log, shows where generative AI helped and where it did not, although it comes from one team and one project rather than a controlled comparison.
 
-Referees can check everything now, without requesting access. The SI gives the bill of materials, every part, and a construction guide in 19 steps; the current parts are public Onshape documents; and the repository at \url{https://github.com/vertical-cloud-lab/powder-doser} holds the design files, firmware, raw test records, analysis scripts, design log, and the dated prompts and responses exchanged with the AI tools. A project page collects the figures, videos, and build files (\url{https://vertical-cloud-lab.github.io/powder-doser/}). A tagged release is archived on Zenodo (\TODO{Zenodo DOI}). The manuscript and SI have been publicly visible in this repository while we drafted them; \TODO{preprint status, e.g.\ ``a preprint is on ChemRxiv (DOI)'' or ``no preprint has been posted''}.
+Referees can check everything now, without requesting access. The SI gives the bill of materials, every part, and a construction guide in 19 steps; the current parts are public Onshape documents; and the repository at \url{https://github.com/vertical-cloud-lab/powder-doser} holds the design files, firmware, raw test records, analysis scripts, design log, and the dated prompts and responses exchanged with the AI tools. A project page collects the figures, videos, and build files (\url{https://vertical-cloud-lab.github.io/powder-doser/}). A tagged release is archived on Zenodo (\TODO{Zenodo DOI}). The manuscript and SI have been publicly visible in this repository while we drafted them, and a preprint is on arXiv (\TODO{arXiv identifier}).
+% Preprint: arXiv, posted before this submission (Sterling, PR #97, 28 Nov 2026;
+% SUBMISSION-DECISIONS.md item 15). Put the arXiv identifier above once it is announced.
 % TODO (human): before submission, merge PR #74 (design log) and PR #170 (Fusion 360 STEP
 % files), since the letter says the repository holds them (SUBMISSION-DECISIONS.md, item 10).
 % TODO (human): if the Onshape document is made public (it was private on 8 Oct), you may add
@@ -125,8 +127,8 @@ As RSC policy requires, we declare that generative AI was both a subject of this
 % with AI tools.
 
 We certify that this manuscript is original, has not been published previously, and is not under consideration for publication elsewhere. It has been approved by all authors and by any relevant authorities at the locations where the work was performed. The authors declare no conflicts of interest. Sam Charles and Sterling G.\ Baird are co-corresponding authors.
-% TODO (human): confirm that all six authors have approved the final version, and update the
-% author list above if it changes (SUBMISSION-DECISIONS.md, item 1).
+% TODO (human): confirm that all four authors have approved the final version
+% (author list decided 28 Nov 2026, SUBMISSION-DECISIONS.md, item 1).
 % TODO (human): confirm there are no conflicts, including free credits or early access from
 % Edison Scientific, Zoo, CADSmith, GitHub or Anthropic (SUBMISSION-DECISIONS.md, item 14), and
 % that no related manuscript is under consideration elsewhere; if either exists, say so here.
