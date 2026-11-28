@@ -1,0 +1,13 @@
+{
+  "id": "380d1b71-0355-4473-9b82-9f62a1f6311c",
+  "created_at": "2026-05-15T22:46:57.392270897Z",
+  "user_id": "1b794ab4-3683-486d-bd07-6741648f537c",
+  "status": "queued",
+  "updated_at": "2026-05-15T22:46:57.392270897Z",
+  "conversation_id": "84925a80-9491-4ec0-afe1-c739abc538eb",
+  "prompt": "A square mounting collar for a NEMA 11 stepper motor. Top face is a 28 mm \u00d7 28 mm square plate, 4 mm thick, with a 22 mm pilot hole on center and four M2.5 clearance holes on a 23 mm square bolt circle. Below the plate, a coaxial cylindrical sleeve of 16 mm outer diameter, 5.5 mm bore, 18 mm long, that envelopes a 5 mm \u00d7 5 mm jaw coupler (ST-FC01). The bottom of the sleeve has a 24 mm circular flange 3 mm thick that mates against the top of a 24 mm OD tube. Do NOT model the stepper motor itself. Do NOT add wires or screws.",
+  "output_format": "step",
+  "model_version": "",
+  "model": "kcl",
+  "feedback": null
+}
