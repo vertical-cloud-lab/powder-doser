@@ -1,0 +1,10 @@
+# Versions used for the committed 30 fps renders (28 Nov 2026: Python 3.14, Ubuntu 26.04, Mesa llvmpipe under Xvfb).
+# The first, 24 fps renders used the same pyvista, vtk and matplotlib on Python 3.12 and Ubuntu 24.04.
+pyvista==0.49.1
+vtk==9.7.1
+matplotlib==3.11.2
+numpy
+pillow
+imageio-ffmpeg
+# laser_diffraction.py: the Bessel function J1 for the diffraction rings
+scipy

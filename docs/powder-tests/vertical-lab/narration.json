@@ -1,0 +1,65 @@
+[
+ {
+  "chapter": "powdertests",
+  "part": "card",
+  "offset": 0.5,
+  "text": "Next, eight standard powder tests, each done by hand, in the powder doser project's renders.",
+  "source": "powder-doser PR #190, docs/powder-tests/vertical-lab/"
+ },
+ {
+  "chapter": "powdertests",
+  "part": "ext/powder_tests/hall_flow.mp4",
+  "offset": 6.6,
+  "text": "The Hall flowmeter times fifty grams through a two and a half millimetre orifice. A cohesive powder stops in it and goes through the wider Carney funnel instead. The twin predicts both times from the powder's size and shape.",
+  "source": "ext/powder_tests/credits.json (powder-doser PR #190 at afccaf1); docs/powder-tests/vertical-lab/README.md there"
+ },
+ {
+  "chapter": "powdertests",
+  "part": "ext/powder_tests/density.mp4",
+  "offset": 3.2,
+  "text": "Apparent density fills a twenty-five cubic centimetre cup without packing it. Tapping a weighed sample in a cylinder gives the tapped density, and their ratio is the Hausner ratio, which the lab's plan measures within a week of each run.",
+  "source": "ext/powder_tests/credits.json (powder-doser PR #190 at afccaf1); docs/powder-tests/vertical-lab/README.md there"
+ },
+ {
+  "chapter": "powdertests",
+  "part": "ext/powder_tests/angle_of_repose.mp4",
+  "offset": 3.4,
+  "text": "Powder poured through a funnel onto a fixed base builds a cone, and its height gives the angle of repose: thirty-two degrees for this free-flowing powder, forty-seven for a cohesive one.",
+  "source": "ext/powder_tests/credits.json (powder-doser PR #190 at afccaf1); docs/powder-tests/vertical-lab/README.md there"
+ },
+ {
+  "chapter": "powdertests",
+  "part": "ext/powder_tests/sieve.mp4",
+  "offset": 4.2,
+  "text": "Sieve analysis shakes about a hundred grams through a stack of sieves for fifteen minutes, then weighs what each one holds. The lab's sieving cell uses the same kind of stack, but to split the powder into the cuts it prints.",
+  "source": "ext/powder_tests/credits.json (powder-doser PR #190 at afccaf1); docs/powder-tests/vertical-lab/README.md there"
+ },
+ {
+  "chapter": "powdertests",
+  "part": "ext/powder_tests/laser_diffraction.mp4",
+  "offset": 4.8,
+  "text": "Laser diffraction sizes particles by how they scatter light: large ones to small angles, small ones to wide angles. This one disperses the powder in water; the lab's Mastersizer on tray E disperses it in air.",
+  "source": "ext/powder_tests/credits.json (powder-doser PR #190 at afccaf1); docs/powder-tests/vertical-lab/README.md there"
+ },
+ {
+  "chapter": "powdertests",
+  "part": "ext/powder_tests/moisture_lod.mp4",
+  "offset": 3.6,
+  "text": "Loss on drying weighs about ten grams of powder, dries it at a hundred and five degrees, cools it in a desiccator and weighs it again, until two weighings an hour apart agree.",
+  "source": "ext/powder_tests/credits.json (powder-doser PR #190 at afccaf1); docs/powder-tests/vertical-lab/README.md there"
+ },
+ {
+  "chapter": "powdertests",
+  "part": "ext/powder_tests/ft4_shear.mp4",
+  "offset": 4.6,
+  "text": "A shear cell measures the strength of a consolidated powder. The points where it fails give the yield locus, and two Mohr circles give the flow function. The twin estimates this number; this is how it's measured.",
+  "source": "ext/powder_tests/credits.json (powder-doser PR #190 at afccaf1); docs/powder-tests/vertical-lab/README.md there"
+ },
+ {
+  "chapter": "powdertests",
+  "part": "ext/powder_tests/ring_shear.mp4",
+  "offset": 4.0,
+  "text": "A ring shear tester does the same in an annular cell. This cohesive fine powder has a flow function just under three.",
+  "source": "ext/powder_tests/credits.json (powder-doser PR #190 at afccaf1); docs/powder-tests/vertical-lab/README.md there"
+ }
+]
