@@ -1,0 +1,31 @@
+{
+ "entry": "Brackets (for auger), #193 (the C-clips)",
+ "document": "Flexible Bracket (5e6db88e8a8d5328b172ba6d, owner Vertical Cloud Lab, not public but link-shared), modified 2026-11-07T22:47:32Z",
+ "element": "Bracket Recreation (59890746941ebde49fa31a66), the Part Studio #193 links; the #193 assembly uses 2 instances of it. The document also has 'Flexible+Bracket (original)' (b87cd85502d7cabbcb749baf) and its STEP blob",
+ "workspace": "7b4b2baa5fa65b95b0004aa0",
+ "sourceMicroversion_at_export": "9d1029820bf215b586895082",
+ "exported_utc": "2026-11-13T00:32Z",
+ "how": "scripts/onshape_export.py's Onshape.download (keys), partstudios/.../stl, mode binary, units millimeter, grouping false",
+ "counted_calls": 2,
+ "stl": [
+  {
+   "file": "cad/onshape-193/brackets/bracket-recreation/stl/bracket-recreation-part-1.stl",
+   "sha256": "63be102031b66e1a05afab9c3d7cb1f57b8fe28a8461aa9c1f4a26411c2687d8",
+   "extent_mm": [
+    60.0,
+    12.0,
+    49.84
+   ],
+   "volume_cm3": 10.767,
+   "watertight": true,
+   "triangles": 1748
+  }
+ ],
+ "servo_pinion_rollback_test": {
+  "why": "the native 'Complete Servo Pinion' Part Studio has rollbackIndex 1 of 6 features (Spur gear, Hole 1, Hole Extrude, Chamfer Hole, Chamfer Hole Extrude, Chamfer 1), so its export is only the gear",
+  "request": "partstudios/d/35ecacf511109e3b823b3ed0/w/{wid}/e/ce683b15c3b969067abfe902/stl with rollbackBarIndex=6",
+  "counted_calls": 2,
+  "result": "same geometry as the 2026-11-12 export (plain 14T gear with a 3.4 mm hole, 2.986 cm3), so the parameter did not bring in the later features. Not committed"
+ },
+ "unchanged_since_2026_11_12_export": "anonymous sourceMicroversion checks at 00:31 UTC: mounting plate 2e3da59d43f2034b433fce12, tap collar document a6489481abd385ea371f62a0, Complete Servo Pinion f9cfc5f98ab823d0599f7bdf, Stepper Pinion document 120eff16b37d4b2f206ebab4: all the same as at the 11-12 export"
+}
