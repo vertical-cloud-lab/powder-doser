@@ -14,3 +14,10 @@ s| The version of the code employed for this study is version 1\.0\.0\.||
 # Experimental. The session logs downloaded in October are attached to an unpublished draft
 # release that only people with write access can see, not to a public archive yet.
 s|were downloaded then and are part of the archived release\.|were downloaded then and will be part of the archived release.|
+# Data availability, Onshape. On 28 Nov 2026 all 12 Onshape documents on the project page
+# opened for an anonymous client, but Onshape marks three of them as link-shared rather than
+# public, and the page links to the print settings (issue #193) rather than listing them.
+s|The current parts are public Onshape documents, listed with their print settings on the project page (\\url{https://vertical-cloud-lab.github.io/powder-doser/})|The current parts are Onshape documents that anyone can open, listed on the project page (\\url{https://vertical-cloud-lab.github.io/powder-doser/}), which links to their print settings|
+# Data availability, SI Table of parts. The tap-collar base is AI-modelled and links to its
+# STEP file on GitHub, not to Fusion 360, so not every part has a Fusion 360 link.
+s|and each printed part tested has a public Fusion~360 link (SI Table~\\siref{tbl:parts})|and each printed part tested has a public link to its design file (SI Table~\\siref{tbl:parts})|
