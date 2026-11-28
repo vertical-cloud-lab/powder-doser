@@ -236,3 +236,6 @@ paper/powder_plan/inputs/*.pdf
 paper/powder_plan/*.notebook.ipynb
 paper/mock_review/inputs_r3/main.pdf
 paper/mock_review/inputs_r3/si.pdf
+
+# arXiv bundle: arXiv does not run BibTeX, so the .bbl is part of the source
+!paper/arxiv/src/ms.bbl

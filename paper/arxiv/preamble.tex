@@ -1,0 +1,53 @@
+\pdfoutput=1
+% Neutral preprint preamble for the arXiv version. make_arxiv.sh puts this file at the top of
+% src/ms.tex, then adds the title block and the body of ../main.tex. Page geometry, base font
+% size and the size commands match the journal version, so every figure (laid out for an
+% 18.6 cm text width) and table renders as it does there. No journal header, logo, journal
+% name, dates box or DOI: Times and Helvetica instead of the RSC Charter and Droid Sans.
+\documentclass[twoside,twocolumn,9pt]{article}
+\usepackage{extsizes}
+\usepackage[super,sort&compress,comma]{natbib}
+\usepackage[left=1.5cm, right=1.5cm, top=2.0cm, bottom=2.0cm]{geometry}
+\usepackage{balance}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[scaled=0.92]{helvet}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage{graphicx}
+\usepackage[format=plain,justification=justified,singlelinecheck=false,font=small,labelfont=bf,labelsep=space]{caption}
+\usepackage{float}
+\usepackage[labelformat=parens,labelfont=bf,font=footnotesize,justification=centering]{subcaption}
+\usepackage{fnpos}
+\usepackage[english]{babel}
+\usepackage{array}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{setspace}
+\usepackage[compact]{titlesec}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=MidnightBlue, citecolor=MidnightBlue, urlcolor=MidnightBlue,
+  pdftitle={An open-source powder doser for autonomous alloy discovery, designed by engineers and modelled by AI agents},
+  pdfauthor={Sam Charles, Will Mulberry, Luke Winters, Sterling G. Baird}}
+
+\makeFNbottom
+\makeatletter
+\renewcommand\LARGE{\@setfontsize\LARGE{15pt}{17}}
+\renewcommand\Large{\@setfontsize\Large{12pt}{14}}
+\renewcommand\large{\@setfontsize\large{10pt}{12}}
+\renewcommand\footnotesize{\@setfontsize\footnotesize{7pt}{10}}
+\renewcommand\@biblabel[1]{#1}
+\renewcommand\@makefntext[1]{\noindent\makebox[0pt][r]{\@thefnmark\,}#1}
+\makeatother
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand{\figurename}{Fig.}
+\setcounter{secnumdepth}{5}
+\titleformat*{\section}{\Large\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries\itshape}
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+\titlespacing*{\subsection}{0pt}{10pt}{2pt}
+\setstretch{1.125}
+\setlength{\skip\footins}{0.8cm}
+\setlength{\footnotesep}{0.25cm}
+\setlength{\columnsep}{6.5mm}
+\setlength\bibsep{1pt}
+\pagestyle{plain}

@@ -1,0 +1,391 @@
+\providecommand*{\mcitethebibliography}{\thebibliography}
+\csname @ifundefined\endcsname{endmcitethebibliography}
+{\let\endmcitethebibliography\endthebibliography}{}
+\begin{mcitethebibliography}{44}
+\providecommand*{\natexlab}[1]{#1}
+\providecommand*{\mciteSetBstSublistMode}[1]{}
+\providecommand*{\mciteSetBstMaxWidthForm}[2]{}
+\providecommand*{\mciteBstWouldAddEndPuncttrue}
+  {\def\EndOfBibitem{\unskip.}}
+\providecommand*{\mciteBstWouldAddEndPunctfalse}
+  {\let\EndOfBibitem\relax}
+\providecommand*{\mciteSetBstMidEndSepPunct}[3]{}
+\providecommand*{\mciteSetBstSublistLabelBeginEnd}[3]{}
+\providecommand*{\EndOfBibitem}{}
+\mciteSetBstSublistMode{f}
+\mciteSetBstMaxWidthForm{subitem}
+{(\emph{\alph{mcitesubitemcount}})}
+\mciteSetBstSublistLabelBeginEnd{\mcitemaxwidthsubitemform\space}
+{\relax}{\relax}
+
+\bibitem[Li \emph{et~al.}(2018)Li, Ludwig, Savan, Springer, and
+  Raabe]{Li2018Combinatorial}
+Z.~Li, A.~Ludwig, A.~Savan, H.~Springer and D.~Raabe, \emph{Journal of
+  Materials Research}, 2018, \textbf{33}, 3156--3169\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Vecchio \emph{et~al.}(2021)Vecchio, Dippo, Kaufmann, and
+  Liu]{Vecchio2021Throughput}
+K.~S. Vecchio, O.~F. Dippo, K.~R. Kaufmann and X.~Liu, \emph{Acta Materialia},
+  2021, \textbf{221}, 117352\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Moorehead \emph{et~al.}(2020)Moorehead, Bertsch, Niezgoda, Parkin,
+  Elbakhshwan, Sridharan, Zhang, Thoma, and Couet]{Moorehead2020Throughput}
+M.~Moorehead, K.~Bertsch, M.~Niezgoda, C.~Parkin, M.~Elbakhshwan, K.~Sridharan,
+  C.~Zhang, D.~Thoma and A.~Couet, \emph{Materials \& Design}, 2020,
+  \textbf{187}, 108358\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Mooraj \emph{et~al.}(2024)Mooraj, Kim, Fan, Samuha, Xie, Li, Tiley,
+  Chen, Yu, An, Hosemann, Liaw, Chen, and Chen]{Mooraj2024Additive}
+S.~Mooraj, G.~Kim, X.~Fan, S.~Samuha, Y.~Xie, T.~Li, J.~S. Tiley, Y.~Chen,
+  D.~Yu, K.~An, P.~Hosemann, P.~K. Liaw, W.~Chen and W.~Chen,
+  \emph{Communications Materials}, 2024, \textbf{5}, 14\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Nelaturu \emph{et~al.}(2024)Nelaturu, Hattrick-Simpers, Moorehead,
+  Jambur, Szlufarska, Couet, and Thoma]{Nelaturu2024Multi}
+P.~Nelaturu, J.~R. Hattrick-Simpers, M.~Moorehead, V.~Jambur, I.~Szlufarska,
+  A.~Couet and D.~J. Thoma, \emph{Materials Science and Engineering: A}, 2024,
+  \textbf{891}, 145945\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Abolhasani and Kumacheva(2023)]{Abolhasani2023Rise}
+M.~Abolhasani and E.~Kumacheva, \emph{Nature Synthesis}, 2023, \textbf{2},
+  483--492\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Tom \emph{et~al.}(2024)Tom, Schmid, Baird, Cao, Darvish, Hao, Lo,
+  Pablo-Garc{\'\i}a, Rajaonson, Skreta, Yoshikawa, Corapi, Akkoc,
+  Strieth-Kalthoff, Seifrid, and Aspuru-Guzik]{Tom2024Self}
+G.~Tom, S.~P. Schmid, S.~G. Baird, Y.~Cao, K.~Darvish, H.~Hao, S.~Lo,
+  S.~Pablo-Garc{\'\i}a, E.~M. Rajaonson, M.~Skreta, N.~Yoshikawa, S.~Corapi,
+  G.~D. Akkoc, F.~Strieth-Kalthoff, M.~Seifrid and A.~Aspuru-Guzik,
+  \emph{Chemical Reviews}, 2024, \textbf{124}, 9633--9732\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Szymanski \emph{et~al.}(2023)Szymanski, Rendy, Fei, Kumar, He,
+  Milsted, McDermott, Gallant, Cubuk, Merchant, Kim, Jain, Bartel, Persson,
+  Zeng, and Ceder]{Szymanski2023Autonomous}
+N.~J. Szymanski, B.~Rendy, Y.~Fei, R.~E. Kumar, T.~He, D.~Milsted, M.~J.
+  McDermott, M.~Gallant, E.~D. Cubuk, A.~Merchant, H.~Kim, A.~Jain, C.~J.
+  Bartel, K.~Persson, Y.~Zeng and G.~Ceder, \emph{Nature}, 2023, \textbf{624},
+  86--91\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Seifrid \emph{et~al.}(2022)Seifrid, Pollice, Aguilar-Granda,
+  Morgan~Chan, Hotta, Ser, Vestfrid, Wu, and
+  Aspuru-Guzik]{Seifrid2022Autonomous}
+M.~Seifrid, R.~Pollice, A.~Aguilar-Granda, Z.~Morgan~Chan, K.~Hotta, C.~T. Ser,
+  J.~Vestfrid, T.~C. Wu and A.~Aspuru-Guzik, \emph{Accounts of Chemical
+  Research}, 2022, \textbf{55}, 2454--2466\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Fei \emph{et~al.}(2024)Fei, Rendy, Kumar, Dartsi, Sahasrabuddhe,
+  McDermott, Wang, Szymanski, Walters, Milsted, Zeng, Jain, and
+  Ceder]{Fei2024Alabos}
+Y.~Fei, B.~Rendy, R.~Kumar, O.~Dartsi, H.~P. Sahasrabuddhe, M.~J. McDermott,
+  Z.~Wang, N.~J. Szymanski, L.~N. Walters, D.~Milsted, Y.~Zeng, A.~Jain and
+  G.~Ceder, \emph{Digital Discovery}, 2024, \textbf{3}, 2275--2288\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Aspuru-Guzik(2023)]{Guzik2023Decade}
+A.~Aspuru-Guzik, \emph{Digital Discovery}, 2023, \textbf{2}, 10--11\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Baird \emph{et~al.}(2026)Baird, Falkowski, and
+  Sparks]{Baird2026Honegumi}
+S.~G. Baird, A.~R. Falkowski and T.~D. Sparks, \emph{npj Computational
+  Materials}, 2026, \textbf{12}, 296\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Maffettone \emph{et~al.}(2023)Maffettone, Friederich, Baird, Blaiszik,
+  Brown, Campbell, Cohen, Davis, Foster, Haghmoradi, Hereld, Joress, Jung,
+  Kwon, Pizzuto, Rintamaki, Steinmann, Torresi, and Sun]{Maffettone2023What}
+P.~M. Maffettone, P.~Friederich, S.~G. Baird, B.~Blaiszik, K.~A. Brown, S.~I.
+  Campbell, O.~A. Cohen, R.~L. Davis, I.~T. Foster, N.~Haghmoradi, M.~Hereld,
+  H.~Joress, N.~Jung, H.-K. Kwon, G.~Pizzuto, J.~Rintamaki, C.~Steinmann,
+  L.~Torresi and S.~Sun, \emph{Digital Discovery}, 2023, \textbf{2},
+  1644--1659\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Canty \emph{et~al.}(2025)Canty, Bennett, Brown, Buonassisi, Kalinin,
+  Kitchin, Maruyama, Moore, Schrier, Seifrid, Sun, Vegge, and
+  Abolhasani]{Canty2025Science}
+R.~B. Canty, J.~A. Bennett, K.~A. Brown, T.~Buonassisi, S.~V. Kalinin, J.~R.
+  Kitchin, B.~Maruyama, R.~G. Moore, J.~Schrier, M.~Seifrid, S.~Sun, T.~Vegge
+  and M.~Abolhasani, \emph{Nature Communications}, 2025, \textbf{16},
+  3856\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Besenhard \emph{et~al.}(2015)Besenhard, Faulhammer, Fathollahi, Reif,
+  Calzolari, Biserni, Ferrari, Lawrence, Llusa, and
+  Khinast]{Besenhard2015Accuracy}
+M.~O. Besenhard, E.~Faulhammer, S.~Fathollahi, G.~Reif, V.~Calzolari,
+  S.~Biserni, A.~Ferrari, S.~M. Lawrence, M.~Llusa and J.~G. Khinast,
+  \emph{European Journal of Pharmaceutics and Biopharmaceutics}, 2015,
+  \textbf{94}, 264--272\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Yang and Evans(2007)]{Yang2007Metering}
+S.~Yang and J.~R.~G. Evans, \emph{Powder Technology}, 2007, \textbf{178},
+  56--72\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Engisch and Muzzio(2012)]{Engisch2012Method}
+W.~E. Engisch and F.~J. Muzzio, \emph{Powder Technology}, 2012, \textbf{228},
+  395--403\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Engisch and Muzzio(2015)]{Engisch2015Feedrate}
+W.~E. Engisch and F.~J. Muzzio, \emph{Powder Technology}, 2015, \textbf{283},
+  389--400\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Hanson(2018)]{Hanson2018Control}
+J.~Hanson, \emph{Powder Technology}, 2018, \textbf{331}, 236--243\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Besenhard \emph{et~al.}(2017)Besenhard, Fathollahi, Siegmann, Slama,
+  Faulhammer, and Khinast]{Besenhard2017Micro}
+M.~O. Besenhard, S.~Fathollahi, E.~Siegmann, E.~Slama, E.~Faulhammer and J.~G.
+  Khinast, \emph{International Journal of Pharmaceutics}, 2017, \textbf{519},
+  314--322\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Faulhammer \emph{et~al.}(2014)Faulhammer, Fink, Llusa, Lawrence,
+  Biserni, Calzolari, and Khinast]{Faulhammer2014Dose}
+E.~Faulhammer, M.~Fink, M.~Llusa, S.~M. Lawrence, S.~Biserni, V.~Calzolari and
+  J.~G. Khinast, \emph{International Journal of Pharmaceutics}, 2014,
+  \textbf{473}, 617--626\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Chianrabutra \emph{et~al.}(2014)Chianrabutra, Mellor, and
+  Yang]{Chianrabutra2014Powder}
+S.~Chianrabutra, B.~G. Mellor and S.~Yang, Proceedings of the Solid Freeform
+  Fabrication Symposium, Austin, TX, 2014\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Alsenz(2011)]{Alsenz2011Powderpicking}
+J.~Alsenz, \emph{Powder Technology}, 2011, \textbf{209}, 152--157\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Pearce(2020)]{Pearce2020Economic}
+J.~M. Pearce, \emph{HardwareX}, 2020, \textbf{8}, e00139\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Hohlbein \emph{et~al.}(2022)Hohlbein, Diederich, Marsikova, Reynaud,
+  Holden, Jahr, Haase, and Prakash]{Hohlbein2022Open}
+J.~Hohlbein, B.~Diederich, B.~Marsikova, E.~G. Reynaud, S.~Holden, W.~Jahr,
+  R.~Haase and K.~Prakash, \emph{Nature Methods}, 2022, \textbf{19},
+  1020--1025\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Wenzel(2023)]{Wenzel2023Open}
+T.~Wenzel, \emph{PLOS Biology}, 2023, \textbf{21}, e3001931\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Stirling \emph{et~al.}(2022)Stirling, Bumke, Collins, Dhokia, and
+  Bowman]{Stirling2022Hardops}
+J.~Stirling, K.~Bumke, J.~Collins, V.~Dhokia and R.~Bowman, \emph{International
+  Journal of Computer Integrated Manufacturing}, 2022, \textbf{35},
+  1297--1309\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Vasquez \emph{et~al.}(2020)Vasquez, Twigg-Smith, Tran~O'Leary, and
+  Peek]{Vasquez2020Jubilee}
+J.~Vasquez, H.~Twigg-Smith, J.~Tran~O'Leary and N.~Peek, Proceedings of the
+  2020 CHI Conference on Human Factors in Computing Systems, 2020, pp.
+  1--13\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Subbaraman \emph{et~al.}(2024)Subbaraman, de~Lange, Ferguson, and
+  Peek]{Subbaraman2024Duckbot}
+B.~Subbaraman, O.~de~Lange, S.~Ferguson and N.~Peek, \emph{PLOS ONE}, 2024,
+  \textbf{19}, e0296717\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Not()]{NoteRepository}
+All issue threads, pull requests, and design-log entries cited in this paper
+  are preserved at \url{https://github.com/vertical-cloud-lab/powder-doser}.
+  ``The repository'' refers to this address throughout\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Wu \emph{et~al.}(2021)Wu, Xiao, and Zheng]{Wu2021Deepcad}
+R.~Wu, C.~Xiao and C.~Zheng, 2021 IEEE/CVF International Conference on Computer
+  Vision (ICCV), 2021, pp. 6752--6762\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Willis \emph{et~al.}(2021)Willis, Pu, Luo, Chu, Du, Lambourne,
+  Solar-Lezama, and Matusik]{Willis2021Fusion}
+K.~D.~D. Willis, Y.~Pu, J.~Luo, H.~Chu, T.~Du, J.~G. Lambourne, A.~Solar-Lezama
+  and W.~Matusik, \emph{ACM Transactions on Graphics}, 2021, \textbf{40},
+  1--24\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Seff \emph{et~al.}(2021)Seff, Zhou, Richardson, and
+  Adams]{Seff2021Vitruvion}
+A.~Seff, W.~Zhou, N.~Richardson and R.~P. Adams, \emph{Vitruvion: a generative
+  model of parametric {CAD} sketches}, arXiv, 2021, preprint,
+  arXiv:2109.14124\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Xu \emph{et~al.}(2024)Xu, Lambourne, Jayaraman, Wang, Willis, and
+  Furukawa]{Xu2024Brepgen}
+X.~Xu, J.~Lambourne, P.~Jayaraman, Z.~Wang, K.~Willis and Y.~Furukawa,
+  \emph{ACM Transactions on Graphics}, 2024, \textbf{43}, 1--14\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Alrashedy \emph{et~al.}(2024)Alrashedy, Tambwekar, Zaidi, Langwasser,
+  Xu, and Gombolay]{Alrashedy2025Generating}
+K.~Alrashedy, P.~Tambwekar, Z.~Zaidi, M.~Langwasser, W.~Xu and M.~Gombolay,
+  \emph{Generating {CAD} code with vision-language models for {3D} designs},
+  arXiv, 2024, preprint, arXiv:2410.05340\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Badagabettu \emph{et~al.}(2024)Badagabettu, Yarlagadda, and
+  Barati~Farimani]{Badagabettu2024Query2cad}
+A.~Badagabettu, S.~S. Yarlagadda and A.~Barati~Farimani, \emph{Query2{CAD}:
+  generating {CAD} models using natural language queries}, arXiv, 2024,
+  preprint, arXiv:2406.00144\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Jansen(2023)]{Jansen2023Words}
+P.~Jansen, Findings of the Association for Computational Linguistics: EMNLP
+  2023, 2023, pp. 12972--12990\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Rios \emph{et~al.}(2023)Rios, Menzel, and Sendhoff]{Rios2023Text}
+T.~Rios, S.~Menzel and B.~Sendhoff, 2023 IEEE Symposium Series on Computational
+  Intelligence (SSCI), 2023, pp. 1704--1711\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Tex()]{TextToCad}
+\emph{text-to-cad}, \url{https://github.com/earthtojake/text-to-cad}, accessed
+  10 October 2026\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Fus()]{FusionPlaylist}
+\emph{Human redesign of {AI}-made parts}, YouTube playlist,
+  \url{https://www.youtube.com/playlist?list=PLZTWCFxzhTQv42fTuW2Tjs9o1KuWA_b-I},
+  see also repository issue \#120; accessed 10 October 2026\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Chen \emph{et~al.}(2020)Chen, Zhang, Parvez, and
+  Liou]{Chen2020Elemental}
+Y.~Chen, X.~Zhang, M.~M. Parvez and F.~Liou, \emph{Materials}, 2020,
+  \textbf{13}, 3562\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Yoshikawa \emph{et~al.}(2023)Yoshikawa, Darvish, Vakili, Garg, and
+  Aspuru-Guzik]{Yoshikawa2023Pipette}
+N.~Yoshikawa, K.~Darvish, M.~G. Vakili, A.~Garg and A.~Aspuru-Guzik,
+  \emph{Digital Discovery}, 2023, \textbf{2}, 1745--1751\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Yoshikawa \emph{et~al.}(2026)Yoshikawa, Angers, Darvish, Okhovatian,
+  Bannerman, Yakavets, Radisic, and Aspuru-Guzik]{Yoshikawa2026Commit}
+N.~Yoshikawa, K.~Angers, K.~Darvish, S.~Okhovatian, D.~Bannerman, I.~Yakavets,
+  M.~Radisic and A.~Aspuru-Guzik, \emph{Digital Discovery}, 2026, \textbf{5},
+  93--97\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Charles \emph{et~al.}(2026)Charles, Mulberry, Winters, Robison,
+  Erickson, and Baird]{Charles2026Release}
+S.~Charles, W.~Mulberry, L.~Winters, C.~Robison, G.~Erickson and S.~G. Baird,
+  \emph{powder-doser: design files, firmware, test data, design log, and AI
+  interaction history for an open-source auger powder doser}, Zenodo, tagged
+  release of \url{https://github.com/vertical-cloud-lab/powder-doser}, 2026,
+  DOI to be assigned when the release is archived at submission\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\end{mcitethebibliography}
