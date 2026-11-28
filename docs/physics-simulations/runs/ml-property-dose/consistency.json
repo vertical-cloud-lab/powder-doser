@@ -1,0 +1,495 @@
+{
+ "what": "run 33 follow-up: does dosing consistency limit the predictor; what a consistency objective would change in the salt BO campaign",
+ "salt_campaign_repeats": {
+  "hand-tuned": {
+   "n": 4,
+   "labels": [
+    "baseline-00",
+    "baseline-01",
+    "rebaseline-00",
+    "rebaseline-01"
+   ],
+   "t_s": [
+    342.8,
+    251.7,
+    179.8,
+    238.6
+   ],
+   "error_mg": [
+    -3.6,
+    -4.7,
+    -4.4,
+    -4.8
+   ],
+   "status": [
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "first_label": "baseline-00",
+   "first_t_s": 342.83,
+   "first_abs_error_mg": 3.6,
+   "median_t_s": 245.12,
+   "min_t_s": 179.79,
+   "max_t_s": 342.83,
+   "iqr_t_s": [
+    223.8675,
+    274.4675
+   ],
+   "max_over_min_t": 1.9068357528227375,
+   "cv_t_pct": 26.628362338226818,
+   "median_abs_error_mg": 4.550000000000001,
+   "max_abs_error_mg": 4.8,
+   "p_within_tol": 0.0,
+   "n_ok": 4,
+   "taps_range": [
+    50,
+    104
+   ]
+  },
+  "centre": {
+   "n": 8,
+   "labels": [
+    "center-00",
+    "center-01",
+    "center-02",
+    "center-03",
+    "recenter-00",
+    "recenter-01",
+    "recenter-02",
+    "recenter-03"
+   ],
+   "t_s": [
+    117.6,
+    389.1,
+    62.8,
+    363.8,
+    370.8,
+    391.3,
+    24.0,
+    98.1
+   ],
+   "error_mg": [
+    -7.9,
+    -21.0,
+    -8.5,
+    -9.5,
+    -8.5,
+    -26.5,
+    -6.8,
+    -8.1
+   ],
+   "status": [
+    "ok",
+    "cycle-budget",
+    "ok",
+    "ok",
+    "ok",
+    "cycle-budget",
+    "ok",
+    "ok"
+   ],
+   "first_label": "center-00",
+   "first_t_s": 117.61,
+   "first_abs_error_mg": 7.9,
+   "median_t_s": 240.71,
+   "min_t_s": 24.04,
+   "max_t_s": 391.28,
+   "iqr_t_s": [
+    89.2975,
+    375.40749999999997
+   ],
+   "max_over_min_t": 16.27620632279534,
+   "cv_t_pct": 72.40133861763223,
+   "median_abs_error_mg": 8.5,
+   "max_abs_error_mg": 26.5,
+   "p_within_tol": 0.0,
+   "n_ok": 6,
+   "taps_range": [
+    0,
+    120
+   ]
+  },
+  "corner-09": {
+   "n": 9,
+   "labels": [
+    "corner-09",
+    "val-corner-09-00",
+    "val-corner-09-01",
+    "val-corner-09-02",
+    "val-corner-09-03",
+    "val-corner-09-04",
+    "val-corner-09-05",
+    "val-corner-09-06",
+    "val-corner-09-07"
+   ],
+   "t_s": [
+    51.8,
+    297.6,
+    47.1,
+    99.2,
+    103.5,
+    106.3,
+    385.0,
+    328.5,
+    355.9
+   ],
+   "error_mg": [
+    -0.7,
+    -2.6,
+    -2.8,
+    -2.0,
+    -2.7,
+    -2.3,
+    -2.6,
+    -2.4,
+    -2.8
+   ],
+   "status": [
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "first_label": "corner-09",
+   "first_t_s": 51.81,
+   "first_abs_error_mg": 0.66,
+   "median_t_s": 106.32,
+   "min_t_s": 47.08,
+   "max_t_s": 384.99,
+   "iqr_t_s": [
+    99.24,
+    328.51
+   ],
+   "max_over_min_t": 8.177357689039933,
+   "cv_t_pct": 71.27722229454947,
+   "median_abs_error_mg": 2.6,
+   "max_abs_error_mg": 2.8,
+   "p_within_tol": 1.0,
+   "n_ok": 9,
+   "taps_range": [
+    22,
+    131
+   ]
+  },
+  "bo-005": {
+   "n": 11,
+   "labels": [
+    "bo-005",
+    "val-bo-005-00",
+    "val-bo-005-01",
+    "val-bo-005-00",
+    "val-bo-005-01",
+    "val-bo-005-02",
+    "val-bo-005-03",
+    "val-bo-005-04",
+    "val-bo-005-05",
+    "val-bo-005-06",
+    "val-bo-005-07"
+   ],
+   "t_s": [
+    99.6,
+    81.6,
+    64.2,
+    69.8,
+    109.6,
+    114.4,
+    68.5,
+    81.0,
+    97.6,
+    60.5,
+    75.8
+   ],
+   "error_mg": [
+    -2.4,
+    -1.3,
+    -0.6,
+    -2.0,
+    -2.6,
+    -1.6,
+    -1.9,
+    -0.8,
+    -2.3,
+    -1.3,
+    -1.8
+   ],
+   "status": [
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "first_label": "bo-005",
+   "first_t_s": 99.65,
+   "first_abs_error_mg": 2.4,
+   "median_t_s": 80.95,
+   "min_t_s": 60.48,
+   "max_t_s": 114.44,
+   "iqr_t_s": [
+    69.14,
+    98.635
+   ],
+   "max_over_min_t": 1.8921957671957672,
+   "cv_t_pct": 22.253277507178137,
+   "median_abs_error_mg": 1.76,
+   "max_abs_error_mg": 2.6,
+   "p_within_tol": 1.0,
+   "n_ok": 11,
+   "taps_range": [
+    14,
+    32
+   ]
+  },
+  "fastest_single_dose_within_tol": {
+   "label": "corner-09",
+   "t_s": 51.81,
+   "abs_error_mg": 0.66
+  }
+ },
+ "error_budget": {
+  "slope_inverse_deg_per_decade": -4.298787760588927,
+  "slope_forward_decade_per_deg": -0.1571803679728337,
+  "se_log10_mg45_median": 0.029526417498700927,
+  "se_log10_mg45_max": 0.3095554160718781,
+  "se_log10_mg45_rms": 0.12542843222295766,
+  "inverse_deg": {
+   "model_rmse_line45": 3.5336638601579566,
+   "guess_the_mean": 5.882457461395193,
+   "handbook_label_sd_rms": 3.7053733505095905,
+   "within_run_scatter_rms": 0.5391902092699081,
+   "within_run_scatter_median_powder": 0.12692780215745425,
+   "day_to_day_drift_10pct": 0.17793836833608886,
+   "fill_level_drift_1p8x": 1.0973623205529666,
+   "simex_within_run": {
+    "lambda": [
+     0.0,
+     0.5,
+     1.0,
+     2.0,
+     4.0
+    ],
+    "rmse": [
+     3.5336638601579566,
+     3.580648466146189,
+     3.6036697849614745,
+     3.69938144844675,
+     3.824607418688558
+    ],
+    "rmse_noise_free": 3.441176321070142
+   },
+   "whatif_rmse_with_day_drift_10pct": 3.536518346499293,
+   "whatif_rmse_with_fill_drift_1p8x": 3.7151543605404167
+  },
+  "forward_decades": {
+   "model_rmse_aor_line": 0.7359722047556942,
+   "handbook_aor_spread_times_slope": 0.5824119467098291,
+   "within_run_scatter_rms": 0.12542843222295766,
+   "day_to_day_drift_10pct": 0.04139268515822507,
+   "fill_level_drift_1p8x": 0.25527250510330607,
+   "simex_within_run": {
+    "lambda": [
+     0.0,
+     0.5,
+     1.0,
+     2.0,
+     4.0
+    ],
+    "rmse": [
+     0.7359722047556942,
+     0.7428446534476629,
+     0.7457965790000267,
+     0.762018841239403,
+     0.7896116993841851
+    ],
+    "rmse_noise_free": 0.7249095710210954
+   },
+   "whatif_rmse_with_day_drift_10pct": 0.7371177633932412,
+   "whatif_rmse_with_fill_drift_1p8x": 0.782136065081507
+  }
+ },
+ "scatter_as_signal": {
+  "cv_pct": {
+   "22.5": [
+    13.5,
+    7.0,
+    15.4,
+    2.2,
+    17.2,
+    12.1,
+    18.3,
+    9.1,
+    37.5,
+    7.9,
+    225.9,
+    null
+   ],
+   "45": [
+    4.5,
+    4.4,
+    11.9,
+    2.9,
+    38.3,
+    4.0,
+    12.4,
+    157.1,
+    45.1,
+    21.8,
+    244.9,
+    244.9
+   ]
+  },
+  "powders": [
+   "alsi10mg",
+   "silicon-110-200",
+   "sodium-sulfate",
+   "calcium-lactate",
+   "barium-chloride",
+   "xanthan-gum",
+   "salt",
+   "carboxymethyl-cellulose",
+   "white-rice-flour",
+   "sodium-alginate",
+   "brown-rice-flour",
+   "silicon-325"
+  ],
+  "22.5": {
+   "n": 11,
+   "spearman_logcv_aor": 0.054669845709384636,
+   "spearman_logcv_logmg45": -0.22727272727272727,
+   "partial_spearman_given_logmg45": -0.24094814245144977,
+   "lopo_rmse_aor_line_on_logcv": 6.922322775457453,
+   "lopo_rmse_aor_line_on_logmg45_same_powders": 4.0781551855154445,
+   "lopo_rmse_aor_ridge_on_logmg45_and_logcv": 3.8931357657878625
+  },
+  "45": {
+   "n": 12,
+   "spearman_logcv_aor": 0.6070175438596492,
+   "spearman_logcv_logmg45": -0.7530659534637223,
+   "partial_spearman_given_logmg45": -0.08128057650808276,
+   "lopo_rmse_aor_line_on_logcv": 4.778633237079417,
+   "lopo_rmse_aor_line_on_logmg45_same_powders": 3.5336638601579566,
+   "lopo_rmse_aor_ridge_on_logmg45_and_logcv": 3.732939437874869
+  }
+ },
+ "hidden_scores_1factor": {
+  "loadings": {
+   "log10 mg/rev, 0 deg": 0.5,
+   "log10 mg/rev, 22.5 deg": 0.42,
+   "log10 mg/rev, 45 deg": 0.48,
+   "speed exponent": -0.5,
+   "angle of repose (deg)": -0.73,
+   "bulk density (g/mL)": 0.95,
+   "tapped density (g/mL)": 0.95,
+   "Hausner ratio": -0.73,
+   "log10 d50 (um)": 0.12,
+   "particle density (g/cm3)": 0.86,
+   "log10 moisture (wt%)": -0.79
+  },
+  "posterior_sd_from_fingerprint": 0.6581945263816386,
+  "posterior_sd_from_properties": 0.060535010023284076,
+  "per_powder": {
+   "alsi10mg": {
+    "display": "AlSi10Mg",
+    "from_fingerprint": 0.93,
+    "from_properties": 1.32,
+    "aor": 30.0,
+    "mg_rev_45": 338.93
+   },
+   "silicon-110-200": {
+    "display": "Si (110/200 mesh)",
+    "from_fingerprint": 0.73,
+    "from_properties": 0.98,
+    "aor": 36.0,
+    "mg_rev_45": 302.35
+   },
+   "sodium-sulfate": {
+    "display": "Sodium sulfate",
+    "from_fingerprint": 0.91,
+    "from_properties": 1.48,
+    "aor": 32.0,
+    "mg_rev_45": 243.55
+   },
+   "calcium-lactate": {
+    "display": "Calcium lactate",
+    "from_fingerprint": 0.69,
+    "from_properties": -1.39,
+    "aor": 40.0,
+    "mg_rev_45": 232.25
+   },
+   "barium-chloride": {
+    "display": "Barium chloride",
+    "from_fingerprint": 0.9,
+    "from_properties": 1.15,
+    "aor": 34.0,
+    "mg_rev_45": 200.38
+   },
+   "xanthan-gum": {
+    "display": "Xanthan gum",
+    "from_fingerprint": 0.85,
+    "from_properties": -0.8,
+    "aor": 35.0,
+    "mg_rev_45": 186.77
+   },
+   "salt": {
+    "display": "NaCl (control)",
+    "from_fingerprint": 0.64,
+    "from_properties": 0.71,
+    "aor": 32.0,
+    "mg_rev_45": 265.17
+   },
+   "carboxymethyl-cellulose": {
+    "display": "CMC",
+    "from_fingerprint": -0.75,
+    "from_properties": -0.82,
+    "aor": 41.0,
+    "mg_rev_45": 9.35
+   },
+   "white-rice-flour": {
+    "display": "White rice flour",
+    "from_fingerprint": -0.89,
+    "from_properties": -0.68,
+    "aor": 45.0,
+    "mg_rev_45": 37.15
+   },
+   "sodium-alginate": {
+    "display": "Sodium alginate",
+    "from_fingerprint": -0.94,
+    "from_properties": -0.99,
+    "aor": 42.0,
+    "mg_rev_45": 10.87
+   },
+   "brown-rice-flour": {
+    "display": "Brown rice flour",
+    "from_fingerprint": -1.49,
+    "from_properties": -0.66,
+    "aor": 47.0,
+    "mg_rev_45": 0.2
+   },
+   "silicon-325": {
+    "display": "Si (-325 mesh)",
+    "from_fingerprint": -1.59,
+    "from_properties": -0.29,
+    "aor": 43.0,
+    "mg_rev_45": 1.2
+   }
+  }
+ },
+ "notes": [
+  "drift magnitudes are from the #179 draft (Limits of the present data): salt's feed factor drifted about 10 % between two days and up to 1.8-fold across sessions with different fill levels (#140); here they are applied as random per-powder offsets with that SD",
+  "SIMEX: extra noise of variance lambda * SE^2 added to log10 mg/rev at 45 deg, MSE fitted with a quadratic in lambda and extrapolated to lambda = -1 (no scatter at all)",
+  "P(within tol) counts ok doses with |error| <= 3.0 mg"
+ ]
+}

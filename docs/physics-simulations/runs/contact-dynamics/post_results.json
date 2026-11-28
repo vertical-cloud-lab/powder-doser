@@ -1,0 +1,93 @@
+{
+ "runs": [
+  {
+   "W_over_d": 4.0,
+   "n_discs": 600,
+   "dt": 0.0002,
+   "nsteps": 6000,
+   "t_end": 1.2,
+   "wall_s": 93.77226161956787,
+   "rate_discs_per_s": NaN,
+   "rate_dimless": NaN,
+   "mass_rate_per_m_kg_s": NaN,
+   "fit_points": 206,
+   "n_out_final": 64,
+   "clogged": true,
+   "clog_time_s": 0.1802
+  },
+  {
+   "W_over_d": 5.0,
+   "n_discs": 600,
+   "dt": 0.0002,
+   "nsteps": 6000,
+   "t_end": 1.2,
+   "wall_s": 40.3061158657074,
+   "rate_discs_per_s": 657.4244120940649,
+   "rate_dimless": 6.637603758216776,
+   "mass_rate_per_m_kg_s": 1.1358222559145421,
+   "fit_points": 95,
+   "n_out_final": 551,
+   "clogged": false
+  },
+  {
+   "W_over_d": 6.0,
+   "n_discs": 600,
+   "dt": 0.0002,
+   "nsteps": 6000,
+   "t_end": 1.2,
+   "wall_s": 59.12219429016113,
+   "rate_discs_per_s": 822.1399481673456,
+   "rate_dimless": 8.300633668825366,
+   "mass_rate_per_m_kg_s": 1.4203988069601672,
+   "fit_points": 73,
+   "n_out_final": 569,
+   "clogged": false
+  },
+  {
+   "W_over_d": 7.0,
+   "n_discs": 600,
+   "dt": 0.0002,
+   "nsteps": 6000,
+   "t_end": 1.2,
+   "wall_s": 28.81362819671631,
+   "rate_discs_per_s": 1277.464177160226,
+   "rate_dimless": 12.897758080350673,
+   "mass_rate_per_m_kg_s": 2.20705562017453,
+   "fit_points": 48,
+   "n_out_final": 574,
+   "clogged": false
+  },
+  {
+   "W_over_d": 8.0,
+   "n_discs": 600,
+   "dt": 0.0002,
+   "nsteps": 6000,
+   "t_end": 1.2,
+   "wall_s": 38.22597861289978,
+   "rate_discs_per_s": 1508.0300187617256,
+   "rate_dimless": 15.225637405451787,
+   "mass_rate_per_m_kg_s": 2.605400752370777,
+   "fit_points": 40,
+   "n_out_final": 582,
+   "clogged": false
+  },
+  {
+   "W_over_d": 10.0,
+   "n_discs": 600,
+   "dt": 0.0002,
+   "nsteps": 6000,
+   "t_end": 1.2,
+   "wall_s": 18.76054286956787,
+   "rate_discs_per_s": 2239.560439560439,
+   "rate_dimless": 22.611443257834242,
+   "mass_rate_per_m_kg_s": 3.8692548434823575,
+   "fit_points": 27,
+   "n_out_final": 592,
+   "clogged": false
+  }
+ ],
+ "beverloo_fit": {
+  "C": 0.8725615618849542,
+  "k": 1.2269987705544168
+ }
+}

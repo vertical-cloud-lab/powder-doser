@@ -1,0 +1,495 @@
+{
+ "id": "moisture-sorption",
+ "method": "GAB isotherm + Fickian vapour diffusion + Kelvin brine bridges + Rabinovich capillary force -> Bond number -> Rumpf/Mohr-Coulomb/Jenike flow prediction",
+ "code": "custom Python (numpy/scipy solve_ivp BDF/matplotlib)",
+ "version": "python 3.12.3, numpy 2.5.4, scipy 1.18.1, matplotlib 3.11.2",
+ "status": "ran",
+ "wall_s": 8.52,
+ "cores": 1,
+ "key_results": {
+  "inputs": {
+   "NaCl": {
+    "rho_p": 2165.0,
+    "d": 0.000425,
+    "rho_b": 1250.0,
+    "DRH": 0.753,
+    "gamma": 0.082,
+    "brine_vol_per_kg_water": 0.001135701316005257,
+    "eps": 0.42263279445727486,
+    "R": 0.0002125,
+    "m_p": 8.70208484136526e-08,
+    "W_p": 8.536745229379321e-07,
+    "SSA": 6.520853144953132,
+    "X_m": 1.9497350903409864e-06,
+    "D_eff": 7.012025672527218e-06
+   },
+   "BaCl2.2H2O": {
+    "rho_p": 3097.0,
+    "d": 0.000425,
+    "rho_b": 1788.1062355658198,
+    "DRH": 0.9,
+    "gamma": 0.076,
+    "brine_vol_per_kg_water": 0.0010702054794520547,
+    "eps": 0.42263279445727486,
+    "R": 0.0002125,
+    "m_p": 1.2448201733814415e-07,
+    "W_p": 1.2211685900871942e-06,
+    "SSA": 4.558491139432848,
+    "X_m": 1.3629888506904215e-06,
+    "D_eff": 7.012025672527218e-06
+   }
+  },
+  "D_vapour_air_m2_s": 2.5521059932553944e-05,
+  "c_sat_kg_m3": 0.023036201137696343,
+  "H_asperity_gap_nm": [
+   50,
+   200,
+   1000
+  ],
+  "F_asperity_scale_N": 4.836393421169301e-08,
+  "Bo_dry_baseline_NaCl": 0.05665383341328718,
+  "Bo_max_full_bridge_NaCl": 128.2508743505803,
+  "bridging_threshold_RH": {
+   "NaCl,H=50nm": 0.7352099750366305,
+   "NaCl,H=200nm": 0.7485125387331755,
+   "NaCl,H=1000nm": 0.7521003606428202,
+   "BaCl2.2H2O,H=50nm": 0.8802756700192081,
+   "BaCl2.2H2O,H=200nm": 0.8950278655148415,
+   "BaCl2.2H2O,H=1000nm": 0.8990033682685333
+  },
+  "H_crit_for_bridging_at_75pct_RH_nm": 299.46094283628275,
+  "kelvin_radius_nm_NaCl": {
+   "RH=40": 0.9448728792787927,
+   "RH=60": 2.6315879093694243,
+   "RH=75": 149.73047141814138
+  },
+  "V_kelvin_75pct_H200_um3": 16.58184746787734,
+  "willett_over_rabinovich_at_VK75": 0.9925995686669692,
+  "time_dependent_cases": {
+   "NaCl_RH40_L10mm": {
+    "Bo_bed_t0": 0.05665383341328718,
+    "Bo_bed_at_t_s": {
+     "0.1": 0.05665383341328718,
+     "1.0": 0.05665383341328718,
+     "10.0": 0.05665383341328718,
+     "100.0": 0.05665383341328718
+    },
+    "Bo_bed_10min": 0.05665383341328718,
+    "Bo_bed_1h": 0.05665383341328718,
+    "mean_RH_1h": 0.40000000000002356,
+    "t_mean_RH_within_1pct_of_top_s": 12.82032420404088,
+    "adsorbed_water_1h_ppm": 2.586617896973718,
+    "bridging_threshold_RH": 0.7485125387331755,
+    "t_half_bed_bridged_s": null,
+    "t_full_bed_bridged_s": null,
+    "sigma_t_Pa": 0.36579071765608184,
+    "sigma_c_Pa": 0.9280593487685754,
+    "ffc_at_400Pa": 431.0069183945537,
+    "ffc_at_3kPa": 3232.5518879591523,
+    "Bc_mm": 0.19803644955034502,
+    "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl_RH60_L10mm": {
+    "Bo_bed_t0": 0.05665383341328718,
+    "Bo_bed_at_t_s": {
+     "0.1": 0.05665383341328718,
+     "1.0": 0.05665383341328718,
+     "10.0": 0.05665383341328718,
+     "100.0": 0.05665383341328718
+    },
+    "Bo_bed_10min": 0.05665383341328718,
+    "Bo_bed_1h": 0.05665383341328718,
+    "mean_RH_1h": 0.6000000000000799,
+    "t_mean_RH_within_1pct_of_top_s": 18.224067394510566,
+    "adsorbed_water_1h_ppm": 3.905835245527235,
+    "bridging_threshold_RH": 0.7485125387331755,
+    "t_half_bed_bridged_s": null,
+    "t_full_bed_bridged_s": null,
+    "sigma_t_Pa": 0.36579071765608184,
+    "sigma_c_Pa": 0.9280593487685754,
+    "ffc_at_400Pa": 431.0069183945537,
+    "ffc_at_3kPa": 3232.5518879591523,
+    "Bc_mm": 0.19803644955034502,
+    "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl_RH75_L10mm": {
+    "Bo_bed_t0": 0.05665383341328718,
+    "Bo_bed_at_t_s": {
+     "0.1": 0.05665383341328718,
+     "1.0": 0.05665383341328718,
+     "10.0": 0.3077387287628268,
+     "100.0": 42.58514806995488
+    },
+    "Bo_bed_10min": 42.59638037671344,
+    "Bo_bed_1h": 42.596382566270485,
+    "mean_RH_1h": 0.7500000000002597,
+    "t_mean_RH_within_1pct_of_top_s": 24.145842126236047,
+    "adsorbed_water_1h_ppm": 5.723603961864319,
+    "bridging_threshold_RH": 0.7485125387331755,
+    "t_half_bed_bridged_s": 36.824590210056094,
+    "t_full_bed_bridged_s": 39.508194543709735,
+    "sigma_t_Pa": 275.0274855154771,
+    "sigma_c_Pa": 697.7810446817629,
+    "ffc_at_400Pa": 0.5732457237820613,
+    "ffc_at_3kPa": 4.299342928365459,
+    "Bc_mm": 148.89789196743018,
+    "verdict_after_1h": "arches over the 3 mm exit: dosing expected to stall without agitation"
+   },
+   "NaCl_RH75_L40mm": {
+    "Bo_bed_t0": 0.05665383341328718,
+    "Bo_bed_at_t_s": {
+     "0.1": 0.05665383341328718,
+     "1.0": 0.05665383341328718,
+     "10.0": 0.05665383341328718,
+     "100.0": 0.06287297769914639
+    },
+    "Bo_bed_10min": 12.109121666840242,
+    "Bo_bed_1h": 42.59642415307631,
+    "mean_RH_1h": 0.7500000014539087,
+    "t_mean_RH_within_1pct_of_top_s": 375.2006094190625,
+    "adsorbed_water_1h_ppm": 5.723603986472609,
+    "bridging_threshold_RH": 0.7485125387331755,
+    "t_half_bed_bridged_s": 613.9151656980346,
+    "t_full_bed_bridged_s": 658.6544388240947,
+    "sigma_t_Pa": 275.027754024537,
+    "sigma_c_Pa": 697.7817259247009,
+    "ffc_at_400Pa": 0.5732451641233792,
+    "ffc_at_3kPa": 4.299338730925344,
+    "Bc_mm": 148.89803733629364,
+    "verdict_after_1h": "arches over the 3 mm exit: dosing expected to stall without agitation"
+   },
+   "NaCl_RH80_L10mm": {
+    "Bo_bed_t0": 0.05665383341328718,
+    "Bo_bed_at_t_s": {
+     "0.1": 14.567677685195225,
+     "1.0": 61.8059804702178,
+     "10.0": 104.13813217932471,
+     "100.0": 128.2380575956136
+    },
+    "Bo_bed_10min": 128.2508743505803,
+    "Bo_bed_1h": 128.2508743505803,
+    "mean_RH_1h": 0.7530000000006517,
+    "t_mean_RH_within_1pct_of_top_s": 24.145842126236047,
+    "adsorbed_water_1h_ppm": 5.77480414137334,
+    "bridging_threshold_RH": 0.7485125387331755,
+    "t_half_bed_bridged_s": 0.1,
+    "t_full_bed_bridged_s": 0.1,
+    "vapour_flux_g_m2_h": 49.73703962960747,
+    "pore_saturation_1h": 0.013365366365875138,
+    "t_to_pore_saturation_10pct_h": 7.482024604676985,
+    "sigma_t_Pa": 828.0636373975025,
+    "sigma_c_Pa": 2100.9067834919856,
+    "ffc_at_400Pa": 0.19039397803987618,
+    "ffc_at_3kPa": 1.4279548352990714,
+    "Bc_mm": 448.3076656585005,
+    "verdict_after_1h": "arches over the 3 mm exit: dosing expected to stall without agitation"
+   },
+   "BaCl2.2H2O_RH40_L10mm": {
+    "Bo_bed_t0": 0.03960463330312132,
+    "Bo_bed_at_t_s": {
+     "0.1": 0.03960463330312132,
+     "1.0": 0.03960463330312132,
+     "10.0": 0.03960463330312132,
+     "100.0": 0.03960463330312132
+    },
+    "Bo_bed_10min": 0.03960463330312132,
+    "Bo_bed_1h": 0.03960463330312132,
+    "mean_RH_1h": 0.40000000000002356,
+    "t_mean_RH_within_1pct_of_top_s": 12.82032420404088,
+    "adsorbed_water_1h_ppm": 1.808210444607071,
+    "bridging_threshold_RH": 0.8950278655148415,
+    "t_half_bed_bridged_s": null,
+    "t_full_bed_bridged_s": null,
+    "sigma_t_Pa": 0.36579071765608184,
+    "sigma_c_Pa": 0.9280593487685754,
+    "ffc_at_400Pa": 431.0069183945537,
+    "ffc_at_3kPa": 3232.5518879591523,
+    "Bc_mm": 0.1384400753233765,
+    "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O_RH60_L10mm": {
+    "Bo_bed_t0": 0.03960463330312132,
+    "Bo_bed_at_t_s": {
+     "0.1": 0.03960463330312132,
+     "1.0": 0.03960463330312132,
+     "10.0": 0.03960463330312132,
+     "100.0": 0.03960463330312132
+    },
+    "Bo_bed_10min": 0.03960463330312132,
+    "Bo_bed_1h": 0.03960463330312132,
+    "mean_RH_1h": 0.6000000000000799,
+    "t_mean_RH_within_1pct_of_top_s": 18.224067394510566,
+    "adsorbed_water_1h_ppm": 2.730427286589107,
+    "bridging_threshold_RH": 0.8950278655148415,
+    "t_half_bed_bridged_s": null,
+    "t_full_bed_bridged_s": null,
+    "sigma_t_Pa": 0.36579071765608184,
+    "sigma_c_Pa": 0.9280593487685754,
+    "ffc_at_400Pa": 431.0069183945537,
+    "ffc_at_3kPa": 3232.5518879591523,
+    "Bc_mm": 0.1384400753233765,
+    "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O_RH75_L10mm": {
+    "Bo_bed_t0": 0.03960463330312132,
+    "Bo_bed_at_t_s": {
+     "0.1": 0.03960463330312132,
+     "1.0": 0.03960463330312132,
+     "10.0": 0.03960463330312132,
+     "100.0": 0.03960463330312132
+    },
+    "Bo_bed_10min": 0.03960463330312132,
+    "Bo_bed_1h": 0.03960463330312132,
+    "mean_RH_1h": 0.7500000000002597,
+    "t_mean_RH_within_1pct_of_top_s": 24.145842126236047,
+    "adsorbed_water_1h_ppm": 4.001163247476994,
+    "bridging_threshold_RH": 0.8950278655148415,
+    "t_half_bed_bridged_s": null,
+    "t_full_bed_bridged_s": null,
+    "sigma_t_Pa": 0.36579071765608184,
+    "sigma_c_Pa": 0.9280593487685754,
+    "ffc_at_400Pa": 431.0069183945537,
+    "ffc_at_3kPa": 3232.5518879591523,
+    "Bc_mm": 0.1384400753233765,
+    "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O_RH80_L10mm": {
+    "Bo_bed_t0": 0.03960463330312132,
+    "Bo_bed_at_t_s": {
+     "0.1": 0.03960463330312132,
+     "1.0": 0.03960463330312132,
+     "10.0": 0.03960463330312132,
+     "100.0": 0.03960463330312132
+    },
+    "Bo_bed_10min": 0.03960463330312132,
+    "Bo_bed_1h": 0.03960463330312132,
+    "mean_RH_1h": 0.8000000000044449,
+    "t_mean_RH_within_1pct_of_top_s": 27.793348861256298,
+    "adsorbed_water_1h_ppm": 4.685599563177299,
+    "bridging_threshold_RH": 0.8950278655148415,
+    "t_half_bed_bridged_s": null,
+    "t_full_bed_bridged_s": null,
+    "sigma_t_Pa": 0.36579071765608184,
+    "sigma_c_Pa": 0.9280593487685754,
+    "ffc_at_400Pa": 431.0069183945537,
+    "ffc_at_3kPa": 3232.5518879591523,
+    "Bc_mm": 0.1384400753233765,
+    "verdict_after_1h": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   }
+  },
+  "equilibrium_table": {
+   "NaCl,H=50nm,RH=30": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=50nm,RH=40": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=50nm,RH=60": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=50nm,RH=75": {
+    "Bo": 106.8373,
+    "sigma_c_Pa": 1750.125,
+    "ffc_at_400Pa": 0.229,
+    "Bc_mm": 373.4552,
+    "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+   },
+   "NaCl,H=50nm,RH=80": {
+    "Bo": 128.2509,
+    "sigma_c_Pa": 2100.907,
+    "ffc_at_400Pa": 0.19,
+    "Bc_mm": 448.3077,
+    "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+   },
+   "NaCl,H=200nm,RH=30": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=200nm,RH=40": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=200nm,RH=60": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=200nm,RH=75": {
+    "Bo": 42.5964,
+    "sigma_c_Pa": 697.781,
+    "ffc_at_400Pa": 0.573,
+    "Bc_mm": 148.8979,
+    "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+   },
+   "NaCl,H=200nm,RH=80": {
+    "Bo": 128.2509,
+    "sigma_c_Pa": 2100.907,
+    "ffc_at_400Pa": 0.19,
+    "Bc_mm": 448.3077,
+    "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+   },
+   "NaCl,H=1000nm,RH=30": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=1000nm,RH=40": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=1000nm,RH=60": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=1000nm,RH=75": {
+    "Bo": 0.0567,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.198,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "NaCl,H=1000nm,RH=80": {
+    "Bo": 128.2509,
+    "sigma_c_Pa": 2100.907,
+    "ffc_at_400Pa": 0.19,
+    "Bc_mm": 448.3077,
+    "verdict": "arches over the 3 mm exit: dosing expected to stall without agitation"
+   },
+   "BaCl2.2H2O,H=50nm,RH=30": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=50nm,RH=40": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=50nm,RH=60": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=50nm,RH=75": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=50nm,RH=80": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=200nm,RH=30": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=200nm,RH=40": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=200nm,RH=60": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=200nm,RH=75": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=200nm,RH=80": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=1000nm,RH=30": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=1000nm,RH=40": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=1000nm,RH=60": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=1000nm,RH=75": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   },
+   "BaCl2.2H2O,H=1000nm,RH=80": {
+    "Bo": 0.0396,
+    "sigma_c_Pa": 0.928,
+    "ffc_at_400Pa": 431.007,
+    "Bc_mm": 0.1384,
+    "verdict": "flows (no cohesive arch over the 1.07 mm annulus gap)"
+   }
+  },
+  "pde_rhs_evaluations": 6928
+ },
+ "notes": "Many inputs are assumed (GAB C, K; asperity height and radius; Hamaker constant; coordination; boundary layer; wicking above DRH; BaCl2.2H2O DRH and brine surface tension). See README."
+}

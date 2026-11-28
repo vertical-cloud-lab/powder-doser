@@ -1,0 +1,3324 @@
+{
+ "focal": {
+  "openalex": "W3041626527",
+  "doi": "10.14356/kona.2021010",
+  "title": "A Semi-Automated DEM Parameter Calibration Technique of Powders Based on Different Bulk Responses Extracted from Auger Dosing Experiments",
+  "year": 2020,
+  "venue": "KONA Powder and Particle Journal",
+  "authors": [
+   "Bilal El Kassem",
+   "Nizar Salloum",
+   "Thomas Brinz",
+   "Yousef Heider",
+   "Bernd A. Markert"
+  ],
+  "institutions": [
+   "RWTH Aachen University",
+   "Robert Bosch (Germany)"
+  ],
+  "cited_by_count": 21,
+  "license": "cc-by",
+  "oa_url": "https://www.jstage.jst.go.jp/article/kona/38/0/38_2021010/_pdf",
+  "crossref_reference_count": 54,
+  "crossref_cited_by_count": 15,
+  "semantic_scholar_reference_count": 57
+ },
+ "retrieved_utc": "2026-11-23T23:27:45Z",
+ "citing": [
+  {
+   "openalex": "W3046984684",
+   "doi": "10.1016/j.jddst.2020.101950",
+   "title": "A multivariate statistical approach to analyze the impact of material attributes and process parameters on the quality performance of an auger dosing process",
+   "year": 2020,
+   "type": "article",
+   "venue": "Journal of Drug Delivery Science and Technology",
+   "authors": [
+    "Bilal El Kassem",
+    "Yousef Heider",
+    "Thomas Brinz",
+    "Bernd A. Markert"
+   ],
+   "institutions": [
+    "RWTH Aachen University"
+   ],
+   "countries": [
+    "DE"
+   ],
+   "cited_by_count": 9,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W244127115",
+    "W607530179",
+    "W620186277",
+    "W747091909",
+    "W1420377711",
+    "W1558424728",
+    "W1746819321",
+    "W1976691526",
+    "W1996386613",
+    "W2009401795",
+    "W2015711663",
+    "W2017190947",
+    "W2025918816",
+    "W2036095146",
+    "W2044194568",
+    "W2047305324",
+    "W2049538311",
+    "W2058160833",
+    "W2062441183",
+    "W2065591856",
+    "W2068891329",
+    "W2089483703",
+    "W2089819404",
+    "W2095391531",
+    "W2115807542",
+    "W2128074388",
+    "W2130420055",
+    "W2182783252",
+    "W2278311668",
+    "W2294730867",
+    "W2294798173",
+    "W2483523837",
+    "W2493946702",
+    "W2519768335",
+    "W2560771368",
+    "W2567832476",
+    "W2588145311",
+    "W2724685730",
+    "W2745182830",
+    "W2793192919",
+    "W2800732484",
+    "W2886392627",
+    "W2886407599",
+    "W2887769575",
+    "W2904297688",
+    "W2905901786",
+    "W2906987206",
+    "W2964002049",
+    "W2968923792",
+    "W3003677094",
+    "W3006475788",
+    "W3041626527",
+    "W4211049957",
+    "W6726597624"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false
+  },
+  {
+   "openalex": "W3097650606",
+   "doi": "10.1016/j.powtec.2020.10.067",
+   "title": "Optimization of DEM parameters using multi-objective reinforcement learning",
+   "year": 2020,
+   "type": "article",
+   "venue": "Powder Technology",
+   "authors": [
+    "Fabian Westbrink",
+    "Alexander Elbel",
+    "Andreas Schwung",
+    "Steven X. Ding"
+   ],
+   "institutions": [
+    "South Westphalia University of Applied Sciences",
+    "University of Duisburg-Essen"
+   ],
+   "countries": [
+    "DE"
+   ],
+   "cited_by_count": 38,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W1515851193",
+    "W1757796397",
+    "W1974819248",
+    "W1982599634",
+    "W1983530062",
+    "W1987330741",
+    "W1987725948",
+    "W2011454852",
+    "W2011890900",
+    "W2018608349",
+    "W2028891745",
+    "W2049979143",
+    "W2060846151",
+    "W2077902868",
+    "W2079419215",
+    "W2085809205",
+    "W2149135447",
+    "W2156387975",
+    "W2156737235",
+    "W2237107676",
+    "W2259445200",
+    "W2260756217",
+    "W2282882376",
+    "W2336895729",
+    "W2492794003",
+    "W2520508848",
+    "W2557305841",
+    "W2570473044",
+    "W2761434131",
+    "W2765399732",
+    "W2765957022",
+    "W2782154552",
+    "W2790498566",
+    "W2790621910",
+    "W2790900455",
+    "W2800278807",
+    "W2804185912",
+    "W2886246074",
+    "W2899780723",
+    "W2901588379",
+    "W2902907165",
+    "W2904918544",
+    "W2914724771",
+    "W2941992502",
+    "W2944901351",
+    "W2969815680",
+    "W2981303473",
+    "W2982553519",
+    "W2990714382",
+    "W2991073014",
+    "W3003677094",
+    "W3003962245",
+    "W3006940747",
+    "W3020754600",
+    "W3027515052",
+    "W3034032075",
+    "W3041626527",
+    "W3108370024",
+    "W4255563445"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false
+  },
+  {
+   "openalex": "W3133188041",
+   "doi": "10.1002/nag.3196",
+   "title": "An offline multi‐scale unsaturated poromechanics model enabled by self‐designed/self‐improved neural networks",
+   "year": 2021,
+   "type": "article",
+   "venue": "International Journal for Numerical and Analytical Methods in Geomechanics",
+   "authors": [
+    "Yousef Heider",
+    "Hyoung Suk Suh",
+    "WaiChing Sun"
+   ],
+   "institutions": [
+    "Columbia University",
+    "RWTH Aachen University"
+   ],
+   "countries": [
+    "DE",
+    "US"
+   ],
+   "cited_by_count": 42,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W113831185",
+    "W279339604",
+    "W1514089691",
+    "W1548164611",
+    "W1606775516",
+    "W1714211023",
+    "W1793139025",
+    "W1816115655",
+    "W1845003710",
+    "W1912796720",
+    "W1970405651",
+    "W1973888660",
+    "W1977219731",
+    "W1993455955",
+    "W2007988724",
+    "W2009937561",
+    "W2022121311",
+    "W2031173910",
+    "W2033293152",
+    "W2033459581",
+    "W2033793034",
+    "W2038470808",
+    "W2042111398",
+    "W2045314058",
+    "W2046246543",
+    "W2046284349",
+    "W2050148511",
+    "W2064675550",
+    "W2067245875",
+    "W2074893320",
+    "W2087497668",
+    "W2091243708",
+    "W2094903790",
+    "W2096995299",
+    "W2097920392",
+    "W2101234009",
+    "W2116261113",
+    "W2126316555",
+    "W2131355701",
+    "W2145062249",
+    "W2145339207",
+    "W2157331557",
+    "W2157815868",
+    "W2162604832",
+    "W2163859833",
+    "W2170109687",
+    "W2261676784",
+    "W2271840356",
+    "W2296613417",
+    "W2318149817",
+    "W2342249984",
+    "W2410830918",
+    "W2466657533",
+    "W2553303224",
+    "W2555188859",
+    "W2556833785",
+    "W2567059995",
+    "W2571996707",
+    "W2587047347",
+    "W2743869222",
+    "W2759272965",
+    "W2766214033",
+    "W2766447205",
+    "W2771727678",
+    "W2773706593",
+    "W2788766513",
+    "W2790645760",
+    "W2796265726",
+    "W2889287912",
+    "W2889691323",
+    "W2893869899",
+    "W2896872742",
+    "W2897411032",
+    "W2897666432",
+    "W2898346202",
+    "W2899740678",
+    "W2901507495",
+    "W2902907165",
+    "W2908963506",
+    "W2910034952",
+    "W2916087991",
+    "W2931215439",
+    "W2944664266",
+    "W2946121452",
+    "W2946264706",
+    "W2946295664",
+    "W2949072809",
+    "W2955537869",
+    "W2968593283",
+    "W2969287672",
+    "W2979697500",
+    "W2987860587",
+    "W2999772350",
+    "W3003677094",
+    "W3006475788",
+    "W3010550392",
+    "W3013605131",
+    "W3017043461",
+    "W3022384661",
+    "W3025446192",
+    "W3033004291",
+    "W3033526262",
+    "W3041626527",
+    "W3081286942",
+    "W3098481477",
+    "W3101313678",
+    "W4388316717",
+    "W6683498865"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [
+    "References and details about the DEM equations and application can be found in, for example, El-Kassem et al. 75,76 The DEM RVE serves as a platform to perform both the single-and multi-phase flow simulations, such that the resultant permeability tensor and water retention curves can be stored in…"
+   ],
+   "s2_intents": [
+    "methodology"
+   ],
+   "s2_influential": false,
+   "oc_creation": "2021-02-16"
+  },
+  {
+   "openalex": "W3138068798",
+   "doi": "10.1080/10837450.2021.1901915",
+   "title": "Design of a vertical Loss-in-Weight feeder prototype with experimental proof of concept validation",
+   "year": 2021,
+   "type": "article",
+   "venue": "Pharmaceutical Development and Technology",
+   "authors": [
+    "Bilal El Kassem",
+    "Thomas Brinz",
+    "Vahid Jenkouk",
+    "Yousef Heider",
+    "Bernd A. Markert"
+   ],
+   "institutions": [
+    "RWTH Aachen University"
+   ],
+   "countries": [
+    "DE"
+   ],
+   "cited_by_count": 3,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W105695126",
+    "W620186277",
+    "W1204351192",
+    "W1502922572",
+    "W1578829123",
+    "W1746819321",
+    "W1870279936",
+    "W1976691526",
+    "W2056951032",
+    "W2089819404",
+    "W2115807542",
+    "W2149589571",
+    "W2182783252",
+    "W2294730867",
+    "W2493946702",
+    "W2560771368",
+    "W2614084327",
+    "W2622321657",
+    "W2743634824",
+    "W2768620316",
+    "W2800732484",
+    "W2904297688",
+    "W2906987206",
+    "W2968923792",
+    "W3006475788",
+    "W3041626527",
+    "W3046984684",
+    "W4251817184",
+    "W6986339252"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [
+    "This would prevent air to escape inside the container and thus causing a vacuum that affects negatively the continuous supply of powder (El Kassem et al. 2020a).",
+    "Flow problems result in inaccurate metering and dosing, product degradation, downtime, lost production hours, and more importantly low-\nquality drugs that may pose health risks to end-users, i.e. patients (El Kassem et al. 2020b).",
+    "The correlations between critical material attributes, critical process parameters, and critical quality attributes for auger dosing of ten different powders were thoroughly investigated in a previous study (El Kassem et al. 2020a).",
+    "One of the most important aspects of designing the auger geometry is having a conical form which proved in other studies (El Kassem et al. 2020a) to have its positive influence on the dosing accuracy over the standard straight form.",
+    "The material characterization methods and auger dosing experimental results of the studied powders, except for Paracetamol, were performed in a previous study (El Kassem et al. 2020a).",
+    "The conical geometry aided in forwarding the powder downwards into the dosing tube and thus helped in consistently having a high powder mass concentration around the auger (El Kassem et al. 2020a)."
+   ],
+   "s2_intents": [
+    "methodology",
+    "background"
+   ],
+   "s2_influential": true,
+   "oc_creation": "2021-04-19"
+  },
+  {
+   "openalex": "W3134786843",
+   "doi": "10.2320/matertrans.m-m2021806",
+   "title": "Genetic Algorithm Based Automatic Input Parameter Calibration Method for the Discrete Element Modeling of Vibration Feeders",
+   "year": 2021,
+   "type": "article",
+   "venue": "MATERIALS TRANSACTIONS",
+   "authors": [
+    "Jun Katagiri",
+    "Takao Ueda",
+    "Naohito Hayashi",
+    "Shigeki Koyanaka"
+   ],
+   "institutions": [
+    "National Institute of Advanced Industrial Science and Technology"
+   ],
+   "countries": [
+    "JP"
+   ],
+   "cited_by_count": 8,
+   "is_oa": true,
+   "oa_status": "bronze",
+   "license": null,
+   "oa_url": "https://www.jstage.jst.go.jp/article/matertrans/62/4/62_M-M2021806/_pdf",
+   "referenced_works": [
+    "W1497256448",
+    "W1669682122",
+    "W1982824386",
+    "W2003171998",
+    "W2003568319",
+    "W2051334298",
+    "W2063365741",
+    "W2073775990",
+    "W2080977367",
+    "W2085827921",
+    "W2090401359",
+    "W2116057390",
+    "W2168414272",
+    "W2270182407",
+    "W2331841630",
+    "W2970436496",
+    "W3023447326",
+    "W3041626527",
+    "W4242186041",
+    "W4299354976"
+   ],
+   "sources": [
+    "OpenAlex",
+    "OpenCitations"
+   ],
+   "oc_creation": "2021-04-01"
+  },
+  {
+   "openalex": "W3123273257",
+   "doi": "10.1016/j.powtec.2021.01.029",
+   "title": "Predicting the behavior of granules of complex shapes using coarse-grained particles and artificial neural networks",
+   "year": 2021,
+   "type": "article",
+   "venue": "Powder Technology",
+   "authors": [
+    "Daniel Schiochet Nasato",
+    "Rodrigo Queiroz Albuquerque",
+    "Heiko Briesen"
+   ],
+   "institutions": [
+    "Technical University of Munich"
+   ],
+   "countries": [
+    "DE"
+   ],
+   "cited_by_count": 19,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W1249007618",
+    "W1569512666",
+    "W1992234713",
+    "W2010463998",
+    "W2013122490",
+    "W2028601571",
+    "W2081210479",
+    "W2085064566",
+    "W2085809205",
+    "W2237107676",
+    "W2521432875",
+    "W2551513050",
+    "W2557305841",
+    "W2570473044",
+    "W2611221541",
+    "W2612201740",
+    "W2886246074",
+    "W2899780723",
+    "W2901588379",
+    "W2912433304",
+    "W2923013994",
+    "W2960476469",
+    "W2979606644",
+    "W2990253965",
+    "W2994626356",
+    "W3003677094",
+    "W3021035374",
+    "W3024816801",
+    "W3038268938",
+    "W3041626527",
+    "W3098370560",
+    "W7037128230"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false
+  },
+  {
+   "openalex": "W3198594504",
+   "doi": "10.3390/min11090978",
+   "title": "Use of Discrete Element Modelling to Evaluate the Parameters of the Sampling Theory in the Feed Grade Sampler of a Sulphide Gold Plant",
+   "year": 2021,
+   "type": "article",
+   "venue": "Minerals",
+   "authors": [
+    "Marcus Felix Magalhães",
+    "Ana Carolina Chieregati",
+    "Dusan Ilic",
+    "Rodrigo Magalhães de Carvalho",
+    "Mariana Gazire Lemos",
+    "Homero Delboni"
+   ],
+   "institutions": [
+    "Universidade Federal do Rio de Janeiro",
+    "Universidade de São Paulo",
+    "University of Newcastle Australia"
+   ],
+   "countries": [
+    "AU",
+    "BR"
+   ],
+   "cited_by_count": 4,
+   "is_oa": true,
+   "oa_status": "gold",
+   "license": "cc-by",
+   "oa_url": "https://www.mdpi.com/2075-163X/11/9/978/pdf?version=1632471216",
+   "referenced_works": [
+    "W177241527",
+    "W358250544",
+    "W622321019",
+    "W1544243305",
+    "W1964470716",
+    "W1975956593",
+    "W1983485138",
+    "W1987330741",
+    "W2007140495",
+    "W2018608349",
+    "W2029696717",
+    "W2073775990",
+    "W2154459828",
+    "W2570473044",
+    "W2626064910",
+    "W2796353096",
+    "W2899780723",
+    "W2909744094",
+    "W2912179727",
+    "W2914724771",
+    "W2922328534",
+    "W2944901351",
+    "W2963441246",
+    "W2971014889",
+    "W2971984155",
+    "W3041626527",
+    "W3041742859",
+    "W3046279783",
+    "W3124872081",
+    "W3154918199",
+    "W7024510711"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false,
+   "oc_creation": "2021-09-08"
+  },
+  {
+   "openalex": "W4307748788",
+   "doi": "10.11606/d.3.2022.tde-31102022-112806",
+   "title": "Utilização de simulação de elementos discretos (DEM) para avaliação de parâmetros da teoria da amostragem.",
+   "year": 2022,
+   "type": "dissertation",
+   "venue": "Digital Library of Theses and Dissertations  (Universidade de São Paulo)",
+   "authors": [
+    "Marcus Félix Magalhães"
+   ],
+   "institutions": [
+    "Universidade de São Paulo"
+   ],
+   "countries": [
+    "BR"
+   ],
+   "cited_by_count": 2,
+   "is_oa": true,
+   "oa_status": "green",
+   "license": null,
+   "oa_url": "http://www.teses.usp.br/teses/disponiveis/3/3134/tde-31102022-112806/publico/MarcusFelixMagalhaesCorr22.pdf",
+   "referenced_works": [
+    "W177241527",
+    "W236410074",
+    "W622321019",
+    "W1544243305",
+    "W1558424728",
+    "W1883086451",
+    "W1964470716",
+    "W1968098666",
+    "W1970964007",
+    "W1975956593",
+    "W1976844762",
+    "W1983485138",
+    "W2007140495",
+    "W2018608349",
+    "W2029696717",
+    "W2044771513",
+    "W2073775990",
+    "W2082599901",
+    "W2088674414",
+    "W2154459828",
+    "W2171201664",
+    "W2187636587",
+    "W2237107676",
+    "W2307550859",
+    "W2497018115",
+    "W2504044668",
+    "W2557305841",
+    "W2790621910",
+    "W2790900455",
+    "W2796353096",
+    "W2899780723",
+    "W2909744094",
+    "W2912179727",
+    "W2914724771",
+    "W2941992502",
+    "W2944035584",
+    "W2944901351",
+    "W2949921296",
+    "W2963441246",
+    "W2971984155",
+    "W3021035374",
+    "W3041626527",
+    "W3041742859",
+    "W3046279783",
+    "W3124872081",
+    "W3131533409",
+    "W3154918199",
+    "W3159380532",
+    "W4213138763",
+    "W4220665102",
+    "W4242186041",
+    "W7028431170"
+   ],
+   "sources": [
+    "OpenAlex"
+   ]
+  },
+  {
+   "openalex": "W4386729747",
+   "doi": "10.14356/kona.2024017",
+   "title": "DEM Modelling of Segregation in Granular Materials: A Review",
+   "year": 2023,
+   "type": "article",
+   "venue": "KONA Powder and Particle Journal",
+   "authors": [
+    "Ahmed Hadi",
+    "Raïsa Roeplal",
+    "Yusong Pang",
+    "Dingena L. Schott"
+   ],
+   "institutions": [
+    "Delft University of Technology"
+   ],
+   "countries": [
+    "NL"
+   ],
+   "cited_by_count": 36,
+   "is_oa": true,
+   "oa_status": "diamond",
+   "license": "cc-by",
+   "oa_url": "https://www.jstage.jst.go.jp/article/kona/advpub/0/advpub_2024017/_pdf",
+   "referenced_works": [
+    "W27618917",
+    "W76323820",
+    "W94362843",
+    "W1100341692",
+    "W1862477639",
+    "W1966746920",
+    "W1967254643",
+    "W1968056105",
+    "W1969636750",
+    "W1976628451",
+    "W1982599634",
+    "W1983429404",
+    "W1983530062",
+    "W1983742307",
+    "W1983793680",
+    "W1989480919",
+    "W1991963449",
+    "W1992506826",
+    "W1993115659",
+    "W1993271005",
+    "W1995434037",
+    "W1995584540",
+    "W1996679693",
+    "W1999454954",
+    "W2003316135",
+    "W2003479645",
+    "W2003692048",
+    "W2004120419",
+    "W2007828762",
+    "W2008101234",
+    "W2009795388",
+    "W2010945512",
+    "W2018608349",
+    "W2020150375",
+    "W2026162453",
+    "W2031232765",
+    "W2033079211",
+    "W2034250360",
+    "W2035229203",
+    "W2035291643",
+    "W2036193486",
+    "W2038876765",
+    "W2043211597",
+    "W2044908745",
+    "W2046623190",
+    "W2046750232",
+    "W2058756472",
+    "W2066189212",
+    "W2073775990",
+    "W2075386084",
+    "W2078455141",
+    "W2085064566",
+    "W2086651394",
+    "W2088486481",
+    "W2093367971",
+    "W2095436970",
+    "W2153935127",
+    "W2155825745",
+    "W2247324702",
+    "W2282882376",
+    "W2319301130",
+    "W2336895729",
+    "W2355226597",
+    "W2559845023",
+    "W2560678436",
+    "W2570473044",
+    "W2594792458",
+    "W2609791732",
+    "W2616938422",
+    "W2724594113",
+    "W2726497140",
+    "W2727027866",
+    "W2737280263",
+    "W2765614946",
+    "W2767489279",
+    "W2782632210",
+    "W2787770722",
+    "W2789555233",
+    "W2790621910",
+    "W2790900455",
+    "W2791487955",
+    "W2791538416",
+    "W2797836953",
+    "W2886144615",
+    "W2886320328",
+    "W2892001233",
+    "W2899780723",
+    "W2904918544",
+    "W2912283333",
+    "W2937562184",
+    "W2941992502",
+    "W2958467374",
+    "W2962736028",
+    "W2968743905",
+    "W2972441785",
+    "W2973731271",
+    "W2979845984",
+    "W2985741870",
+    "W2987872847",
+    "W2993210472",
+    "W2995960023",
+    "W3006946219",
+    "W3007502534",
+    "W3023785023",
+    "W3028191997",
+    "W3037357813",
+    "W3041520293",
+    "W3041626527",
+    "W3048717971",
+    "W3049389352",
+    "W3084299766",
+    "W3088537570",
+    "W3092406540",
+    "W3106449407",
+    "W3122179310",
+    "W3154713775",
+    "W3172165699",
+    "W3211231921",
+    "W4220663761",
+    "W4283260342",
+    "W4288760605",
+    "W4297990724",
+    "W4300863366",
+    "W4302286759",
+    "W4302769272",
+    "W4306385979",
+    "W4311309990",
+    "W4313893734",
+    "W6601102799",
+    "W7010359420"
+   ],
+   "sources": [
+    "OpenAlex",
+    "OpenCitations"
+   ],
+   "oc_creation": "2023"
+  },
+  {
+   "openalex": "W4319836169",
+   "doi": "10.1002/9783527835935.ch7",
+   "title": "Discrete Element Modelling of Pharmaceutical Powder Handling Processes",
+   "year": 2023,
+   "type": "book-chapter",
+   "venue": "Wiley eBooks",
+   "authors": [
+    "Chao Zheng",
+    "Mohammadreza Alizadeh Behjani",
+    "Jiawei Hu",
+    "Chuan‐Yu Wu"
+   ],
+   "institutions": [
+    "University of Surrey"
+   ],
+   "countries": [
+    "GB"
+   ],
+   "cited_by_count": 10,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W367332244",
+    "W1571920238",
+    "W1964569353",
+    "W1966746920",
+    "W1969619918",
+    "W1969827454",
+    "W1978185404",
+    "W1979543687",
+    "W1983251458",
+    "W1988322235",
+    "W1991718163",
+    "W1994310341",
+    "W2003254806",
+    "W2004120419",
+    "W2004780006",
+    "W2004885606",
+    "W2019054324",
+    "W2019828504",
+    "W2025041228",
+    "W2028826071",
+    "W2038020219",
+    "W2040788680",
+    "W2043561929",
+    "W2047356589",
+    "W2056076116",
+    "W2062599482",
+    "W2067180117",
+    "W2072569729",
+    "W2073775990",
+    "W2075359607",
+    "W2076253203",
+    "W2078187306",
+    "W2079125621",
+    "W2079453915",
+    "W2080832057",
+    "W2081242625",
+    "W2085064566",
+    "W2094919757",
+    "W2099000562",
+    "W2099765051",
+    "W2100864713",
+    "W2121971733",
+    "W2146202010",
+    "W2186622479",
+    "W2187636587",
+    "W2210142437",
+    "W2270681494",
+    "W2326730387",
+    "W2465165737",
+    "W2504044668",
+    "W2505801136",
+    "W2513003111",
+    "W2516393056",
+    "W2551990267",
+    "W2570473044",
+    "W2726497140",
+    "W2734459323",
+    "W2735007264",
+    "W2738306736",
+    "W2773968627",
+    "W2778774278",
+    "W2792411207",
+    "W2809868078",
+    "W2886331081",
+    "W2891435941",
+    "W2891933404",
+    "W2893958924",
+    "W2894643708",
+    "W2895968826",
+    "W2903951338",
+    "W2910263617",
+    "W2948184558",
+    "W2972303985",
+    "W2983037734",
+    "W2989476163",
+    "W2996061761",
+    "W2996590020",
+    "W3016869072",
+    "W3028191997",
+    "W3034622872",
+    "W3041626527",
+    "W3087594184",
+    "W3088961675",
+    "W3096886138",
+    "W3126054543",
+    "W3141550271",
+    "W3158591107",
+    "W3175424600",
+    "W3206379659",
+    "W3209764196",
+    "W4254583917",
+    "W4296634418"
+   ],
+   "sources": [
+    "OpenAlex",
+    "OpenCitations"
+   ],
+   "oc_creation": "2023-01-20"
+  },
+  {
+   "openalex": "W4386276591",
+   "doi": "10.14356/kona.2024016",
+   "title": "Effects of DEM Parameters and Operating Conditions on Particle Dynamics in a Laboratory Scale Rotating Disc",
+   "year": 2023,
+   "type": "article",
+   "venue": "KONA Powder and Particle Journal",
+   "authors": [
+    "Rondinelli Moulin Lima",
+    "Gisele Márcia de Souza",
+    "Rodolfo J. Brandão",
+    "Cláudio R. Duarte",
+    "Marcos A.S. Barrozo"
+   ],
+   "institutions": [
+    "Universidade Federal de Uberlândia"
+   ],
+   "countries": [
+    "BR"
+   ],
+   "cited_by_count": 5,
+   "is_oa": true,
+   "oa_status": "diamond",
+   "license": "cc-by",
+   "oa_url": "https://doi.org/10.14356/kona.2024016",
+   "referenced_works": [
+    "W168853738",
+    "W1964470716",
+    "W1969765451",
+    "W1984628949",
+    "W1985543548",
+    "W2000039644",
+    "W2047576999",
+    "W2063365741",
+    "W2065390512",
+    "W2073775990",
+    "W2085064566",
+    "W2085919512",
+    "W2156524938",
+    "W2274442564",
+    "W2291557865",
+    "W2467996332",
+    "W2518809588",
+    "W2625881109",
+    "W2744532462",
+    "W2992085136",
+    "W3001789986",
+    "W3041626527",
+    "W3155776197",
+    "W3165394164",
+    "W3173571417",
+    "W4233285683",
+    "W4293038392"
+   ],
+   "sources": [
+    "OpenAlex",
+    "OpenCitations"
+   ],
+   "oc_creation": "2023"
+  },
+  {
+   "openalex": "W4361202498",
+   "doi": "10.21660/2023.106.g12219",
+   "title": "THREE-DIMENSIONAL DISCRETE ELEMENT MODELLING OF GRANULAR AVALANCHE UNDER MULTIPLE FLOW CONDITIONS",
+   "year": 2023,
+   "type": "article",
+   "venue": "International Journal of Geomate",
+   "authors": [
+    "Naoto Naito"
+   ],
+   "institutions": [
+    "Toyohashi University of Technology"
+   ],
+   "countries": [
+    "JP"
+   ],
+   "cited_by_count": 4,
+   "is_oa": true,
+   "oa_status": "diamond",
+   "license": null,
+   "oa_url": "https://geomatejournal.com/geomate/article/download/3887/3114/6859",
+   "referenced_works": [
+    "W2033742016",
+    "W2055997286",
+    "W2073775990",
+    "W2102060406",
+    "W2146954443",
+    "W2468449771",
+    "W2559496606",
+    "W2754409250",
+    "W2884285207",
+    "W2917348965",
+    "W2950780570",
+    "W2970377340",
+    "W3033564748",
+    "W3041626527",
+    "W3088073914",
+    "W3196498276"
+   ],
+   "sources": [
+    "OpenAlex"
+   ]
+  },
+  {
+   "openalex": "W4388834938",
+   "doi": "10.3390/min13111460",
+   "title": "The Use of DEM for Optimising an Industrial Vezin Sampler Operation",
+   "year": 2023,
+   "type": "article",
+   "venue": "Minerals",
+   "authors": [
+    "Marcus Félix Magalhães",
+    "Ana Carolina Chieregati",
+    "Dusan Ilic",
+    "Isabella Targino Borges de Carvalho",
+    "Mariana Gazire Lemos",
+    "José Gregório da Mata Filho",
+    "Homero Delboni"
+   ],
+   "institutions": [
+    "Universidade de São Paulo",
+    "University of Newcastle Australia"
+   ],
+   "countries": [
+    "AU",
+    "BR"
+   ],
+   "cited_by_count": 1,
+   "is_oa": true,
+   "oa_status": "gold",
+   "license": "cc-by",
+   "oa_url": "https://www.mdpi.com/2075-163X/13/11/1460/pdf?version=1700471590",
+   "referenced_works": [
+    "W622321019",
+    "W1558424728",
+    "W1964470716",
+    "W2007140495",
+    "W2029696717",
+    "W2140761873",
+    "W2154459828",
+    "W2285374767",
+    "W2570473044",
+    "W2626064910",
+    "W2790200157",
+    "W2912179727",
+    "W2971984155",
+    "W3041626527",
+    "W3041742859",
+    "W3046279783",
+    "W3081181639",
+    "W3092622291",
+    "W3131533409",
+    "W3171769145",
+    "W3198594504",
+    "W4307748788",
+    "W4368368286",
+    "W6888628183",
+    "W7024510711"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false,
+   "oc_creation": "2023-11-20"
+  },
+  {
+   "openalex": "W4404124211",
+   "doi": "10.1016/j.powtec.2024.120413",
+   "title": "Design and optimization of stirrer and mixer design for the correct mixing of pharmaceutical powders through DEM",
+   "year": 2024,
+   "type": "article",
+   "venue": "Powder Technology",
+   "authors": [
+    "Nizar Salloum",
+    "Thomas Brinz",
+    "Aitor Atxutegi",
+    "Stefan Heinrich"
+   ],
+   "institutions": [
+    "Hamburg University of Technology"
+   ],
+   "countries": [
+    "DE"
+   ],
+   "cited_by_count": 18,
+   "is_oa": true,
+   "oa_status": "hybrid",
+   "license": "cc-by",
+   "oa_url": "https://doi.org/10.1016/j.powtec.2024.120413",
+   "referenced_works": [
+    "W2096018",
+    "W149340266",
+    "W1013451605",
+    "W1967089995",
+    "W1969827454",
+    "W1972810346",
+    "W1989750802",
+    "W2007890759",
+    "W2009857423",
+    "W2018718176",
+    "W2024373639",
+    "W2027280989",
+    "W2032091104",
+    "W2042979522",
+    "W2046750232",
+    "W2047305324",
+    "W2053741885",
+    "W2069988056",
+    "W2074504533",
+    "W2091207565",
+    "W2094919757",
+    "W2220141251",
+    "W2277841877",
+    "W2513162229",
+    "W2523849318",
+    "W2584718516",
+    "W2906271461",
+    "W2944266925",
+    "W3003677094",
+    "W3041626527",
+    "W3146179730",
+    "W3200353934"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false,
+   "oc_creation": "2025-01"
+  },
+  {
+   "openalex": "W4406027503",
+   "doi": "10.1063/5.0255757",
+   "title": "Modeling of the dosing process of loose fine-dispersed materials with a sieve dispenser",
+   "year": 2024,
+   "type": "conference-paper",
+   "venue": "AIP conference proceedings",
+   "authors": [
+    "Vitaliy Sementsov",
+    "Сергій Олександрович Харченко",
+    "Sandu Taras",
+    "Sylwester Samborski",
+    "Vasyl Voloshchuk",
+    "Volodymyr I. Sementsov",
+    "Олександр Вікторович Майоров",
+    "Mitko Nikolov"
+   ],
+   "institutions": [
+    "Angel Kanchev University of Ruse",
+    "Institute of Pig Breeding and Agroindustrial Production of the National Academy of Agrarian Sciences of Ukraine",
+    "Lublin University of Technology",
+    "National Academy of Agrarian Sciences of Ukraine",
+    "State Biotechnological University",
+    "Sumy National Agrarian University"
+   ],
+   "countries": [
+    "BG",
+    "PL",
+    "UA"
+   ],
+   "cited_by_count": 0,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W1506702457",
+    "W1995434037",
+    "W2014187758",
+    "W2032360976",
+    "W2041902442",
+    "W2056951032",
+    "W2063537445",
+    "W2118185008",
+    "W2130420055",
+    "W2155731760",
+    "W2560771368",
+    "W2944421854",
+    "W3037760087",
+    "W3041626527",
+    "W3081763915",
+    "W3146063729",
+    "W4250682555",
+    "W4309089939",
+    "W4310287097",
+    "W4388839069",
+    "W4391003901"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false,
+   "oc_creation": "2024"
+  },
+  {
+   "openalex": "W4400618403",
+   "doi": "10.1016/j.autcon.2024.105617",
+   "title": "Performance analysis of a bucket drum for lunar regolith collection in lunar base construction",
+   "year": 2024,
+   "type": "article",
+   "venue": "Automation in Construction",
+   "authors": [
+    "Haoran Li",
+    "Yuyue Gao",
+    "Yan Zhou",
+    "Cheng Zhou"
+   ],
+   "institutions": [
+    "Huazhong University of Science and Technology"
+   ],
+   "countries": [
+    "CN"
+   ],
+   "cited_by_count": 11,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W1701164312",
+    "W1975088116",
+    "W1979120258",
+    "W1983266478",
+    "W1984025219",
+    "W1987372221",
+    "W1988294884",
+    "W1999142786",
+    "W2022114748",
+    "W2034342101",
+    "W2061013500",
+    "W2061122913",
+    "W2062935613",
+    "W2070914981",
+    "W2085404552",
+    "W2097344854",
+    "W2136756102",
+    "W2150242726",
+    "W2160736108",
+    "W2162698284",
+    "W2313589944",
+    "W2319364526",
+    "W2330583080",
+    "W2331500007",
+    "W2335423336",
+    "W2469207682",
+    "W2570473044",
+    "W2602393374",
+    "W2739677072",
+    "W2761021450",
+    "W2790498566",
+    "W2888551523",
+    "W2888889725",
+    "W2914724771",
+    "W2936903114",
+    "W2939101101",
+    "W2943532518",
+    "W2945339377",
+    "W2982553519",
+    "W2990865758",
+    "W3004859882",
+    "W3007626605",
+    "W3007765980",
+    "W3014192865",
+    "W3016510703",
+    "W3041626527",
+    "W3047258619",
+    "W3080523071",
+    "W3083409202",
+    "W3099781386",
+    "W3116772764",
+    "W3118590717",
+    "W3119030791",
+    "W3136193036",
+    "W3138299222",
+    "W3141666408",
+    "W3144611398",
+    "W4205748798",
+    "W4234818263",
+    "W4237072595",
+    "W4239884197",
+    "W4293193100",
+    "W4299552400",
+    "W4301083591",
+    "W4309988261",
+    "W4313559683",
+    "W4315690682",
+    "W4327741756",
+    "W4380200633",
+    "W4389300122"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false,
+   "oc_creation": "2024-10"
+  },
+  {
+   "openalex": "W4411307197",
+   "doi": "10.1016/j.powtec.2025.121261",
+   "title": "Analysis of particle motion and mixing in the powder chamber of a capsule filling machine with different stirrer designs using DEM simulations",
+   "year": 2025,
+   "type": "article",
+   "venue": "Powder Technology",
+   "authors": [
+    "Isabel Gallego",
+    "Nizar Salloum",
+    "Felix Joachim Gatti",
+    "Thomas Brinz",
+    "Martin Sommerfeld",
+    "Harald Kruggel‐Emden"
+   ],
+   "institutions": [
+    "Otto-von-Guericke-Universität Magdeburg",
+    "Technische Universität Berlin"
+   ],
+   "countries": [
+    "DE"
+   ],
+   "cited_by_count": 2,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W135419968",
+    "W1004156173",
+    "W1500753181",
+    "W1968458391",
+    "W1975088116",
+    "W1978185404",
+    "W1979667129",
+    "W1982599634",
+    "W1989622438",
+    "W1998407081",
+    "W2014072515",
+    "W2018608349",
+    "W2029592496",
+    "W2073775990",
+    "W2078430129",
+    "W2085064566",
+    "W2099540110",
+    "W2101982729",
+    "W2111388623",
+    "W2112311198",
+    "W2129095933",
+    "W2158019685",
+    "W2167279371",
+    "W2186401472",
+    "W2187636587",
+    "W2336895729",
+    "W2504044668",
+    "W2513889413",
+    "W2540895275",
+    "W2557305841",
+    "W2570473044",
+    "W2724594113",
+    "W2753719553",
+    "W2755463998",
+    "W2794909495",
+    "W2899780723",
+    "W2922202964",
+    "W2951827575",
+    "W2997171329",
+    "W3037357813",
+    "W3041626527",
+    "W3041742859",
+    "W3128466958",
+    "W4242503098",
+    "W4245759640",
+    "W4322775608",
+    "W4400849648",
+    "W4401171052"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false,
+   "oc_creation": "2025-10"
+  },
+  {
+   "openalex": "W4415152362",
+   "doi": "10.3390/polym17202748",
+   "title": "Development of a Non-Spherical Polymeric Particles Calibration Procedure for Numerical Simulations Based on the Discrete Element Method",
+   "year": 2025,
+   "type": "article",
+   "venue": "Polymers",
+   "authors": [
+    "Carlos Joshua García Montagut",
+    "Rubén Paz",
+    "Mario Monzón"
+   ],
+   "institutions": [
+    "Universidad de Las Palmas de Gran Canaria"
+   ],
+   "countries": [
+    "ES"
+   ],
+   "cited_by_count": 1,
+   "is_oa": true,
+   "oa_status": "gold",
+   "license": "cc-by",
+   "oa_url": "https://www.mdpi.com/2073-4360/17/20/2748/pdf?version=1760443494",
+   "referenced_works": [
+    "W1502677500",
+    "W1691539041",
+    "W1781448845",
+    "W1976532083",
+    "W1981771134",
+    "W1982599634",
+    "W1989698195",
+    "W1996311220",
+    "W2000039644",
+    "W2034114309",
+    "W2048459186",
+    "W2075827664",
+    "W2077130229",
+    "W2082599901",
+    "W2087394111",
+    "W2097163297",
+    "W2099000562",
+    "W2167709358",
+    "W2206170900",
+    "W2388029702",
+    "W2557305841",
+    "W2607933953",
+    "W2609186595",
+    "W2765764707",
+    "W2766869927",
+    "W2790621910",
+    "W2790900455",
+    "W2794481387",
+    "W2899780723",
+    "W2904918544",
+    "W2914724771",
+    "W2948184558",
+    "W2957692089",
+    "W2967118150",
+    "W2979606644",
+    "W2981303473",
+    "W2991486565",
+    "W3003677094",
+    "W3003962245",
+    "W3007502534",
+    "W3015398393",
+    "W3032100852",
+    "W3035775617",
+    "W3041626527",
+    "W3136659371",
+    "W3141666408",
+    "W3159380532",
+    "W3201723031",
+    "W3212332632",
+    "W4211029635",
+    "W4286510764",
+    "W4307441481",
+    "W4309005623",
+    "W4312202397",
+    "W4313468636",
+    "W4386812991",
+    "W4398146260",
+    "W4405365612",
+    "W4412899509"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [
+    "El-Kassem et al. [13,14] showed in two different studies a methodology based on the multivariate regression analysis (MVRA), establishing which parameters affect each calibration test type."
+   ],
+   "s2_intents": [],
+   "s2_influential": false,
+   "oc_creation": "2025-10-14"
+  },
+  {
+   "openalex": "W4407440851",
+   "doi": "10.54097/wvbec931",
+   "title": "Study on the Influence Characteristics of Vertical Fine Screw Transport",
+   "year": 2025,
+   "type": "article",
+   "venue": "Academic Journal of Science and Technology",
+   "authors": [
+    "Liang Guo",
+    "Kaiyong Liu",
+    "Hang Xu",
+    "Saiyu Tang"
+   ],
+   "institutions": [
+    "Southwest Petroleum University"
+   ],
+   "countries": [
+    "CN"
+   ],
+   "cited_by_count": 0,
+   "is_oa": true,
+   "oa_status": "diamond",
+   "license": "cc-by",
+   "oa_url": "https://doi.org/10.54097/wvbec931",
+   "referenced_works": [
+    "W1249007618",
+    "W1691539041",
+    "W2062935613",
+    "W3041626527",
+    "W3111713978"
+   ],
+   "sources": [
+    "OpenAlex"
+   ]
+  },
+  {
+   "openalex": "W7118699992",
+   "doi": "10.1016/j.apt.2025.105162",
+   "title": "Internal geometry optimization of a vacuum rotary kiln for enhanced low-temperature drying of pharmaceutical solids",
+   "year": 2026,
+   "type": "article",
+   "venue": "Advanced Powder Technology",
+   "authors": [
+    "Yuka Fukushima",
+    "Toshiki Nakamura",
+    "Fumihiko Kato",
+    "Shizuki Ohshima",
+    "Motoharu Suzuki",
+    "Kohei Tahara"
+   ],
+   "institutions": [
+    "Gifu Pharmaceutical University",
+    "Takasago (Japan)",
+    "Takasago Industry Co., Ltd. (Japan)"
+   ],
+   "countries": [
+    "JP"
+   ],
+   "cited_by_count": 2,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W1969081599",
+    "W1969765451",
+    "W1976551508",
+    "W1987291580",
+    "W1994183100",
+    "W1998407081",
+    "W2031419207",
+    "W2033158497",
+    "W2041428069",
+    "W2052088660",
+    "W2065964503",
+    "W2073775990",
+    "W2079419215",
+    "W2085536092",
+    "W2089955545",
+    "W2134187860",
+    "W2143219242",
+    "W2167016868",
+    "W2897952440",
+    "W2942148033",
+    "W3010351203",
+    "W3041626527",
+    "W3108108630",
+    "W3159455794",
+    "W3199114471",
+    "W4293833174",
+    "W4307547552",
+    "W4309047475",
+    "W4313572550",
+    "W4365505078",
+    "W4388211392",
+    "W4399365079",
+    "W4400254546",
+    "W4415529854"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar",
+    "OpenCitations"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false,
+   "oc_creation": "2026-02"
+  },
+  {
+   "openalex": "W7172438449",
+   "doi": "10.1016/j.partic.2026.07.019",
+   "title": "Systematic DEM parameter calibration and validation for co-processed pharmaceutical granules: A polyhedral particle and multi-response optimization approach",
+   "year": 2026,
+   "type": "article",
+   "venue": "Particuology",
+   "authors": [
+    "Marcos I. Díaz Muñoz",
+    "Jacquelina C. Lobos de Ponga",
+    "Ivana M. Cotabarren",
+    "Juliana Piña"
+   ],
+   "institutions": [
+    "Centro Científico Tecnológico - Bahía Blanca",
+    "Consejo Nacional de Investigaciones Científicas y Técnicas",
+    "Planta Piloto de Ingeniería Química",
+    "Universidad Nacional del Sur"
+   ],
+   "countries": [
+    "AR"
+   ],
+   "cited_by_count": 0,
+   "is_oa": false,
+   "oa_status": "closed",
+   "license": null,
+   "oa_url": null,
+   "referenced_works": [
+    "W1804695778",
+    "W1974723513",
+    "W1994493168",
+    "W2048923202",
+    "W2054336948",
+    "W2058063517",
+    "W2066947166",
+    "W2073775990",
+    "W2075827664",
+    "W2085858645",
+    "W2146275650",
+    "W2187636587",
+    "W2541869068",
+    "W2557278501",
+    "W2557305841",
+    "W2620690273",
+    "W2793051951",
+    "W2811370731",
+    "W2886331081",
+    "W2921929484",
+    "W2938422910",
+    "W2950780570",
+    "W2951827575",
+    "W2973619674",
+    "W2991486565",
+    "W3032100852",
+    "W3034622872",
+    "W3041626527",
+    "W3088949714",
+    "W3173452165",
+    "W3196379125",
+    "W3204026795",
+    "W4220665102",
+    "W4221010092",
+    "W4221043179",
+    "W4307441481",
+    "W4312202397",
+    "W4322630978",
+    "W4324096968",
+    "W4386215745",
+    "W4388441287",
+    "W4392094617",
+    "W4404921027",
+    "W4407251963",
+    "W4408266097",
+    "W4411881982",
+    "W7083317921",
+    "W7124469230",
+    "W7151874175"
+   ],
+   "sources": [
+    "OpenAlex",
+    "SemanticScholar"
+   ],
+   "s2_contexts": [],
+   "s2_intents": [],
+   "s2_influential": false
+  }
+ ],
+ "citing_links": [
+  [
+   "10.1080/10837450.2021.1901915",
+   "10.1016/j.jddst.2020.101950"
+  ],
+  [
+   "10.3390/min13111460",
+   "10.3390/min11090978"
+  ],
+  [
+   "10.3390/min13111460",
+   "10.11606/d.3.2022.tde-31102022-112806"
+  ]
+ ],
+ "references": [
+  {
+   "key": "1",
+   "doi": "10.1016/j.powtec.2010.09.030",
+   "unstructured": "Ai J., Chen J.F., Rotter J.M., Ooi J.Y., Assessment of rolling resistance models in discrete element simulations, Powder Technology, 206 (2011) 269–282. DOI: 10.1016/j.powtec.2010.09.030",
+   "author": null,
+   "year": 2010,
+   "title": "Assessment of rolling resistance models in discrete element simulations",
+   "journal": null,
+   "openalex": "W1975088116",
+   "venue": "Powder Technology",
+   "cited_by_count": 1202
+  },
+  {
+   "key": "2",
+   "doi": "10.1016/j.powtec.2018.02.003",
+   "unstructured": "Al-hashemi H.M.B., Al-amoudi O.S.B., A review on the angle of repose of granular materials, Powder Technology, 330 (2018) 397–417. DOI: 10.1016/j.powtec.2018.02.003",
+   "author": null,
+   "year": 2018,
+   "title": "A review on the angle of repose of granular materials",
+   "journal": null,
+   "openalex": "W2790498566",
+   "venue": "Powder Technology",
+   "cited_by_count": 1058
+  },
+  {
+   "key": "3",
+   "doi": "10.1016/j.jmps.2008.10.006",
+   "unstructured": "Bierwisch C., Kraft T., Riedel H., Moseler M., Three-dimensional discrete element models for the granular statics and dynamics of powders in cavity filling, Journal of the Mechanics and Physics of Solids, 57 (2009) 10–31. DOI: 10.1016/j.jmps.2008.10.006",
+   "author": null,
+   "year": 2008,
+   "title": "Three-dimensional discrete element models for the granular statics and dynamics of powders in cavity filling",
+   "journal": null,
+   "openalex": "W2032091104",
+   "venue": "Journal of the Mechanics and Physics of Solids",
+   "cited_by_count": 248
+  },
+  {
+   "key": "4",
+   "doi": null,
+   "unstructured": "Bierwisch C.S., Numerical Simulations of Granular Flow and Filling, Shaker Verlag GmbH, Germany, 2009, ISBN: 3832283382.",
+   "author": null,
+   "year": null,
+   "title": null,
+   "journal": null
+  },
+  {
+   "key": "5",
+   "doi": "10.1016/j.powtec.2016.03.023",
+   "unstructured": "Börner M., Michaelis M., Siegmann E., Radeke C., Schmidt U., Impact of impeller design on high-shear wet granulation, Powder Technology, 295 (2016) 261–271. DOI: 10.1016/j.powtec.2016.03.023",
+   "author": null,
+   "year": 2016,
+   "title": "Impact of impeller design on high-shear wet granulation",
+   "journal": null,
+   "openalex": "W2328066561",
+   "venue": "Powder Technology",
+   "cited_by_count": 58
+  },
+  {
+   "key": "6",
+   "doi": "10.1016/j.compgeo.2015.12.001",
+   "unstructured": "Ciantia M.O., Arroyo M., Butlanska J., Gens A., DEM modelling of cone penetration tests in a double-porosity crushable granular material, Computers and Geotechnics, 73 (2016) 109–127. DOI: 10.1016/j.compgeo.2015.12.001",
+   "author": null,
+   "year": 2015,
+   "title": "DEM modelling of cone penetration tests in a double-porosity crushable granular material",
+   "journal": null,
+   "openalex": "W2198677754",
+   "venue": "Computers and Geotechnics",
+   "cited_by_count": 182
+  },
+  {
+   "key": "7",
+   "doi": "10.1504/pcfd.2007.013005",
+   "unstructured": "Clearly P.W., DEM modelling of particulate flow in a screw feeder Model description, Progress in Computational Fluid Dynamics, An International Journal, 7 (2007). DOI: 10.1504/PCFD.2007.013005",
+   "author": null,
+   "year": 2007,
+   "title": "DEM modelling of particulate flow in a screw feeder Model description",
+   "journal": null,
+   "openalex": "W2118185008",
+   "venue": "Progress in Computational Fluid Dynamics An International Journal",
+   "cited_by_count": 77
+  },
+  {
+   "key": "8",
+   "doi": "10.1016/j.powtec.2017.01.015",
+   "unstructured": "Coetzee C.J., Review: Calibration of the discrete element method, Powder Technology, 310 (2017) 104–142. DOI: 10.1016/j.powtec.2017.01.015",
+   "author": null,
+   "year": 2017,
+   "title": "Review: Calibration of the discrete element method",
+   "journal": null,
+   "openalex": "W2570473044",
+   "venue": "Powder Technology",
+   "cited_by_count": 885
+  },
+  {
+   "key": "9",
+   "doi": "10.1192/bjp.115.526.1065",
+   "unstructured": "Cundall P.A., Strack O.D.L., A discrete numerical model for granular assemblies, Géotechnique, 29 (1979) 47–65. DOI: 10.1192/bjp.115.526.1065",
+   "author": null,
+   "year": 1969,
+   "title": "Electro-Convulsive Therapy in the Treatment of Bizarre Psychogenic Movements",
+   "journal": null,
+   "openalex": "W2171917204",
+   "venue": "The British Journal of Psychiatry",
+   "cited_by_count": 4
+  },
+  {
+   "key": "10",
+   "doi": "10.1016/j.powtec.2014.08.072",
+   "unstructured": "Derakhshani S.M., Schott D.L., Lodewijks G., Micro – macro properties of quartz sand : Experimental investigation and DEM simulation, Powder Technology, 269 (2015) 127–138. DOI: 10.1016/j.powtec.2014.08.072",
+   "author": null,
+   "year": 2014,
+   "title": "Micro–macro properties of quartz sand: Experimental investigation and DEM simulation",
+   "journal": null,
+   "openalex": "W1989698195",
+   "venue": "Powder Technology",
+   "cited_by_count": 172
+  },
+  {
+   "key": "11",
+   "doi": "10.1002/pamm.201800261",
+   "unstructured": "El Kassem B., Brinz T., Heider Y., Markert B., Experimental study and discrete element simulation of auger dosing of different pharmaceutical powders, Proceedings in Applied Mathematics and Mechanics PAMM, 18 (2018). DOI: 10.1002/pamm.201800261",
+   "author": null,
+   "year": 2018,
+   "title": "Experimental study and discrete element simulation of auger dosing of different pharmaceutical powders",
+   "journal": null,
+   "openalex": "W2904297688",
+   "venue": "PAMM",
+   "cited_by_count": 6
+  },
+  {
+   "key": "12",
+   "doi": "10.1007/s40571-020-00315-8",
+   "unstructured": "El Kassem B., Salloum N., Brinz T., Heider Y., Markert B., A Multivariate regression parametric study on DEM input parameters of free-flowing and cohesive powders with experimental data-based validation, Computational Particle Mechanics, (2020). DOI: 10.1007/s40571-020-00315-8",
+   "author": null,
+   "year": 2020,
+   "title": "A multivariate regression parametric study on DEM input parameters of free-flowing and cohesive powders with experimental data-based validation",
+   "journal": null,
+   "openalex": "W3003677094",
+   "venue": "Computational Particle Mechanics",
+   "cited_by_count": 39
+  },
+  {
+   "key": "13",
+   "doi": null,
+   "unstructured": "Eriksson L., Johansson E., Kettaneh-Wold N., WikstrÄom C., Wold S., Design of Experiments: Principles and Applications, third edition, Umetrics AB, 2008, ISBN: 9197373044.",
+   "author": null,
+   "year": null,
+   "title": null,
+   "journal": null
+  },
+  {
+   "key": "14",
+   "doi": "10.1016/j.ces.2011.07.043",
+   "unstructured": "Fernandez J.W., Cleary P.W., McBride W., Effect of screw design on hopper drawdown of spherical particles in a horizontal screw feeder, Chemical Engineering Science, 66 (2011) 5585–5601. DOI: 10.1016/j.ces.2011.07.043",
+   "author": null,
+   "year": 2011,
+   "title": "Effect of screw design on hopper drawdown of spherical particles in a horizontal screw feeder",
+   "journal": null,
+   "openalex": "W2059997484",
+   "venue": "Chemical Engineering Science",
+   "cited_by_count": 118
+  },
+  {
+   "key": "15",
+   "doi": "10.1002/nme.2579",
+   "unstructured": "Geuzaine C., Remacle J.-F., Gmsh: A 3-D finite element mesh generator with built-in pre- and post-processing facilities, International Journal for Numerical Methods in Engineering, 79 (2009) 1309–1331. DOI: 10.1002/nme.2579",
+   "author": null,
+   "year": 2009,
+   "title": "Gmsh: A 3‐D finite element mesh generator with built‐in pre‐ and post‐processing facilities",
+   "journal": null,
+   "openalex": "W2112311198",
+   "venue": "International Journal for Numerical Methods in Engineering",
+   "cited_by_count": 9677
+  },
+  {
+   "key": "16",
+   "doi": null,
+   "unstructured": "Govender N., Pizette P., Wilke D.N., Abriak N.-E., Validation of the GPU based blaze-DEM framework for hopper discharge, Proceedings of the 4th International Conference on Particle-Based Methods — Fundamentals and Applications, PARTICLES 2015, (2015).",
+   "author": null,
+   "year": null,
+   "title": null,
+   "journal": null
+  },
+  {
+   "key": "17",
+   "doi": "10.1016/j.engfracmech.2018.09.010",
+   "unstructured": "Heider Y., Reiche S., Siebert P., Markert B., Modeling of hydraulic fracturing using a porous-media phase-field approach with reference to experimental data, Engineering Fracture Mechanics, (2018) 116–134. DOI: 10.1016/j.engfracmech.2018.09.010.",
+   "author": null,
+   "year": 2018,
+   "title": "Modeling of hydraulic fracturing using a porous-media phase-field approach with reference to experimental data",
+   "journal": null,
+   "openalex": "W2889691323",
+   "venue": "Engineering Fracture Mechanics",
+   "cited_by_count": 72
+  },
+  {
+   "key": "18",
+   "doi": "10.1515/crll.1882.92.156",
+   "unstructured": "Hertz H., Ueber die Berührung fester elastischer Körper (“On the contact of elastic bodies”), Journal für die reine und angewandte Mathematik, 92 (1882) 156–171. DOI: 10.1515/crll.1882.92.156",
+   "author": null,
+   "year": 1882,
+   "title": "Ueber die Berührung fester elastischer Körper.",
+   "journal": null,
+   "openalex": "W2187636587",
+   "venue": "Journal für die reine und angewandte Mathematik (Crelles Journal)",
+   "cited_by_count": 8947
+  },
+  {
+   "key": "19",
+   "doi": "10.1016/s0032-5910(99)00236-3",
+   "unstructured": "Iwashita K., Oda M., Micro-deformation mechanism of shear banding process based on modified distinct element method, Powder Technology, 109 (2000) 192–205. DOI: 10.1016/S0032-5910(99)00236-3",
+   "author": null,
+   "year": 2000,
+   "title": "Micro-deformation mechanism of shear banding process based on modified distinct element method",
+   "journal": null,
+   "openalex": "W2039729107",
+   "venue": "Powder Technology",
+   "cited_by_count": 523
+  },
+  {
+   "key": "20",
+   "doi": null,
+   "unstructured": "Johnstone M.W., Calibration of DEM models for granular materials using bulk physical tests, Doctoral Thesis, The University of Edinburgh, Philosophy  (2010).",
+   "author": null,
+   "year": null,
+   "title": null,
+   "journal": null
+  },
+  {
+   "key": "21",
+   "doi": "10.1504/pcfd.2012.047457",
+   "unstructured": "Kloss C., Goniva C., Hager A., Amberger S., Pirker S., Models, algorithms and validation for opensource DEM and CFD-DEM, Progress in Computational Fluid Dynamics, International Journal, 12 (2012) 140. DOI: 10.1504/PCFD.2012.047457",
+   "author": null,
+   "year": 2012,
+   "title": "Models, algorithms and validation for opensource DEM and CFD-DEM",
+   "journal": null,
+   "openalex": "W2011454852",
+   "venue": "Progress in Computational Fluid Dynamics An International Journal",
+   "cited_by_count": 2098
+  },
+  {
+   "key": "22",
+   "doi": "10.1016/j.powtec.2009.05.001",
+   "unstructured": "Krantz M., Zhang H., Zhu J., Characterization of powder flow: Static and dynamic testing, Powder Technology, 194 (2009) 239–245. DOI: 10.1016/j.powtec.2009.05.001",
+   "author": null,
+   "year": 2009,
+   "title": "Characterization of powder flow: Static and dynamic testing",
+   "journal": null,
+   "openalex": "W1976691526",
+   "venue": "Powder Technology",
+   "cited_by_count": 337
+  },
+  {
+   "key": "23",
+   "doi": "10.1016/j.powtec.2005.09.002",
+   "unstructured": "Li Y.,Xu Y., Thornton C., A comparison of discrete element simulations and experiments for “sandpiles” composed of spherical particles, Powder Technology, 160 (2005) 219–228. DOI: 10.1016/j.powtec.2005.09.002",
+   "author": null,
+   "year": 2005,
+   "title": "A comparison of discrete element simulations and experiments for ‘sandpiles’ composed of spherical particles",
+   "journal": null,
+   "openalex": "W1979667129",
+   "venue": "Powder Technology",
+   "cited_by_count": 484
+  },
+  {
+   "key": "24",
+   "doi": "10.1163/156855202320252435",
+   "unstructured": "Li Z.,Yang J., Xu X., Xu X., Yu W., Yue X., Sun C., Particle shape characterization of fluidized catalytic cracking catalyst powders using the mean value and distribution of shape factors, Advanced Powder Technology, 13 (2002) 249–263. DOI: 10.1163/156855202320252435",
+   "author": null,
+   "year": 2002,
+   "title": "Particle shape characterization of fluidized catalytic cracking catalyst powders using the mean value and distribution of shape factors",
+   "journal": null,
+   "openalex": "W2047305324",
+   "venue": "Advanced Powder Technology",
+   "cited_by_count": 22
+  },
+  {
+   "key": "25",
+   "doi": "10.1016/j.partic.2013.03.006",
+   "unstructured": "Lommen S., Schott D., Lodewijks G., DEM speedup: Stiffness effects on behavior of bulk material, Particuology, 12 (2014) 107–112. DOI: 10.1016/j.partic.2013.03.006",
+   "author": null,
+   "year": 2013,
+   "title": "DEM speedup: Stiffness effects on behavior of bulk material",
+   "journal": null,
+   "openalex": "W1982599634",
+   "venue": "Particuology",
+   "cited_by_count": 278
+  },
+  {
+   "key": "26",
+   "doi": "10.1016/j.powtec.2012.02.015",
+   "unstructured": "Lumay G., Boschini F., Traina K., Bontempi S., Remy J.C., Cloots R., Vandewalle N., Measuring the flowing properties of powders and grains, Powder Technology, 224 (2012) 19–27. DOI: 10.1016/j.powtec.2012.02.015",
+   "author": null,
+   "year": 2012,
+   "title": "Measuring the flowing properties of powders and grains",
+   "journal": null,
+   "openalex": "W2089819404",
+   "venue": "Powder Technology",
+   "cited_by_count": 467
+  },
+  {
+   "key": "27",
+   "doi": null,
+   "unstructured": "MakeItFrom, 2019a, EN 1.4404 (X2CrNiMo17-12-2) Stainless Steel &lt;www.makeitfrom.com/material-properties/EN-1.4404-X2CrNiMo17-12-2-Stainless-Steel&gt; accessed 19.01.2019.",
+   "author": null,
+   "year": null,
+   "title": null,
+   "journal": null
+  },
+  {
+   "key": "28",
+   "doi": null,
+   "unstructured": "MakeItFrom, 2019b, Borosilicate Glass &lt;www.makeitfrom.com/material-properties/Borosilicate-Glass&gt; accessed 19.01.2019.",
+   "author": null,
+   "year": null,
+   "title": null,
+   "journal": null
+  },
+  {
+   "key": "29",
+   "doi": "10.1016/j.partic.2013.05.006",
+   "unstructured": "Marigo M., Cairns D.L., Bowen J., Ingram A., Stitt E.H., Relationship between single and bulk mechanical properties for zeolite ZSM5 spray-dried particles, Particuology, 14 (2014) 130–138. DOI: 10.1016/j.partic.2013.05.006",
+   "author": null,
+   "year": 2013,
+   "title": "Relationship between single and bulk mechanical properties for zeolite ZSM5 spray-dried particles",
+   "journal": null,
+   "openalex": "W2036240134",
+   "venue": "Particuology",
+   "cited_by_count": 29
+  },
+  {
+   "key": "30",
+   "doi": "10.14356/kona.2015016",
+   "unstructured": "Marigo M., Stitt E.H., Discrete element method (DEM) for industrial applications: Comments on calibration and validation for the modelling of cylindrical pellets, KONA Powder and Particle Journal, 32 (2015) 236–252. DOI: 10.14356/kona.2015016",
+   "author": null,
+   "year": 2015,
+   "title": "Discrete Element Method (DEM) for Industrial Applications: Comments on Calibration and Validation for the Modelling of Cylindrical Pellets",
+   "journal": null,
+   "openalex": "W2085064566",
+   "venue": "KONA Powder and Particle Journal",
+   "cited_by_count": 308
+  },
+  {
+   "key": "31",
+   "doi": "10.1115/1.4009973",
+   "unstructured": "Mindlin R.D., Compliance of elastic bodies in contact, Journal of Applied Mechanics, 16 (1949) 259–268.",
+   "author": null,
+   "year": 1949,
+   "title": "Compliance of Elastic Bodies in Contact",
+   "journal": null,
+   "openalex": "W2307550859",
+   "venue": "Journal of Applied Mechanics",
+   "cited_by_count": 3957
+  },
+  {
+   "key": "32",
+   "doi": "10.1016/j.powtec.2005.03.001",
+   "unstructured": "Moysey P.A., Thompson M.R., Modelling the solids inflow and solids conveying of single-screw extruders using the discrete element method, Powder Technology, 153 (2005) 95–107. DOI: 10.1016/j.powtec.2005.03.001",
+   "author": null,
+   "year": 2005,
+   "title": "Modelling the solids inflow and solids conveying of single-screw extruders using the discrete element method",
+   "journal": null,
+   "openalex": "W1973963568",
+   "venue": "Powder Technology",
+   "cited_by_count": 142
+  },
+  {
+   "key": "33",
+   "doi": "10.1002/nme.5315",
+   "unstructured": "Obaid A., Turek S., Heider Y., Markert B., A new monolithic Newton-multigrid-based FEM solution scheme for large strain dynamic poroelasticity problems, International Journal for Numerical Methods in Engineering, 109 (2017) 1103–1129. DOI: 10.1002/nme.5315",
+   "author": null,
+   "year": 2016,
+   "title": "A new monolithic Newton‐multigrid‐based FEM solution scheme for large strain dynamic poroelasticity problems",
+   "journal": null,
+   "openalex": "W2410830918",
+   "venue": "International Journal for Numerical Methods in Engineering",
+   "cited_by_count": 18
+  },
+  {
+   "key": "34",
+   "doi": "10.1016/j.powtec.2009.03.012",
+   "unstructured": "Owen P.J., Cleary P.W., Prediction of screw conveyor performance using the Discrete Element Method (DEM), Powder Technology, 193 (2009) 274–288. DOI: 10.1016/j.powtec.2009.03.012",
+   "author": null,
+   "year": 2009,
+   "title": "Prediction of screw conveyor performance using the Discrete Element Method (DEM)",
+   "journal": null,
+   "openalex": "W1975880136",
+   "venue": "Powder Technology",
+   "cited_by_count": 259
+  },
+  {
+   "key": "35",
+   "doi": "10.1504/pcfd.2010.035366",
+   "unstructured": "Owen P.J., Cleary P.W., Screw conveyor performance: comparison of discrete element modelling with laboratory experiments, Progress in Computational Fluid Dynamics, An International Journal, 10 (2010) 327–333. DOI: 10.1504/PCFD.2010.035366",
+   "author": null,
+   "year": 2010,
+   "title": "Screw conveyor performance: comparison of discrete element modelling with laboratory experiments",
+   "journal": null,
+   "openalex": "W2089176661",
+   "venue": "Progress in Computational Fluid Dynamics An International Journal",
+   "cited_by_count": 103
+  },
+  {
+   "key": "36",
+   "doi": "10.1016/j.apt.2015.07.016",
+   "unstructured": "Pezo L., Jovanović A., Pezo M., Čolović R., Lonćar B., Modified screw conveyor-mixers – Discrete element modeling approach, Advanced Powder Technology, 26 (2015) 1391–1399. DOI: https://doi.org/10.1016/j.apt.2015.07.016.",
+   "author": null,
+   "year": 2015,
+   "title": "Modified screw conveyor-mixers – Discrete element modeling approach",
+   "journal": null,
+   "openalex": "W1013451605",
+   "venue": "Advanced Powder Technology",
+   "cited_by_count": 85
+  },
+  {
+   "key": "37",
+   "doi": "10.1016/j.commatsci.2018.06.024",
+   "unstructured": "Pillai U., Heider Y., Markert B., A diffusive dynamic brittle fracture model for heterogeneous solids and porous materials with implementation using a user-element subroutine, Computational Materials Science, 153 (2018) 36–47. DOI: 10.1016/j.commatsci.2018.06.024",
+   "author": null,
+   "year": 2018,
+   "title": "A diffusive dynamic brittle fracture model for heterogeneous solids and porous materials with implementation using a user-element subroutine",
+   "journal": null,
+   "openalex": "W2808870747",
+   "venue": "Computational Materials Science",
+   "cited_by_count": 57
+  },
+  {
+   "key": "38",
+   "doi": "10.1016/j.compag.2018.12.052",
+   "unstructured": "Qi L.,Chen Y., Sadek M., Simulations of soil flow properties using the discrete element method (DEM), Computers and Electronics in Agriculture, 157 (2019) 254–260. DOI: 10.1016/j.compag.2018.12.052",
+   "author": null,
+   "year": 2019,
+   "title": "Simulations of soil flow properties using the discrete element method (DEM)",
+   "journal": null,
+   "openalex": "W2909913651",
+   "venue": "Computers and Electronics in Agriculture",
+   "cited_by_count": 67
+  },
+  {
+   "key": "39",
+   "doi": "10.1016/s0032-5910(99)00039-x",
+   "unstructured": "Roberts A.W., The influence of granular vortex motion on the volumetric performance of enclosed screw conveyors, Powder Technology, 104 (1999) 56–67. DOI: 10.1016/S0032-5910(99)00039-X",
+   "author": null,
+   "year": 1999,
+   "title": "The influence of granular vortex motion on the volumetric performance of enclosed screw conveyors",
+   "journal": null,
+   "openalex": "W2059994775",
+   "venue": "Powder Technology",
+   "cited_by_count": 145
+  },
+  {
+   "key": "40",
+   "doi": "10.1016/j.partic.2018.08.005",
+   "unstructured": "Roessler T., Katterfeld A., DEM parameter calibration of cohesive bulk materials using a simple angle of repose test, Particuology, 45 (2019) 105–115. DOI: 10.1016/j.partic.2018.08.005",
+   "author": null,
+   "year": 2019,
+   "title": "DEM parameter calibration of cohesive bulk materials using a simple angle of repose test",
+   "journal": null,
+   "openalex": "W2914724771",
+   "venue": "Particuology",
+   "cited_by_count": 196
+  },
+  {
+   "key": "41",
+   "doi": "10.1016/j.powtec.2018.11.034",
+   "unstructured": "Roessler T., Richter C., Katterfeld A., Will F., Development of a standard calibration procedure for the DEM parameters of cohesionless bulk materials – part I: Solving the problem of ambiguous parameter combinations, Powder Technology, 343 (2018) 803–812. DOI: 10.1016/j.powtec.2018.11.034",
+   "author": null,
+   "year": 2018,
+   "title": "Development of a standard calibration procedure for the DEM parameters of cohesionless bulk materials – part I: Solving the problem of ambiguous parameter combinations",
+   "journal": null,
+   "openalex": "W2899780723",
+   "venue": "Powder Technology",
+   "cited_by_count": 194
+  },
+  {
+   "key": "42",
+   "doi": "10.1061/(asce)0733-9399(2001)127:9(864)",
+   "unstructured": "Shimizu Y., Cundall P., Three-dimensional DEM simulations of bulk handling by screw conveyors, Journal of Engineering Mechanics, 127 (2001) 864–872. DOI: 10.1061/(ASCE)0733-9399(2001)127:9(864)",
+   "author": null,
+   "year": 2001,
+   "title": "Three-Dimensional DEM Simulations of Bulk Handling by Screw Conveyors",
+   "journal": null,
+   "openalex": "W1995732373",
+   "venue": "Journal of Engineering Mechanics",
+   "cited_by_count": 126
+  },
+  {
+   "key": "43",
+   "doi": "10.1007/s40571-015-0065-4",
+   "unstructured": "Sinnott M.D., Cleary P.W., The effect of particle shape on mixing in a high shear mixer, Computational Particle Mechanics, 3 (2016) 477–504. DOI: 10.1007/s40571-015-0065-4",
+   "author": null,
+   "year": 2015,
+   "title": "The effect of particle shape on mixing in a high shear mixer",
+   "journal": null,
+   "openalex": "W2173978627",
+   "venue": "Computational Particle Mechanics",
+   "cited_by_count": 68
+  },
+  {
+   "key": "44",
+   "doi": "10.1021/ie303580y",
+   "unstructured": "Souihi N., Josefson M., Tajarobi P., Gururajan B., Trygg J., Design space estimation of the roller compaction process, Industrial &amp; Engineering Chemistry Research, 52 (2013) 12408–12419. DOI: 10.1021/ie303580y",
+   "author": null,
+   "year": 2013,
+   "title": "Design Space Estimation of the Roller Compaction Process",
+   "journal": null,
+   "openalex": "W2065988930",
+   "venue": "Industrial & Engineering Chemistry Research",
+   "cited_by_count": 51
+  },
+  {
+   "key": "45",
+   "doi": null,
+   "unstructured": "Sundararajan K., 2018, Design of Experiments- A Primer &lt;www.isixsigma.com/tools-templates/design-of-experiments-doe/design-experiments-␓-primer/&gt; accessed 22.04.2020.",
+   "author": null,
+   "year": null,
+   "title": null,
+   "journal": null
+  },
+  {
+   "key": "46",
+   "doi": null,
+   "unstructured": "Triefenbach F., Design of experiments: The D-optimal approach and its implementation as a computer algorithm, Bachelor’s Thesis, Umea University and South Westphalia University of Applied Sciences, 2008.",
+   "author": null,
+   "year": null,
+   "title": null,
+   "journal": null
+  },
+  {
+   "key": "47",
+   "doi": "10.1016/j.geotexmem.2015.11.001",
+   "unstructured": "Wang Z., Jacobs F., Ziegler M., Experimental and DEM investigation of geogrid-soil interaction under pullout loads, Geotextiles and Geomembranes, 44 (2016) 230–246. DOI: 10.1016/j.geotexmem.2015.11.001",
+   "author": null,
+   "year": 2015,
+   "title": "Experimental and DEM investigation of geogrid–soil interaction under pullout loads",
+   "journal": null,
+   "openalex": "W2186795482",
+   "venue": "Geotextiles and Geomembranes",
+   "cited_by_count": 150
+  },
+  {
+   "key": "48",
+   "doi": "10.1016/j.powtec.2011.10.057",
+   "unstructured": "Wensrich C.M., Katterfeld A., Rolling friction as a technique for modelling particle shape in DEM, Powder Technology, 217 (2012) 409–417. DOI: 10.1016/j.powtec.2011.10.057",
+   "author": null,
+   "year": 2011,
+   "title": "Rolling friction as a technique for modelling particle shape in DEM",
+   "journal": null,
+   "openalex": "W2018608349",
+   "venue": "Powder Technology",
+   "cited_by_count": 746
+  },
+  {
+   "key": "49",
+   "doi": "10.1016/j.compchemeng.2016.11.034",
+   "unstructured": "Wilkinson S.K., Turnbull S.A., Yan Z., Stitt E.H., Marigo M., A parametric evaluation of powder flowability using a Freeman rheometer through statistical and sensitivity analysis: A discrete element method (DEM) study, Computers and Chemical Engineering, 97 (2017) 161–174. DOI: 10.1016/j.compchemeng.2016.11.034",
+   "author": null,
+   "year": 2016,
+   "title": "A parametric evaluation of powder flowability using a Freeman rheometer through statistical and sensitivity analysis: A discrete element method (DEM) study",
+   "journal": null,
+   "openalex": "W2557278501",
+   "venue": "Computers & Chemical Engineering",
+   "cited_by_count": 68
+  },
+  {
+   "key": "50",
+   "doi": "10.1007/s40571-015-0056-5",
+   "unstructured": "Yan Z., Wilkinson S.K., Stitt E.H., Marigo M., Discrete element modelling (DEM) input parameters: Understanding their impact on model predictions using statistical analysis, Computational Particle Mechanics, 2 (2015) 283–299. DOI: 10.1007/s40571-015-0056-5",
+   "author": null,
+   "year": 2015,
+   "title": "Discrete element modelling (DEM) input parameters: understanding their impact on model predictions using statistical analysis",
+   "journal": null,
+   "openalex": "W1249007618",
+   "venue": "Computational Particle Mechanics",
+   "cited_by_count": 284
+  },
+  {
+   "key": "51",
+   "doi": "10.6061/clinics/2018/e264",
+   "unstructured": "Zhou D., Qiu Y., Understanding material properties in pharmaceutical product development and manufacturing: Powder flow and mechanical properties, Journal of Validation technology, 73 (2010) 65–77. DOI: 10.6061/clinics/2018/e264",
+   "author": null,
+   "year": 2018,
+   "title": "Preoperative treatment with 5α-reductase inhibitors and the risk of hemorrhagic events in patients undergoing transurethral resection of the prostate – A population-based cohort study",
+   "journal": null,
+   "openalex": "W2793192919",
+   "venue": "Clinics",
+   "cited_by_count": 10
+  },
+  {
+   "key": "52",
+   "doi": "10.1016/s0032-5910(01)00520-4",
+   "unstructured": "Zhou Y.C., Xu B.H., Yu B., Zulli P., An experimental and numerical study of the angle of repose of coarse spheres, Powder Technology, 125 (2002) 45–54. DOI: 10.1109/MACE.2011.5986910",
+   "author": null,
+   "year": 2002,
+   "title": "An experimental and numerical study of the angle of repose of coarse spheres",
+   "journal": null,
+   "openalex": "W1987330741",
+   "venue": "Powder Technology",
+   "cited_by_count": 531
+  },
+  {
+   "key": "53",
+   "doi": "10.1016/j.ces.2006.12.089",
+   "unstructured": "Zhu H.P., Zhou Z.Y., Yang R.Y., Yu A.B., Discrete particle simulation of particulate systems: Theoretical developments, Chemical Engineering Science, 62 (2007) 3378–3396. DOI: 10.1016/j.ces.2006.12.089",
+   "author": null,
+   "year": 2007,
+   "title": "Discrete particle simulation of particulate systems: Theoretical developments",
+   "journal": null,
+   "openalex": "W1968056105",
+   "venue": "Chemical Engineering Science",
+   "cited_by_count": 2301
+  },
+  {
+   "key": "54",
+   "doi": "10.1016/j.ces.2008.08.006",
+   "unstructured": "Zhu H.P., Zhou Z.Y., Yang R.Y., Yu A.B., Discrete particle simulation of particulate systems: A review of major applications and findings, Chemical Engineering Science, 63 (2008) 5728–5770. DOI: 10.1016/j.ces.2008.08.006",
+   "author": null,
+   "year": 2008,
+   "title": "Discrete particle simulation of particulate systems: A review of major applications and findings",
+   "journal": null,
+   "openalex": "W2040324544",
+   "venue": "Chemical Engineering Science",
+   "cited_by_count": 1634
+  }
+ ],
+ "cocitation_counts": {
+  "A discrete numerical model for granular assemblies": 10,
+  "Review: Calibration of the discrete element method": 8,
+  "Development of a standard calibration procedure for the DEM parameters of cohesionless bulk materials – part I: Solving the problem of ambiguous parameter combinations": 7,
+  "A multivariate regression parametric study on DEM input parameters of free-flowing and cohesive powders with experimental data-based validation": 6,
+  "Rolling friction as a technique for modelling particle shape in DEM": 5,
+  "Discrete Element Method (DEM) for Industrial Applications: Comments on Calibration and Validation for the Modelling of Cylindrical Pellets": 5,
+  "DEM parameter calibration of cohesive bulk materials using a simple angle of repose test": 5,
+  "DEM speedup: Stiffness effects on behavior of bulk material": 4,
+  "Ueber die Berührung fester elastischer Körper.": 4,
+  "Calibration of DEM models for granular materials using bulk physical tests": 3,
+  "An experimental and numerical study of the angle of repose of coarse spheres": 2,
+  "A review on the angle of repose of granular materials": 2,
+  "Particle shape characterization of fluidized catalytic cracking catalyst powders using the mean value and distribution of shape factors": 2,
+  "Discrete element modelling (DEM) input parameters: understanding their impact on model predictions using statistical analysis": 2,
+  "Assessment of rolling resistance models in discrete element simulations": 2,
+  "Characterization of powder flow: Static and dynamic testing": 2,
+  "Measuring the flowing properties of powders and grains": 2,
+  "Understanding Material Properties in Pharmaceutical Product Development and Manufacturing: Powder Flow and Mechanical Properties": 2,
+  "Experimental study and discrete element simulation of auger dosing of different pharmaceutical powders": 2,
+  "Discrete particle simulation of particulate systems: Theoretical developments": 1,
+  "A new monolithic Newton‐multigrid‐based FEM solution scheme for large strain dynamic poroelasticity problems": 1,
+  "Modeling of hydraulic fracturing using a porous-media phase-field approach with reference to experimental data": 1,
+  "Models, algorithms and validation for opensource DEM and CFD-DEM": 1,
+  "Modified screw conveyor-mixers – Discrete element modeling approach": 1,
+  "Three-dimensional discrete element models for the granular statics and dynamics of powders in cavity filling": 1,
+  "Preoperative treatment with 5α-reductase inhibitors and the risk of hemorrhagic events in patients undergoing transurethral resection of the prostate – A population-based cohort study": 1,
+  "A comparison of discrete element simulations and experiments for ‘sandpiles’ composed of spherical particles": 1,
+  "Gmsh: A 3‐D finite element mesh generator with built‐in pre‐ and post‐processing facilities": 1,
+  "Micro–macro properties of quartz sand: Experimental investigation and DEM simulation": 1,
+  "Compliance of Elastic Bodies in Contact": 1,
+  "DEM modelling of particulate flow in a screw feeder Model description": 1,
+  "A parametric evaluation of powder flowability using a Freeman rheometer through statistical and sensitivity analysis: A discrete element method (DEM) study": 1
+ },
+ "group_papers": {
+  "10.1002/pamm.201800261": {
+   "label": "PAMM 2018: auger dosing of pharmaceutical powders, experiment and DEM",
+   "openalex": "W2904297688",
+   "title": "Experimental study and discrete element simulation of auger dosing of different pharmaceutical powders",
+   "year": 2018,
+   "venue": "PAMM",
+   "cited_by_count": 6,
+   "citing": [
+    {
+     "openalex": "W2951191875",
+     "doi": "10.1007/s10704-019-00378-6",
+     "title": "Coupled phase field finite element model for crack propagation in elastic polycrystalline microstructures",
+     "year": 2019,
+     "venue": "International Journal of Fracture"
+    },
+    {
+     "openalex": "W3003677094",
+     "doi": "10.1007/s40571-020-00315-8",
+     "title": "A multivariate regression parametric study on DEM input parameters of free-flowing and cohesive powders with experimental data-based validation",
+     "year": 2020,
+     "venue": "Computational Particle Mechanics"
+    },
+    {
+     "openalex": "W3170143990",
+     "doi": "10.1007/s00366-021-01423-6",
+     "title": "A quasi-monolithic phase-field description for mixed-mode fracture using predictor–corrector mesh adaptivity",
+     "year": 2021,
+     "venue": "Engineering With Computers"
+    },
+    {
+     "openalex": "W3041626527",
+     "doi": "10.14356/kona.2021010",
+     "title": "A Semi-Automated DEM Parameter Calibration Technique of Powders Based on Different Bulk Responses Extracted from Auger Dosing Experiments",
+     "year": 2020,
+     "venue": "KONA Powder and Particle Journal"
+    },
+    {
+     "openalex": "W3046984684",
+     "doi": "10.1016/j.jddst.2020.101950",
+     "title": "A multivariate statistical approach to analyze the impact of material attributes and process parameters on the quality performance of an auger dosing process",
+     "year": 2020,
+     "venue": "Journal of Drug Delivery Science and Technology"
+    },
+    {
+     "openalex": "W3138068798",
+     "doi": "10.1080/10837450.2021.1901915",
+     "title": "Design of a vertical Loss-in-Weight feeder prototype with experimental proof of concept validation",
+     "year": 2021,
+     "venue": "Pharmaceutical Development and Technology"
+    }
+   ],
+   "cites_focal": false
+  },
+  "10.1016/j.jddst.2020.101950": {
+   "label": "JDDST 2020: multivariate statistics of material attributes and process parameters in auger dosing",
+   "openalex": "W3046984684",
+   "title": "A multivariate statistical approach to analyze the impact of material attributes and process parameters on the quality performance of an auger dosing process",
+   "year": 2020,
+   "venue": "Journal of Drug Delivery Science and Technology",
+   "cited_by_count": 9,
+   "citing": [
+    {
+     "openalex": "W4313320385",
+     "doi": "10.1002/pts.2703",
+     "title": "Increasing the dosing accuracy of a screw dosing device by inline measurement of the product density",
+     "year": 2022,
+     "venue": "Packaging Technology and Science"
+    },
+    {
+     "openalex": "W4411009227",
+     "doi": "10.2174/0115733971345399250529170645",
+     "title": "Exploring the Therapeutic Potential of Nanocarrier-Mediated Drug Delivery in Rheumatoid Arthritis (RA) Treatment",
+     "year": 2025,
+     "venue": "Current Rheumatology Reviews"
+    },
+    {
+     "openalex": "W4391612875",
+     "doi": "10.3390/pharmaceutics16020242",
+     "title": "Sample Size Requirements of a Pharmaceutical Material Library: A Case in Predicting Direct Compression Tablet Tensile Strength by Latent Variable Modeling",
+     "year": 2024,
+     "venue": "Pharmaceutics"
+    },
+    {
+     "openalex": "W3138068798",
+     "doi": "10.1080/10837450.2021.1901915",
+     "title": "Design of a vertical Loss-in-Weight feeder prototype with experimental proof of concept validation",
+     "year": 2021,
+     "venue": "Pharmaceutical Development and Technology"
+    },
+    {
+     "openalex": "W4400849648",
+     "doi": "10.1016/j.powtec.2024.120111",
+     "title": "Evaluating the impact of stirrer design on powder behaviour in capsule filling using dyed lactose as tracer",
+     "year": 2024,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W3202723829",
+     "doi": "10.1088/1755-1315/857/1/012012",
+     "title": "Influence of input parameters setting on the operating process of the weighing system",
+     "year": 2021,
+     "venue": "IOP Conference Series Earth and Environmental Science"
+    },
+    {
+     "openalex": "W4225670402",
+     "doi": "10.1007/978-3-030-90924-6_16",
+     "title": "Challenges and Solutions in Drug Product Process Development from a Material Science Perspective",
+     "year": 2022,
+     "venue": "Springer optimization and its applications"
+    },
+    {
+     "openalex": "W4410054018",
+     "doi": "10.1016/j.ijpharm.2025.125665",
+     "title": "Automated process development with pure API filling using vacuum drum",
+     "year": 2025,
+     "venue": "International Journal of Pharmaceutics"
+    },
+    {
+     "openalex": "W4417064729",
+     "doi": "10.1016/b978-0-443-29817-2.00024-2",
+     "title": "The application of the state-of-the-art material library/material database approach to the process understanding and process modeling of wet granulation",
+     "year": 2025,
+     "venue": "Elsevier eBooks"
+    }
+   ],
+   "cites_focal": true
+  },
+  "10.1007/s40571-020-00315-8": {
+   "label": "CPM 2021: multivariate regression study of DEM inputs, free-flowing and cohesive lactose",
+   "openalex": "W3003677094",
+   "title": "A multivariate regression parametric study on DEM input parameters of free-flowing and cohesive powders with experimental data-based validation",
+   "year": 2020,
+   "venue": "Computational Particle Mechanics",
+   "cited_by_count": 39,
+   "citing": [
+    {
+     "openalex": "W4313468636",
+     "doi": "10.3390/pr11010005",
+     "title": "Review: The Calibration of DEM Parameters for the Bulk Modelling of Cohesive Materials",
+     "year": 2022,
+     "venue": "Processes"
+    },
+    {
+     "openalex": "W4404106824",
+     "doi": "10.1038/s41598-024-78455-7",
+     "title": "Adaptive AI-based surrogate modelling via transfer learning for DEM simulation of multi-component segregation",
+     "year": 2024,
+     "venue": "Scientific Reports"
+    },
+    {
+     "openalex": "W3041742859",
+     "doi": "10.1016/j.powtec.2020.07.017",
+     "title": "Calibration of cohesive DEM parameters under rapid flow conditions and low consolidation stresses",
+     "year": 2020,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W3133188041",
+     "doi": "10.1002/nag.3196",
+     "title": "An offline multi‐scale unsaturated poromechanics model enabled by self‐designed/self‐improved neural networks",
+     "year": 2021,
+     "venue": "International Journal for Numerical and Analytical Methods in Geomechanics"
+    },
+    {
+     "openalex": "W4313559683",
+     "doi": "10.1007/s40571-022-00550-1",
+     "title": "A methodology for calibrating parameters in discrete element models based on machine learning surrogates",
+     "year": 2023,
+     "venue": "Computational Particle Mechanics"
+    },
+    {
+     "openalex": "W3097650606",
+     "doi": "10.1016/j.powtec.2020.10.067",
+     "title": "Optimization of DEM parameters using multi-objective reinforcement learning",
+     "year": 2020,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W4307721551",
+     "doi": "10.1061/(asce)gm.1943-5622.0002632",
+     "title": "Interactive Role of Rolling Friction and Cohesion on the Angle of Repose through a Microscale Assessment",
+     "year": 2022,
+     "venue": "International Journal of Geomechanics"
+    },
+    {
+     "openalex": "W4404124211",
+     "doi": "10.1016/j.powtec.2024.120413",
+     "title": "Design and optimization of stirrer and mixer design for the correct mixing of pharmaceutical powders through DEM",
+     "year": 2024,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W4410932182",
+     "doi": "10.1016/j.powtec.2025.121190",
+     "title": "Systematic DEM calibration of two-component mixtures using AI-accelerated surrogate models",
+     "year": 2025,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W4224946997",
+     "doi": "10.1016/j.powtec.2022.117440",
+     "title": "A hybrid workflow for investigating wide DEM parameter spaces",
+     "year": 2022,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W3123273257",
+     "doi": "10.1016/j.powtec.2021.01.029",
+     "title": "Predicting the behavior of granules of complex shapes using coarse-grained particles and artificial neural networks",
+     "year": 2021,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W3134388414",
+     "doi": "10.1039/d0ce01712d",
+     "title": "Crystallographic tomography and molecular modelling of structured organic polycrystalline powders",
+     "year": 2021,
+     "venue": "CrystEngComm"
+    },
+    {
+     "openalex": "W7124469230",
+     "doi": "10.1016/j.powtec.2026.122130",
+     "title": "Calibration of discrete element parameters using an RBF model and effect of milling parameters on particle breakage in a hammer mill",
+     "year": 2026,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W3041626527",
+     "doi": "10.14356/kona.2021010",
+     "title": "A Semi-Automated DEM Parameter Calibration Technique of Powders Based on Different Bulk Responses Extracted from Auger Dosing Experiments",
+     "year": 2020,
+     "venue": "KONA Powder and Particle Journal"
+    },
+    {
+     "openalex": "W3173452165",
+     "doi": "10.3390/sym13061088",
+     "title": "Universal Approach for DEM Parameters Calibration of Bulk Materials",
+     "year": 2021,
+     "venue": "Symmetry"
+    },
+    {
+     "openalex": "W4395079932",
+     "doi": "10.1007/s40571-024-00739-6",
+     "title": "Calibration of particle interactions for discrete element modeling of powder flow",
+     "year": 2024,
+     "venue": "Computational Particle Mechanics"
+    },
+    {
+     "openalex": "W4408252889",
+     "doi": "10.1016/j.powtec.2025.120903",
+     "title": "Decoupling calibration and coarse-graining: Quest for a generalized parameter set for DEM simulation of pharmaceutical powder",
+     "year": 2025,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W4415305031",
+     "doi": "10.1016/j.powtec.2025.121780",
+     "title": "Fusing 3D scanning and RSM for high-precision DEM calibration of irregular clam particles",
+     "year": 2025,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W7125192209",
+     "doi": "10.1016/j.powtec.2026.122157",
+     "title": "Characterization of wood powder properties: A DEM-based calibration with rotating drum experiments",
+     "year": 2026,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W4415769843",
+     "doi": "10.3390/agriengineering7070240",
+     "title": "Comprehensive DEM Calibration Using Face Central Composite Design and Response Surface Methodology for Rice–PLA Interactions in Enhanced Bucket Elevator Performance",
+     "year": 2025,
+     "venue": "AgriEngineering"
+    },
+    {
+     "openalex": "W7115938860",
+     "doi": "10.1016/j.aime.2025.100178",
+     "title": "Experimental and numerical analysis of compaction of fine powder bed under artificial high gravity for additive manufacturing",
+     "year": 2025,
+     "venue": "Advances in Industrial and Manufacturing Engineering"
+    },
+    {
+     "openalex": "W7117763227",
+     "doi": "10.60093/jiciviltech.1814761",
+     "title": "Multi-scale DEM Investigation of the Effects of Particle Shape and Size Characteristics on the Direct Shear Response of Granular Materials",
+     "year": 2025,
+     "venue": "Journal of Innovations in Civil Engineering and Technology"
+    },
+    {
+     "openalex": "W3046984684",
+     "doi": "10.1016/j.jddst.2020.101950",
+     "title": "A multivariate statistical approach to analyze the impact of material attributes and process parameters on the quality performance of an auger dosing process",
+     "year": 2020,
+     "venue": "Journal of Drug Delivery Science and Technology"
+    },
+    {
+     "openalex": "W4389300122",
+     "doi": "10.21303/2461-4262.2023.002968",
+     "title": "Calibrating polypropylene particle model parameters with upscaling and repose surface method",
+     "year": 2023,
+     "venue": "EUREKA Physics and Engineering"
+    },
+    {
+     "openalex": "W4385147434",
+     "doi": "10.1007/s40571-023-00622-w",
+     "title": "On the sensitivity analysis of the DEM oedometer experiment",
+     "year": 2023,
+     "venue": "Computational Particle Mechanics"
+    },
+    {
+     "openalex": "W4409260893",
+     "doi": "10.1007/s12247-025-09950-1",
+     "title": "Impact of Equipment Material and Surface Finish on the Flowability of dry Cohesive Powders – an Important Consideration in Calibration of Discrete Element Models",
+     "year": 2025,
+     "venue": "Journal of Pharmaceutical Innovation"
+    },
+    {
+     "openalex": "W4415152362",
+     "doi": "10.3390/polym17202748",
+     "title": "Development of a Non-Spherical Polymeric Particles Calibration Procedure for Numerical Simulations Based on the Discrete Element Method",
+     "year": 2025,
+     "venue": "Polymers"
+    },
+    {
+     "openalex": "W4417260084",
+     "doi": "10.1016/j.powtec.2025.122033",
+     "title": "DEM modeling of polyhedral gravel particles and their mechanical response in runway applications",
+     "year": 2025,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W4392394303",
+     "doi": "10.23977/mpcr.2024.040102",
+     "title": "Research on rotational resistance in particle motion simulation based on discrete element method",
+     "year": 2024,
+     "venue": "Modern Physical Chemistry Research"
+    },
+    {
+     "openalex": "W4406958851",
+     "doi": "10.2139/ssrn.5116294",
+     "title": "Calibration of Dem Parameters for Rice Grains with Polylactic Acid Using Angle of Repose Testing and Examination of Dynamic Behavior in a Bucket Elevator System",
+     "year": 2025,
+     "venue": "SSRN Electronic Journal"
+    },
+    {
+     "openalex": "W7110160104",
+     "doi": "10.2139/ssrn.5886130",
+     "title": "Stress-normalized intrinsic particle-shape effects on the multiscale compressibility of granular materials",
+     "year": 2025,
+     "venue": "SSRN Electronic Journal"
+    },
+    {
+     "openalex": "W7110249968",
+     "doi": "10.2139/ssrn.5886129",
+     "title": "Stress-normalized intrinsic particle-shape effects on the multiscale compressibility of granular materials",
+     "year": 2025,
+     "venue": "SSRN Electronic Journal"
+    },
+    {
+     "openalex": "W7113896543",
+     "doi": "10.2139/ssrn.5896249",
+     "title": "Stress-normalized intrinsic particle-shape effects on the multiscale compressibility of granular materials",
+     "year": 2025,
+     "venue": "SSRN Electronic Journal"
+    },
+    {
+     "openalex": "W7162141039",
+     "doi": "10.1016/j.partic.2026.05.010",
+     "title": "A DEM-based study of particle-shape effects on compressibility and contact-scale response in idealized granular assemblies",
+     "year": 2026,
+     "venue": "Particuology"
+    },
+    {
+     "openalex": "W7171956570",
+     "doi": "10.1016/j.simpat.2026.103321",
+     "title": "CompactAI: A hybrid intelligent system for surrogate stress–strain prediction in pharmaceutical tablet compaction",
+     "year": 2026,
+     "venue": "Simulation Modelling Practice and Theory"
+    },
+    {
+     "openalex": "W7213430659",
+     "doi": "10.1016/j.powtec.2026.123222",
+     "title": "Numerical analysis of the validity of scaling laws for wear prediction in industrial rotary dryers",
+     "year": 2026,
+     "venue": "Powder Technology"
+    },
+    {
+     "openalex": "W7214750386",
+     "doi": "10.1038/s41598-026-71744-3",
+     "title": "Investigation of the microstructural and mechanical properties of phenol–formaldehyde resin-impregnated polyurethane foam using response surface methodology",
+     "year": 2026,
+     "venue": "Scientific Reports"
+    },
+    {
+     "openalex": "W7216626826",
+     "doi": null,
+     "title": "Microscale Investigation of the Influence of Interparticle Cohesion on the Macro-Behaviour of Soil",
+     "year": 2024,
+     "venue": "OPUS - Open Publications of UTS Scholars (University of Technology Sydney)"
+    },
+    {
+     "openalex": "W7225170772",
+     "doi": "10.1177/09506608261494391",
+     "title": "Modeling mechanical alloying: A systematic review for materials science applications",
+     "year": 2026,
+     "venue": "International Materials Reviews"
+    }
+   ],
+   "cites_focal": false
+  },
+  "10.14356/kona.2021010": {
+   "label": "KONA 2021: semi-automated DEM calibration from auger-dosing bulk responses (focal)",
+   "openalex": "W3041626527",
+   "title": "A Semi-Automated DEM Parameter Calibration Technique of Powders Based on Different Bulk Responses Extracted from Auger Dosing Experiments",
+   "year": 2020,
+   "venue": "KONA Powder and Particle Journal",
+   "cited_by_count": 21,
+   "citing": [],
+   "cites_focal": false
+  }
+ },
+ "first_author_openalex": "A5088353912",
+ "first_author_works": [
+  {
+   "openalex": "W3003677094",
+   "doi": "10.1007/s40571-020-00315-8",
+   "title": "A multivariate regression parametric study on DEM input parameters of free-flowing and cohesive powders with experimental data-based validation",
+   "year": 2020,
+   "venue": "Computational Particle Mechanics",
+   "cited_by_count": 39,
+   "type": "article"
+  },
+  {
+   "openalex": "W3041626527",
+   "doi": "10.14356/kona.2021010",
+   "title": "A Semi-Automated DEM Parameter Calibration Technique of Powders Based on Different Bulk Responses Extracted from Auger Dosing Experiments",
+   "year": 2020,
+   "venue": "KONA Powder and Particle Journal",
+   "cited_by_count": 21,
+   "type": "article"
+  },
+  {
+   "openalex": "W3046984684",
+   "doi": "10.1016/j.jddst.2020.101950",
+   "title": "A multivariate statistical approach to analyze the impact of material attributes and process parameters on the quality performance of an auger dosing process",
+   "year": 2020,
+   "venue": "Journal of Drug Delivery Science and Technology",
+   "cited_by_count": 9,
+   "type": "article"
+  },
+  {
+   "openalex": "W2904297688",
+   "doi": "10.1002/pamm.201800261",
+   "title": "Experimental study and discrete element simulation of auger dosing of different pharmaceutical powders",
+   "year": 2018,
+   "venue": "PAMM",
+   "cited_by_count": 6,
+   "type": "article"
+  },
+  {
+   "openalex": "W3138068798",
+   "doi": "10.1080/10837450.2021.1901915",
+   "title": "Design of a vertical Loss-in-Weight feeder prototype with experimental proof of concept validation",
+   "year": 2021,
+   "venue": "Pharmaceutical Development and Technology",
+   "cited_by_count": 3,
+   "type": "article"
+  }
+ ],
+ "s2_reference_contexts": [
+  {
+   "title": "A multivariate regression parametric study on DEM input parameters of free-flowing and cohesive powders with experimental data-based validation",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Development of a standard calibration procedure for the DEM parameters of cohesionless bulk materials – part I: Solving the problem of ambiguous parameter combinations",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Simulations of soil flow properties using the discrete element method (DEM)",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "DEM parameter calibration of cohesive bulk materials using a simple angle of repose test",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Experimental study and discrete element simulation of auger dosing of different pharmaceutical powders",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "A diffusive dynamic brittle fracture model for heterogeneous solids and porous materials with implementation using a user-element subroutine",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Modeling of hydraulic fracturing using a porous-media phase-field approach with reference to experimental data",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "A review on the angle of repose of granular materials",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Review: Calibration of the discrete element method",
+   "contexts": [
+    "As an assessment for the improvement of DEM calibration approaches, Coetzee, 2017 addressed various calibration approaches, which covered over 25 years of related studies."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "A new monolithic Newton‐multigrid‐based FEM solution scheme for large strain dynamic poroelasticity problems",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "A parametric evaluation of powder flowability using a Freeman rheometer through statistical and sensitivity analysis: A discrete element method (DEM) study",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "The effect of particle shape on mixing in a high shear mixer",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Impact of impeller design on high-shear wet granulation",
+   "contexts": [
+    "DEM has proven to be an effective and wellestablished approach to study stress and motion of particulate systems (Börner et al., 2016)."
+   ],
+   "intents": [
+    "background"
+   ]
+  },
+  {
+   "title": "Experimental and DEM investigation of geogrid–soil interaction under pullout loads",
+   "contexts": [
+    "…the computation time in DEM, a scaling-up principle based on coarse-graining method is implemented by increasing the size of particles introduced in the system while maintaining the size of the system geometry (Bierwisch, 2009; Ciantia et al., 2016; Sinnott and Cleary, 2016; Wang et al., 2016)."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "DEM modelling of cone penetration tests in a double-porosity crushable granular material",
+   "contexts": [
+    "In order to decrease the computation time in DEM, a scaling-up principle based on coarse-graining method is implemented by increasing the size of particles introduced in the system while maintaining the size of the system geometry (Bierwisch, 2009; Ciantia et al., 2016; Sinnott and Cleary, 2016; Wang et al., 2016).",
+    "…the computation time in DEM, a scaling-up principle based on coarse-graining method is implemented by increasing the size of particles introduced in the system while maintaining the size of the system geometry (Bierwisch, 2009; Ciantia et al., 2016; Sinnott and Cleary, 2016; Wang et al., 2016)."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Validation of the GPU based BLAZE-DEM framework for hopper discharge",
+   "contexts": [
+    "Following the recommendations (Govender et al., 2015; Marigo and Stitt, 2015), Young’s modulus for the particle was reduced within a certain per-\nmissible limit in order to reduce computational costs."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Modified screw conveyor-mixers – Discrete element modeling approach",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Discrete element modelling (DEM) input parameters: understanding their impact on model predictions using statistical analysis",
+   "contexts": [
+    "Yan et al., 2015 employed a parametric multi-level sensitivity approach to analyze the influence of DEM input parameters, namely coefficients of friction and restitution, and Young’s modulus (Y), on AoR and particle flow rate in a discharge system from a flat bottom cylindrical container."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Relationship between single and bulk mechanical properties for zeolite ZSM5 spray-dried particles",
+   "contexts": [
+    "The AoR prescribes the slope of a discharged conical heap of loose bulk solid material (Marigo et al., 2014)."
+   ],
+   "intents": [
+    "background"
+   ]
+  },
+  {
+   "title": "DEM speedup: Stiffness effects on behavior of bulk material",
+   "contexts": [
+    "The reduction in Y values showed insignificant impact, where this is complied with (Lommen et al., 2014), in such, decreasing the shear modulus’ value (e.g. from 107 and 1011 Pa) has no influence on the DEM results."
+   ],
+   "intents": [
+    "result"
+   ]
+  },
+  {
+   "title": "Design Space Estimation of the Roller Compaction Process",
+   "contexts": [
+    "In a roller compaction process application, Souihi et al., 2013 utilized an orthogonal partial least squares (PLS) regression to study the outcomes of a reduced central composite face-centered design in DoE."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Measuring the flowing properties of powders and grains",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Models, algorithms and validation for opensource DEM and CFD-DEM",
+   "contexts": [
+    "The particle shape in LIGGGHTS was set as spherical since the powder has high ASR and Ro values.",
+    "A simulation tool is realized by an open-source software LIGGGHTS® (Kloss et al., 2012), where the simulations were carried out in parallel computing toolbox.",
+    "3.2 Simulation procedure and parameters\n3.2.1 Simulation setup The DEM numerical simulations were carried out using LIGGGHTS® -Premium 4."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Rolling friction as a technique for modelling particle shape in DEM",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Effect of screw design on hopper drawdown of spherical particles in a horizontal screw feeder",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Assessment of rolling resistance models in discrete element simulations",
+   "contexts": [
+    "To represent the rolling friction in our study, the alternative elastic-plastic spring-dashpot (EPSD2) rolling resistance model was used, which is initially proposed by Ai et al., 2011 and extended by Iwashita and Oda, 2000."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Screw conveyor performance: comparison of discrete element modelling with laboratory experiments",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Characterization of powder flow: Static and dynamic testing",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Gmsh: A 3‐D finite element mesh generator with built‐in pre‐ and post‐processing facilities",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Prediction of screw conveyor performance using the Discrete Element Method (DEM)",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Discrete particle simulation of particulate systems: A review of major applications and findings",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Discrete particle simulation of particulate systems: Theoretical developments",
+   "contexts": [
+    "Consequently, the elastic and plastic deformations and the frictional forces between the particles can be determined (Zhu et al., 2007)."
+   ],
+   "intents": [
+    "background"
+   ]
+  },
+  {
+   "title": "DEM modelling of particulate flow in a screw feeder Model description",
+   "contexts": [
+    "In fact, several problems might be experienced if the machine is not designed properly in connection with the conveyed material’s nature and mechanical behavior (Clearly, 2007; Owen and Cleary, 2009)."
+   ],
+   "intents": [
+    "background"
+   ]
+  },
+  {
+   "title": "A comparison of discrete element simulations and experiments for ‘sandpiles’ composed of spherical particles",
+   "contexts": [
+    "TR is calculated based on the Rayleigh wave propagation, where the elastic wave propagation from one particle to the adjacent contacting particle can be computed according to the following equation (Li et al., 2005)."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Modelling the solids inflow and solids conveying of single-screw extruders using the discrete element method",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "An experimental and numerical study of the angle of repose of coarse spheres",
+   "contexts": [
+    "In a sandpile test, Zhou et al., 2002 investigated the impact of particle-particle as well as of particle-wall coefficients of friction, i.e., static and sliding on the angle of repose."
+   ],
+   "intents": []
+  },
+  {
+   "title": "Three-Dimensional DEM Simulations of Bulk Handling by Screw Conveyors",
+   "contexts": [
+    "These responses include mass flow rate, required screw power, and particle transfer velocity (Owen and Cleary, 2009, 2010; Shimizu and Cundall, 2001)."
+   ],
+   "intents": [
+    "background"
+   ]
+  },
+  {
+   "title": "Micro-Deformation Mechanism of Shear Banding Process Based on Modified Distinct Element Method",
+   "contexts": [
+    "To represent the rolling friction in our study, the alternative elastic-plastic spring-dashpot (EPSD2) rolling resistance model was used, which is initially proposed by Ai et al., 2011 and extended by Iwashita and Oda, 2000.",
+    "In this regard, the rolling friction in DEM is utilized as a correction parameter that allows to use spherical particle\nshapes instead of representing the real shapes of the particles (Iwashita and Oda, 2000; Wensrich and Katterfeld, 2012)."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "The influence of granular vortex motion on the volumetric performance of enclosed screw conveyors",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "A discrete numerical model for granular assemblies",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Discrete Element Method (DEM) for Industrial Applications: Comments on Calibration and Validation for the Modelling of Cylindrical Pellets",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Micro–macro properties of quartz sand: Experimental investigation and DEM simulation",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Effect of Screw Design",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Calibration of DEM models for granular materials using bulk physical tests",
+   "contexts": [
+    "Relying on experimental measurements, Johnstone, 2010 applied DoE to perform various calibration and validation techniques."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Understanding Material Properties in Pharmaceutical Product Development and Manufacturing: Powder Flow and Mechanical Properties",
+   "contexts": [
+    "It represents a cohesiveness characteristic of a powder (Zhou and Qiu, 2010)."
+   ],
+   "intents": [
+    "background"
+   ]
+  },
+  {
+   "title": "Three-dimensional discrete element models for the granular statics and dynamics of powders in cavity filling",
+   "contexts": [
+    "The particle size was scaled-up six times using the coarse-graining method identified by Bierwisch et al., 2009."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Particle shape characterization of fluidized catalytic cracking catalyst powders using the mean value and distribution of shape factors",
+   "contexts": [
+    "According to Li et al., 2002, the circularity or roundness (Ro) is a further factor that determines to what degree a particle possesses a spherical shape."
+   ],
+   "intents": [
+    "background"
+   ]
+  },
+  {
+   "title": "Compliance of elastic bodies in contact",
+   "contexts": [
+    "In this study, Hertz-Mindlin contact model (Hertz, 1882; Mindlin, 1949) was applied to calculate these resulting forces."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Ueber die Berührung fester elastischer Körper.",
+   "contexts": [
+    "In this study, Hertz-Mindlin contact model (Hertz, 1882; Mindlin, 1949) was applied to calculate these resulting forces."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Borosilicate Glass <www.makeitfrom. com/material-properties/Borosilicate-Glass> accessed 19.01",
+   "contexts": [
+    "3.2.2 Simulation conditions and input parameters The Young’s modulus and Poisson’s ratio values of the funnel and the auger, as they are considered stainless steel, and the catching container (borosilicate 3.3 glass) were selected from the literature (Geuzaine and Remacle, 2009; MakeItFrom, 2019a)."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "X2CrNiMo17-12-2) Stainless Steel <www.makeitfrom.com/material-properties/ EN-1.4404-X2CrNiMo17-12-2-Stainless-Steel> accessed 19",
+   "contexts": [
+    "3.2.2 Simulation conditions and input parameters The Young’s modulus and Poisson’s ratio values of the funnel and the auger, as they are considered stainless steel, and the catching container (borosilicate 3.3 glass) were selected from the literature (Geuzaine and Remacle, 2009; MakeItFrom, 2019a)."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "Design of Experiments-A Primer <www. isixsigma.com/tools-templates/design-of-experiments-doe/ design-experiments-␓-primer/> accessed",
+   "contexts": [
+    "It is mainly used to identify the cause-effect relationship between factors and responses in a studied system or process (Sundararajan, 2018)."
+   ],
+   "intents": [
+    "background"
+   ]
+  },
+  {
+   "title": "Design of experiments: The D-optimal approach and its implementation as a computer algorithm",
+   "contexts": [
+    "This is defined as βi: = (αi – MS)/ RS with MS = (αmax + αmin)/2 and RS = (αmax – αmin)/2, see, e.g., (Triefenbach, 2008)."
+   ],
+   "intents": []
+  },
+  {
+   "title": "M.Sc., is a PhD candidate at Robert Bosch Packaging Technology GmbH, in Stuttgart, Germany, under the supervision of Prof",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "Numerical Simulations of Granular Flow and Filling",
+   "contexts": [
+    "In order to decrease the computation time in DEM, a scaling-up principle based on coarse-graining method is implemented by increasing the size of particles introduced in the system while maintaining the size of the system geometry (Bierwisch, 2009; Ciantia et al., 2016; Sinnott and Cleary, 2016; Wang et al., 2016).",
+    "…the computation time in DEM, a scaling-up principle based on coarse-graining method is implemented by increasing the size of particles introduced in the system while maintaining the size of the system geometry (Bierwisch, 2009; Ciantia et al., 2016; Sinnott and Cleary, 2016; Wang et al., 2016)."
+   ],
+   "intents": [
+    "methodology"
+   ]
+  },
+  {
+   "title": "He received his Diploma degree in Chemistry from University of Ulm, in 1999, and received his PhD degree in Chemistry at the same university",
+   "contexts": [],
+   "intents": []
+  },
+  {
+   "title": "His current research focuses on optimizing auger dosing process using discrete element methods and analyzing the experimental powder flow behavior using regression analysis",
+   "contexts": [],
+   "intents": []
+  }
+ ]
+}

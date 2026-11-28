@@ -1,0 +1,38 @@
+{
+ "id": "surrogate-pinn",
+ "method": "Physics-informed neural networks for the Janssen powder-column stress: parametric forward surrogate over K*mu_w and inverse inference of K*mu_w from noisy stress readings",
+ "code": "self-written PyTorch PINN (run.py)",
+ "version": "torch 2.5.1+cpu",
+ "status": "ran",
+ "wall_s": 46.8,
+ "cores": 1,
+ "key_results": {
+  "forward_max_abs_err_over_max_stress": 0.03257,
+  "forward_rel_L2_err": 0.00771,
+  "forward_train_s": 12.1,
+  "forward_iterations": 4500,
+  "lambda_true": 0.2,
+  "inverse_lambda_pinn_per_seed": [
+   0.1933,
+   0.1984,
+   0.1961,
+   0.206,
+   0.2012
+  ],
+  "inverse_lambda_pinn_mean_sd": [
+   0.199,
+   0.0044
+  ],
+  "inverse_lambda_exact_lsq_per_seed": [
+   0.1946,
+   0.1985,
+   0.1967,
+   0.2069,
+   0.2018
+  ],
+  "noise": "3 % multiplicative, 8 readings at z = 6-63 mm",
+  "stress_scale_Pa_per_unit_s": 257.52,
+  "sigma_v_at_63mm_true_Pa": 292.69
+ },
+ "notes": "Janssen ODE is a 1D continuum stand-in for the hopper/inlet stress, not a doser model; the PINN is compared with the closed-form solution and with a least-squares fit of that solution to the same data."
+}

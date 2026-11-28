@@ -1,0 +1,106 @@
+# LAMMPS GRANULAR: periodic simple shear (Lees-Edwards: fix deform xy erate remap v)
+# at constant normal pressure Pyy. fix press/berendsen refuses triclinic boxes in LAMMPS 2024,
+# so Pyy is held by a feedback loop: run blocks of NB steps, then rescale the box height
+# affinely (change_box y scale s remap) with s = 1 + g*(<Pyy>_block - P)/P.
+# Polydisperse "table salt" spheres, Hertz-Mindlin + SDS rolling friction, optional JKR cohesion.
+# Usage: lmp -in in.shear -var gamma 0.0 -var tag noncoh -var nsc 1.0 -var out /tmp/dir
+#   gamma = JKR surface-energy argument (J/m^2); 0 -> plain Hertz (no cohesion)
+#   nsc   = scale factor on the number of steps per stage (1.0 = production)
+units           si
+atom_style      sphere
+dimension       3
+boundary        p p p
+newton          off
+comm_modify     vel yes
+
+variable        rho   equal 2165
+variable        E     equal 2.0e5
+variable        e     equal 0.5
+variable        nu    equal 0.3
+variable        mus   equal 0.5
+variable        mur   equal 0.3
+variable        kroll equal 1.0
+variable        dt    equal 1.0e-5
+variable        P100  equal 100.0
+variable        L0    equal 0.00748
+
+region          box prism 0 ${L0} 0 ${L0} 0 ${L0} 0 0 0 units box
+create_box      3 box
+create_atoms    1 random 450 4821 NULL overlap 0.5e-3 maxtry 500
+create_atoms    2 random 600 9173 NULL overlap 0.5e-3 maxtry 500
+create_atoms    3 random 450 2267 NULL overlap 0.5e-3 maxtry 500
+set             type 1 diameter 0.361e-3
+set             type 2 diameter 0.425e-3
+set             type 3 diameter 0.489e-3
+set             type * density ${rho}
+
+pair_style      granular
+# LAMMPS refuses 'damping tsuji' with a cohesive normal model ("Cannot use tsuji model with a
+# cohesive normal model, jkr"), so the JKR case uses mass_velocity damping, F = -eta_n0*m_eff*v_n,
+# with eta_n0 = -2 ln(0.5)/t_c = 3500 1/s for a typical Hertz contact time t_c ~ 4e-4 s (e ~ 0.5).
+variable        etan0 equal 3500.0
+if "${gamma} > 0.0" then &
+  "pair_coeff * * jkr ${E} ${etan0} ${nu} ${gamma} tangential mindlin NULL 1.0 ${mus} rolling sds ${kroll} 0.0 ${mur} twisting marshall damping mass_velocity" &
+else &
+  "pair_coeff * * hertz/material ${E} ${e} ${nu} tangential mindlin NULL 1.0 ${mus} rolling sds ${kroll} 0.0 ${mur} twisting marshall damping tsuji"
+
+neighbor        0.1e-3 bin
+neigh_modify    delay 0 every 1 check yes
+timestep        ${dt}
+fix             integ all nve/sphere
+
+# ---- 1. isotropic affine compression to solid fraction 0.55 (below jamming)
+variable        P equal ${P100}
+variable        rate equal 0.0
+variable        Lf equal 0.004854
+fix             cmp all deform 1 x final 0 ${Lf} y final 0 ${Lf} z final 0 ${Lf} remap x
+thermo_style    custom step time v_rate v_P pyy pxy vol ly xy ke
+thermo          1000
+thermo_modify   norm no flush yes
+variable        nprep equal round(10000*${nsc})
+run             ${nprep}
+unfix           cmp
+
+# ---- 2. shear stages with Pyy feedback
+compute         tdef all temp/deform
+compute         pr all pressure tdef
+variable        Pyy equal c_pr[2]
+variable        Pxy equal c_pr[4]
+variable        phi equal (PI/6*(450*(0.361e-3)^3+600*(0.425e-3)^3+450*(0.489e-3)^3))/vol
+variable        NB equal 100
+fix             pav all ave/time 1 ${NB} ${NB} v_Pyy
+fix             rec all ave/time 1 200 200 v_rate v_P v_Pyy v_Pxy v_phi c_tdef file ${out}/stress_${tag}.dat
+thermo          100000
+dump            dmp all custom 2000 ${out}/dump_${tag}.lammpstrj id type diameter x y z vx vy vz
+dump_modify     dmp sort id
+
+# stage list: rates (1/s) at P=100 Pa, then pressures at the lowest rate
+variable        rlist  index 2.5   7.5   25.0  75.0  150.0 2.5   2.5   2.5
+variable        plist  index 100.0 100.0 100.0 100.0 100.0 200.0 50.0  25.0
+variable        slist  index 2.5   2.0   3.0   4.0   5.0   1.5   1.5   1.5
+variable        oldrate string 0.0
+label           stage
+variable        rate equal ${rlist}
+variable        P equal ${plist}
+variable        strain equal ${slist}
+variable        nblk equal ceil(${strain}/(${rate}*${dt})*${nsc}/${NB})
+# feedback gain ~ 0.2*P/K, with granular bulk modulus K ~ 1.07e4*(P/100)^(1/3) Pa
+variable        g equal 0.2*${P}/(1.07e4*(${P}/100.0)^(1.0/3.0))
+print           "STAGE rate ${rate} P ${P} strain ${strain} blocks ${nblk} gain ${g}"
+variable        dv equal (${rate}-${oldrate})*ly
+velocity        all ramp vx 0.0 ${dv} y $(ylo) $(yhi) sum yes units box
+fix             def all deform 1 xy erate ${rate} remap v flip yes
+variable        b loop ${nblk}
+label           blk
+run             ${NB} post no
+variable        s0 equal 1.0+${g}*(f_pav-${P})/${P}
+variable        s equal ternary(v_s0>1.005,1.005,ternary(v_s0<0.995,0.995,v_s0))
+change_box      all y scale ${s} remap
+next            b
+jump            SELF blk
+variable        b delete
+unfix           def
+variable        oldrate string ${rate}
+next            rlist plist slist
+jump            SELF stage
+print           "ALL STAGES DONE"
