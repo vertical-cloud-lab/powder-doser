@@ -1,0 +1,66 @@
+[
+  {
+    "part": "mounting_plate",
+    "converged": true,
+    "iterations": 1,
+    "llm_calls": 3,
+    "elapsed_s": 67.1,
+    "final_step_path": "/home/runner/work/powder-doser/powder-doser/design/cad/mounting-plate-assembly/cadsmith_runs/mounting_plate/mounting_plate_iter0.step",
+    "final_geometry": {
+      "volume": 101608.04957280241,
+      "center_of_mass": [
+        6.014572355094996,
+        5.236341045558057e-16,
+        -3.3160333944617766
+      ],
+      "bounding_box": {
+        "xmin": -125.0,
+        "xmax": 125.0,
+        "xlen": 250.0,
+        "ymin": -40.0,
+        "ymax": 40.0,
+        "ylen": 80.0,
+        "zmin": -29.5,
+        "zmax": 0.0,
+        "zlen": 29.5
+      },
+      "is_valid": true,
+      "num_faces": 41,
+      "num_edges": 107,
+      "num_vertices": 71
+    },
+    "copied_to": "step/mounting_plate.cadsmith.step"
+  },
+  {
+    "part": "baseplate",
+    "converged": true,
+    "iterations": 1,
+    "llm_calls": 3,
+    "elapsed_s": 45.1,
+    "final_step_path": "/home/runner/work/powder-doser/powder-doser/design/cad/mounting-plate-assembly/cadsmith_runs/baseplate/baseplate_iter0.step",
+    "final_geometry": {
+      "volume": 534775.5893710554,
+      "center_of_mass": [
+        124.15202197731466,
+        7.483095278352808e-16,
+        -24.55698781850199
+      ],
+      "bounding_box": {
+        "xmin": -30.0,
+        "xmax": 270.0,
+        "xlen": 300.0,
+        "ymin": -100.0,
+        "ymax": 100.0,
+        "ylen": 200.0,
+        "zmin": -150.0,
+        "zmax": 56.0,
+        "zlen": 206.0
+      },
+      "is_valid": true,
+      "num_faces": 60,
+      "num_edges": 144,
+      "num_vertices": 96
+    },
+    "copied_to": "step/baseplate.cadsmith.step"
+  }
+]
