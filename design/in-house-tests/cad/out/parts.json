@@ -89,6 +89,36 @@
   "faces": 1330,
   "build_s": 0.1
  },
+ "camera_rod_clamp": {
+  "name": "camera_rod_clamp",
+  "test": "shared",
+  "qty": 2,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "one for the camera, one for the backlight",
+  "volume_mm3": 16408.1,
+  "mass_g_solid": 20.35,
+  "bbox_use_mm": [
+   32.0,
+   75.0,
+   36.0
+  ],
+  "bed_extent_mm": [
+   32.0,
+   75.0,
+   36.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 96.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 622,
+  "build_s": 0.1
+ },
  "camera_tower": {
   "name": "camera_tower",
   "test": "shared",
@@ -1146,17 +1176,17 @@
   "printer": "A1M",
   "infill_pct": 25,
   "note": "",
-  "volume_mm3": 23626.8,
-  "mass_g_solid": 29.3,
+  "volume_mm3": 23124.2,
+  "mass_g_solid": 28.67,
   "bbox_use_mm": [
    119.93,
    119.96,
-   17.0
+   13.0
   ],
   "bed_extent_mm": [
    119.93,
    119.96,
-   17.0
+   13.0
   ],
   "bed_rot_deg": [
    0.0,
@@ -1167,7 +1197,7 @@
   "watertight": true,
   "fits_printer": true,
   "faces": 1260,
-  "build_s": 0.1
+  "build_s": 0.2
  },
  "pan_adapter": {
   "name": "pan_adapter",
@@ -2076,16 +2106,16 @@
   "printer": "A1M",
   "infill_pct": 30,
   "note": "",
-  "volume_mm3": 299153.0,
-  "mass_g_solid": 370.95,
+  "volume_mm3": 326513.0,
+  "mass_g_solid": 404.88,
   "bbox_use_mm": [
    120.0,
-   120.0,
+   142.0,
    170.0
   ],
   "bed_extent_mm": [
    120.0,
-   120.0,
+   142.0,
    170.0
   ],
   "bed_rot_deg": [
@@ -2093,7 +2123,7 @@
    0.0,
    0.0
   ],
-  "bed_contact_mm2": 14339.3,
+  "bed_contact_mm2": 16979.3,
   "watertight": true,
   "fits_printer": true,
   "faces": 1636,
@@ -2136,28 +2166,28 @@
   "printer": "A1M",
   "infill_pct": 25,
   "note": "",
-  "volume_mm3": 19220.1,
-  "mass_g_solid": 23.83,
+  "volume_mm3": 14108.8,
+  "mass_g_solid": 17.49,
   "bbox_use_mm": [
-   114.98,
+   56.98,
    40.0,
-   8.0
+   32.0
   ],
   "bed_extent_mm": [
-   114.98,
+   56.98,
    40.0,
-   8.0
+   32.0
   ],
   "bed_rot_deg": [
    0.0,
    0.0,
    0.0
   ],
-  "bed_contact_mm2": 2534.5,
+  "bed_contact_mm2": 240.0,
   "watertight": true,
   "fits_printer": true,
   "faces": 1276,
-  "build_s": 0.1
+  "build_s": 0.2
  },
  "ucs_sample_base": {
   "name": "ucs_sample_base",

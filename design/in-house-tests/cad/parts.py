@@ -169,6 +169,17 @@ def holes_y(wp, pts, d):
     return wp
 
 
+def camera_rod_clamp():
+    """Camera Module 3 (or backlight) on a lab retort-stand rod, Ø10-13 mm, M4 thumb screw."""
+    c = box(-12, 12, -12, 12, 0, 20).cut(cyl(6.6, 22, z=-1))
+    c = c.cut(xcyl(1.75, 14, 0, 0, 10)).cut(box(5, 13, -3.6, 3.6, 7, 13))  # M4 nut trap
+    arm = box(-4, 4, -60, -12, 4, 16)
+    plate = box(-16, 16, -63, -60, -6, 30)
+    plate = holes_y(plate, [(-10.5, 6.0), (10.5, 6.0), (-10.5, 18.5), (10.5, 18.5)], 2.2)
+    plate = plate.cut(ycyl(4.5, 10, 0, -70, 14.0))
+    return c.union(arm).union(plate)
+
+
 def backlight_foot():
     f = box(-30, 30, -20, 20, 0, 5)
     f = f.union(box(-30, 30, -8, 8, 5, 25)).cut(box(-31, 31, -3, 3, 7, 26))
@@ -197,7 +208,7 @@ def pedestal(d):
 
 def overflow_tray():
     t = cyl(60, 1.6).union(tube(60, 58.4, 8))
-    t = t.union(tube(11, 9, 14)).cut(cyl(9, 20, z=-1))
+    t = t.union(tube(11, 9, 10)).cut(cyl(9, 20, z=-1))
     t = t.union(tube(11.9, 9, 3, z=-3))  # spigot into the spider hub (ID 24)
     return t
 
@@ -544,16 +555,14 @@ MOULD_ID, MOULD_H, MOULD_OD = 20.0, 40.0, 30.0
 
 
 def ucs_base():
-    b = box(-60, 60, -60, 60, 0, 8)
+    b = box(-60, 60, -60, 82, 0, 8)
     b = b.union(box(-48, -28, -8, 8, 8, 28))                  # load-cell fixed block
-    b = b.cut(xcyl(1.6, 22, -50, -0.0, 24.8)).cut(xcyl(1.6, 22, -50, 0, 16.0)) if False else b
-    b = b.cut(cyl(1.6, 30, -38, -3.0, 0)).cut(cyl(1.6, 30, -38, 3.0, 0)) if False else b
     b = b.cut(cyl(1.35, 25, -43, 0, 7)).cut(cyl(1.35, 25, -33, 0, 7))  # M3 into the block (load cell)
-    col = box(-30, 30, 40, 60, 8, 170)                          # column for the linear stage
-    col = col.cut(box(-2.75, 2.75, 39, 61, 30, 160).translate((-20, 0, 0)))
-    col = col.cut(box(-2.75, 2.75, 39, 61, 30, 160).translate((20, 0, 0)))
-    b = b.union(col).union(box(-30, -24, 20, 40, 8, 60)).union(box(24, 30, 20, 40, 8, 60))
-    return holes(b, [(-52, -52), (52, -52), (-52, 30), (52, 30)], 4.4)
+    col = box(-30, 30, 60, 80, 8, 170)                          # column; the stage bolts to its front
+    for x in (-20, 20):
+        col = col.cut(box(x - 2.75, x + 2.75, 59, 81, 30, 160))
+    b = b.union(col).union(box(-30, -24, 30, 60, 8, 60)).union(box(24, 30, 30, 60, 8, 60))
+    return holes(b, [(-52, -52), (52, -52), (-52, 74), (52, 74)], 4.4)
 
 
 def ucs_sample_base():
@@ -582,9 +591,13 @@ def ucs_piston():
 
 
 def ucs_platen():
-    p = cyl(15, 6).union(box(0, 90, -6, 6, 0, 8))
-    p = p.union(box(70, 100, -20, 20, 0, 8))
-    return holes(p, [(78, -12), (78, 12), (92, -12), (92, 12)], 3.4)
+    """Platen disc on a 36 mm arm; the vertical plate bolts to the stage slider's face."""
+    p = cyl(15, 6).union(box(0, 38, -6, 6, 0, 8))
+    plate = box(36, 42, -20, 20, -12, 20)
+    for y in (-12, 12):
+        for z in (-4, 12):
+            plate = plate.cut(xcyl(1.7, 10, 34, y, z))
+    return p.union(plate)
 
 
 # --------------------------------------------------------------------------------------------- #
@@ -686,6 +699,7 @@ for _h in (40, 80, 120, 160):
     _p(f"tripod_leg_{_h}", tripod_leg(_h), "shared", qty=3, bed_rot=(90, 0, 0), note="print lying on a flat")
 _p("camera_tower", camera_tower, "shared")
 _p("camera_carriage", camera_carriage, "shared", bed_rot=(0, 0, 0))
+_p("camera_rod_clamp", camera_rod_clamp, "shared", qty=2, note="one for the camera, one for the backlight")
 _p("backlight_foot", backlight_foot, "shared", qty=2)
 for _d in (12, 20, 30):
     _p(f"pedestal_d{_d}", pedestal(_d), "1", bed_rot=(180, 0, 0), note="top face down for a flat, sharp rim", infill=100)
