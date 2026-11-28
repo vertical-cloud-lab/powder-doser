@@ -1,0 +1,9 @@
+cavity N = 32
+  max|err u| = 0.0021, max|err v| = 0.0084, 2 s
+cavity N = 64
+  max|err u| = 0.0038, max|err v| = 0.0085, 11 s
+cavity N = 128
+  t = 5.4932  max|du/dt| = 7.711e-03  max div = 4.06e-14
+  t = 10.9863  max|du/dt| = 4.041e-04  max div = 2.86e-14
+  t = 16.4795  max|du/dt| = 2.065e-05  max div = 3.55e-14
+  max|err u| = 0.0049, max|err v| = 0.0091, 52 s

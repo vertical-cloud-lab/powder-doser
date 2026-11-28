@@ -1,0 +1,2820 @@
+[
+ {
+  "plate": "a1m_t01_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 1.1,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "32m 50s",
+  "model_time": "32m 30s",
+  "layers": "50",
+  "filament_m": 9.14,
+  "filament_g": 27.71,
+  "max_z_mm": 10.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "142a32fd9726e2f63925379a8dd4be2e",
+  "predicted_s": 1950.9320068359375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "overflow_tray__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 119.9,
+    "d": 120.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "overflow_tray"
+  ],
+  "n_objects": 1,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 125.7,
+   "ymin": 6.2,
+   "ymax": 125.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t02_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 2.7,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 15m 51s",
+  "model_time": "1h 15m 32s",
+  "layers": "192",
+  "filament_m": 18.59,
+  "filament_g": 56.33,
+  "max_z_mm": 46.04,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "509e160d943b0935f5a5cac4321d6191",
+  "predicted_s": 4532.0615234375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "tapper_base__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 90.0,
+    "d": 140.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "tapper_base"
+  ],
+  "n_objects": 1,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 95.8,
+   "ymin": 6.2,
+   "ymax": 145.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t03_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 1.5,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 33m 48s",
+  "model_time": "1h 33m 28s",
+  "layers": "292",
+  "filament_m": 23.36,
+  "filament_g": 70.79,
+  "max_z_mm": 70.04,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "f12662bf52ee705d79feb9f5a83328ee",
+  "predicted_s": 5608.87158203125,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "tilt_base__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 100.0,
+    "d": 154.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "tilt_base"
+  ],
+  "n_objects": 1,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 105.8,
+   "ymin": 6.2,
+   "ymax": 159.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t03_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 1.4,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "55m 2s",
+  "model_time": "54m 43s",
+  "layers": "80",
+  "filament_m": 11.55,
+  "filament_g": 35.0,
+  "max_z_mm": 16.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "efa146e2c2f6486b8136ad8251dcf750",
+  "predicted_s": 3283.5986328125,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "tilt_plate__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 87.0,
+    "d": 128.0,
+    "rot": false
+   },
+   {
+    "name": "strike_frame_1mm__0",
+    "x": 99.0,
+    "y": 6.0,
+    "w": 48.0,
+    "d": 80.0,
+    "rot": true
+   },
+   {
+    "name": "ring_lid__0",
+    "x": 6.0,
+    "y": 140.0,
+    "w": 24.6,
+    "d": 24.6,
+    "rot": false
+   },
+   {
+    "name": "ring_lid__1",
+    "x": 36.6,
+    "y": 140.0,
+    "w": 24.6,
+    "d": 24.6,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "tilt_plate",
+   "strike_frame_1mm",
+   "ring_lid",
+   "ring_lid"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 146.8,
+   "ymin": 6.2,
+   "ymax": 164.4
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t03_std_2",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 0.5,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "22m 48s",
+  "model_time": "22m 29s",
+  "layers": "25",
+  "filament_m": 3.51,
+  "filament_g": 10.64,
+  "max_z_mm": 5.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "1daabd35e772fc011bd39d96915129a5",
+  "predicted_s": 1349.0032958984375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "strike_frame_2mm__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 80.0,
+    "d": 48.0,
+    "rot": false
+   },
+   {
+    "name": "strike_frame_3mm__0",
+    "x": 92.0,
+    "y": 6.0,
+    "w": 80.0,
+    "d": 48.0,
+    "rot": false
+   },
+   {
+    "name": "strike_frame_5mm__0",
+    "x": 6.0,
+    "y": 60.0,
+    "w": 80.0,
+    "d": 48.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "strike_frame_2mm",
+   "strike_frame_3mm",
+   "strike_frame_5mm"
+  ],
+  "n_objects": 3,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 107.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t04_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 1.0,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 24m 6s",
+  "model_time": "1h 23m 47s",
+  "layers": "67",
+  "filament_m": 24.09,
+  "filament_g": 73.01,
+  "max_z_mm": 16.04,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "025545e96e264be1b3976e2a2ec27fda",
+  "predicted_s": 5027.19677734375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "micro_column__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 20.0,
+    "d": 160.0,
+    "rot": false
+   },
+   {
+    "name": "micro_base__0",
+    "x": 32.0,
+    "y": 6.0,
+    "w": 110.0,
+    "d": 150.0,
+    "rot": true
+   }
+  ],
+  "objects": [
+   "micro_column",
+   "micro_base"
+  ],
+  "n_objects": 2,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 141.8,
+   "ymin": 6.2,
+   "ymax": 165.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t05_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 1.3,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "28m 53s",
+  "model_time": "28m 33s",
+  "layers": "109",
+  "filament_m": 5.72,
+  "filament_g": 17.33,
+  "max_z_mm": 26.12,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "01b796e80b1e32e0706fe6c9a427bdb1",
+  "predicted_s": 1713.8157958984375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "cup_holder__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 119.8,
+    "d": 66.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "cup_holder"
+  ],
+  "n_objects": 1,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 125.6,
+   "ymin": 6.2,
+   "ymax": 71.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t05_solid_1",
+  "printer": "A1M",
+  "infill_pct": 100,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 3.4,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "30m 35s",
+  "model_time": "30m 16s",
+  "layers": "10",
+  "filament_m": 5.4,
+  "filament_g": 16.35,
+  "max_z_mm": 2.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "079bf2c5e8b1687941df56c23741e14b",
+  "predicted_s": 1816.7818603515625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "100%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "gate_slide__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 60.0,
+    "d": 11.6,
+    "rot": false
+   },
+   {
+    "name": "orifice_disc_1p00__0",
+    "x": 6.0,
+    "y": 23.6,
+    "w": 32.0,
+    "d": 32.0,
+    "rot": false
+   },
+   {
+    "name": "orifice_disc_1p50__0",
+    "x": 44.0,
+    "y": 23.6,
+    "w": 32.0,
+    "d": 32.0,
+    "rot": false
+   },
+   {
+    "name": "orifice_disc_2p00__0",
+    "x": 82.0,
+    "y": 23.6,
+    "w": 32.0,
+    "d": 32.0,
+    "rot": false
+   },
+   {
+    "name": "orifice_disc_2p54__0",
+    "x": 120.0,
+    "y": 23.6,
+    "w": 32.0,
+    "d": 32.0,
+    "rot": false
+   },
+   {
+    "name": "orifice_disc_3p00__0",
+    "x": 6.0,
+    "y": 61.6,
+    "w": 32.0,
+    "d": 32.0,
+    "rot": false
+   },
+   {
+    "name": "orifice_disc_4p00__0",
+    "x": 44.0,
+    "y": 61.6,
+    "w": 32.0,
+    "d": 32.0,
+    "rot": false
+   },
+   {
+    "name": "orifice_disc_5p08__0",
+    "x": 82.0,
+    "y": 61.6,
+    "w": 32.0,
+    "d": 32.0,
+    "rot": false
+   },
+   {
+    "name": "orifice_disc_6p00__0",
+    "x": 120.0,
+    "y": 61.6,
+    "w": 32.0,
+    "d": 32.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "gate_slide",
+   "orifice_disc_1p00",
+   "orifice_disc_1p50",
+   "orifice_disc_2p00",
+   "orifice_disc_2p54",
+   "orifice_disc_3p00",
+   "orifice_disc_4p00",
+   "orifice_disc_5p08",
+   "orifice_disc_6p00"
+  ],
+  "n_objects": 9,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 151.8,
+   "ymin": 6.2,
+   "ymax": 93.4
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t05_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 5.2,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "56m 48s",
+  "model_time": "56m 29s",
+  "layers": "215",
+  "filament_m": 9.0,
+  "filament_g": 27.28,
+  "max_z_mm": 43.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "25d2d7a37b9c22369d3f398b5b9e8e63",
+  "predicted_s": 3389.7939453125,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "gate_guide__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 66.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "catch_cup__0",
+    "x": 6.0,
+    "y": 52.0,
+    "w": 44.0,
+    "d": 44.0,
+    "rot": false
+   },
+   {
+    "name": "orifice_cup__0",
+    "x": 78.0,
+    "y": 6.0,
+    "w": 40.0,
+    "d": 40.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "gate_guide",
+   "catch_cup",
+   "orifice_cup"
+  ],
+  "n_objects": 3,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 117.7,
+   "ymin": 6.2,
+   "ymax": 95.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 20.1,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 59m 30s",
+  "model_time": "1h 59m 10s",
+  "layers": "135",
+  "filament_m": 22.02,
+  "filament_g": 66.73,
+  "max_z_mm": 32.36,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "abb97784fb79d86a5040dcd6db6dcec4",
+  "predicted_s": 7150.9599609375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_shelf__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 150.0,
+    "d": 90.0,
+    "rot": false
+   },
+   {
+    "name": "hc_slurry_tray__0",
+    "x": 6.0,
+    "y": 102.0,
+    "w": 140.0,
+    "d": 70.0,
+    "rot": false
+   },
+   {
+    "name": "hc_fan_mount__0",
+    "x": 152.0,
+    "y": 102.0,
+    "w": 13.0,
+    "d": 39.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sensor_clip__0",
+    "x": 162.0,
+    "y": 6.0,
+    "w": 10.0,
+    "d": 32.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_shelf",
+   "hc_slurry_tray",
+   "hc_fan_mount",
+   "hc_sensor_clip"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 171.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_draft_2",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 28.2,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 59m 16s",
+  "model_time": "1h 58m 57s",
+  "layers": "135",
+  "filament_m": 22.02,
+  "filament_g": 66.73,
+  "max_z_mm": 32.36,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "dbabfc7e02cfee00e1055f2cc8ac153b",
+  "predicted_s": 7137.73046875,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_shelf__1",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 150.0,
+    "d": 90.0,
+    "rot": false
+   },
+   {
+    "name": "hc_slurry_tray__1",
+    "x": 6.0,
+    "y": 102.0,
+    "w": 140.0,
+    "d": 70.0,
+    "rot": false
+   },
+   {
+    "name": "hc_fan_mount__1",
+    "x": 152.0,
+    "y": 102.0,
+    "w": 13.0,
+    "d": 39.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sensor_clip__1",
+    "x": 162.0,
+    "y": 6.0,
+    "w": 10.0,
+    "d": 32.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_shelf",
+   "hc_slurry_tray",
+   "hc_fan_mount",
+   "hc_sensor_clip"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 171.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_draft_3",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 34.8,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 59m 16s",
+  "model_time": "1h 58m 57s",
+  "layers": "135",
+  "filament_m": 22.02,
+  "filament_g": 66.73,
+  "max_z_mm": 32.36,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "af3f9db9e3d114efe33dc913ed66410b",
+  "predicted_s": 7137.73779296875,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_shelf__2",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 150.0,
+    "d": 90.0,
+    "rot": false
+   },
+   {
+    "name": "hc_slurry_tray__2",
+    "x": 6.0,
+    "y": 102.0,
+    "w": 140.0,
+    "d": 70.0,
+    "rot": false
+   },
+   {
+    "name": "hc_fan_mount__2",
+    "x": 152.0,
+    "y": 102.0,
+    "w": 13.0,
+    "d": 39.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sensor_clip__2",
+    "x": 162.0,
+    "y": 6.0,
+    "w": 10.0,
+    "d": 32.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_shelf",
+   "hc_slurry_tray",
+   "hc_fan_mount",
+   "hc_sensor_clip"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 171.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_draft_4",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 36.1,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 59m 16s",
+  "model_time": "1h 58m 57s",
+  "layers": "135",
+  "filament_m": 22.02,
+  "filament_g": 66.73,
+  "max_z_mm": 32.36,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "b679eaa5f8044f1864cb53ab01326fb8",
+  "predicted_s": 7137.3134765625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_shelf__3",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 150.0,
+    "d": 90.0,
+    "rot": false
+   },
+   {
+    "name": "hc_slurry_tray__3",
+    "x": 6.0,
+    "y": 102.0,
+    "w": 140.0,
+    "d": 70.0,
+    "rot": false
+   },
+   {
+    "name": "hc_fan_mount__3",
+    "x": 152.0,
+    "y": 102.0,
+    "w": 13.0,
+    "d": 39.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sensor_clip__3",
+    "x": 162.0,
+    "y": 6.0,
+    "w": 10.0,
+    "d": 32.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_shelf",
+   "hc_slurry_tray",
+   "hc_fan_mount",
+   "hc_sensor_clip"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 171.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_draft_5",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 31.2,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 59m 16s",
+  "model_time": "1h 58m 57s",
+  "layers": "135",
+  "filament_m": 22.02,
+  "filament_g": 66.73,
+  "max_z_mm": 32.36,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "16e37778a868673e9857fa6c9201e2a2",
+  "predicted_s": 7137.76123046875,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_shelf__4",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 150.0,
+    "d": 90.0,
+    "rot": false
+   },
+   {
+    "name": "hc_slurry_tray__4",
+    "x": 6.0,
+    "y": 102.0,
+    "w": 140.0,
+    "d": 70.0,
+    "rot": false
+   },
+   {
+    "name": "hc_fan_mount__4",
+    "x": 152.0,
+    "y": 102.0,
+    "w": 13.0,
+    "d": 39.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sensor_clip__4",
+    "x": 162.0,
+    "y": 6.0,
+    "w": 10.0,
+    "d": 32.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_shelf",
+   "hc_slurry_tray",
+   "hc_fan_mount",
+   "hc_sensor_clip"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 171.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_draft_6",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 34.7,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 59m 17s",
+  "model_time": "1h 58m 58s",
+  "layers": "135",
+  "filament_m": 22.02,
+  "filament_g": 66.73,
+  "max_z_mm": 32.36,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "f1e4440dc98a9ff70938dd0619058581",
+  "predicted_s": 7138.728515625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_shelf__5",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 150.0,
+    "d": 90.0,
+    "rot": false
+   },
+   {
+    "name": "hc_slurry_tray__5",
+    "x": 6.0,
+    "y": 102.0,
+    "w": 140.0,
+    "d": 70.0,
+    "rot": false
+   },
+   {
+    "name": "hc_fan_mount__5",
+    "x": 152.0,
+    "y": 102.0,
+    "w": 13.0,
+    "d": 39.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sensor_clip__5",
+    "x": 162.0,
+    "y": 6.0,
+    "w": 10.0,
+    "d": 32.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_shelf",
+   "hc_slurry_tray",
+   "hc_fan_mount",
+   "hc_sensor_clip"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 171.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 2.1,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "22m 5s",
+  "model_time": "21m 46s",
+  "layers": "25",
+  "filament_m": 5.98,
+  "filament_g": 18.13,
+  "max_z_mm": 5.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "caec223c658bae804624000a22dad4fb",
+  "predicted_s": 1306.5484619140625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_sample_dish__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 92.0,
+    "d": 80.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sample_dish__1",
+    "x": 6.0,
+    "y": 92.0,
+    "w": 92.0,
+    "d": 80.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_sample_dish",
+   "hc_sample_dish"
+  ],
+  "n_objects": 2,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 97.8,
+   "ymin": 6.2,
+   "ymax": 171.7
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_std_2",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 2.6,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "22m 5s",
+  "model_time": "21m 46s",
+  "layers": "25",
+  "filament_m": 5.98,
+  "filament_g": 18.13,
+  "max_z_mm": 5.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "caec223c658bae804624000a22dad4fb",
+  "predicted_s": 1306.5484619140625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_sample_dish__2",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 92.0,
+    "d": 80.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sample_dish__3",
+    "x": 6.0,
+    "y": 92.0,
+    "w": 92.0,
+    "d": 80.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_sample_dish",
+   "hc_sample_dish"
+  ],
+  "n_objects": 2,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 97.8,
+   "ymin": 6.2,
+   "ymax": 171.7
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t06_std_3",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 2.3,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "22m 5s",
+  "model_time": "21m 46s",
+  "layers": "25",
+  "filament_m": 5.98,
+  "filament_g": 18.13,
+  "max_z_mm": 5.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "caec223c658bae804624000a22dad4fb",
+  "predicted_s": 1306.5484619140625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "hc_sample_dish__4",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 92.0,
+    "d": 80.0,
+    "rot": false
+   },
+   {
+    "name": "hc_sample_dish__5",
+    "x": 6.0,
+    "y": 92.0,
+    "w": 92.0,
+    "d": 80.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "hc_sample_dish",
+   "hc_sample_dish"
+  ],
+  "n_objects": 2,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 97.8,
+   "ymin": 6.2,
+   "ymax": 171.7
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t07_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 12.9,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 54m 22s",
+  "model_time": "1h 54m 3s",
+  "layers": "155",
+  "filament_m": 14.61,
+  "filament_g": 44.26,
+  "max_z_mm": 31.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "8c3e3ea42b28d5810b30833d39206d24",
+  "predicted_s": 6843.4541015625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "drum_bezel__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 56.0,
+    "d": 56.0,
+    "rot": false
+   },
+   {
+    "name": "drum_body__0",
+    "x": 68.0,
+    "y": 6.0,
+    "w": 56.0,
+    "d": 56.0,
+    "rot": false
+   },
+   {
+    "name": "drum_body_d25__0",
+    "x": 6.0,
+    "y": 68.0,
+    "w": 56.0,
+    "d": 56.0,
+    "rot": false
+   },
+   {
+    "name": "drum_backdisc__0",
+    "x": 129.9,
+    "y": 6.0,
+    "w": 38.0,
+    "d": 38.0,
+    "rot": false
+   },
+   {
+    "name": "drum_backdisc__1",
+    "x": 68.0,
+    "y": 68.0,
+    "w": 38.0,
+    "d": 38.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "drum_bezel",
+   "drum_body",
+   "drum_body_d25",
+   "drum_backdisc",
+   "drum_backdisc"
+  ],
+  "n_objects": 5,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 167.7,
+   "ymin": 6.2,
+   "ymax": 123.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t08_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 5.2,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "3h 8m 58s",
+  "model_time": "3h 8m 38s",
+  "layers": "708",
+  "filament_m": 50.92,
+  "filament_g": 154.32,
+  "max_z_mm": 169.88,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "e2852475233ee83067951a735d455fa2",
+  "predicted_s": 11318.90234375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "ucs_base__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 120.0,
+    "d": 142.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "ucs_base"
+  ],
+  "n_objects": 1,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 125.8,
+   "ymin": 6.2,
+   "ymax": 147.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t08_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 4.3,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 0m 38s",
+  "model_time": "1h 0m 19s",
+  "layers": "290",
+  "filament_m": 8.64,
+  "filament_g": 26.2,
+  "max_z_mm": 58.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "00464b8272da7845de09dd584fd4f92f",
+  "predicted_s": 3619.692626953125,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "ucs_sample_base__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 44.0,
+    "d": 44.0,
+    "rot": false
+   },
+   {
+    "name": "ucs_platen__0",
+    "x": 56.0,
+    "y": 6.0,
+    "w": 40.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "mould_ring__0",
+    "x": 102.0,
+    "y": 6.0,
+    "w": 37.0,
+    "d": 37.0,
+    "rot": false
+   },
+   {
+    "name": "mould_ring__1",
+    "x": 6.0,
+    "y": 56.0,
+    "w": 37.0,
+    "d": 37.0,
+    "rot": false
+   },
+   {
+    "name": "ucs_piston__0",
+    "x": 49.0,
+    "y": 56.0,
+    "w": 30.0,
+    "d": 30.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "ucs_sample_base",
+   "ucs_platen",
+   "mould_ring",
+   "mould_ring",
+   "ucs_piston"
+  ],
+  "n_objects": 5,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 138.7,
+   "ymin": 6.2,
+   "ymax": 92.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t09_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 5.8,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 47m 44s",
+  "model_time": "1h 47m 25s",
+  "layers": "160",
+  "filament_m": 24.52,
+  "filament_g": 74.31,
+  "max_z_mm": 32.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "0cd2066e3ceb7c5e9188f0c8381cb0a2",
+  "predicted_s": 6445.34130859375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "coupon_bed__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 140.0,
+    "d": 50.0,
+    "rot": false
+   },
+   {
+    "name": "blade_carriage__0",
+    "x": 6.0,
+    "y": 62.0,
+    "w": 116.0,
+    "d": 60.0,
+    "rot": true
+   }
+  ],
+  "objects": [
+   "coupon_bed",
+   "blade_carriage"
+  ],
+  "n_objects": 2,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 145.8,
+   "ymin": 6.2,
+   "ymax": 121.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_t10_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 4.5,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 21m 34s",
+  "model_time": "1h 21m 15s",
+  "layers": "100",
+  "filament_m": 21.54,
+  "filament_g": 65.29,
+  "max_z_mm": 23.96,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "58a0a884aee912ef4a799875fab1879d",
+  "predicted_s": 4875.44384765625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "fc_cradle__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 84.0,
+    "d": 84.0,
+    "rot": false
+   },
+   {
+    "name": "fc_insulator_base__0",
+    "x": 96.0,
+    "y": 6.0,
+    "w": 69.0,
+    "d": 69.0,
+    "rot": false
+   },
+   {
+    "name": "fc_pcb_box__0",
+    "x": 6.0,
+    "y": 96.0,
+    "w": 60.0,
+    "d": 50.0,
+    "rot": false
+   },
+   {
+    "name": "fc_pcb_lid__0",
+    "x": 72.0,
+    "y": 96.0,
+    "w": 60.0,
+    "d": 50.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "fc_cradle",
+   "fc_insulator_base",
+   "fc_pcb_box",
+   "fc_pcb_lid"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 164.7,
+   "ymin": 6.2,
+   "ymax": 145.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_misc_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 1.8,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "36m 52s",
+  "model_time": "36m 33s",
+  "layers": "167",
+  "filament_m": 7.51,
+  "filament_g": 22.77,
+  "max_z_mm": 40.04,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "cb74ff1949d4ecd6f534b17d91bdddbe",
+  "predicted_s": 2193.17041015625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "spread_bracket__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 40.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "spread_bracket__1",
+    "x": 52.0,
+    "y": 6.0,
+    "w": 40.0,
+    "d": 40.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "spread_bracket",
+   "spread_bracket"
+  ],
+  "n_objects": 2,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 91.8,
+   "ymin": 6.2,
+   "ymax": 45.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_misc_solid_1",
+  "printer": "A1M",
+  "infill_pct": 100,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 14.7,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 45m 53s",
+  "model_time": "1h 45m 34s",
+  "layers": "200",
+  "filament_m": 14.34,
+  "filament_g": 43.46,
+  "max_z_mm": 40.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "bbf23d14994986bb94d6ff861da9c78b",
+  "predicted_s": 6334.671875,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "100%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "tilt_gear_30t__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 48.0,
+    "d": 47.8,
+    "rot": false
+   },
+   {
+    "name": "pedestal_d40__0",
+    "x": 60.0,
+    "y": 6.0,
+    "w": 40.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "pedestal_d30__0",
+    "x": 106.0,
+    "y": 6.0,
+    "w": 30.0,
+    "d": 30.0,
+    "rot": false
+   },
+   {
+    "name": "split_mould_A__0",
+    "x": 142.0,
+    "y": 6.0,
+    "w": 30.0,
+    "d": 15.0,
+    "rot": false
+   },
+   {
+    "name": "split_mould_B__0",
+    "x": 6.0,
+    "y": 59.8,
+    "w": 30.0,
+    "d": 15.0,
+    "rot": false
+   },
+   {
+    "name": "wall_ring__0",
+    "x": 6.0,
+    "y": 80.8,
+    "w": 27.4,
+    "d": 27.4,
+    "rot": false
+   },
+   {
+    "name": "wall_ring__1",
+    "x": 39.4,
+    "y": 80.8,
+    "w": 27.4,
+    "d": 27.4,
+    "rot": false
+   },
+   {
+    "name": "wall_ring__2",
+    "x": 72.8,
+    "y": 80.8,
+    "w": 27.4,
+    "d": 27.4,
+    "rot": false
+   },
+   {
+    "name": "tilt_pinion_15t__0",
+    "x": 106.1,
+    "y": 80.8,
+    "w": 25.3,
+    "d": 25.4,
+    "rot": false
+   },
+   {
+    "name": "tapper_cam__0",
+    "x": 137.4,
+    "y": 80.8,
+    "w": 22.9,
+    "d": 19.7,
+    "rot": false
+   },
+   {
+    "name": "pedestal_d20__0",
+    "x": 6.0,
+    "y": 114.2,
+    "w": 20.0,
+    "d": 20.0,
+    "rot": false
+   },
+   {
+    "name": "pedestal_d12__0",
+    "x": 42.0,
+    "y": 59.8,
+    "w": 13.0,
+    "d": 13.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "tilt_gear_30t",
+   "pedestal_d40",
+   "pedestal_d30",
+   "split_mould_A",
+   "split_mould_B",
+   "wall_ring",
+   "wall_ring",
+   "wall_ring",
+   "tilt_pinion_15t",
+   "tapper_cam",
+   "pedestal_d20",
+   "pedestal_d12"
+  ],
+  "n_objects": 12,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 134.0
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_misc_std_sup_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": true,
+  "draft_0p24": false,
+  "slice_s": 18.6,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "3h 13m 3s",
+  "model_time": "3h 12m 44s",
+  "layers": "400",
+  "filament_m": 26.55,
+  "filament_g": 80.45,
+  "max_z_mm": 80.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "50984608f99725e504371f540039ade1",
+  "predicted_s": 11564.3681640625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "1",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "tapper_carriage__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 64.0,
+    "d": 53.0,
+    "rot": false
+   },
+   {
+    "name": "camera_carriage__0",
+    "x": 76.0,
+    "y": 6.0,
+    "w": 32.0,
+    "d": 36.0,
+    "rot": false
+   },
+   {
+    "name": "camera_rod_clamp__0",
+    "x": 114.0,
+    "y": 6.0,
+    "w": 32.0,
+    "d": 36.0,
+    "rot": false
+   },
+   {
+    "name": "camera_rod_clamp__1",
+    "x": 6.0,
+    "y": 65.0,
+    "w": 32.0,
+    "d": 36.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "tapper_carriage",
+   "camera_carriage",
+   "camera_rod_clamp",
+   "camera_rod_clamp"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 5.8,
+   "xmax": 161.8,
+   "ymin": 0.2,
+   "ymax": 114.1
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_misc_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 5.7,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 30m 18s",
+  "model_time": "1h 29m 59s",
+  "layers": "150",
+  "filament_m": 17.07,
+  "filament_g": 51.73,
+  "max_z_mm": 30.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "5d560bf2835988702db9b0300d2957ec",
+  "predicted_s": 5399.259765625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "micro_carriage__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 48.0,
+    "d": 80.0,
+    "rot": false
+   },
+   {
+    "name": "fc_lid__0",
+    "x": 60.0,
+    "y": 6.0,
+    "w": 76.0,
+    "d": 76.0,
+    "rot": false
+   },
+   {
+    "name": "cyl_fill_holder__0",
+    "x": 6.0,
+    "y": 92.0,
+    "w": 52.0,
+    "d": 52.0,
+    "rot": false
+   },
+   {
+    "name": "funnel_collar__0",
+    "x": 64.0,
+    "y": 92.0,
+    "w": 40.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "sieve_cup__0",
+    "x": 109.9,
+    "y": 92.0,
+    "w": 34.0,
+    "d": 34.0,
+    "rot": false
+   },
+   {
+    "name": "sieve_ring__0",
+    "x": 141.9,
+    "y": 6.0,
+    "w": 29.8,
+    "d": 29.8,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "micro_carriage",
+   "fc_lid",
+   "cyl_fill_holder",
+   "funnel_collar",
+   "sieve_cup",
+   "sieve_ring"
+  ],
+  "n_objects": 6,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.5,
+   "ymin": 6.2,
+   "ymax": 143.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_shared_draft_1",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 5.5,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 36m 50s",
+  "model_time": "1h 36m 31s",
+  "layers": "84",
+  "filament_m": 22.4,
+  "filament_g": 67.88,
+  "max_z_mm": 20.12,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "c75e5bc258fa93403c25e8fe04c73e54",
+  "predicted_s": 5791.5927734375,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "tripod_spider__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 122.4,
+    "d": 108.0,
+    "rot": false
+   },
+   {
+    "name": "stage_end_block__0",
+    "x": 6.0,
+    "y": 120.0,
+    "w": 80.0,
+    "d": 43.0,
+    "rot": false
+   },
+   {
+    "name": "stage_motor_block__0",
+    "x": 92.0,
+    "y": 120.0,
+    "w": 80.0,
+    "d": 43.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "tripod_spider",
+   "stage_end_block",
+   "stage_motor_block"
+  ],
+  "n_objects": 3,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 171.8,
+   "ymin": 6.2,
+   "ymax": 162.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_shared_draft_2",
+  "printer": "A1M",
+  "infill_pct": 15,
+  "supports": false,
+  "draft_0p24": true,
+  "slice_s": 3.5,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "2h 37m 35s",
+  "model_time": "2h 37m 16s",
+  "layers": "708",
+  "filament_m": 28.0,
+  "filament_g": 84.87,
+  "max_z_mm": 169.88,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "024ad4ff3fa3079f7c157016e77e12ee",
+  "predicted_s": 9436.298828125,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.24",
+   "wall_loops": "3",
+   "sparse_infill_density": "15%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "pan_adapter__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 86.0,
+    "d": 86.0,
+    "rot": false
+   },
+   {
+    "name": "camera_tower__0",
+    "x": 98.0,
+    "y": 6.0,
+    "w": 70.0,
+    "d": 50.0,
+    "rot": false
+   },
+   {
+    "name": "backlight_foot__0",
+    "x": 6.0,
+    "y": 98.0,
+    "w": 60.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "backlight_foot__1",
+    "x": 72.0,
+    "y": 98.0,
+    "w": 60.0,
+    "d": 40.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "pan_adapter",
+   "camera_tower",
+   "backlight_foot",
+   "backlight_foot"
+  ],
+  "n_objects": 4,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 167.7,
+   "ymin": 6.2,
+   "ymax": 137.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_shared_std_1",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 3.1,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "1h 52m 18s",
+  "model_time": "1h 51m 59s",
+  "layers": "185",
+  "filament_m": 25.32,
+  "filament_g": 76.72,
+  "max_z_mm": 37.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "b0b6810b8b36f7f802238c2378d09ea2",
+  "predicted_s": 6719.044921875,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "tripod_leg_160__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 160.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_160__1",
+    "x": 20.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 160.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_160__2",
+    "x": 34.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 160.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_120__0",
+    "x": 48.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 120.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_120__1",
+    "x": 62.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 120.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_120__2",
+    "x": 76.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 120.0,
+    "rot": false
+   },
+   {
+    "name": "stage_carriage__0",
+    "x": 90.0,
+    "y": 6.0,
+    "w": 80.0,
+    "d": 30.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "tripod_leg_160",
+   "tripod_leg_160",
+   "tripod_leg_160",
+   "tripod_leg_120",
+   "tripod_leg_120",
+   "tripod_leg_120",
+   "stage_carriage"
+  ],
+  "n_objects": 7,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 169.8,
+   "ymin": 6.2,
+   "ymax": 165.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "a1m_shared_std_2",
+  "printer": "A1M",
+  "infill_pct": 25,
+  "supports": false,
+  "draft_0p24": false,
+  "slice_s": 19.1,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "2h 9m 1s",
+  "model_time": "2h 8m 41s",
+  "layers": "840",
+  "filament_m": 17.97,
+  "filament_g": 54.46,
+  "max_z_mm": 168.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "a71ce5f74384825241a5fe4db8fc3c91",
+  "predicted_s": 7721.93994140625,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab A1 mini",
+   "nozzle_diameter": [
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "0",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "tripod_leg_80__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 80.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_80__1",
+    "x": 20.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 80.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_80__2",
+    "x": 34.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 80.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_40__0",
+    "x": 48.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_40__1",
+    "x": 62.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "tripod_leg_40__2",
+    "x": 76.0,
+    "y": 6.0,
+    "w": 8.0,
+    "d": 40.0,
+    "rot": false
+   },
+   {
+    "name": "riser_120__0",
+    "x": 90.0,
+    "y": 6.0,
+    "w": 14.0,
+    "d": 14.0,
+    "rot": false
+   },
+   {
+    "name": "riser_160__0",
+    "x": 110.0,
+    "y": 6.0,
+    "w": 14.0,
+    "d": 14.0,
+    "rot": false
+   },
+   {
+    "name": "riser_40__0",
+    "x": 130.0,
+    "y": 6.0,
+    "w": 14.0,
+    "d": 14.0,
+    "rot": false
+   },
+   {
+    "name": "riser_80__0",
+    "x": 150.0,
+    "y": 6.0,
+    "w": 14.0,
+    "d": 14.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "tripod_leg_80",
+   "tripod_leg_80",
+   "tripod_leg_80",
+   "tripod_leg_40",
+   "tripod_leg_40",
+   "tripod_leg_40",
+   "riser_120",
+   "riser_160",
+   "riser_40",
+   "riser_80"
+  ],
+  "n_objects": 10,
+  "extrusion_extents_mm": {
+   "xmin": 6.2,
+   "xmax": 163.5,
+   "ymin": 6.2,
+   "ymax": 85.8
+  },
+  "merged_bbox_ok": true
+ },
+ {
+  "plate": "h2d_t07_std_sup_1",
+  "printer": "H2D",
+  "infill_pct": 25,
+  "supports": true,
+  "draft_0p24": false,
+  "slice_s": 23.8,
+  "return_code": 0,
+  "error": "Success.",
+  "time": "2h 22m 16s",
+  "model_time": "2h 21m 57s",
+  "layers": "1225",
+  "filament_m": 20.07,
+  "filament_g": 60.82,
+  "max_z_mm": 245.0,
+  "tool_changes": [
+   "T255"
+  ],
+  "gcode_md5": "3d3f28732d8e3b27376aff9a4819189d",
+  "predicted_s": 8517.2529296875,
+  "placed": [],
+  "check": {
+   "printer_model": "Bambu Lab H2D",
+   "nozzle_diameter": [
+    "0.4",
+    "0.4"
+   ],
+   "layer_height": "0.2",
+   "wall_loops": "3",
+   "sparse_infill_density": "25%",
+   "enable_support": "1",
+   "filament_type": [
+    "PLA"
+   ],
+   "filament_map": [
+    "1"
+   ],
+   "nozzle_temperature": [
+    "220"
+   ],
+   "curr_bed_type": "Textured PEI Plate"
+  },
+  "packed": [
+   {
+    "name": "drum_shaft__0",
+    "x": 6.0,
+    "y": 6.0,
+    "w": 46.0,
+    "d": 46.0,
+    "rot": false
+   }
+  ],
+  "objects": [
+   "drum_shaft"
+  ],
+  "n_objects": 1,
+  "extrusion_extents_mm": {
+   "xmin": 152.2,
+   "xmax": 197.8,
+   "ymin": 115.6,
+   "ymax": 204.1
+  },
+  "merged_bbox_ok": true
+ }
+]

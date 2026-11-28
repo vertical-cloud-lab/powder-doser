@@ -1,0 +1,9 @@
+(version 1)
+# The ADS1115's MSOP-10 has 0.5 mm pitch: its own pads sit 0.15 mm apart.
+(rule "U3 fine pitch"
+	(constraint clearance (min 0.15mm))
+	(condition "A.memberOfFootprint('U3') && B.memberOfFootprint('U3')"))
+# Traces leaving the MSOP-10 pads (autorouter neck-down) may pass a neighbouring U3 pad at 0.15 mm.
+(rule "U3 fan-out"
+	(constraint clearance (min 0.15mm))
+	(condition "A.Type == 'Track' && B.memberOfFootprint('U3')"))

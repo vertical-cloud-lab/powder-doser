@@ -1,0 +1,9 @@
+  t = 0.000 s  Q down through inlet = 0.13 mL/s  up through cup mouth = 0.16 mL/s  wall 0 s
+  t = 0.293 s  Q down through inlet = 4.52 mL/s  up through cup mouth = 8.66 mL/s  wall 91 s
+  t = 0.585 s  Q down through inlet = 4.50 mL/s  up through cup mouth = 8.77 mL/s  wall 131 s
+  t = 0.878 s  Q down through inlet = 4.50 mL/s  up through cup mouth = 8.77 mL/s  wall 189 s
+  t = 1.171 s  Q down through inlet = 4.50 mL/s  up through cup mouth = 8.75 mL/s  wall 235 s
+  t = 1.463 s  Q down through inlet = 4.50 mL/s  up through cup mouth = 8.74 mL/s  wall 264 s
+  t = 1.756 s  Q down through inlet = 4.50 mL/s  up through cup mouth = 8.73 mL/s  wall 279 s
+  t = 2.000 s  Q down through inlet = 4.50 mL/s  up through cup mouth = 8.73 mL/s  wall 284 s
+{'case': 'salt1', 'h': 0.00075, 'dt': 0.00014631325814524145, 'steps': 13669, 'wall_s': 283.75700402259827, 'Q_inlet_down_mLs': 4.495115500842265, 'Q_cupmouth_up_mLs': 8.726424048239211, 'v_up_mean_in_cup_outer_half': 0.012314632978849386, 'v_up_max_in_cup': 0.07883125220313367, 'v_up_inlet_annulus_max': 0.022301060822986774, 'stream_v_at_floor': 1.1971467061112844, 'stream_v_at_inlet': 0.4586898055184905, 'stream_Q_free_plume_at_floor_mLs': 87.54731648327993}

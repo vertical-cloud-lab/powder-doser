@@ -1,0 +1,231 @@
+** Drc report for fc1.kicad_pcb **
+** Created on 2026-11-28T09:43:27+0000 **
+** Report includes: Errors, Warnings **
+
+** Found 55 DRC violations **
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(8.5000 mm, 21.5000 mm): PTH pad 1 [/SUM] of J1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 4.0000 mm): PTH pad 1 [/SUM] of K1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(8.5000 mm, 21.5000 mm): PTH pad 1 [/SUM] of J1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 4.0000 mm): PTH pad 1 [/SUM] of K1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.4975 mm, 10.5000 mm): Pad 1 [/SUM] of C2 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.4975 mm, 17.5000 mm): Pad 1 [/SUM] of C1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5100 mm, 14.0000 mm): Pad 1 [/SUM] of R1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(23.0950 mm, 21.5000 mm): Pad 8 [/SUM] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on F.Mask
+    @(18.5000 mm, 21.5000 mm): Track [/SUM] on F.Cu, length 17.5000 mm
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(7.6000 mm, 23.9000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(10.7000 mm, 23.9000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(10.7000 mm, 19.1000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(22.0000 mm, 23.1000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(20.1000 mm, 7.0000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(16.9000 mm, 2.6000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(20.1000 mm, 15.8000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(20.1000 mm, 12.2000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(7.6000 mm, 19.1000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(16.9000 mm, 8.0000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(13.5000 mm, 22.9000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(22.0000 mm, 19.9000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(13.5000 mm, 20.2000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(16.9000 mm, 13.0000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(7.6000 mm, 23.9000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(10.7000 mm, 23.9000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(10.7000 mm, 19.1000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(22.0000 mm, 23.1000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(20.1000 mm, 7.0000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(16.9000 mm, 2.6000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(20.1000 mm, 15.8000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(20.1000 mm, 12.2000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(7.6000 mm, 19.1000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(16.9000 mm, 8.0000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(13.5000 mm, 22.9000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(22.0000 mm, 19.9000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(13.5000 mm, 20.2000 mm): Via [/GUARD] on F.Cu - B.Cu
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(7.0000 mm, 18.6000 mm): Polygon on B.Mask
+    @(16.9000 mm, 13.0000 mm): Via [/GUARD] on F.Cu - B.Cu
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** End of Report **

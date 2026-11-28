@@ -1,0 +1,129 @@
+{
+  "provenance": {
+    "drum_body": "CAD export cad/out/step/drum_body.step (sha256 41df5711da23)",
+    "shaft": "simplified from cad/parts.py drum_shaft: tube \u00d825/\u00d821 x 245, flange \u00d840 x 4, gear modelled as a solid ring to the root circle \u00d841.5"
+  },
+  "assumptions": {
+    "bearings": {
+      "front": [
+        30.0,
+        40.0
+      ],
+      "rear": [
+        222.5,
+        232.5
+      ]
+    },
+    "drum_payload_g": 41.0,
+    "drum_cg_z": -10.0,
+    "stall_torque_Nmm": 220.00000000000003,
+    "F_t": 10.000000000000002,
+    "F_r": 3.639702342662024
+  },
+  "beam": [
+    {
+      "E": 3500.0,
+      "front_bearing_z": 25.0,
+      "rear_bearing_z": 227.5,
+      "span": 202.5,
+      "overhang_to_drum_cg": 35.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 1.1875493506594346,
+      "tilt_drum_deg": 0.002034461594171158,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 28.90327396189702,
+      "twist_gear_to_drum_deg": 0.052565122425064684
+    },
+    {
+      "E": 3500.0,
+      "front_bearing_z": 35.0,
+      "rear_bearing_z": 227.5,
+      "span": 192.5,
+      "overhang_to_drum_cg": 45.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 1.9949495958414518,
+      "tilt_drum_deg": 0.0026670252831151316,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 33.05725335249821,
+      "twist_gear_to_drum_deg": 0.052565122425064684
+    },
+    {
+      "E": 3500.0,
+      "front_bearing_z": 55.0,
+      "rear_bearing_z": 227.5,
+      "span": 172.5,
+      "overhang_to_drum_cg": 65.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 4.301361525385486,
+      "tilt_drum_deg": 0.004000537924672697,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 35.30866744423694,
+      "twist_gear_to_drum_deg": 0.052565122425064684
+    },
+    {
+      "E": 2300.0,
+      "front_bearing_z": 25.0,
+      "rear_bearing_z": 227.5,
+      "span": 202.5,
+      "overhang_to_drum_cg": 35.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 1.8071403162208788,
+      "tilt_drum_deg": 0.0030959198172169793,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 43.983242985495465,
+      "twist_gear_to_drum_deg": 0.07999040369031582
+    },
+    {
+      "E": 2300.0,
+      "front_bearing_z": 35.0,
+      "rear_bearing_z": 227.5,
+      "span": 192.5,
+      "overhang_to_drum_cg": 45.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 3.035792863236992,
+      "tilt_drum_deg": 0.004058516735175199,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 50.30451597119292,
+      "twist_gear_to_drum_deg": 0.07999040369031582
+    },
+    {
+      "E": 2300.0,
+      "front_bearing_z": 55.0,
+      "rear_bearing_z": 227.5,
+      "span": 172.5,
+      "overhang_to_drum_cg": 65.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 6.545550147325739,
+      "tilt_drum_deg": 0.0060877751027628,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 53.730580893404046,
+      "twist_gear_to_drum_deg": 0.07999040369031582
+    }
+  ],
+  "runout": {
+    "static_offset_mm": 0.22012987012987012,
+    "rotating_runout_TIR_mm": 0.21656641683301991,
+    "axial_wobble_rim_TIR_mm": 0.1954768762233649,
+    "assumptions": {
+      "c_front": 0.15,
+      "c_rear": 0.15,
+      "ecc": 0.05,
+      "flange_tilt_deg": 0.2
+    }
+  },
+  "lewis": {
+    "Ft_N": 10.000000000000002,
+    "b_mm": 10.0,
+    "m": 1.0,
+    "Y": 0.399,
+    "V_m_s": 0.2511179727769441,
+    "Kv": 1.0411668807831056,
+    "sigma_MPa": 2.6094408039676833
+  }
+}

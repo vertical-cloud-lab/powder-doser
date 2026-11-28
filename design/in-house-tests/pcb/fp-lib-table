@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "fc1")(type "KiCad")(uri "${KIPRJMOD}/fc1.pretty")(options "")(descr "FC-1 project footprints (Coto 9002 SIP-6)"))
+)

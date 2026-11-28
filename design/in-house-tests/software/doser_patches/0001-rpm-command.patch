@@ -1,0 +1,22 @@
+--- a/hardware/test-module/firmware/trickle_tap/main_three_phase.py	2026-11-28 09:40:27.602541092 +0000
++++ b/hardware/test-module/firmware/trickle_tap/main_three_phase.py	2026-11-28 09:40:27.635591955 +0000
+@@ -1137,6 +1137,7 @@
+     "  s                    print rig state, thresholds, phase parameters\n"
+     "  d                    dispense (STEPPER_DISPENSE_DEG of auger)\n"
+     "  r <deg>              rotate auger by <deg> auger degrees (signed)\n"
++    "  rpm <auger rpm>      speed for r and d (1..109 auger rpm)\n"
+     "  t                    tap (TAP_COUNT solenoid pulses)\n"
+     "  a <deg>              mounting plate to <deg> plate degrees\n"
+     "  p <preset>           plate to named preset (vertical = 45 plate deg)\n"
+@@ -1296,6 +1297,11 @@
+                 self.stepper.rotate_degrees(config.STEPPER_DISPENSE_DEG)
+             elif cmd == "r":
+                 self.stepper.rotate_degrees(float(arg))
++            elif cmd == "rpm":
++                # In-house tests (design/in-house-tests): set the auger
++                # speed that r and d use, e.g. the rotating drum's 1-20 rpm.
++                self.stepper.set_speed(float(arg))
++                print("[stepper] {:.1f} auger RPM".format(self.stepper._rpm))
+             elif cmd == "t":
+                 self.tap.tap()
+             elif cmd == "a":

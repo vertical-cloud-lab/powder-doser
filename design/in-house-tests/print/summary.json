@@ -1,0 +1,13 @@
+{
+ "plates": 32,
+ "a1m_plates": 31,
+ "h2d_plates": 1,
+ "total_time_h": 48.0,
+ "a1m_time_h": 45.6,
+ "h2d_time_h": 2.4,
+ "pla_g": 1697,
+ "all_return_code_0": true,
+ "all_on_bed": true,
+ "unique_parts": 80,
+ "printed_items": 121
+}

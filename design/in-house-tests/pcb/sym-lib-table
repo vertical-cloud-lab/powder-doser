@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "fc1")(type "KiCad")(uri "${KIPRJMOD}/fc1.kicad_sym")(options "")(descr "FC-1 project symbols (Coto 9002 reed relay)"))
+)
