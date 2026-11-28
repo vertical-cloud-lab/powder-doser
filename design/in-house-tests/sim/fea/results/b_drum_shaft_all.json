@@ -1,0 +1,301 @@
+{
+  "provenance": {
+    "drum_body": "CAD export cad/out/step/drum_body.step (sha256 41df5711da23)",
+    "shaft": "simplified from cad/parts.py drum_shaft: tube \u00d825/\u00d821 x 245, flange \u00d840 x 4, gear modelled as a solid ring to the root circle \u00d841.5"
+  },
+  "assumptions": {
+    "bearings": {
+      "front": [
+        30.0,
+        40.0
+      ],
+      "rear": [
+        222.5,
+        232.5
+      ]
+    },
+    "drum_payload_g": 41.0,
+    "drum_cg_z": -10.0,
+    "stall_torque_Nmm": 220.00000000000003,
+    "F_t": 10.000000000000002,
+    "F_r": 3.639702342662024
+  },
+  "beam": [
+    {
+      "E": 3500.0,
+      "front_bearing_z": 25.0,
+      "rear_bearing_z": 227.5,
+      "span": 202.5,
+      "overhang_to_drum_cg": 35.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 1.1875493506594346,
+      "tilt_drum_deg": 0.002034461594171158,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 28.90327396189702,
+      "twist_gear_to_drum_deg": 0.052565122425064684
+    },
+    {
+      "E": 3500.0,
+      "front_bearing_z": 35.0,
+      "rear_bearing_z": 227.5,
+      "span": 192.5,
+      "overhang_to_drum_cg": 45.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 1.9949495958414518,
+      "tilt_drum_deg": 0.0026670252831151316,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 33.05725335249821,
+      "twist_gear_to_drum_deg": 0.052565122425064684
+    },
+    {
+      "E": 3500.0,
+      "front_bearing_z": 55.0,
+      "rear_bearing_z": 227.5,
+      "span": 172.5,
+      "overhang_to_drum_cg": 65.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 4.301361525385486,
+      "tilt_drum_deg": 0.004000537924672697,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 35.30866744423694,
+      "twist_gear_to_drum_deg": 0.052565122425064684
+    },
+    {
+      "E": 2300.0,
+      "front_bearing_z": 25.0,
+      "rear_bearing_z": 227.5,
+      "span": 202.5,
+      "overhang_to_drum_cg": 35.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 1.8071403162208788,
+      "tilt_drum_deg": 0.0030959198172169793,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 43.983242985495465,
+      "twist_gear_to_drum_deg": 0.07999040369031582
+    },
+    {
+      "E": 2300.0,
+      "front_bearing_z": 35.0,
+      "rear_bearing_z": 227.5,
+      "span": 192.5,
+      "overhang_to_drum_cg": 45.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 3.035792863236992,
+      "tilt_drum_deg": 0.004058516735175199,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 50.30451597119292,
+      "twist_gear_to_drum_deg": 0.07999040369031582
+    },
+    {
+      "E": 2300.0,
+      "front_bearing_z": 55.0,
+      "rear_bearing_z": 227.5,
+      "span": 172.5,
+      "overhang_to_drum_cg": 65.0,
+      "I_mm4": 9628.196085089317,
+      "drum_load_N": 0.40221,
+      "sag_drum_um": 6.545550147325739,
+      "tilt_drum_deg": 0.0060877751027628,
+      "gear_force_N": 10.641777724759123,
+      "drum_shift_at_stall_um": 53.730580893404046,
+      "twist_gear_to_drum_deg": 0.07999040369031582
+    }
+  ],
+  "runout": {
+    "static_offset_mm": 0.22012987012987012,
+    "rotating_runout_TIR_mm": 0.21656641683301991,
+    "axial_wobble_rim_TIR_mm": 0.1954768762233649,
+    "assumptions": {
+      "c_front": 0.15,
+      "c_rear": 0.15,
+      "ecc": 0.05,
+      "flange_tilt_deg": 0.2
+    }
+  },
+  "lewis": {
+    "Ft_N": 10.000000000000002,
+    "b_mm": 10.0,
+    "m": 1.0,
+    "Y": 0.399,
+    "V_m_s": 0.2511179727769441,
+    "Kv": 1.0411668807831056,
+    "sigma_MPa": 2.6094408039676833
+  },
+  "tooth": [
+    {
+      "h_fine": 0.12,
+      "rho_f": 0.38,
+      "n_elem": 1631,
+      "n_dof": 6956,
+      "s1_root_MPa": 4.963190839309041,
+      "s3_root_MPa": -5.387252069701535,
+      "load_N_per_mm": 1.0641777724759123,
+      "r_tangent": 21.05495123780945
+    },
+    {
+      "h_fine": 0.06,
+      "rho_f": 0.38,
+      "n_elem": 2677,
+      "n_dof": 11164,
+      "s1_root_MPa": 4.9627967842005205,
+      "s3_root_MPa": -5.3702834294366415,
+      "load_N_per_mm": 1.0641777724759123,
+      "r_tangent": 21.05495123780945
+    },
+    {
+      "h_fine": 0.03,
+      "rho_f": 0.38,
+      "n_elem": 5675,
+      "n_dof": 23304,
+      "s1_root_MPa": 4.955071873945288,
+      "s3_root_MPa": -5.367470383894116,
+      "load_N_per_mm": 1.0641777724759123,
+      "r_tangent": 21.05495123780945
+    },
+    {
+      "h_fine": 0.12,
+      "rho_f": 0.2,
+      "n_elem": 1603,
+      "n_dof": 6836,
+      "s1_root_MPa": 5.465606470476324,
+      "s3_root_MPa": -6.54061032706073,
+      "load_N_per_mm": 1.0641777724759123,
+      "r_tangent": 20.918792198049513
+    },
+    {
+      "h_fine": 0.06,
+      "rho_f": 0.2,
+      "n_elem": 2551,
+      "n_dof": 10648,
+      "s1_root_MPa": 5.450263521773932,
+      "s3_root_MPa": -6.594191174235098,
+      "load_N_per_mm": 1.0641777724759123,
+      "r_tangent": 20.918792198049513
+    },
+    {
+      "h_fine": 0.03,
+      "rho_f": 0.2,
+      "n_elem": 4941,
+      "n_dof": 20296,
+      "s1_root_MPa": 5.471963840101344,
+      "s3_root_MPa": -6.569293389039009,
+      "load_N_per_mm": 1.0641777724759123,
+      "r_tangent": 20.918792198049513
+    }
+  ],
+  "fea": [
+    {
+      "lc": 5.0,
+      "nodes": 33518,
+      "tets": 17879,
+      "E": 3500.0,
+      "gravity": {
+        "drum_front_uy_um": -1672397500.0,
+        "drum_rear_uy_um": -1111236500.0,
+        "drum_tilt_deg": 1786230.9404078214,
+        "gear_uy_um": 502029200.0,
+        "vm_max_MPa": 43238689.285802945,
+        "vm_p99_MPa": 20940979.51327076
+      },
+      "gear_force_stall": {
+        "drum_front_uy_um": 14.17628,
+        "drum_rear_uy_um": 9.6371115,
+        "drum_tilt_deg": -0.014448622086040478,
+        "gear_uy_um": -19.81047,
+        "vm_max_MPa": 0.5184100789012952,
+        "vm_p99_MPa": 0.30608968866698827
+      },
+      "stall_torque": {
+        "vm_max_MPa": 1.5061649826069052,
+        "vm_p99_MPa": 0.16027825537525878,
+        "twist_gear_vs_drum_deg": 0.032031810539546415
+      }
+    },
+    {
+      "lc": 4.0,
+      "nodes": 47563,
+      "tets": 25561,
+      "E": 3500.0,
+      "gravity": {
+        "drum_front_uy_um": -1710945000.0,
+        "drum_rear_uy_um": -1104720500.0,
+        "drum_tilt_deg": 1929672.5159682543,
+        "gear_uy_um": 493560800.0,
+        "vm_max_MPa": 43000823.94519307,
+        "vm_p99_MPa": 21230549.28288658
+      },
+      "gear_force_stall": {
+        "drum_front_uy_um": 14.326664999999998,
+        "drum_rear_uy_um": 9.4751735,
+        "drum_tilt_deg": -0.015442777071866276,
+        "gear_uy_um": -19.57093,
+        "vm_max_MPa": 0.5310414841813235,
+        "vm_p99_MPa": 0.30648026844859444
+      },
+      "stall_torque": {
+        "vm_max_MPa": 2.0059327318690725,
+        "vm_p99_MPa": 0.16288348223927623,
+        "twist_gear_vs_drum_deg": 0.03214707469078569
+      }
+    },
+    {
+      "lc": 3.0,
+      "nodes": 70129,
+      "tets": 37962,
+      "E": 3500.0,
+      "gravity": {
+        "drum_front_uy_um": -1598835000.0,
+        "drum_rear_uy_um": -1045145000.0,
+        "drum_tilt_deg": 1762450.0088110305,
+        "gear_uy_um": 465132900.0,
+        "vm_max_MPa": 52899784.80053021,
+        "vm_p99_MPa": 20879010.429115202
+      },
+      "gear_force_stall": {
+        "drum_front_uy_um": 13.267834999999998,
+        "drum_rear_uy_um": 8.8890375,
+        "drum_tilt_deg": -0.013938145338468667,
+        "gear_uy_um": -19.273419999999998,
+        "vm_max_MPa": 0.6240517046615724,
+        "vm_p99_MPa": 0.298921217916865
+      },
+      "stall_torque": {
+        "vm_max_MPa": 2.9201632922154066,
+        "vm_p99_MPa": 0.15739259183866433,
+        "twist_gear_vs_drum_deg": 0.0323496860269603
+      }
+    },
+    {
+      "lc": 4.0,
+      "nodes": 47563,
+      "tets": 25561,
+      "E": 2300.0,
+      "gravity": {
+        "drum_front_uy_um": -2603612000.0,
+        "drum_rear_uy_um": -1681096500.0,
+        "drum_tilt_deg": 2936458.0380778275,
+        "gear_uy_um": 751070700.0,
+        "vm_max_MPa": 43000823.94519307,
+        "vm_p99_MPa": 21230549.28288658
+      },
+      "gear_force_stall": {
+        "drum_front_uy_um": 21.80145,
+        "drum_rear_uy_um": 14.41874,
+        "drum_tilt_deg": -0.023499895798279335,
+        "gear_uy_um": -29.78186,
+        "vm_max_MPa": 0.5310414841813235,
+        "vm_p99_MPa": 0.30648026844859444
+      },
+      "stall_torque": {
+        "vm_max_MPa": 2.0059327318690725,
+        "vm_p99_MPa": 0.16288348223927623,
+        "twist_gear_vs_drum_deg": 0.04891946266313298
+      }
+    }
+  ]
+}

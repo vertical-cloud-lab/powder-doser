@@ -1,0 +1,487 @@
+{
+  "analysis": [
+    {
+      "test": "1 heap",
+      "quantity": "flank angle, roughness 0 mm",
+      "unit": "deg",
+      "n": 24,
+      "mean": 0.0003247649547855798,
+      "max_abs": 0.01073292426973893,
+      "rms": 0.004878405158857772,
+      "target": "0.5",
+      "note": "noise 0.02, blur 1 px, rounded apex"
+    },
+    {
+      "test": "1 heap",
+      "quantity": "flank angle, roughness 0.03 mm",
+      "unit": "deg",
+      "n": 24,
+      "mean": -0.006336335457115094,
+      "max_abs": 0.2173934892510161,
+      "rms": 0.09841136325741356,
+      "target": "0.5",
+      "note": "noise 0.02, blur 1 px, rounded apex"
+    },
+    {
+      "test": "1 heap",
+      "quantity": "apex angle atan(2h/D)",
+      "unit": "deg",
+      "n": 12,
+      "mean": 0.033718594389135305,
+      "max_abs": 0.21137081487190557,
+      "rms": 0.0795692824461971,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "1 heap",
+      "quantity": "heap volume",
+      "unit": "%",
+      "n": 12,
+      "mean": -0.6712516249392778,
+      "max_abs": 1.6553618949165738,
+      "rms": 0.7491890440224149,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "1 heap",
+      "quantity": "flank angle, roughness 0.05 mm",
+      "unit": "deg",
+      "n": 24,
+      "mean": 0.03249509702750849,
+      "max_abs": 0.552962701587191,
+      "rms": 0.18391624645596347,
+      "target": "0.5",
+      "note": "noise 0.02, blur 1 px, rounded apex"
+    },
+    {
+      "test": "1 heap",
+      "quantity": "flank angle, roughness 0.1 mm",
+      "unit": "deg",
+      "n": 24,
+      "mean": 0.06088929365790937,
+      "max_abs": 1.1106988602165337,
+      "rms": 0.4217368943419183,
+      "target": "0.5",
+      "note": "noise 0.02, blur 1 px, rounded apex"
+    },
+    {
+      "test": "2 density",
+      "quantity": "column height (16 px/mm)",
+      "unit": "mm",
+      "n": 8,
+      "mean": -0.002981328405710082,
+      "max_abs": 0.0438601204345872,
+      "rms": 0.030630595984172455,
+      "target": "0.05",
+      "note": "mound/crater and tilt, graduations"
+    },
+    {
+      "test": "2 density",
+      "quantity": "Kawakita a (volume noise 0.003 mL)",
+      "unit": "-",
+      "n": 20,
+      "mean": 3.158130284358282e-05,
+      "max_abs": 0.0007849652234698246,
+      "rms": 0.00035468307529990846,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "2 density",
+      "quantity": "Kawakita 1/b",
+      "unit": "%",
+      "n": 20,
+      "mean": -0.3596976448599676,
+      "max_abs": 4.09456550782844,
+      "rms": 1.2659277899965895,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "3 plate",
+      "quantity": "slip angle (5 fps camera, 20 Hz IMU)",
+      "unit": "deg",
+      "n": 6,
+      "mean": 0.010388365265487328,
+      "max_abs": 0.039351025387119876,
+      "rms": 0.01958987440691775,
+      "target": "0.5 (about +-2 on phi_w)",
+      "note": ""
+    },
+    {
+      "test": "3 plate",
+      "quantity": "phi_w (3 lids x 3, slip SD 0.25 deg)",
+      "unit": "deg",
+      "n": 30,
+      "mean": 0.01954562033684522,
+      "max_abs": 0.43844269046230266,
+      "rms": 0.18662653477146532,
+      "target": "2",
+      "note": ""
+    },
+    {
+      "test": "3 plate",
+      "quantity": "wall adhesion c_w",
+      "unit": "Pa",
+      "n": 30,
+      "mean": -0.08584223046573512,
+      "max_abs": 1.3143566474698707,
+      "rms": 0.6053163503935575,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "4 PSD",
+      "quantity": "d10 (number), 6 fields, 15 % touching",
+      "unit": "%",
+      "n": 3,
+      "mean": -0.5679789841732045,
+      "max_abs": 1.7558568542610287,
+      "rms": 1.6278789173996873,
+      "target": "5",
+      "note": ""
+    },
+    {
+      "test": "4 PSD",
+      "quantity": "d50 (number), 6 fields, 15 % touching",
+      "unit": "%",
+      "n": 3,
+      "mean": -0.5170930059105702,
+      "max_abs": 1.346341429343234,
+      "rms": 1.2777575145139084,
+      "target": "5",
+      "note": ""
+    },
+    {
+      "test": "4 PSD",
+      "quantity": "d90 (number), 6 fields, 15 % touching",
+      "unit": "%",
+      "n": 3,
+      "mean": -0.7267681813805957,
+      "max_abs": 4.485748757705855,
+      "rms": 2.755726654516213,
+      "target": "5",
+      "note": ""
+    },
+    {
+      "test": "4 PSD",
+      "quantity": "d50 (volume)",
+      "unit": "%",
+      "n": 3,
+      "mean": -1.308636818479262,
+      "max_abs": 5.119124109747208,
+      "rms": 2.9976039324787402,
+      "target": "-",
+      "note": "few big grains set it: sampling error"
+    },
+    {
+      "test": "4 PSD",
+      "quantity": "grain count after watershed",
+      "unit": "%",
+      "n": 3,
+      "mean": -0.6565850683609634,
+      "max_abs": 0.9269988412514474,
+      "rms": 0.6856144177518382,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "5 orifice",
+      "quantity": "flow rate, 10 Hz, 0.25 s balance lag corrected",
+      "unit": "%",
+      "n": 7,
+      "mean": 0.05490034148672202,
+      "max_abs": 0.272101502956934,
+      "rms": 0.10704862853245821,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "5 orifice",
+      "quantity": "Beverloo C (2 % rate scatter)",
+      "unit": "%",
+      "n": 20,
+      "mean": 0.4707680740845426,
+      "max_abs": 3.6757126240557603,
+      "rms": 1.7773947895108764,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "5 orifice",
+      "quantity": "Beverloo k",
+      "unit": "-",
+      "n": 20,
+      "mean": 0.011403392357168706,
+      "max_abs": 0.09821322641156827,
+      "rms": 0.043396013355047065,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "6 humidity",
+      "quantity": "u_eq (6 weighings, 2 % noise)",
+      "unit": "%",
+      "n": 20,
+      "mean": 0.592879319277697,
+      "max_abs": 4.009091672099463,
+      "rms": 2.2351612135412577,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "6 humidity",
+      "quantity": "tau",
+      "unit": "%",
+      "n": 20,
+      "mean": 1.7387822701635145,
+      "max_abs": 19.403767700256182,
+      "rms": 8.675890752319477,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "7 drum",
+      "quantity": "free-surface angle (12 px/mm)",
+      "unit": "deg",
+      "n": 8,
+      "mean": -0.0008989089113993209,
+      "max_abs": 0.06486368460294756,
+      "rms": 0.033742855551158656,
+      "target": "0.5",
+      "note": ""
+    },
+    {
+      "test": "7 drum",
+      "quantity": "avalanche start angle (1 rpm, 10 fps)",
+      "unit": "deg",
+      "n": 5,
+      "mean": -0.003974452400632345,
+      "max_abs": 0.04264582366475622,
+      "rms": 0.023452741424236798,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "7 drum",
+      "quantity": "avalanche stop angle",
+      "unit": "deg",
+      "n": 5,
+      "mean": 0.005486324974255297,
+      "max_abs": 0.0184701560657885,
+      "rms": 0.014560232603812435,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "8 UCS",
+      "quantity": "peak force (2 mg noise, 80 Hz)",
+      "unit": "%",
+      "n": 5,
+      "mean": -0.44700414286107826,
+      "max_abs": 0.6186124747135979,
+      "rms": 0.45727692181839374,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "9 spread",
+      "quantity": "coverage",
+      "unit": "% points",
+      "n": 6,
+      "mean": 0.021611111111113912,
+      "max_abs": 0.053000000000003045,
+      "rms": 0.03266978443171798,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "9 spread",
+      "quantity": "streak area",
+      "unit": "%",
+      "n": 6,
+      "mean": 0.26998002981316604,
+      "max_abs": 1.216751556310114,
+      "rms": 0.5537531179350391,
+      "target": "-",
+      "note": ""
+    },
+    {
+      "test": "10 Faraday",
+      "quantity": "charge step (drift corrected)",
+      "unit": "nC",
+      "n": 10,
+      "mean": -0.019267617197525767,
+      "max_abs": 0.09800084203087067,
+      "rms": 0.037006904640918464,
+      "target": "-",
+      "note": ""
+    }
+  ],
+  "sim_runs": [
+    {
+      "test": "1 heap",
+      "quantity": "flank angle",
+      "unit": "deg",
+      "measured": 32.924728968420034,
+      "truth": 33.0,
+      "error": -0.07527103157996606,
+      "checks": "4/4"
+    },
+    {
+      "test": "2 density",
+      "quantity": "bulk density",
+      "unit": "kg/m3",
+      "measured": 1248.5971203106562,
+      "truth": 1250.0,
+      "error": -1.402879689343763,
+      "checks": "5/5"
+    },
+    {
+      "test": "2 density",
+      "quantity": "Kawakita a",
+      "unit": "-",
+      "measured": 0.1399844337554653,
+      "truth": 0.14,
+      "error": -1.556624453472044e-05,
+      "checks": "5/5"
+    },
+    {
+      "test": "2 density",
+      "quantity": "Kawakita 1/b",
+      "unit": "taps",
+      "measured": 8.966891602445699,
+      "truth": 9.0,
+      "error": -0.03310839755430095,
+      "checks": "5/5"
+    },
+    {
+      "test": "3 plate",
+      "quantity": "phi_w",
+      "unit": "deg",
+      "measured": 22.421063885177553,
+      "truth": 22.0,
+      "error": 0.4210638851775528,
+      "checks": "5/5"
+    },
+    {
+      "test": "3 plate",
+      "quantity": "c_w",
+      "unit": "Pa",
+      "measured": 6.895708099225937,
+      "truth": 8.0,
+      "error": -1.1042919007740633,
+      "checks": "5/5"
+    },
+    {
+      "test": "4 PSD",
+      "quantity": "d50 (number)",
+      "unit": "um",
+      "measured": 420.40055867555344,
+      "truth": 425.0,
+      "error": -4.599441324446559,
+      "checks": "4/4"
+    },
+    {
+      "test": "5 orifice",
+      "quantity": "Beverloo C",
+      "unit": "-",
+      "measured": 0.6017457252266231,
+      "truth": 0.58,
+      "error": 0.021745725226623103,
+      "checks": "5/5"
+    },
+    {
+      "test": "5 orifice",
+      "quantity": "Beverloo k",
+      "unit": "-",
+      "measured": 1.5857990422940123,
+      "truth": 1.5,
+      "error": 0.08579904229401225,
+      "checks": "5/5"
+    },
+    {
+      "test": "5 orifice",
+      "quantity": "D_c",
+      "unit": "mm",
+      "measured": 1.224744871391589,
+      "truth": 1.2,
+      "error": 0.024744871391588985,
+      "checks": "5/5"
+    },
+    {
+      "test": "5 orifice",
+      "quantity": "D_c tapped",
+      "unit": "mm",
+      "measured": 0.8944271909999159,
+      "truth": 0.9,
+      "error": -0.005572809000084167,
+      "checks": "5/5"
+    },
+    {
+      "test": "6 humidity",
+      "quantity": "u_eq at 75 % RH",
+      "unit": "mg/g",
+      "measured": 59.97328833187716,
+      "truth": 60.0,
+      "error": -0.02671166812284298,
+      "checks": "3/3"
+    },
+    {
+      "test": "7 drum",
+      "quantity": "dynamic angle at 10 rpm",
+      "unit": "deg",
+      "measured": 39.04077443952314,
+      "truth": 39.0,
+      "error": 0.040774439523140416,
+      "checks": "3/3"
+    },
+    {
+      "test": "7 drum",
+      "quantity": "avalanche start at 1 rpm",
+      "unit": "deg",
+      "measured": 39.575384418594865,
+      "truth": 40.0,
+      "error": -0.4246155814051349,
+      "checks": "3/3"
+    },
+    {
+      "test": "7 drum",
+      "quantity": "avalanche stop at 1 rpm",
+      "unit": "deg",
+      "measured": 32.730089993999215,
+      "truth": 33.0,
+      "error": -0.2699100060007851,
+      "checks": "3/3"
+    },
+    {
+      "test": "8 UCS",
+      "quantity": "sigma_c at 1 kPa",
+      "unit": "Pa",
+      "measured": 375.0902561996711,
+      "truth": 376.9668771966195,
+      "error": -1.876620996948418,
+      "checks": "4/4"
+    },
+    {
+      "test": "9 spread",
+      "quantity": "coverage",
+      "unit": "-",
+      "measured": 0.8962666666666667,
+      "truth": 0.89572,
+      "error": 0.0005466666666666953,
+      "checks": "4/4"
+    },
+    {
+      "test": "10 Faraday",
+      "quantity": "q/m",
+      "unit": "uC/kg",
+      "measured": 19.77912486855612,
+      "truth": 20.0,
+      "error": -0.22087513144387927,
+      "checks": "5/5"
+    }
+  ]
+}

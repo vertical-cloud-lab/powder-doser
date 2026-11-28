@@ -1,0 +1,1169 @@
+{
+ "order_date": "2026-11-28 (Saturday after Thanksgiving; most vendors ship from Mon 2026-11-30)",
+ "days": "calendar days from the order date to arrival in Provo, UT 84602",
+ "basis_note": "Stock read on vendor pages on 2026-11-28; transit times are assumptions unless the basis quotes a page.",
+ "items": {
+  "S01": {
+   "item": "Raspberry Pi 5, 8 GB (in place of 4 GB)",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "DigiKey",
+   "part": "SC1432 (2648-SC1432-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S02": {
+   "item": "Raspberry Pi 27 W USB-C power supply, US plug, white",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "DigiKey",
+   "part": "SC1153 (2648-SC1153-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S03": {
+   "item": "Raspberry Pi 5 Active Cooler",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "DigiKey",
+   "part": "SC1148 (2648-SC1148-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S04": {
+   "item": "microSD card, 32 GB, A1 or A2",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "Amazon",
+   "part": "B08GY9NYRM (SanDisk Ultra 32 GB, A1)",
+   "days_min": 1,
+   "days_max": 4,
+   "basis": "Not verified: Amazon refused automated access. Prime listings usually arrive in 1-3 days (assumption)",
+   "verified_stock": false
+  },
+  "S05": {
+   "item": "Raspberry Pi Camera Module 3 (standard, 75 deg)",
+   "apparatus": "shared",
+   "used_by": "1,2,3,5,7,9",
+   "vendor": "DigiKey",
+   "part": "SC1223 (2648-SC1223-ND; alias SC0872)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S06": {
+   "item": "Raspberry Pi 5 camera cable, 300 mm",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,7,9",
+   "vendor": "DigiKey",
+   "part": "SC1129 (2648-SC1129-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S07": {
+   "item": "12.3 MP IMX477 camera, C/CS mount (in place of the Pi HQ Camera)",
+   "apparatus": "shared",
+   "used_by": "4",
+   "vendor": "UCTRONICS (Arducam store)",
+   "part": "B0240E",
+   "days_min": 4,
+   "days_max": 14,
+   "basis": "UCTRONICS (Arducam store) page 'Add to Cart'; shipping policy: 'Most in-stock items ship within 24 hours of ordering. Some orders may take up to 72 hours'; origin not stated: about day 4-8 if from a US warehouse, up to about day 14 if from overseas (assumption)",
+   "verified_stock": true
+  },
+  "S08": {
+   "item": "C/CS-mount zoom microscope lens, 0.12-1.8x",
+   "apparatus": "shared",
+   "used_by": "4",
+   "vendor": "PiShop.us",
+   "part": "SKU 734-2 (Waveshare 24229)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "PiShop.us page 'IN STOCK' 2026-11-28; ships Mon-Tue; transit assumed",
+   "verified_stock": true
+  },
+  "S09": {
+   "item": "USB LED tracing pad, A5, dimmable",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,7",
+   "vendor": "Amazon",
+   "part": "B09VT7814N",
+   "days_min": 1,
+   "days_max": 4,
+   "basis": "Not verified: Amazon refused automated access. Prime listings usually arrive in 1-3 days (assumption)",
+   "verified_stock": false
+  },
+  "S10": {
+   "item": "MOSFET driver breakout (backlight PWM)",
+   "apparatus": "shared",
+   "used_by": "1,2,3,5,7",
+   "vendor": "Adafruit",
+   "part": "5648",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S11": {
+   "item": "Raspberry Pi Pico 2 WH (Pico 2 W with headers)",
+   "apparatus": "shared",
+   "used_by": "3,5,6,8,9,10",
+   "vendor": "DigiKey",
+   "part": "SC1634 (2648-SC1634-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S12": {
+   "item": "USB-A to micro-B data cable, about 1 m",
+   "apparatus": "shared",
+   "used_by": "3,5,6,8,9,10",
+   "vendor": "Amazon",
+   "part": "B01MUJJVOG (Anker PowerLine, 2-pack)",
+   "days_min": 1,
+   "days_max": 4,
+   "basis": "Not verified: Amazon refused automated access. Prime listings usually arrive in 1-3 days (assumption)",
+   "verified_stock": false
+  },
+  "S13": {
+   "item": "Pololu Tic T500 stepper controller",
+   "apparatus": "shared",
+   "used_by": "2,8,9",
+   "vendor": "Pololu",
+   "part": "3135",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "Pololu page 'NN in stock' 2026-11-28; 'Same-day shipping'; ships Mon 30 Nov from Las Vegas; ground 1-2 business days to Provo (transit assumed)",
+   "verified_stock": true
+  },
+  "S14": {
+   "item": "SHT45 RH/T breakout, STEMMA QT (bench ambient + spare)",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "DigiKey",
+   "part": "5665 (1528-5665-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S15": {
+   "item": "STEMMA QT / Qwiic cable, 400 mm",
+   "apparatus": "shared",
+   "used_by": "3,8,10",
+   "vendor": "DigiKey",
+   "part": "5385 (1528-5385-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S16": {
+   "item": "STEMMA QT / Qwiic cable, 50 mm",
+   "apparatus": "shared",
+   "used_by": "3,8,10",
+   "vendor": "Adafruit",
+   "part": "4399",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S17": {
+   "item": "Jumper wires, female-female and female-male, 40 x 6 in each",
+   "apparatus": "shared",
+   "used_by": "3,5,6,8,9,10",
+   "vendor": "Adafruit",
+   "part": "266 + 826",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S18": {
+   "item": "12 V 5 A desktop supply (accessory rail)",
+   "apparatus": "shared",
+   "used_by": "2,3,5,8,9",
+   "vendor": "DigiKey",
+   "part": "GST60A12-P1J (1866-2149-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S19": {
+   "item": "AC line cord, NEMA 5-15P to IEC C13, about 6 ft",
+   "apparatus": "shared",
+   "used_by": "2,3,5,8,9",
+   "vendor": "lab stock",
+   "part": "",
+   "days_min": 0,
+   "days_max": 0,
+   "basis": "Lab stock (likely; check before ordering)",
+   "verified_stock": false
+  },
+  "S20": {
+   "item": "2.1 mm barrel jack to screw-terminal adapter",
+   "apparatus": "shared",
+   "used_by": "2,3,5,8,9",
+   "vendor": "Adafruit",
+   "part": "368",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": true
+  },
+  "S21": {
+   "item": "5 V 3.2 A step-down regulator (servos, fans)",
+   "apparatus": "shared",
+   "used_by": "3,5,6",
+   "vendor": "Pololu",
+   "part": "3782",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "Pololu page 'NN in stock' 2026-11-28; 'Same-day shipping'; ships Mon 30 Nov from Las Vegas; ground 1-2 business days to Provo (transit assumed)",
+   "verified_stock": true
+  },
+  "S22a": {
+   "item": "NEMA 17 stepper with integrated lead screw and nut (DIY stage drive)",
+   "apparatus": "shared",
+   "used_by": "8,9",
+   "vendor": "Pololu",
+   "part": "2268",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "Pololu page 'NN in stock' 2026-11-28; 'Same-day shipping'; ships Mon 30 Nov from Las Vegas; ground 1-2 business days to Provo (transit assumed)",
+   "verified_stock": true
+  },
+  "S22b": {
+   "item": "Hardened linear shaft, 8 mm x 200 mm",
+   "apparatus": "shared",
+   "used_by": "8,9",
+   "vendor": "McMaster-Carr",
+   "part": "",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "S22c": {
+   "item": "Linear ball bearing, 8 mm ID x 15 mm OD x 24 mm (LM8UU size)",
+   "apparatus": "shared",
+   "used_by": "8,9",
+   "vendor": "ServoCity",
+   "part": "1612-0815-0024",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "ServoCity page shows price; stock and shipping origin not shown; US retailer, ground about 3-6 business days (assumption, not verified)",
+   "verified_stock": true
+  },
+  "S22d": {
+   "item": "Ball bearing 8 x 22 x 7 mm (608 size), lead-screw free end",
+   "apparatus": "shared",
+   "used_by": "8,9",
+   "vendor": "ServoCity",
+   "part": "1600-0722-0008",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "ServoCity page shows price; stock and shipping origin not shown; US retailer, ground about 3-6 business days (assumption, not verified)",
+   "verified_stock": true
+  },
+  "S23": {
+   "item": "Limit switch (stage homing), lever",
+   "apparatus": "shared",
+   "used_by": "8,9",
+   "vendor": "DigiKey",
+   "part": "D2F-01L (SW154-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S24": {
+   "item": "Brass heat-set inserts, M3 x 4 mm, pack of 50",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "Adafruit",
+   "part": "4255",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "S25": {
+   "item": "Socket head screws, M3 x 0.5 x 10 mm, 18-8 stainless, pack of 100",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "McMaster-Carr",
+   "part": "91292A113",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster page text 'In stock' (WebFetch); next business day to Utah usual (assumption)",
+   "verified_stock": true
+  },
+  "S26": {
+   "item": "Socket head screws, M3 x 0.5 x 8 mm, 18-8 stainless, pack of 100",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "McMaster-Carr",
+   "part": "91292A112",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster page text 'In stock' (WebFetch); next business day to Utah usual (assumption)",
+   "verified_stock": true
+  },
+  "S27": {
+   "item": "Hook-up wire, 22 AWG silicone, 6 colours",
+   "apparatus": "shared",
+   "used_by": "1,2,3,4,5,6,7,8,9,10",
+   "vendor": "Amazon",
+   "part": "B07G2JWYDW",
+   "days_min": 1,
+   "days_max": 4,
+   "basis": "Not verified: Amazon refused automated access. Prime listings usually arrive in 1-3 days (assumption)",
+   "verified_stock": false
+  },
+  "S28": {
+   "item": "Neodymium disc magnets 6 x 3 mm (optional)",
+   "apparatus": "shared",
+   "used_by": "",
+   "vendor": "Amazon",
+   "part": "B0GWM9DYKL",
+   "days_min": 1,
+   "days_max": 4,
+   "basis": "Not verified: Amazon refused automated access. Prime listings usually arrive in 1-3 days (assumption)",
+   "verified_stock": false
+  },
+  "T1-1": {
+   "item": "Spray adhesive or thin double-sided tape (powder layer on pedestal tops)",
+   "apparatus": "1",
+   "used_by": "1",
+   "vendor": "Amazon",
+   "part": "",
+   "days_min": 0,
+   "days_max": 0,
+   "basis": "Lab stock (likely; check before ordering)",
+   "verified_stock": false
+  },
+  "T2-1": {
+   "item": "Graduated cylinder, 10 mL, Class A, glass hex base",
+   "apparatus": "2",
+   "used_by": "2",
+   "vendor": "Uline",
+   "part": "S-26274",
+   "days_min": 3,
+   "days_max": 6,
+   "basis": "Uline page 'IN STOCK SHIPS TODAY'; ships Mon 30 Nov; ground transit assumed",
+   "verified_stock": true
+  },
+  "T2-2": {
+   "item": "NEMA 11 stepper for the cam tapper",
+   "apparatus": "2",
+   "used_by": "2",
+   "vendor": "Pololu",
+   "part": "1205",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "Pololu page 'NN in stock' 2026-11-28; 'Same-day shipping'; ships Mon 30 Nov from Las Vegas; ground 1-2 business days to Provo (transit assumed)",
+   "verified_stock": true
+  },
+  "T2-3": {
+   "item": "Hardened linear shaft, 6 mm x 100 mm, tapped M3 both ends",
+   "apparatus": "2",
+   "used_by": "2",
+   "vendor": "McMaster-Carr",
+   "part": "4316N102",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T2-4": {
+   "item": "PTFE film tape, 1/2 in x 15 ft, 0.005 in, acrylic adhesive",
+   "apparatus": "2",
+   "used_by": "2",
+   "vendor": "McMaster-Carr",
+   "part": "6305A11",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T2-5": {
+   "item": "304 stainless disc, 1 in dia x 1/4 in thick (anvil)",
+   "apparatus": "2",
+   "used_by": "2",
+   "vendor": "McMaster-Carr",
+   "part": "9208K136",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster page text 'In stock' (WebFetch); next business day to Utah usual (assumption)",
+   "verified_stock": true
+  },
+  "T2-6": {
+   "item": "Reflective optical sensor TCRT5000 (cam-turn counter)",
+   "apparatus": "2",
+   "used_by": "2",
+   "vendor": "DigiKey",
+   "part": "TCRT5000 (751-1033-5-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T3-1": {
+   "item": "Servo, 15.5 kg-cm, all-metal gears (tilt table)",
+   "apparatus": "3",
+   "used_by": "3",
+   "vendor": "Pololu",
+   "part": "3426",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "Pololu page 'NN in stock' 2026-11-28; 'Same-day shipping'; ships Mon 30 Nov from Las Vegas; ground 1-2 business days to Provo (transit assumed)",
+   "verified_stock": true
+  },
+  "T3-2": {
+   "item": "LSM6DSOX 6-DoF IMU, STEMMA QT",
+   "apparatus": "3",
+   "used_by": "3",
+   "vendor": "DigiKey",
+   "part": "4438 (1528-4438-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T3-3": {
+   "item": "Steel shaft 5 mm x 100 mm (hinge pin)",
+   "apparatus": "3",
+   "used_by": "3",
+   "vendor": "McMaster-Carr",
+   "part": "1327K51",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T3-4": {
+   "item": "304 stainless sheet, 0.036 in (0.91 mm) x 6 x 12 in, brushed #4",
+   "apparatus": "3",
+   "used_by": "3",
+   "vendor": "McMaster-Carr",
+   "part": "9748K42",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T3-5": {
+   "item": "Glass plate 75 x 50 x 1 mm (glass coupon)",
+   "apparatus": "3",
+   "used_by": "3",
+   "vendor": "",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T3-6": {
+   "item": "Steel flat washers M8 (DIN 125), for 5 g and 15 g lids",
+   "apparatus": "3",
+   "used_by": "3",
+   "vendor": "McMaster-Carr",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T4-1": {
+   "item": "Microscope mechanical stage, X-Y",
+   "apparatus": "4",
+   "used_by": "4",
+   "vendor": "AmScope",
+   "part": "MS90",
+   "days_min": 4,
+   "days_max": 7,
+   "basis": "amscope.com 'In Stock' and 'Same day shipping for orders within the contiguous U.S.'; ground from CA (transit assumed)",
+   "verified_stock": true
+  },
+  "T4-2": {
+   "item": "Stage micrometer, 1 mm / 100 divisions (0.01 mm)",
+   "apparatus": "4",
+   "used_by": "4",
+   "vendor": "AmScope",
+   "part": "MR095",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": true
+  },
+  "T4-3": {
+   "item": "Plain glass slides 75 x 25 mm (sample slides)",
+   "apparatus": "4",
+   "used_by": "4",
+   "vendor": "",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T4-4": {
+   "item": "316 stainless wire cloth, 100 x 100 mesh (0.006 in opening), 12 x 12 in",
+   "apparatus": "4",
+   "used_by": "4",
+   "vendor": "McMaster-Carr",
+   "part": "9319T183",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T4-5": {
+   "item": "316 stainless wire cloth, 200 x 200 mesh (0.0029 in = 74 um), 12 x 12 in",
+   "apparatus": "4",
+   "used_by": "4",
+   "vendor": "McMaster-Carr",
+   "part": "9319T191",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T4-6": {
+   "item": "M3 x 0.5 threaded rod, stainless, 100-150 mm, and M3 nuts (focus lead screw)",
+   "apparatus": "4",
+   "used_by": "4",
+   "vendor": "McMaster-Carr",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T5-1": {
+   "item": "Micro servo, metal gear, MG90D (orifice gate)",
+   "apparatus": "5",
+   "used_by": "5",
+   "vendor": "Adafruit",
+   "part": "1143",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T5-2": {
+   "item": "Push-pull solenoid JF-0530B, 12 V (cup tapper)",
+   "apparatus": "5",
+   "used_by": "5",
+   "vendor": "Adafruit",
+   "part": "412",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T5-3": {
+   "item": "DRV8871 motor driver breakout (DRV8871 #2)",
+   "apparatus": "5",
+   "used_by": "5",
+   "vendor": "Adafruit",
+   "part": "3190",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T5-4": {
+   "item": "Drill bit set 1-6 mm in 0.1 mm steps (51 pcs)",
+   "apparatus": "5",
+   "used_by": "5",
+   "vendor": "Amazon",
+   "part": "B0895ZYLZ3",
+   "days_min": 1,
+   "days_max": 4,
+   "basis": "Not verified: Amazon refused automated access. Prime listings usually arrive in 1-3 days (assumption)",
+   "verified_stock": false
+  },
+  "T5-5": {
+   "item": "Gage pins 0.100 in and 0.200 in, class ZZ (optional check)",
+   "apparatus": "5",
+   "used_by": "5",
+   "vendor": "McMaster-Carr",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T6-1": {
+   "item": "Airtight food container, 4.7 cup (1.1 L), latched gasket lid",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "Target",
+   "part": "TCIN 52119450",
+   "days_min": 2,
+   "days_max": 6,
+   "basis": "Target page 'In Stock' (datacenter view); delivery date not shown; Utah County store pickup may be faster (not verified)",
+   "verified_stock": true
+  },
+  "T6-2": {
+   "item": "Magnesium chloride hexahydrate, lab grade, 500 g (33 % RH)",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "Lab Alley",
+   "part": "C5020-500G",
+   "days_min": 5,
+   "days_max": 10,
+   "basis": "Lab Alley page 'In stock', 'Fast 1-2 business days shipping, including hazmat transport'; ground 3-5 business days from TX (assumed); business/school address only",
+   "verified_stock": true
+  },
+  "T6-3": {
+   "item": "Magnesium nitrate hexahydrate, lab grade, 500 g (53 % RH)",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "Lab Alley",
+   "part": "C5047-500g",
+   "days_min": 5,
+   "days_max": 10,
+   "basis": "Lab Alley page 'In stock', 'Fast 1-2 business days shipping, including hazmat transport'; ground 3-5 business days from TX (assumed); business/school address only",
+   "verified_stock": true
+  },
+  "T6-4": {
+   "item": "Sodium chloride, lab grade, 500 g (75 % RH)",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "Lab Alley",
+   "part": "SOCHLGL-500G",
+   "days_min": 5,
+   "days_max": 10,
+   "basis": "Lab Alley page 'In stock', 'Fast 1-2 business days shipping, including hazmat transport'; ground 3-5 business days from TX (assumed); business/school address only",
+   "verified_stock": true
+  },
+  "T6-5": {
+   "item": "Potassium chloride, lab grade, 500 g (84 % RH)",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "Lab Alley",
+   "part": "C6330-500g",
+   "days_min": 5,
+   "days_max": 10,
+   "basis": "Lab Alley page 'In stock', 'Fast 1-2 business days shipping, including hazmat transport'; ground 3-5 business days from TX (assumed); business/school address only",
+   "verified_stock": true
+  },
+  "T6-6": {
+   "item": "Indicating silica gel, at least 1 lb",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T6-7": {
+   "item": "SHT45 RH/T breakout, STEMMA QT (one per chamber)",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "DigiKey",
+   "part": "5665 (1528-5665-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T6-8": {
+   "item": "STEMMA QT / Qwiic cable, 400 mm (chamber to mux)",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "DigiKey",
+   "part": "5385 (1528-5385-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T6-9": {
+   "item": "I2C multiplexer PCA9548 (TCA9548A compatible), STEMMA QT",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "Adafruit",
+   "part": "5626",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T6-10": {
+   "item": "Cable gland PG7, nylon, with locknut",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "DigiKey",
+   "part": "CG-P-7",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T6-11": {
+   "item": "Fan 25 x 25 x 6.5 mm, 5 V (optional, one per chamber)",
+   "apparatus": "6",
+   "used_by": "6",
+   "vendor": "DigiKey",
+   "part": "MF25060V1-1000U-A99",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T7-1": {
+   "item": "Clear acrylic disc 50 mm x 2 mm (drum window)",
+   "apparatus": "7",
+   "used_by": "7",
+   "vendor": "Amazon",
+   "part": "B0DNSSHYV1",
+   "days_min": 1,
+   "days_max": 4,
+   "basis": "Not verified: Amazon refused automated access. Prime listings usually arrive in 1-3 days (assumption)",
+   "verified_stock": false
+  },
+  "T7-2": {
+   "item": "USB LED light bar, about 30 cm (low-angle light; also test 9)",
+   "apparatus": "7",
+   "used_by": "7",
+   "vendor": "Amazon",
+   "part": "B081VLXDYC",
+   "days_min": 1,
+   "days_max": 4,
+   "basis": "Not verified: Amazon refused automated access. Prime listings usually arrive in 1-3 days (assumption)",
+   "verified_stock": false
+  },
+  "T8-1": {
+   "item": "Load cell 100 g, mini bar (TAL221)",
+   "apparatus": "8",
+   "used_by": "8",
+   "vendor": "DigiKey",
+   "part": "14727 (1568-14727-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T8-2": {
+   "item": "NAU7802 24-bit load-cell ADC, STEMMA QT",
+   "apparatus": "8",
+   "used_by": "8",
+   "vendor": "Adafruit",
+   "part": "4538",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "Adafruit page 'In stock' 2026-11-28; ships Mon-Tue from New York; 2-day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T8-3": {
+   "item": "Test weights 1-50 g (or slotted masses) for 6.4 / 16 / 32 / 64 g",
+   "apparatus": "8",
+   "used_by": "8",
+   "vendor": "",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T8-4": {
+   "item": "Dowel pins 3 mm x 10-12 mm (split-mould alignment)",
+   "apparatus": "8",
+   "used_by": "8",
+   "vendor": "McMaster-Carr",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T9-1": {
+   "item": "304 stainless coupons 100 x 30 mm",
+   "apparatus": "9",
+   "used_by": "9",
+   "vendor": "see T3-4",
+   "part": "cut from the T3-4 sheet",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T9-2": {
+   "item": "Razor blades, stainless, pack of 100 (blade option)",
+   "apparatus": "9",
+   "used_by": "9",
+   "vendor": "McMaster-Carr",
+   "part": "3962A5",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T9-3": {
+   "item": "Feeler gauge set, metric, 13 blades 0.03-0.50 mm (has 0.10, 0.15, 0.20)",
+   "apparatus": "9",
+   "used_by": "9",
+   "vendor": "McMaster-Carr",
+   "part": "2070A21",
+   "days_min": 3,
+   "days_max": 4,
+   "basis": "McMaster part number confirmed; stock and price not shown to us; McMaster usually delivers next business day to Utah (assumption, not verified)",
+   "verified_stock": false
+  },
+  "T9-4": {
+   "item": "304 stainless flat bar 1/16 x 1 in (ground blade option)",
+   "apparatus": "9",
+   "used_by": "9",
+   "vendor": "McMaster-Carr",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T10-1": {
+   "item": "Aluminium inner cup, about 40 mm dia x 50 mm",
+   "apparatus": "10",
+   "used_by": "10",
+   "vendor": "",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T10-2": {
+   "item": "Aluminium outer can, about 70 mm dia x 80 mm, grounded",
+   "apparatus": "10",
+   "used_by": "10",
+   "vendor": "",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T10-3": {
+   "item": "PTFE standoffs, M3, 10-20 mm (inner-cup insulators)",
+   "apparatus": "10",
+   "used_by": "10",
+   "vendor": "McMaster-Carr",
+   "part": "",
+   "days_min": null,
+   "days_max": null,
+   "basis": "Not verified: no listing confirmed",
+   "verified_stock": false
+  },
+  "T10-4": {
+   "item": "BNC to BNC cable, 24 in",
+   "apparatus": "10",
+   "used_by": "10",
+   "vendor": "DigiKey",
+   "part": "2249-C-24 (501-1016-ND)",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": true
+  },
+  "T10-5": {
+   "item": "FC-1 charge-amplifier parts for one board (see ../pcb/bom.csv)",
+   "apparatus": "10",
+   "used_by": "10",
+   "vendor": "DigiKey",
+   "part": "see ../pcb/bom.csv",
+   "days_min": 4,
+   "days_max": 9,
+   "basis": "DigiKey page In-Stock 2026-11-28. Banner: 'orders may require an additional business day to process'. Ships Mon 30 Nov or Tue 1 Dec from MN; UPS 2nd Day about day 4-5, ground about day 6-9 (transit assumed)",
+   "verified_stock": false
+  },
+  "T10-6": {
+   "item": "FC-1 bare boards, 2 layers, 1.6 mm, 50 x 40 mm, set of 3",
+   "apparatus": "10",
+   "used_by": "10",
+   "vendor": "OSH Park",
+   "part": "2-layer Super Swift",
+   "days_min": 7,
+   "days_max": 11,
+   "basis": "OSH Park Super Swift: '4-5 business days' (docs page) from Mon 30 Nov, then free shipping; transit assumed 2-5 days",
+   "verified_stock": true
+  }
+ },
+ "apparatus": {
+  "1": {
+   "name": "Heap angle of repose",
+   "own_max_days": 0,
+   "own_longest_lines": [
+    "T1-1"
+   ],
+   "with_shared_max_days": 9,
+   "with_shared_longest_lines": [
+    "S01",
+    "S02",
+    "S03",
+    "S05",
+    "S06",
+    "S10",
+    "S14",
+    "S24"
+   ],
+   "unknown_lead_lines": []
+  },
+  "2": {
+   "name": "Bulk and tapped density",
+   "own_max_days": 9,
+   "own_longest_lines": [
+    "T2-6"
+   ],
+   "with_shared_max_days": 9,
+   "with_shared_longest_lines": [
+    "T2-6",
+    "S01",
+    "S02",
+    "S03",
+    "S05",
+    "S06",
+    "S10",
+    "S14",
+    "S18",
+    "S24"
+   ],
+   "unknown_lead_lines": [
+    "S20"
+   ]
+  },
+  "3": {
+   "name": "Tilting plate",
+   "own_max_days": 9,
+   "own_longest_lines": [
+    "T3-2"
+   ],
+   "with_shared_max_days": 9,
+   "with_shared_longest_lines": [
+    "T3-2",
+    "S01",
+    "S02",
+    "S03",
+    "S05",
+    "S06",
+    "S10",
+    "S11",
+    "S14",
+    "S15",
+    "S16",
+    "S17",
+    "S18",
+    "S24"
+   ],
+   "unknown_lead_lines": [
+    "T3-5",
+    "T3-6",
+    "S20"
+   ]
+  },
+  "4": {
+   "name": "PSD and shape from images",
+   "own_max_days": 7,
+   "own_longest_lines": [
+    "T4-1"
+   ],
+   "with_shared_max_days": 14,
+   "with_shared_longest_lines": [
+    "S07"
+   ],
+   "unknown_lead_lines": [
+    "T4-2",
+    "T4-3",
+    "T4-6"
+   ]
+  },
+  "5": {
+   "name": "Orifice cup",
+   "own_max_days": 9,
+   "own_longest_lines": [
+    "T5-1",
+    "T5-2",
+    "T5-3"
+   ],
+   "with_shared_max_days": 9,
+   "with_shared_longest_lines": [
+    "T5-1",
+    "T5-2",
+    "T5-3",
+    "S01",
+    "S02",
+    "S03",
+    "S05",
+    "S06",
+    "S10",
+    "S11",
+    "S14",
+    "S17",
+    "S18",
+    "S24"
+   ],
+   "unknown_lead_lines": [
+    "T5-5",
+    "S20"
+   ]
+  },
+  "6": {
+   "name": "Humidity chambers",
+   "own_max_days": 10,
+   "own_longest_lines": [
+    "T6-2",
+    "T6-3",
+    "T6-4",
+    "T6-5"
+   ],
+   "with_shared_max_days": 10,
+   "with_shared_longest_lines": [
+    "T6-2",
+    "T6-3",
+    "T6-4",
+    "T6-5"
+   ],
+   "unknown_lead_lines": [
+    "T6-6"
+   ]
+  },
+  "7": {
+   "name": "Rotating drum",
+   "own_max_days": 4,
+   "own_longest_lines": [
+    "T7-1",
+    "T7-2"
+   ],
+   "with_shared_max_days": 9,
+   "with_shared_longest_lines": [
+    "S01",
+    "S02",
+    "S03",
+    "S05",
+    "S06",
+    "S10",
+    "S14",
+    "S24"
+   ],
+   "unknown_lead_lines": []
+  },
+  "8": {
+   "name": "Unconfined strength",
+   "own_max_days": 9,
+   "own_longest_lines": [
+    "T8-1",
+    "T8-2"
+   ],
+   "with_shared_max_days": 9,
+   "with_shared_longest_lines": [
+    "T8-1",
+    "T8-2",
+    "S01",
+    "S02",
+    "S03",
+    "S11",
+    "S14",
+    "S15",
+    "S16",
+    "S17",
+    "S18",
+    "S22c",
+    "S22d",
+    "S23",
+    "S24"
+   ],
+   "unknown_lead_lines": [
+    "T8-3",
+    "T8-4",
+    "S20"
+   ]
+  },
+  "9": {
+   "name": "Blade spreading",
+   "own_max_days": 4,
+   "own_longest_lines": [
+    "T9-2",
+    "T9-3"
+   ],
+   "with_shared_max_days": 9,
+   "with_shared_longest_lines": [
+    "S01",
+    "S02",
+    "S03",
+    "S05",
+    "S06",
+    "S11",
+    "S14",
+    "S17",
+    "S18",
+    "S22c",
+    "S22d",
+    "S23",
+    "S24"
+   ],
+   "unknown_lead_lines": [
+    "T9-4",
+    "S20"
+   ]
+  },
+  "10": {
+   "name": "Faraday cup",
+   "own_max_days": 11,
+   "own_longest_lines": [
+    "T10-6"
+   ],
+   "with_shared_max_days": 11,
+   "with_shared_longest_lines": [
+    "T10-6"
+   ],
+   "unknown_lead_lines": [
+    "T10-1",
+    "T10-2",
+    "T10-3"
+   ]
+  }
+ },
+ "alternates_with_long_leads": {
+  "SC1431": {
+   "item": "Raspberry Pi 5 4 GB (SPEC choice; S01 alternate)",
+   "days_min": 11,
+   "days_max": 16,
+   "basis": "DigiKey 2026-11-28: In-Stock 0, '180 expected in stock on 07-Dec-2026', then 2-5 days shipping; not guaranteed (purchase limit)"
+  },
+  "Adafruit 6174": {
+   "item": "SHT45 with PTFE membrane (S14/T6-7 alternate)",
+   "days_min": 56,
+   "days_max": null,
+   "basis": "DigiKey 2026-11-28: In-Stock 0, '1 expected in stock on 21-Jan-2027'; Adafruit out of stock"
+  },
+  "SC1220": {
+   "item": "Official Raspberry Pi HQ Camera (S07 alternate; replaced by Arducam B0240E)",
+   "days_min": 32,
+   "days_max": 38,
+   "basis": "DigiKey 2026-11-28: In-Stock 0, '90 expected in stock on 28-Dec-2026'; Adafruit and PiShop.us also out of stock"
+  },
+  "SC1633": {
+   "item": "Pico 2 W without headers (S11 alternate)",
+   "days_min": 72,
+   "days_max": null,
+   "basis": "DigiKey 2026-11-28: In-Stock 0, '240 expected in stock on 08-Feb-2027'"
+  }
+ }
+}

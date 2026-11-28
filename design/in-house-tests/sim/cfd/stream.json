@@ -1,0 +1,1326 @@
+{
+ "drops_mm": [
+  12.0,
+  50.0,
+  77.0,
+  100.0
+ ],
+ "powders": {
+  "salt-like dry (ref)": {
+   "0.1_g_s": {
+    "v_outlet": 0.012130916854695879,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.48537321634360453,
+      "v_single": 0.47378180637303335,
+      "v_stream": 0.4820007330316943,
+      "single_over_vacuum": 0.9761185628290511,
+      "stream_over_vacuum": 0.9930517729484216,
+      "air_speed_in_stream": 0.24707560527130512,
+      "entrained_Q_mL_s": 1.5053089380429243,
+      "plume_radius_mm": 1.392578505807874
+     },
+     "50": {
+      "v_vacuum": 0.9905287270663762,
+      "v_single": 0.9306907103782265,
+      "v_stream": 0.9545764682264991,
+      "single_over_vacuum": 0.9395898220283116,
+      "stream_over_vacuum": 0.963703971568441,
+      "air_speed_in_stream": 0.20360000738028608,
+      "entrained_Q_mL_s": 19.635443347966994,
+      "plume_radius_mm": 5.540590559615261
+     },
+     "77": {
+      "v_vacuum": 1.2291814996751844,
+      "v_single": 1.1302665416343398,
+      "v_stream": 1.1609744502487171,
+      "single_over_vacuum": 0.9195277848983383,
+      "stream_over_vacuum": 0.9445101887357634,
+      "air_speed_in_stream": 0.18060427151049863,
+      "entrained_Q_mL_s": 42.56679357574348,
+      "plume_radius_mm": 8.661563627090048
+     },
+     "100": {
+      "v_vacuum": 1.4007666326493273,
+      "v_single": 1.2666266376503235,
+      "v_stream": 1.3018449591626993,
+      "single_over_vacuum": 0.9042381565405371,
+      "stream_over_vacuum": 0.9293803327542622,
+      "air_speed_in_stream": 0.1665463476739739,
+      "entrained_Q_mL_s": 67.58592630950113,
+      "plume_radius_mm": 11.36542045745583
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.12130916854695879,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5001558900718399,
+      "v_single": 0.4878719457458604,
+      "v_stream": 0.4993187884185718,
+      "single_over_vacuum": 0.9754397687404719,
+      "stream_over_vacuum": 0.9983263185141179,
+      "air_speed_in_stream": 0.414110672557392,
+      "entrained_Q_mL_s": 2.0962266449864964,
+      "plume_radius_mm": 1.2693496782135296
+     },
+     "50": {
+      "v_vacuum": 0.9978556580856545,
+      "v_single": 0.9370408590566938,
+      "v_stream": 0.9809419097696057,
+      "single_over_vacuum": 0.9390545130087938,
+      "stream_over_vacuum": 0.983049904884543,
+      "air_speed_in_stream": 0.48070107790128813,
+      "entrained_Q_mL_s": 36.86437941352972,
+      "plume_radius_mm": 4.940718834414204
+     },
+     "77": {
+      "v_vacuum": 1.2350934840624634,
+      "v_single": 1.135109742305001,
+      "v_stream": 1.1971465876700143,
+      "single_over_vacuum": 0.919047632387634,
+      "stream_over_vacuum": 0.9692760937677086,
+      "air_speed_in_stream": 0.46050417644336805,
+      "entrained_Q_mL_s": 87.54737114986425,
+      "plume_radius_mm": 7.779101322637894
+     },
+     "100": {
+      "v_vacuum": 1.405957294647869,
+      "v_single": 1.2706925865282475,
+      "v_stream": 1.3458143475485205,
+      "single_over_vacuum": 0.9037917377472696,
+      "stream_over_vacuum": 0.9572227781538616,
+      "air_speed_in_stream": 0.44132464126540905,
+      "entrained_Q_mL_s": 146.26316460620228,
+      "plume_radius_mm": 10.27101150464488
+     }
+    }
+   },
+   "tau_p_s": 1.1743337087087087,
+   "stokes_terminal_m_s": 11.520213682432432
+  },
+  "cohesive (ref, Bo 5)": {
+   "0.1_g_s": {
+    "v_outlet": 0.014810865250747948,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.48544758906546837,
+      "v_single": 0.4738522322413114,
+      "v_stream": 0.4820734718007107,
+      "single_over_vacuum": 0.9761140912318071,
+      "stream_over_vacuum": 0.9930494715788925,
+      "air_speed_in_stream": 0.24708206033725164,
+      "entrained_Q_mL_s": 1.5059485868130251,
+      "plume_radius_mm": 1.3928561581499617
+     },
+     "50": {
+      "v_vacuum": 0.9905651728833776,
+      "v_single": 0.930722077461563,
+      "v_stream": 0.9546091749042657,
+      "single_over_vacuum": 0.9395869175900654,
+      "stream_over_vacuum": 0.9637015322530977,
+      "air_speed_in_stream": 0.20359754432639762,
+      "entrained_Q_mL_s": 19.637652951479755,
+      "plume_radius_mm": 5.540935812788432
+     },
+     "77": {
+      "v_vacuum": 1.229210869513232,
+      "v_single": 1.130290432373802,
+      "v_stream": 1.1609993972779231,
+      "single_over_vacuum": 0.9195252502293584,
+      "stream_over_vacuum": 0.944507916479521,
+      "air_speed_in_stream": 0.18060246216579465,
+      "entrained_Q_mL_s": 42.56989566056931,
+      "plume_radius_mm": 8.661922619453435
+     },
+     "100": {
+      "v_vacuum": 1.400792404937104,
+      "v_single": 1.2666466825002436,
+      "v_stream": 1.3018659032148578,
+      "single_over_vacuum": 0.9042358296889226,
+      "stream_over_vacuum": 0.929378185251734,
+      "air_speed_in_stream": 0.16654492695595507,
+      "entrained_Q_mL_s": 67.58970614249307,
+      "plume_radius_mm": 11.365786744271874
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.14810865250747948,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5073225531627599,
+      "v_single": 0.4947377262068119,
+      "v_stream": 0.5064492801476538,
+      "single_over_vacuum": 0.975193637898628,
+      "stream_over_vacuum": 0.9982786631312527,
+      "air_speed_in_stream": 0.418391525625001,
+      "entrained_Q_mL_s": 2.1534474520215374,
+      "plume_radius_mm": 1.279959343204264
+     },
+     "50": {
+      "v_vacuum": 1.0014670104140133,
+      "v_single": 0.9401889135450586,
+      "v_stream": 0.9843738662428946,
+      "single_over_vacuum": 0.9388116670526951,
+      "stream_over_vacuum": 0.9829318949167858,
+      "air_speed_in_stream": 0.4811038860169627,
+      "entrained_Q_mL_s": 37.19216287306938,
+      "plume_radius_mm": 4.960557843692151
+     },
+     "77": {
+      "v_vacuum": 1.2380129938524802,
+      "v_single": 1.1375156302723501,
+      "v_stream": 1.1998126511232154,
+      "single_over_vacuum": 0.9188236601076376,
+      "stream_over_vacuum": 0.9691438273112207,
+      "air_speed_in_stream": 0.46060279006959937,
+      "entrained_Q_mL_s": 88.06643285374105,
+      "plume_radius_mm": 7.801292896953344
+     },
+     "100": {
+      "v_vacuum": 1.4085226916693894,
+      "v_single": 1.2727141538334952,
+      "v_stream": 1.34807684351141,
+      "single_over_vacuum": 0.9035808662230829,
+      "stream_over_vacuum": 0.9570856412072861,
+      "air_speed_in_stream": 0.44133546345752195,
+      "entrained_Q_mL_s": 146.93739859957586,
+      "plume_radius_mm": 10.294531405451734
+     }
+    }
+   },
+   "tau_p_s": 1.1743337087087087,
+   "stokes_terminal_m_s": 11.520213682432432
+  },
+  "salt": {
+   "0.1_g_s": {
+    "v_outlet": 0.012732365673542145,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.48538862073151734,
+      "v_single": 0.47379639182459127,
+      "v_stream": 0.48201579759710933,
+      "single_over_vacuum": 0.9761176335583317,
+      "stream_over_vacuum": 0.9930512933547455,
+      "air_speed_in_stream": 0.24707688903494812,
+      "entrained_Q_mL_s": 1.5054429696889313,
+      "plume_radius_mm": 1.3926368846797965
+     },
+     "50": {
+      "v_vacuum": 0.9905362755273756,
+      "v_single": 0.9306972062929492,
+      "v_stream": 0.9545832395639927,
+      "single_over_vacuum": 0.9395892197864564,
+      "stream_over_vacuum": 0.9637034636169777,
+      "air_speed_in_stream": 0.20359948386013837,
+      "entrained_Q_mL_s": 19.635904979362685,
+      "plume_radius_mm": 5.5406628127702255
+     },
+     "77": {
+      "v_vacuum": 1.2291875825664873,
+      "v_single": 1.130271489221124,
+      "v_stream": 1.1609796141943536,
+      "single_over_vacuum": 0.9195272595100327,
+      "stream_over_vacuum": 0.9445097157345841,
+      "air_speed_in_stream": 0.18060388903955454,
+      "entrained_Q_mL_s": 42.567441224214114,
+      "plume_radius_mm": 8.66163869074895
+     },
+     "100": {
+      "v_vacuum": 1.4007719704276085,
+      "v_single": 1.2666307887735584,
+      "v_stream": 1.3018492932179195,
+      "single_over_vacuum": 0.90423767430676,
+      "stream_over_vacuum": 0.9293798853074628,
+      "air_speed_in_stream": 0.16654604803426623,
+      "entrained_Q_mL_s": 67.58671515989842,
+      "plume_radius_mm": 11.365497008909172
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.12732365673542145,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5016485956967083,
+      "v_single": 0.48930056566941277,
+      "v_stream": 0.5008038954725835,
+      "single_over_vacuum": 0.9753850999818985,
+      "stream_over_vacuum": 0.9983161515224585,
+      "air_speed_in_stream": 0.41499937007593185,
+      "entrained_Q_mL_s": 2.108495530029561,
+      "plume_radius_mm": 1.2716951560286747
+     },
+     "50": {
+      "v_vacuum": 0.9986046833279321,
+      "v_single": 0.9376930171694419,
+      "v_stream": 0.9816533127784345,
+      "single_over_vacuum": 0.9390032240230468,
+      "stream_over_vacuum": 0.9830249438716773,
+      "air_speed_in_stream": 0.48078025321845025,
+      "entrained_Q_mL_s": 36.93395058194794,
+      "plume_radius_mm": 4.944971546985309
+     },
+     "77": {
+      "v_vacuum": 1.2356987147215455,
+      "v_single": 1.1356078862330625,
+      "v_stream": 1.1976987541318895,
+      "single_over_vacuum": 0.919000621028373,
+      "stream_over_vacuum": 0.9692481993086649,
+      "air_speed_in_stream": 0.4605214844489027,
+      "entrained_Q_mL_s": 87.65728765610719,
+      "plume_radius_mm": 7.783836892091574
+     },
+     "100": {
+      "v_vacuum": 1.4064890022906258,
+      "v_single": 1.2711110592336226,
+      "v_stream": 1.3462827034003797,
+      "single_over_vacuum": 0.9037475992798202,
+      "stream_over_vacuum": 0.9571939071032952,
+      "air_speed_in_stream": 0.44132444543105065,
+      "entrained_Q_mL_s": 146.40575763778423,
+      "plume_radius_mm": 10.276019214642186
+     }
+    }
+   },
+   "tau_p_s": 1.1743337087087087,
+   "stokes_terminal_m_s": 11.520213682432432
+  },
+  "white-rice-flour": {
+   "0.1_g_s": {
+    "v_outlet": 0.022281639928698756,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.4857329219621748,
+      "v_single": 0.2932548625576894,
+      "v_stream": 0.47721437327563726,
+      "single_over_vacuum": 0.6037368465226779,
+      "stream_over_vacuum": 0.9824624844201915,
+      "air_speed_in_stream": 0.43732494311482567,
+      "entrained_Q_mL_s": 2.030223017833522,
+      "plume_radius_mm": 1.2155967485741896
+     },
+     "50": {
+      "v_vacuum": 0.9907050375757218,
+      "v_single": 0.33905702853602054,
+      "v_stream": 0.7978813923160623,
+      "single_over_vacuum": 0.3422381189922088,
+      "stream_over_vacuum": 0.805367250648585,
+      "air_speed_in_stream": 0.5270787633752163,
+      "entrained_Q_mL_s": 39.38898251879739,
+      "plume_radius_mm": 4.87723728630961
+     },
+     "77": {
+      "v_vacuum": 1.2293235829015532,
+      "v_single": 0.3400328917941699,
+      "v_stream": 0.8279404328380551,
+      "single_over_vacuum": 0.2766016177706407,
+      "stream_over_vacuum": 0.6734926787004933,
+      "air_speed_in_stream": 0.4855317625801365,
+      "entrained_Q_mL_s": 93.77360788914721,
+      "plume_radius_mm": 7.840725159000734
+     },
+     "100": {
+      "v_vacuum": 1.4008913132280862,
+      "v_single": 0.340101748569016,
+      "v_stream": 0.8138099117055073,
+      "single_over_vacuum": 0.24277525697929878,
+      "stream_over_vacuum": 0.5809229481409504,
+      "air_speed_in_stream": 0.44946033672396596,
+      "entrained_Q_mL_s": 155.5004950238433,
+      "plume_radius_mm": 10.494097578241137
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.22281639928698754,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5339355277477031,
+      "v_single": 0.3111188762001396,
+      "v_stream": 0.5325908589039688,
+      "single_over_vacuum": 0.5826899691663718,
+      "stream_over_vacuum": 0.9974815894918877,
+      "air_speed_in_stream": 0.5255994082632098,
+      "entrained_Q_mL_s": 2.551380234109164,
+      "plume_radius_mm": 1.243025635520801
+     },
+     "50": {
+      "v_vacuum": 1.0152079332783104,
+      "v_single": 0.339427442802324,
+      "v_stream": 0.9686919201848109,
+      "single_over_vacuum": 0.3343427801103214,
+      "stream_over_vacuum": 0.9541808022093662,
+      "air_speed_in_stream": 0.8648669538085306,
+      "entrained_Q_mL_s": 54.089803139746124,
+      "plume_radius_mm": 4.4617664021867585
+     },
+     "77": {
+      "v_vacuum": 1.2491545732179097,
+      "v_single": 0.34006000496261773,
+      "v_stream": 1.1206882096460684,
+      "single_over_vacuum": 0.27223212583419465,
+      "stream_over_vacuum": 0.897157352399629,
+      "air_speed_in_stream": 0.9277866728118164,
+      "entrained_Q_mL_s": 141.65410737733586,
+      "plume_radius_mm": 6.97131881788157
+     },
+     "100": {
+      "v_vacuum": 1.4183254731517791,
+      "v_single": 0.3401046817289544,
+      "v_stream": 1.1925994547448633,
+      "single_over_vacuum": 0.23979311389872981,
+      "stream_over_vacuum": 0.8408503388821529,
+      "air_speed_in_stream": 0.9362994637991959,
+      "entrained_Q_mL_s": 250.98034570057453,
+      "plume_radius_mm": 9.237132147261917
+     }
+    }
+   },
+   "tau_p_s": 0.04354354354354354,
+   "stokes_terminal_m_s": 0.4271621621621622
+  },
+  "brown-rice-flour": {
+   "0.1_g_s": {
+    "v_outlet": 0.022281639928698756,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.4857329219621748,
+      "v_single": 0.3577468549729653,
+      "v_stream": 0.47777702963905694,
+      "single_over_vacuum": 0.7365093836501861,
+      "stream_over_vacuum": 0.9836208501351337,
+      "air_speed_in_stream": 0.41828851445308846,
+      "entrained_Q_mL_s": 1.9918696987151054,
+      "plume_radius_mm": 1.2311543168437757
+     },
+     "50": {
+      "v_vacuum": 0.9907050375757218,
+      "v_single": 0.4905127630096131,
+      "v_stream": 0.8300370825696455,
+      "single_over_vacuum": 0.49511483681349716,
+      "stream_over_vacuum": 0.8378246310332341,
+      "air_speed_in_stream": 0.47296406836713706,
+      "entrained_Q_mL_s": 36.65739515015141,
+      "plume_radius_mm": 4.966964337193069
+     },
+     "77": {
+      "v_vacuum": 1.2293235829015532,
+      "v_single": 0.5065968110326812,
+      "v_stream": 0.897395296405539,
+      "single_over_vacuum": 0.41209394994031484,
+      "stream_over_vacuum": 0.7299911177880691,
+      "air_speed_in_stream": 0.4341500349623439,
+      "entrained_Q_mL_s": 86.08266347907114,
+      "plume_radius_mm": 7.944428799994536
+     },
+     "100": {
+      "v_vacuum": 1.4008913132280862,
+      "v_single": 0.5108630877952615,
+      "v_stream": 0.9116561144938232,
+      "single_over_vacuum": 0.3646700375477917,
+      "stream_over_vacuum": 0.6507686255781585,
+      "air_speed_in_stream": 0.4028682573007844,
+      "entrained_Q_mL_s": 141.94742915315308,
+      "plume_radius_mm": 10.590272498157383
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.22281639928698754,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5339355277477031,
+      "v_single": 0.3858315537070836,
+      "v_stream": 0.5326076918458704,
+      "single_over_vacuum": 0.7226182444435463,
+      "stream_over_vacuum": 0.9975131156612973,
+      "air_speed_in_stream": 0.5211524042819479,
+      "entrained_Q_mL_s": 2.5428557831092515,
+      "plume_radius_mm": 1.2462307477667562
+     },
+     "50": {
+      "v_vacuum": 1.0152079332783104,
+      "v_single": 0.4937920533433186,
+      "v_stream": 0.9722409344445209,
+      "single_over_vacuum": 0.4863949907766824,
+      "stream_over_vacuum": 0.9576766518214249,
+      "air_speed_in_stream": 0.8220844933178928,
+      "entrained_Q_mL_s": 52.75139193076809,
+      "plume_radius_mm": 4.519418661939593
+     },
+     "77": {
+      "v_vacuum": 1.2491545732179097,
+      "v_single": 0.5075305889150976,
+      "v_stream": 1.1341590473827634,
+      "single_over_vacuum": 0.40629926815835393,
+      "stream_over_vacuum": 0.9079413162304568,
+      "air_speed_in_stream": 0.8663511843331259,
+      "entrained_Q_mL_s": 136.29459229360194,
+      "plume_radius_mm": 7.076471872249618
+     },
+     "100": {
+      "v_vacuum": 1.4183254731517791,
+      "v_single": 0.5111930989669236,
+      "v_stream": 1.2192939272459498,
+      "single_over_vacuum": 0.36042016352632994,
+      "stream_over_vacuum": 0.859671457875219,
+      "air_speed_in_stream": 0.8675814889397532,
+      "entrained_Q_mL_s": 239.44937967012171,
+      "plume_radius_mm": 9.372952717893547
+     }
+    }
+   },
+   "tau_p_s": 0.07358858858858858,
+   "stokes_terminal_m_s": 0.721904054054054
+  },
+  "sodium-alginate": {
+   "0.1_g_s": {
+    "v_outlet": 0.027548209366391185,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.486002987479804,
+      "v_single": 0.3557127308293938,
+      "v_stream": 0.4779963276312951,
+      "single_over_vacuum": 0.7319147001008416,
+      "stream_over_vacuum": 0.983525492528291,
+      "air_speed_in_stream": 0.41957497570412117,
+      "entrained_Q_mL_s": 1.9976522626306603,
+      "plume_radius_mm": 1.231048467551141
+     },
+     "50": {
+      "v_vacuum": 0.9908374759965908,
+      "v_single": 0.48526833687130017,
+      "v_stream": 0.8288187486949485,
+      "single_over_vacuum": 0.48975573555412216,
+      "stream_over_vacuum": 0.836483044670184,
+      "air_speed_in_stream": 0.47508715297231746,
+      "entrained_Q_mL_s": 36.80120028852891,
+      "plume_radius_mm": 4.9655649141956895
+     },
+     "77": {
+      "v_vacuum": 1.2294303167887535,
+      "v_single": 0.5005603496713232,
+      "v_stream": 0.8948931715088011,
+      "single_over_vacuum": 0.4071482074549589,
+      "stream_over_vacuum": 0.7278925525817872,
+      "air_speed_in_stream": 0.4359703842191425,
+      "entrained_Q_mL_s": 86.43313556354279,
+      "plume_radius_mm": 7.94394794834566
+     },
+     "100": {
+      "v_vacuum": 1.4009849763074886,
+      "v_single": 0.5045365920089886,
+      "v_stream": 0.9082052988794359,
+      "single_over_vacuum": 0.3601299089864421,
+      "stream_over_vacuum": 0.6482619829893899,
+      "air_speed_in_stream": 0.4044567622721298,
+      "entrained_Q_mL_s": 142.52514014009344,
+      "plume_radius_mm": 10.590941830438853
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.27548209366391185,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.557969877259922,
+      "v_single": 0.39918780800466885,
+      "v_stream": 0.5564644566175846,
+      "single_over_vacuum": 0.7154289582172428,
+      "stream_over_vacuum": 0.997301967895238,
+      "air_speed_in_stream": 0.5438389916988436,
+      "entrained_Q_mL_s": 2.7239571634184965,
+      "plume_radius_mm": 1.262656218226263
+     },
+     "50": {
+      "v_vacuum": 1.0280517418541988,
+      "v_single": 0.49036118568801695,
+      "v_stream": 0.9831424782036597,
+      "single_over_vacuum": 0.476981036775055,
+      "stream_over_vacuum": 0.9563161445847652,
+      "air_speed_in_stream": 0.830852358463785,
+      "entrained_Q_mL_s": 54.38614244870921,
+      "plume_radius_mm": 4.56463515994795
+     },
+     "77": {
+      "v_vacuum": 1.2596151729514264,
+      "v_single": 0.5019846332176309,
+      "v_stream": 1.1410324984621032,
+      "single_over_vacuum": 0.39852221852918923,
+      "stream_over_vacuum": 0.9058580135935723,
+      "air_speed_in_stream": 0.8721871072387932,
+      "entrained_Q_mL_s": 139.35093510849032,
+      "plume_radius_mm": 7.131396507856942
+     },
+     "100": {
+      "v_vacuum": 1.4275469813387764,
+      "v_single": 0.5050311766972422,
+      "v_stream": 1.2235764009458536,
+      "single_over_vacuum": 0.35377552073530766,
+      "stream_over_vacuum": 0.8571181312704427,
+      "air_speed_in_stream": 0.8720131390592051,
+      "entrained_Q_mL_s": 243.8413161466537,
+      "plume_radius_mm": 9.434455620572155
+     }
+    }
+   },
+   "tau_p_s": 0.07135135135135134,
+   "stokes_terminal_m_s": 0.6999567567567567
+  },
+  "calcium-lactate": {
+   "0.1_g_s": {
+    "v_outlet": 0.03787878787878788,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.4866978555234923,
+      "v_single": 0.435026663624378,
+      "v_stream": 0.48031927583836936,
+      "single_over_vacuum": 0.8938331218995473,
+      "stream_over_vacuum": 0.9868941693234663,
+      "air_speed_in_stream": 0.3621836924434373,
+      "entrained_Q_mL_s": 1.8712049238323183,
+      "plume_radius_mm": 1.28238043425232
+     },
+     "50": {
+      "v_vacuum": 0.9911784917819627,
+      "v_single": 0.7540670333594802,
+      "v_stream": 0.8924496470697401,
+      "single_over_vacuum": 0.7607782448989604,
+      "stream_over_vacuum": 0.9003924666134293,
+      "air_speed_in_stream": 0.3565020817041164,
+      "entrained_Q_mL_s": 30.13460817256457,
+      "plume_radius_mm": 5.187118556630312
+     },
+     "77": {
+      "v_vacuum": 1.2297051689617176,
+      "v_single": 0.8578172581757785,
+      "v_stream": 1.0318316576836748,
+      "single_over_vacuum": 0.6975796148763554,
+      "stream_over_vacuum": 0.839088656149088,
+      "air_speed_in_stream": 0.3230113218987285,
+      "entrained_Q_mL_s": 68.50248918626961,
+      "plume_radius_mm": 8.216163759997048
+     },
+     "100": {
+      "v_vacuum": 1.4012261782350366,
+      "v_single": 0.9157949657158241,
+      "v_stream": 1.1094019599285243,
+      "single_over_vacuum": 0.6535668402008772,
+      "stream_over_vacuum": 0.791736535586218,
+      "air_speed_in_stream": 0.29959654504584715,
+      "entrained_Q_mL_s": 111.29503375018406,
+      "plume_radius_mm": 10.874126870275123
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.3787878787878788,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.6155649901648247,
+      "v_single": 0.5460192939940772,
+      "v_stream": 0.6137470349812927,
+      "single_over_vacuum": 0.8870213587811,
+      "stream_over_vacuum": 0.9970466884690027,
+      "air_speed_in_stream": 0.5710210109478336,
+      "entrained_Q_mL_s": 3.054920277742255,
+      "plume_radius_mm": 1.3049521866091414
+     },
+     "50": {
+      "v_vacuum": 1.06041513433024,
+      "v_single": 0.7933637914021924,
+      "v_stream": 1.0225777310007391,
+      "single_over_vacuum": 0.7481633991420561,
+      "stream_over_vacuum": 0.964318310721396,
+      "air_speed_in_stream": 0.7204784984119013,
+      "entrained_Q_mL_s": 52.925931032486915,
+      "plume_radius_mm": 4.8355717471173065
+     },
+     "77": {
+      "v_vacuum": 1.2861649416449745,
+      "v_single": 0.8822866638450675,
+      "v_stream": 1.1960372817858682,
+      "single_over_vacuum": 0.6859825169209197,
+      "stream_over_vacuum": 0.929925270903563,
+      "air_speed_in_stream": 0.7207410146474857,
+      "entrained_Q_mL_s": 128.70311900414256,
+      "plume_radius_mm": 7.5392734737272
+     },
+     "100": {
+      "v_vacuum": 1.4510273109478748,
+      "v_single": 0.9330550538305822,
+      "v_stream": 1.3033727634980188,
+      "single_over_vacuum": 0.6430306630280236,
+      "stream_over_vacuum": 0.898241372622131,
+      "air_speed_in_stream": 0.7058507528857516,
+      "entrained_Q_mL_s": 218.71975820789544,
+      "plume_radius_mm": 9.93144266043752
+     }
+    }
+   },
+   "tau_p_s": 0.21714594594594594,
+   "stokes_terminal_m_s": 2.1302017297297295
+  },
+  "carboxymethyl-cellulose": {
+   "0.1_g_s": {
+    "v_outlet": 0.025252525252525256,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.4858782666796586,
+      "v_single": 0.15336402757694265,
+      "v_stream": 0.4767169040258621,
+      "single_over_vacuum": 0.31564290501195874,
+      "stream_over_vacuum": 0.981144736692171,
+      "air_speed_in_stream": 0.4585707683562514,
+      "entrained_Q_mL_s": 2.07144523963096,
+      "plume_radius_mm": 1.199093597033842
+     },
+     "50": {
+      "v_vacuum": 0.990776306757297,
+      "v_single": 0.15364692206033884,
+      "v_stream": 0.7491093708926772,
+      "single_over_vacuum": 0.15507730757430857,
+      "stream_over_vacuum": 0.7560832508645978,
+      "air_speed_in_stream": 0.6040299478523684,
+      "entrained_Q_mL_s": 43.02026599088646,
+      "plume_radius_mm": 4.76136537715387
+     },
+     "77": {
+      "v_vacuum": 1.2293810190626946,
+      "v_single": 0.15364692207438818,
+      "v_stream": 0.7275522727940442,
+      "single_over_vacuum": 0.12497909085299833,
+      "stream_over_vacuum": 0.5918037300988631,
+      "air_speed_in_stream": 0.5554764845459876,
+      "entrained_Q_mL_s": 104.20710348418758,
+      "plume_radius_mm": 7.727527670760128
+     },
+     "100": {
+      "v_vacuum": 1.4009417154298853,
+      "v_single": 0.15364692207438824,
+      "v_stream": 0.6833118122670365,
+      "single_over_vacuum": 0.10967402882084996,
+      "stream_over_vacuum": 0.48775177777996226,
+      "air_speed_in_stream": 0.510011733713689,
+      "entrained_Q_mL_s": 173.77685314208057,
+      "plume_radius_mm": 10.414316926827613
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.25252525252525254,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5470000028911723,
+      "v_single": 0.15453376460458032,
+      "v_stream": 0.545540467437357,
+      "single_over_vacuum": 0.2825114511659799,
+      "stream_over_vacuum": 0.9973317450711133,
+      "air_speed_in_stream": 0.5424707523286497,
+      "entrained_Q_mL_s": 2.6604941562244413,
+      "plume_radius_mm": 1.2494330217937701
+     },
+     "50": {
+      "v_vacuum": 1.0221394245223803,
+      "v_single": 0.15364692211875086,
+      "v_stream": 0.9701860655228355,
+      "single_over_vacuum": 0.15031894713438546,
+      "stream_over_vacuum": 0.9491719448901785,
+      "air_speed_in_stream": 0.9200433756998762,
+      "entrained_Q_mL_s": 56.47026146006599,
+      "plume_radius_mm": 4.420073305434366
+     },
+     "77": {
+      "v_vacuum": 1.2547944067308168,
+      "v_single": 0.15364692207438854,
+      "v_stream": 1.1064687150889245,
+      "single_over_vacuum": 0.12244788568566632,
+      "stream_over_vacuum": 0.8817928332751075,
+      "air_speed_in_stream": 1.0086363535697815,
+      "entrained_Q_mL_s": 149.64409944801966,
+      "plume_radius_mm": 6.872058930637937
+     },
+     "100": {
+      "v_vacuum": 1.4232951215973948,
+      "v_single": 0.15364692207438835,
+      "v_stream": 1.1585383891003285,
+      "single_over_vacuum": 0.10795155533305496,
+      "stream_over_vacuum": 0.8139832502201482,
+      "air_speed_in_stream": 1.0272195424796196,
+      "entrained_Q_mL_s": 267.3950658353644,
+      "plume_radius_mm": 9.10268942903658
+     }
+    }
+   },
+   "tau_p_s": 0.017297297297297298,
+   "stokes_terminal_m_s": 0.1696864864864865
+  },
+  "xanthan-gum": {
+   "0.1_g_s": {
+    "v_outlet": 0.024437927663734114,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.4858366107123854,
+      "v_single": 0.2697135724852716,
+      "v_stream": 0.4771679298079732,
+      "single_over_vacuum": 0.5551528364439,
+      "stream_over_vacuum": 0.9821572094130551,
+      "air_speed_in_stream": 0.44218842983162165,
+      "entrained_Q_mL_s": 2.0407881163877444,
+      "plume_radius_mm": 1.2120345467779499
+     },
+     "50": {
+      "v_vacuum": 0.9907558792702156,
+      "v_single": 0.29770590376337125,
+      "v_stream": 0.7883905306068639,
+      "single_over_vacuum": 0.3004836105364921,
+      "stream_over_vacuum": 0.7957465073914952,
+      "air_speed_in_stream": 0.5424924184561857,
+      "entrained_Q_mL_s": 40.14662138194876,
+      "plume_radius_mm": 4.853465135722589
+     },
+     "77": {
+      "v_vacuum": 1.229364556308867,
+      "v_single": 0.2979299651187489,
+      "v_stream": 0.8077906454276028,
+      "single_over_vacuum": 0.242344684162097,
+      "stream_over_vacuum": 0.6570798232974698,
+      "air_speed_in_stream": 0.49990508235920744,
+      "entrained_Q_mL_s": 95.92291226564542,
+      "plume_radius_mm": 7.815236808312624
+     },
+     "100": {
+      "v_vacuum": 1.400927268743277,
+      "v_single": 0.2979376376582011,
+      "v_stream": 0.786435588958287,
+      "single_over_vacuum": 0.21267173843041157,
+      "stream_over_vacuum": 0.5613678928983736,
+      "air_speed_in_stream": 0.4622143151733527,
+      "entrained_Q_mL_s": 159.27666972838793,
+      "plume_radius_mm": 10.473197315033495
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.24437927663734116,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5432874293132413,
+      "v_single": 0.2873490484955925,
+      "v_stream": 0.5418690059176975,
+      "single_over_vacuum": 0.5289079647191997,
+      "stream_over_vacuum": 0.9973891842162872,
+      "air_speed_in_stream": 0.5355782876036775,
+      "entrained_Q_mL_s": 2.625885604956019,
+      "plume_radius_mm": 1.2492415287163585
+     },
+     "50": {
+      "v_vacuum": 1.0201574539500216,
+      "v_single": 0.29784619414894664,
+      "v_stream": 0.9719347228511787,
+      "single_over_vacuum": 0.29196100366241934,
+      "stream_over_vacuum": 0.9527301095413009,
+      "air_speed_in_stream": 0.8789354267271052,
+      "entrained_Q_mL_s": 55.06741256125198,
+      "plume_radius_mm": 4.465731710460137
+     },
+     "77": {
+      "v_vacuum": 1.2531804462445901,
+      "v_single": 0.297934882812488,
+      "v_stream": 1.1196511045891273,
+      "single_over_vacuum": 0.23774300317668567,
+      "stream_over_vacuum": 0.8934476339336361,
+      "air_speed_in_stream": 0.9457953195523394,
+      "entrained_Q_mL_s": 144.20901530902862,
+      "plume_radius_mm": 6.96661876528405
+     },
+     "100": {
+      "v_vacuum": 1.4218724383184977,
+      "v_single": 0.29793792107690237,
+      "v_stream": 1.1869341499514354,
+      "single_over_vacuum": 0.2095391351908072,
+      "stream_over_vacuum": 0.834768378628325,
+      "air_speed_in_stream": 0.9557533969536272,
+      "entrained_Q_mL_s": 255.64149601240658,
+      "plume_radius_mm": 9.227146913361917
+     }
+    }
+   },
+   "tau_p_s": 0.036972972972972966,
+   "stokes_terminal_m_s": 0.3627048648648648
+  },
+  "sodium-sulfate": {
+   "0.1_g_s": {
+    "v_outlet": 0.010822510822510824,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.48534227792404755,
+      "v_single": 0.4165104523166211,
+      "v_stream": 0.4784092101798292,
+      "single_over_vacuum": 0.8581787972359619,
+      "stream_over_vacuum": 0.9857150962123614,
+      "air_speed_in_stream": 0.38348363413973413,
+      "entrained_Q_mL_s": 1.9110640607452258,
+      "plume_radius_mm": 1.2594606292923256
+     },
+     "50": {
+      "v_vacuum": 0.9905135671662976,
+      "v_single": 0.6900159524423072,
+      "v_stream": 0.8741844394634048,
+      "single_over_vacuum": 0.6966244333394983,
+      "stream_over_vacuum": 0.8825567548401261,
+      "air_speed_in_stream": 0.391517997319856,
+      "entrained_Q_mL_s": 32.26532157719574,
+      "plume_radius_mm": 5.121728372391398
+     },
+     "77": {
+      "v_vacuum": 1.229169283191092,
+      "v_single": 0.7679428753652044,
+      "v_stream": 0.9947366685621745,
+      "single_over_vacuum": 0.6247657551053662,
+      "stream_over_vacuum": 0.8092755669745518,
+      "air_speed_in_stream": 0.3550765069614777,
+      "entrained_Q_mL_s": 73.99908085519922,
+      "plume_radius_mm": 8.144735235733243
+     },
+     "100": {
+      "v_vacuum": 1.4007559126202194,
+      "v_single": 0.8076562645810091,
+      "v_stream": 1.0555004177425649,
+      "single_over_vacuum": 0.576586011384544,
+      "stream_over_vacuum": 0.7535220149584605,
+      "air_speed_in_stream": 0.32896747158474854,
+      "entrained_Q_mL_s": 120.66716054223785,
+      "plume_radius_mm": 10.805452821062572
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.10822510822510822,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.497144520285939,
+      "v_single": 0.4252565305206347,
+      "v_stream": 0.4961110327807554,
+      "single_over_vacuum": 0.8553982054876981,
+      "stream_over_vacuum": 0.9979211527774878,
+      "air_speed_in_stream": 0.47871313883037414,
+      "entrained_Q_mL_s": 2.2107581004716046,
+      "plume_radius_mm": 1.2124185412595445
+     },
+     "50": {
+      "v_vacuum": 0.9963496745873591,
+      "v_single": 0.6924119019526196,
+      "v_stream": 0.9616797049436364,
+      "single_over_vacuum": 0.6949486908191984,
+      "stream_over_vacuum": 0.965203010019468,
+      "air_speed_in_stream": 0.7395209307918515,
+      "entrained_Q_mL_s": 47.819537339401855,
+      "plume_radius_mm": 4.536817835050751
+     },
+     "77": {
+      "v_vacuum": 1.2338770903336913,
+      "v_single": 0.7692763920855583,
+      "v_stream": 1.1438874144013762,
+      "single_over_vacuum": 0.6234627404237761,
+      "stream_over_vacuum": 0.9270675526458002,
+      "air_speed_in_stream": 0.7607403278355138,
+      "entrained_Q_mL_s": 122.586530586212,
+      "plume_radius_mm": 7.161890170791328
+     },
+     "100": {
+      "v_vacuum": 1.404888847578461,
+      "v_single": 0.8085159997022555,
+      "v_stream": 1.2518416744208796,
+      "single_over_vacuum": 0.5755017566662697,
+      "stream_over_vacuum": 0.8910610092596425,
+      "air_speed_in_stream": 0.7526558671143653,
+      "entrained_Q_mL_s": 213.76451485497668,
+      "plume_radius_mm": 9.508112524069615
+     }
+    }
+   },
+   "tau_p_s": 0.14580000000000004,
+   "stokes_terminal_m_s": 1.430298
+  },
+  "silicon-110-200": {
+   "0.1_g_s": {
+    "v_outlet": 0.012121212121212121,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.48537297389047884,
+      "v_single": 0.36787195216551416,
+      "v_stream": 0.4775381684967389,
+      "single_over_vacuum": 0.7579160191323755,
+      "stream_over_vacuum": 0.9838581754337484,
+      "air_speed_in_stream": 0.4147104521005181,
+      "entrained_Q_mL_s": 1.9805660327280796,
+      "plume_radius_mm": 1.2329407440695928
+     },
+     "50": {
+      "v_vacuum": 0.990528608260906,
+      "v_single": 0.5238503958756169,
+      "v_stream": 0.8363337750650898,
+      "single_over_vacuum": 0.5288594307188695,
+      "stream_over_vacuum": 0.8443307624738474,
+      "air_speed_in_stream": 0.4614891323508451,
+      "entrained_Q_mL_s": 36.09520495229613,
+      "plume_radius_mm": 4.989630081508777
+     },
+     "77": {
+      "v_vacuum": 1.2291814039364928,
+      "v_single": 0.5476273359701493,
+      "v_stream": 0.9122159947881667,
+      "single_over_vacuum": 0.4455219825294747,
+      "stream_over_vacuum": 0.7421329283592851,
+      "air_speed_in_stream": 0.4224059797977854,
+      "entrained_Q_mL_s": 84.445118345827,
+      "plume_radius_mm": 7.977136080643212
+     },
+     "100": {
+      "v_vacuum": 1.400766548638026,
+      "v_single": 0.5551759848222215,
+      "v_stream": 0.9337930822381932,
+      "single_over_vacuum": 0.3963372664503036,
+      "stream_over_vacuum": 0.6666300556264183,
+      "air_speed_in_stream": 0.39173887703084675,
+      "entrained_Q_mL_s": 138.9830210912162,
+      "plume_radius_mm": 10.626920538177146
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.12121212121212122,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5001323608093581,
+      "v_single": 0.37631808636129105,
+      "v_stream": 0.4990524990389969,
+      "single_over_vacuum": 0.7524369863855642,
+      "stream_over_vacuum": 0.9978408480334813,
+      "air_speed_in_stream": 0.48898638403084216,
+      "entrained_Q_mL_s": 2.2532245848168904,
+      "plume_radius_mm": 1.2110817313861653
+     },
+     "50": {
+      "v_vacuum": 0.9978438647046651,
+      "v_single": 0.5250475019216853,
+      "v_stream": 0.957970853725656,
+      "single_over_vacuum": 0.5261820215501202,
+      "stream_over_vacuum": 0.9600408316477343,
+      "air_speed_in_stream": 0.8054535977587414,
+      "entrained_Q_mL_s": 50.17583498619131,
+      "plume_radius_mm": 4.452981003778747
+     },
+     "77": {
+      "v_vacuum": 1.2350839559838602,
+      "v_single": 0.54803593190218,
+      "v_stream": 1.1268548170650892,
+      "single_over_vacuum": 0.44372362643608143,
+      "stream_over_vacuum": 0.9123710267675234,
+      "air_speed_in_stream": 0.8497936260968545,
+      "entrained_Q_mL_s": 131.1504861041862,
+      "plume_radius_mm": 7.008945218782927
+     },
+     "100": {
+      "v_vacuum": 1.4059489245092591,
+      "v_single": 0.5553462135051732,
+      "v_stream": 1.2176994303010416,
+      "single_over_vacuum": 0.39499743114709135,
+      "stream_over_vacuum": 0.866105026344449,
+      "air_speed_in_stream": 0.850626973595562,
+      "entrained_Q_mL_s": 231.49217539303524,
+      "plume_radius_mm": 9.307290841740384
+     }
+    }
+   },
+   "tau_p_s": 0.07861825825825827,
+   "stokes_terminal_m_s": 0.7712451135135138
+  },
+  "silicon-325": {
+   "0.1_g_s": {
+    "v_outlet": 0.01967729240456513,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.4856204236194919,
+      "v_single": 0.04191789000698366,
+      "v_stream": 0.47609533856994624,
+      "single_over_vacuum": 0.08631821885610899,
+      "stream_over_vacuum": 0.9803857404131564,
+      "air_speed_in_stream": 0.4711415339828901,
+      "entrained_Q_mL_s": 2.090071951294325,
+      "plume_radius_mm": 1.1882950998228436
+     },
+     "50": {
+      "v_vacuum": 0.9906498855985272,
+      "v_single": 0.041917890006983656,
+      "v_stream": 0.7086035628166848,
+      "single_over_vacuum": 0.04231352631879411,
+      "stream_over_vacuum": 0.7152916213063139,
+      "air_speed_in_stream": 0.6642708245359326,
+      "entrained_Q_mL_s": 45.68989875808769,
+      "plume_radius_mm": 4.679092985705044
+     },
+     "77": {
+      "v_vacuum": 1.2292791366635873,
+      "v_single": 0.041917890006983656,
+      "v_stream": 0.6536575518166065,
+      "single_over_vacuum": 0.0340995700299233,
+      "stream_over_vacuum": 0.5317405398994344,
+      "air_speed_in_stream": 0.6047737845548236,
+      "entrained_Q_mL_s": 111.90842268886932,
+      "plume_radius_mm": 7.6746693745857435
+     },
+     "100": {
+      "v_vacuum": 1.4008523105011375,
+      "v_single": 0.041917890006983656,
+      "v_stream": 0.597817440558917,
+      "single_over_vacuum": 0.02992313300464062,
+      "stream_over_vacuum": 0.42675265342215496,
+      "air_speed_in_stream": 0.550290649640165,
+      "entrained_Q_mL_s": 186.99332268434304,
+      "plume_radius_mm": 10.400205137570394
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.1967729240456513,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.5236025053773862,
+      "v_single": 0.041917890006983774,
+      "v_stream": 0.5223129386836627,
+      "single_over_vacuum": 0.0800567025109467,
+      "stream_over_vacuum": 0.9975371265788844,
+      "air_speed_in_stream": 0.5216221320457982,
+      "entrained_Q_mL_s": 2.4789297284467833,
+      "plume_radius_mm": 1.2299115300770305
+     },
+     "50": {
+      "v_vacuum": 1.0098116575072185,
+      "v_single": 0.041917890006983656,
+      "v_stream": 0.9573292848253677,
+      "single_over_vacuum": 0.041510602195324736,
+      "stream_over_vacuum": 0.9480275630691305,
+      "air_speed_in_stream": 0.9436914221801805,
+      "entrained_Q_mL_s": 55.61135833736486,
+      "plume_radius_mm": 4.331021962566436
+     },
+     "77": {
+      "v_vacuum": 1.2447729044438087,
+      "v_single": 0.041917890006983656,
+      "v_stream": 1.0878020863873648,
+      "single_over_vacuum": 0.033675130505602925,
+      "stream_over_vacuum": 0.873896019510015,
+      "air_speed_in_stream": 1.0595191623592832,
+      "entrained_Q_mL_s": 150.49003102413175,
+      "plume_radius_mm": 6.723939433382602
+     },
+     "100": {
+      "v_vacuum": 1.4144679507282856,
+      "v_single": 0.04191789000698366,
+      "v_stream": 1.1281735709321077,
+      "single_over_vacuum": 0.02963509352431835,
+      "stream_over_vacuum": 0.7975957110595756,
+      "air_speed_in_stream": 1.089618715399832,
+      "entrained_Q_mL_s": 272.2904792525976,
+      "plume_radius_mm": 8.918741843871548
+     }
+    }
+   },
+   "tau_p_s": 0.004373123123123123,
+   "stokes_terminal_m_s": 0.04290033783783784
+  },
+  "alsi10mg": {
+   "0.1_g_s": {
+    "v_outlet": 0.01122334455667789,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.4853513814372407,
+      "v_single": 0.12932879443776626,
+      "v_stream": 0.476145344307526,
+      "single_over_vacuum": 0.26646425534999607,
+      "stream_over_vacuum": 0.9810322222583286,
+      "air_speed_in_stream": 0.46105065539153,
+      "entrained_Q_mL_s": 2.0693691247018435,
+      "plume_radius_mm": 1.1952648576150298
+     },
+     "50": {
+      "v_vacuum": 0.9905180278334352,
+      "v_single": 0.12935949560760662,
+      "v_stream": 0.7411102611809641,
+      "single_over_vacuum": 0.13059782050666485,
+      "stream_over_vacuum": 0.748204717487069,
+      "air_speed_in_stream": 0.6160686090764703,
+      "entrained_Q_mL_s": 43.53269763283227,
+      "plume_radius_mm": 4.742610311427953
+     },
+     "77": {
+      "v_vacuum": 1.2291728777771815,
+      "v_single": 0.12935949560760887,
+      "v_stream": 0.7123479888851756,
+      "single_over_vacuum": 0.10524109175069069,
+      "stream_over_vacuum": 0.5795344184402892,
+      "air_speed_in_stream": 0.5657567173705331,
+      "entrained_Q_mL_s": 105.72894969077223,
+      "plume_radius_mm": 7.712707264241722
+     },
+     "100": {
+      "v_vacuum": 1.4007590668858931,
+      "v_single": 0.12935949560760887,
+      "v_stream": 0.6650082253781885,
+      "single_over_vacuum": 0.09234956864865797,
+      "stream_over_vacuum": 0.4747484710961793,
+      "air_speed_in_stream": 0.5185556317499742,
+      "entrained_Q_mL_s": 176.4316599760759,
+      "plume_radius_mm": 10.406758939769247
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.11223344556677889,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.4980324751497548,
+      "v_single": 0.1293499241856359,
+      "v_stream": 0.4969420724707932,
+      "single_over_vacuum": 0.25972186682553444,
+      "stream_over_vacuum": 0.997810579162265,
+      "air_speed_in_stream": 0.4950516248293637,
+      "entrained_Q_mL_s": 2.246576633312646,
+      "plume_radius_mm": 1.201862682017287
+     },
+     "50": {
+      "v_vacuum": 0.9967930308262549,
+      "v_single": 0.12935949560760818,
+      "v_stream": 0.9488173178772391,
+      "single_over_vacuum": 0.12977568221998942,
+      "stream_over_vacuum": 0.9518699354175378,
+      "air_speed_in_stream": 0.9095856413143546,
+      "entrained_Q_mL_s": 52.97667858707973,
+      "plume_radius_mm": 4.30570428141939
+     },
+     "77": {
+      "v_vacuum": 1.2342351260208855,
+      "v_single": 0.12935949560760887,
+      "v_stream": 1.0916389073786035,
+      "single_over_vacuum": 0.1048094426097381,
+      "stream_over_vacuum": 0.8844659209286926,
+      "air_speed_in_stream": 1.0113899376219955,
+      "entrained_Q_mL_s": 143.72957248310772,
+      "plume_radius_mm": 6.725709373415666
+     },
+     "100": {
+      "v_vacuum": 1.4052033113766105,
+      "v_single": 0.12935949560760887,
+      "v_stream": 1.1459233838981493,
+      "single_over_vacuum": 0.09205749414359234,
+      "stream_over_vacuum": 0.815485826585153,
+      "air_speed_in_stream": 1.0361207484480313,
+      "entrained_Q_mL_s": 259.86831681022915,
+      "plume_radius_mm": 8.935032315259496
+     }
+    }
+   },
+   "tau_p_s": 0.014143783783783783,
+   "stokes_terminal_m_s": 0.13875051891891893
+  },
+  "barium-chloride": {
+   "0.1_g_s": {
+    "v_outlet": 0.011655011655011654,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.48536155523143615,
+      "v_single": 0.47057958145567924,
+      "v_stream": 0.48150876736561143,
+      "single_over_vacuum": 0.9695444074289972,
+      "stream_over_vacuum": 0.992062025052669,
+      "air_speed_in_stream": 0.2672165198470791,
+      "entrained_Q_mL_s": 1.5796437326287514,
+      "plume_radius_mm": 1.3717329051808447
+     },
+     "50": {
+      "v_vacuum": 0.9905230130071075,
+      "v_single": 0.9166306846637013,
+      "v_stream": 0.9479063416710941,
+      "single_over_vacuum": 0.9254006950135585,
+      "stream_over_vacuum": 0.9569755868602846,
+      "air_speed_in_stream": 0.22294758619867103,
+      "entrained_Q_mL_s": 21.210684901913716,
+      "plume_radius_mm": 5.503013107750752
+     },
+     "77": {
+      "v_vacuum": 1.2291768950385775,
+      "v_single": 1.1083330520010755,
+      "v_stream": 1.1482126211353263,
+      "single_over_vacuum": 0.9016871830854668,
+      "stream_over_vacuum": 0.9341313083331996,
+      "air_speed_in_stream": 0.19758804477441766,
+      "entrained_Q_mL_s": 46.17813761188431,
+      "plume_radius_mm": 8.62507171714918
+     },
+     "100": {
+      "v_vacuum": 1.400762592053585,
+      "v_single": 1.2379904944838676,
+      "v_stream": 1.2834515586974193,
+      "single_over_vacuum": 0.8837975125170313,
+      "stream_over_vacuum": 0.9162520229897186,
+      "air_speed_in_stream": 0.18198670066066236,
+      "entrained_Q_mL_s": 73.4389547261528,
+      "plume_radius_mm": 11.333612166968441
+     }
+    }
+   },
+   "1.0_g_s": {
+    "v_outlet": 0.11655011655011654,
+    "drops": {
+     "12": {
+      "v_vacuum": 0.49902297509017135,
+      "v_single": 0.4834434497776272,
+      "v_stream": 0.49814343577790204,
+      "single_over_vacuum": 0.9687799438297826,
+      "stream_over_vacuum": 0.9982374773183331,
+      "air_speed_in_stream": 0.42854538725854635,
+      "entrained_Q_mL_s": 2.1230433622202547,
+      "plume_radius_mm": 1.2557443344899417
+     },
+     "50": {
+      "v_vacuum": 0.997288288143326,
+      "v_single": 0.9223077216905202,
+      "v_stream": 0.9782128537704097,
+      "single_over_vacuum": 0.92481555499624,
+      "stream_over_vacuum": 0.9808726978951798,
+      "air_speed_in_stream": 0.515316398133596,
+      "entrained_Q_mL_s": 38.65155279664785,
+      "plume_radius_mm": 4.8861937338666435
+     },
+     "77": {
+      "v_vacuum": 1.234635140301719,
+      "v_single": 1.1126138246934683,
+      "v_stream": 1.1912815857069936,
+      "single_over_vacuum": 0.9011681171018416,
+      "stream_over_vacuum": 0.9648855332401031,
+      "air_speed_in_stream": 0.49605846675323806,
+      "entrained_Q_mL_s": 92.60500980530149,
+      "plume_radius_mm": 7.708599010500547
+     },
+     "100": {
+      "v_vacuum": 1.4055546697542027,
+      "v_single": 1.2415524319034394,
+      "v_stream": 1.3364830899724467,
+      "single_over_vacuum": 0.8833184924216123,
+      "stream_over_vacuum": 0.9508581336122379,
+      "air_speed_in_stream": 0.47614340813989525,
+      "entrained_Q_mL_s": 155.38563969106468,
+      "plume_radius_mm": 10.192045810848198
+     }
+    }
+   },
+   "tau_p_s": 0.8370270270270269,
+   "stokes_terminal_m_s": 8.211235135135135
+  }
+ }
+}

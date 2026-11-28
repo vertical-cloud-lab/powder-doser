@@ -97,14 +97,11 @@ SPIGOT_D = 10.0       # riser / adapter push fit
 SOCKET_D = 10.25
 TRIPOD_R = 62.0       # leg radius, clear of the pan by 17 mm
 LEG_AF = 8.0
+PIN_R, PIN_ANGLES = 17.0, (90.0, 210.0, 330.0)   # locating pins on the spider top
 
 
 def pan_adapter():
-    p = cyl(43, 3)
-    for k in range(3):  # three locating lips over the pan rim
-        a = math.radians(90 + 120 * k)
-        tab = box(-4, 4, 41.0, 47.2, 0, 3).union(box(-4, 4, 45.4, 47.2, -2.5, 3))
-        p = p.union(tab.rotate((0, 0, 0), (0, 0, 1), math.degrees(a) - 90))
+    p = cyl(43, 3)   # flat bottom; Ø86 on the Ø90 pan leaves an even 2 mm ring to centre it by eye
     p = p.union(cyl(9, 11)).cut(cyl(SOCKET_D / 2, 9, z=3))
     for k in range(6):
         a = 2 * math.pi * k / 6
@@ -129,17 +126,25 @@ def tripod_spider():
         s = s.union(arm).union(boss)
     for k in range(3):
         a = 90 + 120 * k
-        sock = hexprism(LEG_AF + 0.3, 4.5, TRIPOD_R, 0, -0.01).rotate((0, 0, 0), (0, 0, 1), a)
+        sock = box(TRIPOD_R - 4.15, TRIPOD_R + 4.15, -4.15, 4.15, -0.01, 4.5).rotate((0, 0, 0), (0, 0, 1), a)
         s = s.cut(sock)
         m3 = cyl(1.6, 10, 16, 0, -2).rotate((0, 0, 0), (0, 0, 1), a + 60)
         s = s.cut(m3)
+    for a in PIN_ANGLES:
+        s = s.union(cyl(1.5, 1.5, PIN_R * math.cos(math.radians(a)), PIN_R * math.sin(math.radians(a)), 6))
     return s
+
+
+def pin_holes(wp):
+    """Blind holes in a part's flat bottom that drop over the spider's three pins."""
+    for a in PIN_ANGLES:
+        wp = wp.cut(cyl(1.75, 2.0, PIN_R * math.cos(math.radians(a)), PIN_R * math.sin(math.radians(a)), -0.01))
+    return wp
 
 
 def tripod_leg(h):
     def f():
-        leg = hexprism(LEG_AF, h - 2, z=0).union(cyl(7, 2, z=0))  # foot pad at the bottom
-        return leg.union(hexprism(LEG_AF, 0.01, z=h - 2))
+        return box(-LEG_AF / 2, LEG_AF / 2, -LEG_AF / 2, LEG_AF / 2, 0, h).edges("|Z").chamfer(0.6)
     return f
 
 
@@ -209,8 +214,7 @@ def pedestal(d):
 def overflow_tray():
     t = cyl(60, 1.6).union(tube(60, 58.4, 8))
     t = t.union(tube(11, 9, 10)).cut(cyl(9, 20, z=-1))
-    t = t.union(tube(11.9, 9, 3, z=-3))  # spigot into the spider hub (ID 24)
-    return t
+    return pin_holes(t)
 
 
 # --------------------------------------------------------------------------------------------- #
@@ -222,8 +226,7 @@ CYL_H = 155.0
 
 
 def cyl_fill_holder():
-    h = cyl(26, 9).cut(hexprism(CYL_HEX_AF + 0.8, 7, z=3))
-    return h.union(cyl(SPIGOT_D / 2 - 0.05, 8, z=-8))
+    return cyl(26, 9).cut(hexprism(CYL_HEX_AF + 0.8, 7, z=3))   # stands on the pan; centre by eye
 
 
 def funnel_collar():
@@ -242,13 +245,17 @@ TAP_SHAFT_Z = 26.0
 TAP_CAM_R0, TAP_CAM_RISE = 8.0, 3.5
 TAP_CAM_Y = (24.0, 28.0)
 ANVIL_PROUD = 1.0
+ANVIL_T = 6.35            # 304 stainless disc, Ø25 x 1/4 in (BOM)
+ANVIL_BOSS = 4.0          # boss under the anvil so the pocket leaves a 4.65 mm floor
+ANVIL_TOP = TAP_BASE_T + ANVIL_BOSS + ANVIL_PROUD
 
 
 def tapper_base():
     b = box(-45, 45, -50, 90, 0, TAP_BASE_T)
     for x in (-TAP_ROD_X, TAP_ROD_X):
         b = b.union(cyl(7, 15, x, 0, TAP_BASE_T)).cut(cyl(3.0, 16, x, 0, TAP_BASE_T - 1))
-    b = b.cut(cyl(12.6, 2.0, 0, 0, TAP_BASE_T - 2.0 + 0.001))  # anvil pocket (anvil 25 x 3 sits 1 proud)
+    b = b.union(cyl(16, ANVIL_BOSS, 0, 0, TAP_BASE_T))
+    b = b.cut(cyl(12.6, ANVIL_T, 0, 0, ANVIL_TOP - ANVIL_T))     # anvil pocket: the disc stands 1 mm proud
     mp = box(-20, 20, 32, 38, TAP_BASE_T, TAP_SHAFT_Z + 20)
     mp = mp.cut(ycyl(11.25, 10, 0, 30, TAP_SHAFT_Z))
     for dx in (-11.5, 11.5):
@@ -278,7 +285,7 @@ def tapper_cam():
 def tapper_carriage():
     """Lower block (foot pocket, striker, follower lug) + upper collar, joined by a back spine.
     Use frame: resting on the anvil, striker face at z = TAP_BASE_T + ANVIL_PROUD."""
-    z0 = TAP_BASE_T + ANVIL_PROUD
+    z0 = ANVIL_TOP
     lower = box(-32, 32, -22, 22, z0, z0 + 12)
     lower = lower.cut(hexprism(CYL_HEX_AF + 0.8, 7, 0, 0, z0 + 5.01))
     upper = box(-32, 32, -8, 8, z0 + 70, z0 + 80).union(cyl(12, 10, 0, 0, z0 + 70))
@@ -307,7 +314,7 @@ PLATE_T = 6.0
 
 
 def tilt_base():
-    b = box(-50, 50, -45, 130, 0, 6)
+    b = box(-50, 50, -42, 112, 0, 6)   # 154 long: fits the A1 mini; the plate's far end overhangs 8 mm
     for x0 in (-37, 31):  # hinge towers
         t = box(x0, x0 + 6, -10, 10, 6, HINGE_Z + 8).union(xcyl(10, 6, x0, 0, HINGE_Z))
         t = t.cut(xcyl(PIN_D / 2 + 0.1, 8, x0 - 1, 0, HINGE_Z))
@@ -324,23 +331,25 @@ def tilt_base():
     return b
 
 
+PLATE_Z0 = HINGE_Z - 8.0          # plate underside; the lugs run z0..z0+16 with the pin at z0+8
+PLATE_TOP = PLATE_Z0 + PLATE_T
+
+
 def tilt_plate():
-    z0 = HINGE_Z - PLATE_T / 2
+    z0 = PLATE_Z0
     p = box(-30, 30, 0, 120, z0, z0 + PLATE_T)
-    p = p.cut(box(-25.1, 25.1, 14, 114.2, z0 + PLATE_T - 0.8, z0 + PLATE_T + 1))  # coupon pocket
+    p = p.cut(box(-25.1, 25.1, 14, 114.2, z0 + PLATE_T - 0.71, z0 + PLATE_T + 1))  # pocket: 0.91 mm coupon stands 0.2 proud
     p = p.union(box(-30, 30, 4, 8, z0 + PLATE_T, z0 + PLATE_T + 4))             # stop rail
     for xs in (1, -1):
-        lug = box(min(38 * xs, 43.5 * xs), max(38 * xs, 43.5 * xs), -8, 8, HINGE_Z - 8, HINGE_Z + 8)
+        lug = box(min(38 * xs, 43.5 * xs), max(38 * xs, 43.5 * xs), -8, 8, z0, z0 + 16)
         arm = box(min(30 * xs, 38.5 * xs), max(30 * xs, 38.5 * xs), -8, 14, z0, z0 + PLATE_T)
         p = p.union(lug).union(arm)
     p = p.cut(xcyl(PIN_D / 2 + 0.05, 100, -50, 0, HINGE_Z))
     for dy in (-5, 5):
         p = p.cut(xcyl(1.6, 8, 37, dy, HINGE_Z - 5)) if False else p
     p = p.cut(xcyl(1.6, 8, 37, 0, HINGE_Z + 5.0)).cut(xcyl(1.6, 8, 37, 0, HINGE_Z - 5.0))
-    for x in (-10.15, 10.15):  # LSM6DSOX breakout bosses under the plate
-        for y in (60 - 6.35, 60 + 6.35):
-            p = p.union(cyl(2.6, 5, x, y, z0 - 5)).cut(cyl(1.1, 6, x, y, z0 - 5.5))
-    p = p.cut(box(-24, 24, 20, 30, z0 - 1, z0 + 2))  # finger notch under the coupon
+    for x in (-10.15, 10.15):  # LSM6DSOX breakout: M2.5 self-tapping into blind holes, nylon spacers
+        p = p.cut(cyl(1.1, 4.0, x, 60.0, z0 - 0.01))
     return p
 
 
@@ -389,15 +398,15 @@ def micro_base():
 
 
 def micro_column():
-    c = box(-10, 10, -6, 6, 0, 170).cut(box(-1.7, 1.7, -7, 0, 30, 165))
+    c = box(-10, 10, -6, 6, 0, 160).cut(box(-1.7, 1.7, -7, 0, 30, 155))
     return c
 
 
 def micro_carriage():
     c = box(-15, 15, -10, 10, 0, 30).cut(box(-10.3, 10.3, -6.3, 6.3, -1, 31))
     c = c.cut(ycyl(1.7, 8, 0, -14, 15))
-    arm = box(-24, 24, -70, -10, 22, 28)
-    arm = arm.cut(cyl(19, 10, 0, -45, 20))
+    arm = box(-24, 24, -70, -10, 0, 6)
+    arm = arm.cut(cyl(19, 10, 0, -45, -1))
     arm = holes(arm, [(-15, -60), (15, -60), (-15, -30), (15, -30)], 2.7)
     return c.union(arm)
 
@@ -437,7 +446,7 @@ def orifice_disc(dmm):
 
 def gate_guide():
     g = cyl(20, 6).union(box(14, 46, -8, 8, 0, 6))
-    g = g.cut(box(-21, 47, -6.0, 6.0, 4.2, 5.8 + 0.01))      # gate channel, 1.6 tall, open both ends
+    g = g.cut(box(-21, 47, -6.0, 6.0, 4.4, 6.5))              # gate channel 1.6 deep, open on top
     g = g.cut(cyl(5.0, 8, z=-1))
     g = holes(g, [(14.5 * math.cos(a), 14.5 * math.sin(a)) for a in (0.5, 2.594, 4.689)], 3.3)
     g = g.union(box(30, 46, -20, -8, 0, 6))                   # micro-servo pad
@@ -452,7 +461,7 @@ def gate_slide():
 
 
 def cup_holder():
-    h = tube(19.8, 12.2, 5).union(tube(11.9, 9.5, 3, z=-3))  # spigot into the spider hub
+    h = pin_holes(tube(19.8, 12.2, 5).union(cyl(19.8, 5).cut(cyl(9.5, 7, z=-1))))
     arm = box(10, 52, -8, 8, 0, 5)
     ring = tube(26, 20.4, 5, 52 + 22, 0, 0).union(box(48, 54, -8, 8, 0, 5))
     h = h.union(arm).union(ring)
@@ -461,7 +470,7 @@ def cup_holder():
 
 
 def catch_cup():
-    return tube(22, 20.8, 30, z=1.2).union(cyl(22, 1.2)).union(cyl(SPIGOT_D / 2 - 0.05, 8, z=-8))
+    return tube(22, 20.8, 30, z=1.2).union(cyl(22, 1.2))   # stands on the pan
 
 
 # --------------------------------------------------------------------------------------------- #
@@ -469,23 +478,23 @@ def catch_cup():
 # --------------------------------------------------------------------------------------------- #
 
 def hc_slurry_tray():
-    return box(-75, 75, -45, 45, 0, 15).cut(box(-73.4, 73.4, -43.4, 43.4, 1.6, 16))
+    return box(-70, 70, -35, 35, 0, 15).cut(box(-68.4, 68.4, -33.4, 33.4, 1.6, 16))
 
 
 def hc_shelf():
-    s = box(-80, 80, -50, 50, 0, 2.4)
+    s = box(-75, 75, -45, 45, 0, 2.4)
     for i in range(-7, 8):
         for j in range(-4, 5):
             s = s.cut(cyl(3, 4, i * 10, j * 10, -1))
-    for x in (-74, 74):
-        for y in (-44, 44):
+    for x in (-71, 71):
+        for y in (-41, 41):
             s = s.union(cyl(3.5, 30, x, y, -30 + 0.01))
     return s
 
 
 def hc_sample_dish():
-    d = cyl(30, 1.2).union(tube(30, 28.8, 5))
-    return d.union(box(28, 38, -5, 5, 0, 1.6)).union(box(-38, -28, -5, 5, 0, 1.6))
+    d = cyl(40, 1.2).union(tube(40, 38.8, 5))     # Ø80: 3 g makes a layer under 1 mm (Edison q5)
+    return d.union(box(38, 46, -5, 5, 0, 1.6)).union(box(-46, -38, -5, 5, 0, 1.6))
 
 
 def hc_sensor_clip():
@@ -521,19 +530,21 @@ def drum_shaft():
     return s
 
 
-def drum_body():
+def drum_body(depth=DRUM_DEPTH):
+    DRUM_DEPTH_ = depth
     d = cyl(28, 3)                                     # rear wall
-    d = d.union(tube(22.5, DRUM_ID / 2, DRUM_DEPTH, z=3))
+    d = d.union(tube(22.5, DRUM_ID / 2, DRUM_DEPTH_, z=3))
     for k in range(24):
         a = 360 * k / 24
-        rib = box(DRUM_ID / 2 - 0.8, DRUM_ID / 2 + 0.2, -0.5, 0.5, 3, 3 + DRUM_DEPTH)
+        rib = box(DRUM_ID / 2 - 0.8, DRUM_ID / 2 + 0.2, -0.5, 0.5, 3, 3 + DRUM_DEPTH_)
         d = d.union(rib.rotate((0, 0, 0), (0, 0, 1), a))
-    d = d.union(tube(28, 22.0, 3, z=3 + DRUM_DEPTH))   # front flange for the window
+    d = d.union(tube(28, 22.0, 3, z=3 + DRUM_DEPTH_))   # front flange for the window
+    d = d.union(cone(22.5, 28, 5.5, z=3 + DRUM_DEPTH_ - 5.5).cut(cyl(DRUM_ID / 2 + 0.25, 40, z=-1)))  # 45 deg under it
     for a in (0, 120, 240):
         x, y = 15 * math.cos(math.radians(a)), 15 * math.sin(math.radians(a))
         d = d.cut(cyl(1.7, 5, x, y, -1))
         x2, y2 = 25 * math.cos(math.radians(a + 60)), 25 * math.sin(math.radians(a + 60))
-        d = d.cut(cyl(2.1, 6, x2, y2, 3 + DRUM_DEPTH - 2.5))
+        d = d.cut(cyl(2.1, 6, x2, y2, 3 + DRUM_DEPTH_ - 2.5))
     return d
 
 
@@ -587,17 +598,66 @@ def mould_ring():
 
 
 def ucs_piston():
-    return cyl(9.8, 8).union(cyl(4, 40, z=8)).union(cyl(15, 3, z=20))
+    return cyl(9.8, 6).union(cyl(4, 40, z=6)).union(cone(4, 15, 11, z=34)).union(cyl(15, 3, z=45)).union(cyl(4, 10, z=48))
 
 
 def ucs_platen():
-    """Platen disc on a 36 mm arm; the vertical plate bolts to the stage slider's face."""
-    p = cyl(15, 6).union(box(0, 38, -6, 6, 0, 8))
-    plate = box(36, 42, -20, 20, -12, 20)
-    for y in (-12, 12):
-        for z in (-4, 12):
-            plate = plate.cut(xcyl(1.7, 10, 34, y, z))
+    """Ø30 platen with a bracket that bolts to the stage carriage's 30 x 30 M3 face (13 mm away)."""
+    p = cyl(15, 6)
+    plate = box(13, 19, -20, 20, -16, 24)
+    for y in (-15, 15):
+        for z in (-11, 19):
+            plate = plate.cut(xcyl(1.7, 10, 11, y, z))
     return p.union(plate)
+
+
+# --------------------------------------------------------------------------------------------- #
+# DIY linear stage for tests 8 and 9 (replaces the unconfirmed commercial stage; BOM 2026-11-28)
+# axis along +z in the use frame; rods at x = +-25, screw on the axis
+# --------------------------------------------------------------------------------------------- #
+STAGE_ROD_X = 25.0
+STAGE_ROD_L = 200.0
+
+
+def stage_motor_block():
+    b = box(-40, 40, -18, 18, 0, 20).union(box(-40, 40, 18, 25, 0, 20))   # tab with 2 x M5 to the frame
+    b = b.cut(cyl(11.3, 30, z=-5))                                   # NEMA 17 pilot Ø22
+    for x in (-15.5, 15.5):
+        for y in (-15.5, 15.5):
+            b = b.cut(cyl(1.7, 30, x, y, -5))                          # 4 x M3 on 31 mm
+    for x in (-STAGE_ROD_X, STAGE_ROD_X):
+        b = b.cut(cyl(4.03, 14, x, 0, 6.01))                           # rod sockets, 14 deep
+    for x in (-32, 32):
+        b = b.cut(ycyl(2.75, 40, x, -5, 10))
+    return b
+
+
+def stage_end_block():
+    b = box(-40, 40, -18, 18, 0, 20).union(box(-40, 40, 18, 25, 0, 20))
+    b = b.cut(cyl(11.05, 7.2, z=-0.01)).cut(cyl(5, 30, z=-5))       # 608 bearing pocket for the screw end
+    for x in (-STAGE_ROD_X, STAGE_ROD_X):
+        b = b.cut(cyl(4.03, 14, x, 0, -0.01))
+    for x in (-32, 32):
+        b = b.cut(ycyl(2.75, 40, x, -5, 10))
+    return b
+
+
+def stage_carriage():
+    c = box(-40, 40, -15, 15, 0, 30)
+    for x in (-STAGE_ROD_X, STAGE_ROD_X):
+        c = c.cut(cyl(7.55, 32, x, 0, -1))                            # LM8UU, Ø15 x 24, two per side
+    c = c.cut(cyl(5.3, 32, z=-1))                                     # lead-screw nut body
+    for k in range(4):
+        a = math.radians(45 + 90 * k)
+        c = c.cut(cyl(1.6, 12, 8 * math.cos(a), 8 * math.sin(a), -1))  # nut flange, 4 x M3 on Ø16
+    for x in (-15, 15):
+        for z in (0, 30):
+            c = c.cut(ycyl(1.35, 12, x, -16, 15 + (z - 15)))
+    face = box(-22, 22, -22, -15, 0, 30)                              # front face: 4 x M3 on 30 x 30
+    for x in (-15, 15):
+        for z in (0, 30):
+            face = face.cut(ycyl(1.35, 12, x, -24, z if z else 0))
+    return c.union(face)
 
 
 # --------------------------------------------------------------------------------------------- #
@@ -605,7 +665,7 @@ def ucs_platen():
 # --------------------------------------------------------------------------------------------- #
 
 def coupon_bed():
-    b = box(-70, 70, -25, 25, 0, 10).cut(box(-50.2, 50.2, -15.2, 15.2, 9.0, 11))
+    b = box(-70, 70, -25, 25, 0, 10).cut(box(-50.2, 50.2, -15.2, 15.2, 10 - 0.91, 11))   # 0.91 mm coupon, flush
     b = b.cut(box(-55, -50, -12, 12, 8.0, 11))  # finger notch to lift the coupon
     return holes(b, [(-62, -18), (-62, 18), (62, -18), (62, 18)], 4.4)
 
@@ -647,7 +707,7 @@ def fc_insulator_base():
 
 
 def fc_cradle():
-    c = tube(11.9, 9, 3, z=-3).union(cyl(42, 4)).cut(cyl(9, 10, z=-1))
+    c = pin_holes(cyl(42, 4).cut(cyl(9, 10, z=-1)))
     c = c.union(tube(42, FC_CAN_ID / 2 + 0.4, 14, z=4))
     for a in (0, 120, 240):
         c = c.cut(box(-6, 6, 30, 45, 8, 19).rotate((0, 0, 0), (0, 0, 1), a))
@@ -696,21 +756,21 @@ for _h in (40, 80, 120, 160):
     _p(f"riser_{_h}", riser(_h), "shared", note=f"{_h} mm riser")
 _p("tripod_spider", tripod_spider, "shared")
 for _h in (40, 80, 120, 160):
-    _p(f"tripod_leg_{_h}", tripod_leg(_h), "shared", qty=3, bed_rot=(90, 0, 0), note="print lying on a flat")
+    _p(f"tripod_leg_{_h}", tripod_leg(_h), "shared", qty=3, bed_rot=(90, 0, 0), note="print lying on a face")
 _p("camera_tower", camera_tower, "shared")
-_p("camera_carriage", camera_carriage, "shared", bed_rot=(0, 0, 0))
-_p("camera_rod_clamp", camera_rod_clamp, "shared", qty=2, note="one for the camera, one for the backlight")
+_p("camera_carriage", camera_carriage, "shared", bed_rot=(90, 0, 0), note="camera plate on the bed")
+_p("camera_rod_clamp", camera_rod_clamp, "shared", qty=2, bed_rot=(90, 0, 0), note="one for the camera, one for the backlight; plate on the bed")
 _p("backlight_foot", backlight_foot, "shared", qty=2)
-for _d in (12, 20, 30):
+for _d in (12, 20, 30, 40):
     _p(f"pedestal_d{_d}", pedestal(_d), "1", bed_rot=(180, 0, 0), note="top face down for a flat, sharp rim", infill=100)
 _p("overflow_tray", overflow_tray, "1")
-_p("cyl_fill_holder", cyl_fill_holder, "2", bed_rot=(180, 0, 0))
+_p("cyl_fill_holder", cyl_fill_holder, "2")
 _p("funnel_collar", funnel_collar, "2", bed_rot=(180, 0, 0))
 _p("tapper_base", tapper_base, "2")
 _p("tapper_cam", tapper_cam, "2", infill=100)
-_p("tapper_carriage", tapper_carriage, "2", bed_rot=(-90, 0, 0), note="on its back (spine down)", infill=40)
+_p("tapper_carriage", tapper_carriage, "2", infill=40, note="upright; tree supports under the upper collar")
 _p("tilt_base", tilt_base, "3")
-_p("tilt_plate", tilt_plate, "3", bed_rot=(180, 0, 0), note="coupon face down for flatness", infill=40)
+_p("tilt_plate", tilt_plate, "3", infill=40, note="flat underside on the bed")
 _p("tilt_gear_30t", tilt_gear_30t, "3", infill=100)
 _p("tilt_pinion_15t", tilt_pinion_15t, "3", infill=100)
 _p("wall_ring", wall_ring, "3", qty=3, infill=100, note="auger settings: 0.20 mm layers, 3 walls")
@@ -719,7 +779,7 @@ for _t in (1, 2, 3, 5):
     _p(f"strike_frame_{_t}mm", strike_frame(_t), "3")
 _p("micro_base", micro_base, "4")
 _p("micro_column", micro_column, "4", bed_rot=(90, 0, 0))
-_p("micro_carriage", micro_carriage, "4", bed_rot=(180, 0, 0))
+_p("micro_carriage", micro_carriage, "4")
 _p("sieve_cup", sieve_cup, "4")
 _p("sieve_ring", sieve_ring, "4")
 _p("orifice_cup", orifice_cup, "5", infill=40)
@@ -729,15 +789,16 @@ for _d in ORIFICES:
 _p("gate_guide", gate_guide, "5")
 _p("gate_slide", gate_slide, "5", infill=100)
 _p("cup_holder", cup_holder, "5")
-_p("catch_cup", catch_cup, "5", bed_rot=(180, 0, 0))
-_p("hc_slurry_tray", hc_slurry_tray, "6", qty=5, infill=15)
-_p("hc_shelf", hc_shelf, "6", qty=5, bed_rot=(180, 0, 0), infill=15)
-_p("hc_sample_dish", hc_sample_dish, "6", qty=5)
-_p("hc_sensor_clip", hc_sensor_clip, "6", qty=5)
-_p("hc_fan_mount", hc_fan_mount, "6", qty=5)
-_p("drum_shaft", drum_shaft, "7", printer="H2D", infill=40, note="245 mm tall: H2D, flange down")
+_p("catch_cup", catch_cup, "5")
+_p("hc_slurry_tray", hc_slurry_tray, "6", qty=6, infill=15)
+_p("hc_shelf", hc_shelf, "6", qty=6, bed_rot=(180, 0, 0), infill=15)
+_p("hc_sample_dish", hc_sample_dish, "6", qty=6)
+_p("hc_sensor_clip", hc_sensor_clip, "6", qty=6, bed_rot=(0, 90, 0), note="on its side: the hook prints as a prism")
+_p("hc_fan_mount", hc_fan_mount, "6", qty=6, bed_rot=(0, 90, 0), note="on its side: the hook prints as a prism")
+_p("drum_shaft", drum_shaft, "7", printer="H2D", infill=40, note="245 mm tall: H2D left nozzle (0.4), flange down, tree supports under the gear")
 _p("drum_body", drum_body, "7", infill=40)
-_p("drum_bezel", drum_bezel, "7")
+_p("drum_body_d25", lambda: drum_body(25.0), "7", infill=40, note="25 mm deep variant for cohesive powders (Edison q1)")
+_p("drum_bezel", drum_bezel, "7", bed_rot=(180, 0, 0), note="window recess up")
 _p("drum_backdisc", drum_backdisc, "7", qty=2, note="one black, one white")
 _p("ucs_base", ucs_base, "8", infill=30)
 _p("ucs_sample_base", ucs_sample_base, "8")
@@ -745,7 +806,10 @@ _p("split_mould_A", split_mould_half("A"), "8", infill=100, note="standing on it
 _p("split_mould_B", split_mould_half("B"), "8", infill=100, note="standing on its end: smooth bore")
 _p("mould_ring", mould_ring, "8", qty=2)
 _p("ucs_piston", ucs_piston, "8")
-_p("ucs_platen", ucs_platen, "8")
+_p("ucs_platen", ucs_platen, "8", bed_rot=(0, 90, 0), note="mounting plate on the bed")
+_p("stage_motor_block", stage_motor_block, "shared", infill=40, note="DIY stage, tests 8 and 9")
+_p("stage_end_block", stage_end_block, "shared", infill=40, note="DIY stage, tests 8 and 9")
+_p("stage_carriage", stage_carriage, "shared", infill=40, bed_rot=(90, 0, 0), note="DIY stage; front face on the bed")
 _p("coupon_bed", coupon_bed, "9", infill=40)
 _p("spread_bracket", spread_bracket, "9", qty=2)
 _p("blade_carriage", blade_carriage, "9", bed_rot=(180, 0, 0), infill=40)

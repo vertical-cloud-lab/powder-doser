@@ -1,0 +1,846 @@
+{
+ "case": "salt1",
+ "sizes_um": [
+  5.0,
+  7.0,
+  10.0,
+  14.0,
+  20.0,
+  29.999999999999996,
+  49.99999999999999,
+  70.0,
+  99.99999999999999
+ ],
+ "stream_speed_at_inlet": 0.4586898055184905,
+ "results": {
+  "rho1450_stream": {
+   "5": {
+    "stokes_jet": 0.03328829919928985,
+    "settling_mm_s": 1.0679054054054054,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.0652450664306081,
+    "settling_mm_s": 2.093094594594595,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.1331531967971594,
+    "settling_mm_s": 4.271621621621621,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.2609802657224324,
+    "settling_mm_s": 8.37237837837838,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 0.5326127871886376,
+    "settling_mm_s": 17.086486486486486,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 1.1983787711744345,
+    "settling_mm_s": 38.44459459459459,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 3.328829919928985,
+    "settling_mm_s": 106.79054054054055,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 6.52450664306081,
+    "settling_mm_s": 209.30945945945945,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 13.31531967971594,
+    "settling_mm_s": 427.1621621621622,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  },
+  "rho1450_edge": {
+   "5": {
+    "stokes_jet": 0.03328829919928985,
+    "settling_mm_s": 1.0679054054054054,
+    "captured": 1.0,
+    "hit_cup": 0.016666666666666666,
+    "airborne_in_cup": 0.9833333333333333,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.0652450664306081,
+    "settling_mm_s": 2.093094594594595,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.1331531967971594,
+    "settling_mm_s": 4.271621621621621,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.2609802657224324,
+    "settling_mm_s": 8.37237837837838,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 0.5326127871886376,
+    "settling_mm_s": 17.086486486486486,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 1.1983787711744345,
+    "settling_mm_s": 38.44459459459459,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 3.328829919928985,
+    "settling_mm_s": 106.79054054054055,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 6.52450664306081,
+    "settling_mm_s": 209.30945945945945,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 13.31531967971594,
+    "settling_mm_s": 427.1621621621622,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  },
+  "rho1450_splash": {
+   "5": {
+    "stokes_jet": 0.03328829919928985,
+    "settling_mm_s": 1.0679054054054054,
+    "captured": 0.8583333333333333,
+    "hit_cup": 0.15,
+    "airborne_in_cup": 0.7083333333333334,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.14166666666666666,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.0652450664306081,
+    "settling_mm_s": 2.093094594594595,
+    "captured": 0.8333333333333334,
+    "hit_cup": 0.16666666666666666,
+    "airborne_in_cup": 0.6666666666666666,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.16666666666666666,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.1331531967971594,
+    "settling_mm_s": 4.271621621621621,
+    "captured": 0.925,
+    "hit_cup": 0.5083333333333333,
+    "airborne_in_cup": 0.4166666666666667,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.075,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.2609802657224324,
+    "settling_mm_s": 8.37237837837838,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 0.5326127871886376,
+    "settling_mm_s": 17.086486486486486,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 1.1983787711744345,
+    "settling_mm_s": 38.44459459459459,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 3.328829919928985,
+    "settling_mm_s": 106.79054054054055,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 6.52450664306081,
+    "settling_mm_s": 209.30945945945945,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 13.31531967971594,
+    "settling_mm_s": 427.1621621621622,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  },
+  "rho2165_stream": {
+   "5": {
+    "stokes_jet": 0.04970287432169829,
+    "settling_mm_s": 1.5944932432432433,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.09741763367052866,
+    "settling_mm_s": 3.1252067567567567,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.19881149728679315,
+    "settling_mm_s": 6.377972972972973,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.38967053468211466,
+    "settling_mm_s": 12.500827027027027,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 0.7952459891471726,
+    "settling_mm_s": 25.511891891891892,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 1.7893034755811383,
+    "settling_mm_s": 57.401756756756754,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 4.970287432169828,
+    "settling_mm_s": 159.44932432432435,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 9.741763367052863,
+    "settling_mm_s": 312.52067567567565,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 19.88114972867931,
+    "settling_mm_s": 637.7972972972974,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  },
+  "rho2165_edge": {
+   "5": {
+    "stokes_jet": 0.04970287432169829,
+    "settling_mm_s": 1.5944932432432433,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.09741763367052866,
+    "settling_mm_s": 3.1252067567567567,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.19881149728679315,
+    "settling_mm_s": 6.377972972972973,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.38967053468211466,
+    "settling_mm_s": 12.500827027027027,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 0.7952459891471726,
+    "settling_mm_s": 25.511891891891892,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 1.7893034755811383,
+    "settling_mm_s": 57.401756756756754,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 4.970287432169828,
+    "settling_mm_s": 159.44932432432435,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 9.741763367052863,
+    "settling_mm_s": 312.52067567567565,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 19.88114972867931,
+    "settling_mm_s": 637.7972972972974,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  },
+  "rho2165_splash": {
+   "5": {
+    "stokes_jet": 0.04970287432169829,
+    "settling_mm_s": 1.5944932432432433,
+    "captured": 0.9,
+    "hit_cup": 0.15,
+    "airborne_in_cup": 0.75,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.1,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.09741763367052866,
+    "settling_mm_s": 3.1252067567567567,
+    "captured": 0.8416666666666667,
+    "hit_cup": 0.3416666666666667,
+    "airborne_in_cup": 0.5,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.15833333333333333,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.19881149728679315,
+    "settling_mm_s": 6.377972972972973,
+    "captured": 0.9916666666666667,
+    "hit_cup": 0.8416666666666667,
+    "airborne_in_cup": 0.15,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.008333333333333333,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.38967053468211466,
+    "settling_mm_s": 12.500827027027027,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 0.7952459891471726,
+    "settling_mm_s": 25.511891891891892,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 1.7893034755811383,
+    "settling_mm_s": 57.401756756756754,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 4.970287432169828,
+    "settling_mm_s": 159.44932432432435,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 9.741763367052863,
+    "settling_mm_s": 312.52067567567565,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 19.88114972867931,
+    "settling_mm_s": 637.7972972972974,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  },
+  "rho3100_stream": {
+   "5": {
+    "stokes_jet": 0.07116808794330932,
+    "settling_mm_s": 2.283108108108108,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.13948945236888632,
+    "settling_mm_s": 4.474891891891893,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.2846723517732373,
+    "settling_mm_s": 9.132432432432433,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.5579578094755453,
+    "settling_mm_s": 17.899567567567573,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 1.1386894070929492,
+    "settling_mm_s": 36.52972972972973,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 2.562051165959135,
+    "settling_mm_s": 82.1918918918919,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 7.116808794330933,
+    "settling_mm_s": 228.3108108108108,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 13.948945236888628,
+    "settling_mm_s": 447.4891891891892,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 28.467235177323733,
+    "settling_mm_s": 913.2432432432432,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  },
+  "rho3100_edge": {
+   "5": {
+    "stokes_jet": 0.07116808794330932,
+    "settling_mm_s": 2.283108108108108,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.13948945236888632,
+    "settling_mm_s": 4.474891891891893,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.2846723517732373,
+    "settling_mm_s": 9.132432432432433,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.5579578094755453,
+    "settling_mm_s": 17.899567567567573,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 1.1386894070929492,
+    "settling_mm_s": 36.52972972972973,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 2.562051165959135,
+    "settling_mm_s": 82.1918918918919,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 7.116808794330933,
+    "settling_mm_s": 228.3108108108108,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 13.948945236888628,
+    "settling_mm_s": 447.4891891891892,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 28.467235177323733,
+    "settling_mm_s": 913.2432432432432,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  },
+  "rho3100_splash": {
+   "5": {
+    "stokes_jet": 0.07116808794330932,
+    "settling_mm_s": 2.283108108108108,
+    "captured": 0.85,
+    "hit_cup": 0.21666666666666667,
+    "airborne_in_cup": 0.6333333333333333,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.15,
+    "out_of_lid": 0.0
+   },
+   "7": {
+    "stokes_jet": 0.13948945236888632,
+    "settling_mm_s": 4.474891891891893,
+    "captured": 0.9333333333333333,
+    "hit_cup": 0.5,
+    "airborne_in_cup": 0.43333333333333335,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.06666666666666667,
+    "out_of_lid": 0.0
+   },
+   "10": {
+    "stokes_jet": 0.2846723517732373,
+    "settling_mm_s": 9.132432432432433,
+    "captured": 1.0,
+    "hit_cup": 0.9916666666666667,
+    "airborne_in_cup": 0.008333333333333333,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "14": {
+    "stokes_jet": 0.5579578094755453,
+    "settling_mm_s": 17.899567567567573,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "20": {
+    "stokes_jet": 1.1386894070929492,
+    "settling_mm_s": 36.52972972972973,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "30": {
+    "stokes_jet": 2.562051165959135,
+    "settling_mm_s": 82.1918918918919,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "50": {
+    "stokes_jet": 7.116808794330933,
+    "settling_mm_s": 228.3108108108108,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "70": {
+    "stokes_jet": 13.948945236888628,
+    "settling_mm_s": 447.4891891891892,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   },
+   "100": {
+    "stokes_jet": 28.467235177323733,
+    "settling_mm_s": 913.2432432432432,
+    "captured": 1.0,
+    "hit_cup": 1.0,
+    "airborne_in_cup": 0.0,
+    "on_can_or_lid": 0.0,
+    "airborne_outside": 0.0,
+    "out_of_lid": 0.0
+   }
+  }
+ },
+ "grid_tag": ""
+}

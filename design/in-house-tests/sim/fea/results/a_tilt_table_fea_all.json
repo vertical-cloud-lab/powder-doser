@@ -1,0 +1,280 @@
+{
+  "provenance": "CAD export cad/out/step/tilt_plate.step (sha256 c487d17d4a66)",
+  "cad_constants": {
+    "HINGE_Z": 60.0,
+    "PLATE_Z0": 52.0,
+    "PLATE_T": 6.0
+  },
+  "cases": [
+    {
+      "study": "mesh",
+      "lc": 6.0,
+      "nodes": 12422,
+      "tets": 6374,
+      "E": 3500.0,
+      "ktheta_Nm_per_rad": 120.0,
+      "uz_tip_centre_um": -284.9176,
+      "uz_tip_left_um": -295.9957,
+      "uz_tip_right_um": -274.4961,
+      "uz_ring_um": -210.68845,
+      "rot_gear_face_deg": -0.032842453158907256,
+      "slope_ring_deg": -0.1341600730821652,
+      "slope_imu_deg": -0.14812439145102527,
+      "angle_err_ring_vs_imu_deg": 0.013964318368860047,
+      "roll_ring_minus_imu_deg": 7.434127391825493e-05,
+      "vm_max_MPa": 1.4150103439070152,
+      "vm_p99_MPa": 0.5344033898823719,
+      "modes": [
+        {
+          "f_Hz": 35.64929,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 269.1295,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 348.3542,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 424.543,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 784.1291,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 965.0117,
+          "kind": "plate bending"
+        }
+      ]
+    },
+    {
+      "study": "mesh",
+      "lc": 5.0,
+      "nodes": 16746,
+      "tets": 8701,
+      "E": 3500.0,
+      "ktheta_Nm_per_rad": 120.0,
+      "uz_tip_centre_um": -288.2051,
+      "uz_tip_left_um": -299.058,
+      "uz_tip_right_um": -276.96349999999995,
+      "uz_ring_um": -214.02100000000002,
+      "rot_gear_face_deg": -0.032938984549207864,
+      "slope_ring_deg": -0.14693731839248012,
+      "slope_imu_deg": -0.1403402823393438,
+      "angle_err_ring_vs_imu_deg": -0.006597036053136306,
+      "roll_ring_minus_imu_deg": 0.0034345955029117256,
+      "vm_max_MPa": 1.8244731819322368,
+      "vm_p99_MPa": 0.5363146339388944,
+      "modes": [
+        {
+          "f_Hz": 35.55599,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 268.3414,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 348.1149,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 423.36,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 783.374,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 966.6124,
+          "kind": "plate bending"
+        }
+      ]
+    },
+    {
+      "study": "mesh",
+      "lc": 4.0,
+      "nodes": 22032,
+      "tets": 11619,
+      "E": 3500.0,
+      "ktheta_Nm_per_rad": 120.0,
+      "uz_tip_centre_um": -289.7794,
+      "uz_tip_left_um": -301.6873,
+      "uz_tip_right_um": -279.15869999999995,
+      "uz_ring_um": -215.4144,
+      "rot_gear_face_deg": -0.03293070358960349,
+      "slope_ring_deg": -0.15508019457687938,
+      "slope_imu_deg": -0.13917192590210622,
+      "angle_err_ring_vs_imu_deg": -0.015908268674773157,
+      "roll_ring_minus_imu_deg": 0.00024522593631600515,
+      "vm_max_MPa": 2.010101988138903,
+      "vm_p99_MPa": 0.5298937590740944,
+      "modes": [
+        {
+          "f_Hz": 35.53585,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 266.8413,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 347.1046,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 421.7504,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 779.4799,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 972.2797,
+          "kind": "plate bending"
+        }
+      ]
+    },
+    {
+      "study": "sensitivity",
+      "lc": 5.0,
+      "nodes": 16746,
+      "tets": 8701,
+      "E": 2300.0,
+      "ktheta_Nm_per_rad": 120.0,
+      "uz_tip_centre_um": -402.65909999999997,
+      "uz_tip_left_um": -419.1015,
+      "uz_tip_right_um": -385.4728,
+      "uz_ring_um": -298.08785,
+      "rot_gear_face_deg": -0.032750594101171863,
+      "slope_ring_deg": -0.20700478123950783,
+      "slope_imu_deg": -0.19695280968173268,
+      "angle_err_ring_vs_imu_deg": -0.01005197155777515,
+      "roll_ring_minus_imu_deg": 0.004987454367165089,
+      "vm_max_MPa": 1.823631106166502,
+      "vm_p99_MPa": 0.5361947916268763,
+      "modes": [
+        {
+          "f_Hz": 30.10175,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 217.895,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 286.2897,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 346.0259,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 646.9681,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 783.9716,
+          "kind": "plate bending"
+        }
+      ]
+    },
+    {
+      "study": "sensitivity",
+      "lc": 5.0,
+      "nodes": 16746,
+      "tets": 8701,
+      "E": 3500.0,
+      "ktheta_Nm_per_rad": 40.0,
+      "uz_tip_centre_um": -425.5333,
+      "uz_tip_left_um": -436.665,
+      "uz_tip_right_um": -414.5963,
+      "uz_ring_um": -319.53979999999996,
+      "rot_gear_face_deg": -0.09958757735773849,
+      "slope_ring_deg": -0.21040614519030196,
+      "slope_imu_deg": -0.20386029336686398,
+      "angle_err_ring_vs_imu_deg": -0.006545851823437958,
+      "roll_ring_minus_imu_deg": 0.0043476037494526686,
+      "vm_max_MPa": 1.8257252227600513,
+      "vm_p99_MPa": 0.5358432329658983,
+      "modes": [
+        {
+          "f_Hz": 29.17723,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 266.3122,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 329.8825,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 415.0824,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 745.462,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 965.8683,
+          "kind": "plate bending"
+        }
+      ]
+    },
+    {
+      "study": "sensitivity",
+      "lc": 5.0,
+      "nodes": 16746,
+      "tets": 8701,
+      "E": 3500.0,
+      "ktheta_Nm_per_rad": 400.0,
+      "uz_tip_centre_um": -239.87030000000001,
+      "uz_tip_left_um": -250.6251,
+      "uz_tip_right_um": -228.5219,
+      "uz_ring_um": -176.8786,
+      "rot_gear_face_deg": -0.009651069814677648,
+      "slope_ring_deg": -0.12460571536946116,
+      "slope_imu_deg": -0.11799301846992462,
+      "angle_err_ring_vs_imu_deg": -0.006612696899536554,
+      "roll_ring_minus_imu_deg": 0.0031128797009457626,
+      "vm_max_MPa": 1.8213654103686938,
+      "vm_p99_MPa": 0.5356157306730258,
+      "modes": [
+        {
+          "f_Hz": 39.03148,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 269.3372,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 359.2788,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 432.4177,
+          "kind": "torsion (twist about y)"
+        },
+        {
+          "f_Hz": 820.5683,
+          "kind": "rotation on servo/gear spring + bending"
+        },
+        {
+          "f_Hz": 968.3965,
+          "kind": "plate bending"
+        }
+      ]
+    }
+  ]
+}

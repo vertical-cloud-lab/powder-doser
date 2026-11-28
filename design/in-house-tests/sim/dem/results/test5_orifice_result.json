@@ -1,0 +1,5 @@
+{
+ "test": "5_orifice",
+ "note": "All numbers are DEM predictions (LIGGGHTS-PUBLIC 3.8.0), not measurements. Reference powders: #196's real-size salt-like spheres, dry and SJKR-cohesive (k = 6 kJ/m3, Bo about 5).",
+ "variants": {}
+}

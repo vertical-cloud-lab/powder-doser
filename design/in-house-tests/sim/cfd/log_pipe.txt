@@ -1,0 +1,3 @@
+nr = 8: profile err 0.0115, dp/dz err 0.0154, Q/Qexact 1.00000, 0 s
+nr = 12: profile err 0.0052, dp/dz err 0.0069, Q/Qexact 1.00000, 0 s
+nr = 16: profile err 0.0029, dp/dz err 0.0039, Q/Qexact 1.00000, 2 s

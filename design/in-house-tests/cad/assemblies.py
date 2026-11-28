@@ -137,6 +137,9 @@ def hq_cam_zoom():
     return cat(board(38, 38), cy(18, 10, 1.6), cy(15, 90, 11.6), cy(17, 12, 60))
 
 
+LEDC = "#efeaf8"
+
+
 def led_pad(w=240, h=175, t=5):
     return bx(-w / 2, w / 2, -t / 2, t / 2, 0, h)
 
@@ -148,19 +151,21 @@ def grad_cyl():
 
 
 def linear_stage(stroke=150.0):
-    L = stroke + 110
-    rails = cat(cy(4, L).apply_transform(T(0, 0, 0)) or None)
-    r1 = cy(4, L); r1.apply_transform(T(-20, 0, 0, ry=0))
-    frame = cat(bx(-30, 30, -6, 6, 0, 12), bx(-30, 30, -6, 6, L - 12, L))
-    g1 = cy(4, L - 20, 10); g1.apply_translation([-20, 0, 0])
-    g2 = cy(4, L - 20, 10); g2.apply_translation([20, 0, 0])
-    screw = cy(4, L - 20, 10)
-    motor = nema(42.3, 40, 5, 0); motor.apply_transform(T(0, 0, 0, rx=180))
-    return cat(frame, g1, g2, screw, motor)
+    """DIY stage: printed motor block (z 0-20) and end block (z 220-240), two Ø8 x 200 rods, a NEMA 17
+    with an integrated lead screw under the motor block. Axis +z, rods at x = +-25."""
+    mb = stl("stage_motor_block").copy()
+    eb = stl("stage_end_block").copy(); eb.apply_translation([0, 0, 220])
+    r1 = cy(4, 200, 20); r1.apply_translation([-P.STAGE_ROD_X, 0, 0])
+    r2 = cy(4, 200, 20); r2.apply_translation([P.STAGE_ROD_X, 0, 0])
+    screw = cy(4, 225, 0)
+    motor = nema(42.3, 40, 5, 0); motor.apply_transform(T())
+    return cat(mb, eb, r1, r2, screw, motor)
 
 
 def stage_slider():
-    return bx(-30, 30, -4, 4, -24, 24)
+    m = stl("stage_carriage").copy()
+    m.apply_translation([0, 0, -15])
+    return m
 
 
 def load_cell():
@@ -253,7 +258,7 @@ def a1_heap():
                   PRINTED, T(0, -125, z_ped - 14, rz=0), 7, (0, -80, 0)))
     c.append(Comp("Camera Module 3", cam3(), BOUGHT, T(0, -189, z_ped + 2, rx=90), 7, (0, -80, 0), "bought"))
     c.append(Comp("retort stand rod", cy(6, 330), METAL, T(0, -125, 0), 7, (0, -80, 0), "bought"))
-    c.append(Comp("LED backlight pad", led_pad(), BOUGHT, T(0, 140, z_ped - 90), 8, (0, 80, 0), "bought"))
+    c.append(Comp("LED backlight pad", led_pad(), LEDC, T(0, 140, z_ped - 90), 8, (0, 80, 0), "bought"))
     c.append(Comp("doser auger (45°)", auger_at((0, 0, z_ped + 4 + 12), 45), DOSERC, T(), 9, (0, 60, 60), "context",
                   group="auger"))
     return {"title": "1. Heap angle of repose", "comps": c, "steps": [
@@ -288,7 +293,7 @@ def a2_density():
     c.append(Comp("camera tower", stl("camera_tower"), PRINTED, T(0, -150, 0), 7, (0, -60, 0)))
     c.append(Comp("camera carriage + Camera Module 3", stl("camera_carriage"), PRINTED, T(0, -150, 40, rz=0), 7, (0, -60, 0)))
     c.append(Comp("Camera Module 3", cam3(), BOUGHT, T(0, -163.5, 54, rx=90), 7, (0, -60, 0), "bought"))
-    c.append(Comp("LED backlight pad", led_pad(), BOUGHT, T(0, 110, 0), 8, (0, 60, 0), "bought"))
+    c.append(Comp("LED backlight pad", led_pad(), LEDC, T(0, 110, 0), 8, (0, 60, 0), "bought"))
     return {"title": "2. Bulk and tapped density", "comps": c, "steps": [
         "Printed base: rod bosses, anvil pocket, motor plate",
         "Glue the 304 stainless anvil disc in its pocket",
@@ -316,15 +321,15 @@ def a3_tilt():
                   (-80, 0, 0), "bought", group="plate"))
     c.append(Comp("30T gear on the plate lug", stl("tilt_gear_30t"), PRINTED, T(43.5, 0, hz, ry=90), 5, (40, 0, 0),
                   group="plate"))
-    c.append(Comp("LSM6DSOX IMU", board(25.4, 17.8), BOUGHT, T(0, 60, hz - P.PLATE_T / 2 - 5 - 1.6), 6, (0, 0, -40),
+    c.append(Comp("LSM6DSOX IMU", board(25.4, 17.8), BOUGHT, T(0, 60, P.PLATE_Z0 - 2 - 1.6), 6, (0, 0, -40),
                   "bought", group="plate"))
     c.append(Comp("304 stainless coupon 100 x 50 x 1", bx(-25, 25, 14.1, 114.1, 0, 1.0), STEEL,
-                  T(0, 0, hz + P.PLATE_T / 2 - 0.8), 7, (0, 0, 60), "bought", group="plate"))
-    c.append(Comp("ring (Ø25 ID) filled with powder", stl("wall_ring"), PRINTED, T(0, 80, hz + P.PLATE_T / 2 + 0.2 + 0.5), 8,
+                  T(0, 0, P.PLATE_TOP - 0.8), 7, (0, 0, 60), "bought", group="plate"))
+    c.append(Comp("ring (Ø25 ID) filled with powder", stl("wall_ring"), PRINTED, T(0, 80, P.PLATE_TOP + 0.2 + 0.5), 8,
                   (0, 0, 60), group="ring"))
-    c.append(Comp("powder in the ring", cy(12.4, 5.6, 0), "#d9c9a3", T(0, 80, hz + P.PLATE_T / 2 + 0.2), 8, (0, 0, 60),
+    c.append(Comp("powder in the ring", cy(12.4, 5.6, 0), "#d9c9a3", T(0, 80, P.PLATE_TOP + 0.2), 8, (0, 0, 60),
                   "context", group="ring"))
-    c.append(Comp("lid with washers (sets the stress)", stl("ring_lid"), PRINTED, T(0, 80, hz + P.PLATE_T / 2 + 6.0), 9,
+    c.append(Comp("lid with washers (sets the stress)", stl("ring_lid"), PRINTED, T(0, 80, P.PLATE_TOP + 6.0), 9,
                   (0, 0, 60), group="ring"))
     return {"title": "3. Tilting plate: wall friction and layer start angle", "comps": c, "steps": [
         "Printed base with hinge towers and servo bracket",
@@ -342,7 +347,7 @@ def a3_tilt():
 
 def a4_psd():
     c: list[Comp] = []
-    c.append(Comp("LED backlight pad (flat)", bx(-120, 120, -87, 87, -5, 0), BOUGHT, T(), 0, (0, 0, 0), "bought"))
+    c.append(Comp("LED backlight pad (flat)", bx(-120, 120, -87, 87, -5, 0), LEDC, T(), 0, (0, 0, 0), "bought"))
     c.append(Comp("microscope base", stl("micro_base"), PRINTED, T(), 1, (0, 0, 60)))
     c.append(Comp("column", stl("micro_column"), PRINTED, T(0, 42, 6), 2, (0, 0, 120)))
     c.append(Comp("mechanical X-Y stage", cat(bx(-50, 50, -35, 25, 6, 14), bx(-40, 40, -10, 10, 14, 18)), METAL,
@@ -364,23 +369,21 @@ def a4_psd():
 def a5_orifice():
     c: list[Comp] = []
     balance(c)
-    c.append(Comp("pan adapter", stl("pan_adapter"), PRINTED, T(0, 0, ADAPTER_Z), 1, (0, 0, 120)))
-    c.append(Comp("catch cup", stl("catch_cup"), PRINTED, T(0, 0, RISER_Z), 2, (0, 0, 120)))
-    top = tripod(c, 120, 3, 4)
-    c.append(Comp("cup holder", stl("cup_holder"), PRINTED, T(-74, 0, top, rz=0), 5, (0, 0, 80)))
+    c.append(Comp("catch cup", stl("catch_cup"), PRINTED, T(0, 0, PAN_TOP), 1, (0, 0, 120), group="catch"))
+    top = tripod(c, 120, 2, 3)
+    c.append(Comp("cup holder", stl("cup_holder"), PRINTED, T(-74, 0, top, rz=0), 4, (0, 0, 80)))
     zc = top + 10
-    c.append(Comp("gate guide + slide", cat(stl("gate_guide"), stl("gate_slide").copy().apply_translation([0, 0, 4.3]) or stl("gate_slide")),
-                  PRINTED, T(0, 0, zc), 6, (0, 0, 60), group="gate"))
-    c.append(Comp("9 g micro servo", micro_servo(), BOUGHT, T(38, -14, zc + 6 + 16), 7, (40, 0, 0), "bought"))
-    c.append(Comp("orifice disc", stl("orifice_disc_3p00"), PRINTED, T(0, 0, zc + 6), 8, (0, 0, 60)))
-    c.append(Comp("orifice cup", stl("orifice_cup"), PRINTED, T(0, 0, zc + 8), 9, (0, 0, 80)))
-    c.append(Comp("JF-0530B solenoid tapper", bx(-15, 15, -6.5, 6.5, -5.5, 5.5), BOUGHT, T(-74 + 76, 32, top + 13), 10,
+    c.append(Comp("gate guide", stl("gate_guide"), PRINTED, T(0, 0, zc), 5, (0, 0, 60)))
+    c.append(Comp("gate slide", stl("gate_slide"), "#e76f51", T(0, 0, zc + 4.4), 5, (0, 0, 60), group="gate"))
+    c.append(Comp("9 g micro servo", micro_servo(), BOUGHT, T(38, -14, zc + 6 + 16), 6, (40, 0, 0), "bought"))
+    c.append(Comp("orifice disc", stl("orifice_disc_3p00"), PRINTED, T(0, 0, zc + 6), 7, (0, 0, 60)))
+    c.append(Comp("orifice cup", stl("orifice_cup"), PRINTED, T(0, 0, zc + 8), 8, (0, 0, 80)))
+    c.append(Comp("JF-0530B solenoid tapper", bx(-15, 15, -6.5, 6.5, -5.5, 5.5), BOUGHT, T(-74 + 76, 32, top + 13), 9,
                   (0, 60, 0), "bought"))
-    c.append(Comp("doser auger (45°)", auger_at((0, 0, zc + 8 + 46 + 10), 45), DOSERC, T(), 11, (0, 60, 60), "context"))
+    c.append(Comp("doser auger (45°)", auger_at((0, 0, zc + 8 + 46 + 10), 45), DOSERC, T(), 10, (0, 60, 60), "context"))
     return {"title": "5. Orifice cup", "comps": c, "steps": [
         "The HR-100A",
-        "Pan adapter on the pan",
-        "Catch cup on the adapter: the balance weighs only what flows",
+        "Catch cup on the pan: the balance weighs only what flows",
         "Tripod legs (120 mm) on the chamber floor",
         "Spider on the legs",
         "Cup holder on the spider",
@@ -399,7 +402,7 @@ def a6_humidity():
                                           bx(93, 95, -65, 65, 0, 95), bx(-95, 95, -65, -63, 0, 95), bx(-95, 95, 63, 65, 0, 95)),
                   GLASS, T(), 0, (0, 0, 0), "bought", 0.25))
     c.append(Comp("slurry tray (saturated salt)", stl("hc_slurry_tray"), PRINTED, T(0, 0, 2), 1, (0, 0, 100)))
-    c.append(Comp("saturated salt slurry", bx(-73, 73, -43, 43, 3.6, 12), "#f1f1f1", T(0, 0, 0), 2, (0, 0, 100), "context"))
+    c.append(Comp("saturated salt slurry", bx(-68, 68, -33, 33, 3.6, 12), "#f1f1f1", T(0, 0, 0), 2, (0, 0, 100), "context"))
     c.append(Comp("perforated shelf", stl("hc_shelf"), PRINTED, T(0, 0, 2 + 30), 3, (0, 0, 100)))
     c.append(Comp("sample dish, 2 mm powder layer", stl("hc_sample_dish"), PRINTED, T(-20, 0, 34.4), 4, (0, 0, 80)))
     c.append(Comp("powder layer", cy(28.5, 2.0, 0), "#d9c9a3", T(-20, 0, 35.6), 4, (0, 0, 80), "context"))
@@ -458,8 +461,8 @@ def a8_ucs():
                   PRINTED, T(-10, 0, zb), 4, (0, 0, 80), group="rings"))
     c.append(Comp("piston + slotted weights", cat(stl("ucs_piston"), cy(20, 6, 23), cy(20, 6, 29.5)), PRINTED,
                   T(-10, 0, zb + 40 - 7), 5, (0, 0, 80), group="piston"))
-    c.append(Comp("150 mm linear stage (vertical)", linear_stage(), METAL, T(-10, 56, 52), 6, (0, 80, 0), "bought"))
-    c.append(Comp("slider", stage_slider(), METAL, T(-10, 46, zb + 54), 6, (0, 80, 0), "bought", group="platen"))
+    c.append(Comp("DIY lead-screw stage (vertical)", linear_stage(), METAL, T(-10, 35, 50), 6, (0, 80, 0), "bought"))
+    c.append(Comp("stage carriage", stage_slider(), PRINTED, T(-10, 35, zb + 54), 6, (0, 80, 0), group="platen"))
     c.append(Comp("platen arm", stl("ucs_platen"), PRINTED, T(-10, 0, zb + 50, rz=90), 7, (0, 0, 60), group="platen"))
     return {"title": "8. Unconfined strength", "comps": c, "steps": [
         "Printed base with the load-cell block and stage column",
@@ -468,7 +471,7 @@ def a8_ucs():
         "Two mould halves (Ø20 x 40) on dowels",
         "Two latch rings hold the mould shut",
         "Fill by doser; piston + weights: 0.2-2 kPa",
-        "Linear stage on the column",
+        "DIY lead-screw stage on the column",
         "Platen arm on the slider; lower at 0.1 mm/s after the mould opens"],
         "view": {"azimuth": -50, "elevation": 20, "focus": (0, 20, 70), "zoom": 1.2}}
 
@@ -476,20 +479,22 @@ def a8_ucs():
 def a9_spread():
     c: list[Comp] = []
     st = linear_stage()
-    c.append(Comp("150 mm linear stage (horizontal)", st, METAL, T(0, 0, 30, ry=90), 0, (0, 0, 0), "bought"))
+    Ms = T(0, 0, 30, ry=90) @ T(rz=-90)
+    c.append(Comp("DIY lead-screw stage (horizontal)", st, METAL, Ms, 0, (0, 0, 0), "bought"))
+    c.append(Comp("stage carriage", stage_slider(), PRINTED, T(60, 0, 0) @ Ms @ T(0, 0, 0), 4, (0, 0, 60), group="blade"))
     c.append(Comp("2 brackets", cat(stl("spread_bracket").copy().apply_transform(T(70, 52, 0)),
                                     stl("spread_bracket").copy().apply_transform(T(190, 52, 0))),
                   PRINTED, T(), 1, (0, 60, 0)))
-    zb = 22.0 - 0.15 - 10.0          # bed bottom: coupon top 0.15 mm under the blade edge (z = 22)
+    zb = 31.0 - 0.15 - 10.0          # bed bottom: coupon top 0.15 mm under the blade edge (z = 31)
     c.append(Comp("coupon bed", stl("coupon_bed"), PRINTED, T(130, 88, zb), 2, (0, 60, 40)))
-    c.append(Comp("304 stainless coupon 100 x 30 x 1", bx(-50, 50, -15, 15, 0, 1), STEEL, T(130, 88, zb + 9), 3, (0, 0, 60), "bought"))
-    c.append(Comp("blade carriage", stl("blade_carriage"), PRINTED, T(60, 0, 42), 4, (0, 0, 60), group="blade"))
-    c.append(Comp("blade, 304 SS 1.5 x 25 x 52", bx(-26, 26, -0.75, 0.75, 0, 25), STEEL, T(60, 88, 22.0), 5, (0, 0, 60),
+    c.append(Comp("304 stainless coupon 100 x 30 x 0.91", bx(-50, 50, -15, 15, 0, 0.91), STEEL, T(130, 88, zb + 10 - 0.91), 3, (0, 0, 60), "bought"))
+    c.append(Comp("blade carriage", stl("blade_carriage"), PRINTED, T(60, 0, 52), 4, (0, 0, 60), group="blade"))
+    c.append(Comp("blade, 304 SS 1.5 x 25 x 52", bx(-26, 26, -0.75, 0.75, 0, 25), STEEL, T(60, 88, 31.0), 5, (0, 0, 60),
                   "bought", group="blade"))
     c.append(Comp("powder line", bx(-1.5, 1.5, -14, 14, 0, 1.2), "#d9c9a3",
                   T(84, 88, zb + 10), 6, (0, 0, 40), "context", group="powder"))
     return {"title": "9. Blade spreading", "comps": c, "steps": [
-        "Linear stage on its side (150 mm stroke, NEMA 17)",
+        "DIY stage: NEMA 17 lead screw, two Ø8 rods, 4 x LM8UU",
         "Two printed brackets tie the coupon bed to the stage",
         "Coupon bed, parallel to the travel",
         "Coupon (304 SS or PLA), flush with the bed",
