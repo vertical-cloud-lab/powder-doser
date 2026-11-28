@@ -1,6 +1,7 @@
 # Systems spec: the ten in-house test apparatuses
 
-**Status: design, 2026-11-28.** Nothing here has been built. This file is the single source of numbers
+**Status: design, 2026-11-28.** Nothing here has been built. The section
+[Changes after Edison and the BOM](#changes-after-edison-and-the-bom) overrides the numbers above it where they differ. This file is the single source of numbers
 for the CAD (`cad/`), the bill of materials (`bom/`), the simulations (`sim/`), the firmware and bench
 software (`firmware/`, `software/`), the PCB (`pcb/`) and the videos (`video/`). Change a number here
 first, then regenerate.
@@ -217,3 +218,31 @@ powder are printed with the auger's settings so their surfaces match.
 | `edison/` | Edison queries and answers |
 | `video/` | animation sources and the rendered videos |
 | `labs/` | where to run the standard tests |
+
+## Changes after Edison and the BOM
+
+Made on 2026-11-28 after the Edison answers (`edison/q1`–`q5`) and the first BOM pass (`bom/`). They
+override the sections above.
+
+| Item | Was | Now | Why |
+|---|---|---|---|
+| Pedestals (test 1) | Ø12 / 20 / 30 | **Ø12 / 20 / 30 / 40** | Base-size effects fade above about 100 × d50 (Edison q1, Kajiyama 2024). Salt (d50 0.425 mm) needs Ø40; Ø20 suits d50 ≤ 200 µm |
+| Drum depth (test 7) | 15 mm | **15 mm, plus a 25 mm variant** | The cohesive length can approach several mm, so 15 mm is marginal for cohesive powders (q1) |
+| Humidity chambers (test 6) | 5 boxes | **6 boxes:** MgCl₂ 32.8 %, Mg(NO₃)₂ 52.9 %, **NaNO₃ 73.8 %**, NaCl 75.3 %, KCl 84.3 %, silica gel | NaNO₃ approaches NaCl's 75.3 % deliquescence from below, testing run 27's 73.5 % prediction. Conditioning NaCl at 75.3 % risks irreversible caking (q5) |
+| Sample dish (test 6) | Ø60, 2 mm layer | **Ø80, ≤ 1 mm layer (about 3 g)** | Layers under about 1 mm keep vapour diffusion from limiting uptake (q5) |
+| Fan (test 6) | optional | **standard** | 10–50× faster equilibration (q5, Rockland 1960) |
+| Temperature (test 6) | logged | **logged, held to ±0.5 °C** | Mg(NO₃)₂ moves −0.3 % RH/°C (q5) |
+| Tap drop (test 2) | 3 mm | 3 mm (ASTM B527 / ISO 3953) | Not USP <616>'s 14 mm. The two rank powders differently, so state which (q2) |
+| UCS filling (test 8) | one fill | **layered filling** (Williams), with 1/N extrapolation | Reduces mould-wall friction bias. H/D = 2 is the minimum (q3) |
+| Anvil (test 2) | Ø25 × 3 | **Ø25.4 × 6.35 (1/4 in) 304** on a 4 mm boss | Stock size (BOM T2-5) |
+| Coupons (tests 3, 9) | 1.0 mm | **0.91 mm (0.036 in) 304** | Stock size (BOM T3-4) |
+| Linear stage (tests 8, 9) | bought 100 mm T8 stage | **DIY:** printed motor block, end block and carriage; Pololu 2268 NEMA 17 with a 282 mm Tr8×8 screw and nut; two Ø8 × 200 rods; 4 × LM8UU; a 608 end bearing; about 130 mm travel | No complete stage could be confirmed in stock (BOM) |
+| Microscope camera (test 4) | Pi HQ camera | **Arducam B0240E (IMX477, C/CS)** | The official camera is out everywhere (about 5 weeks); same sensor |
+| Bench computer | Pi 5 4 GB | **Pi 5 8 GB** | 4 GB out of stock |
+| Accessory controller | Pico 2 W | **Pico 2 WH** | Pico 2 W out until Feb 2027 |
+| RH sensors | SHT45 with membrane | **SHT45 without membrane** | Membrane version out of stock |
+| Tilt servo (test 3) | 20 kg·cm | **15.5 kg·cm FEETECH FS5115M** | In stock. The plate needs well under 1 kg·cm |
+| Cup tapper (test 5) | JF-0530B 5 V | **JF-0530B 12 V** on DRV8871 #2 from a 12 V rail | Stock |
+| Tilt base / microscope column | 175 / 170 mm | **154 / 160 mm** | Fit the A1 mini's 180 mm bed |
+| Humidity tray / shelf | 150 × 90 / 160 × 100 | **140 × 70 / 150 × 90** | One of each per A1 mini plate |
+| Locating spigots (tray, cradle, cup holder, fill holder, catch cup, pan adapter) | spigots | **flat bottoms, pin-and-hole** (3 × Ø3 pins on the spider) | Printable without supports |

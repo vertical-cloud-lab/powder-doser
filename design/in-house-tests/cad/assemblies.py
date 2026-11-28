@@ -263,7 +263,7 @@ def a1_heap():
                   group="auger"))
     return {"title": "1. Heap angle of repose", "comps": c, "steps": [
         "The HR-100A as it is: pan Ø90, breeze break Ø156",
-        "Pan adapter on the pan; three lips centre it",
+        "Pan adapter on the pan; centre it by eye (2 mm ring all round)",
         "160 mm riser pushes into the adapter's socket",
         "Three 160 mm tripod legs stand on the chamber floor, clear of the pan",
         "Tripod spider on the legs",
@@ -279,16 +279,16 @@ def a2_density():
     c: list[Comp] = []
     z0 = P.TAP_BASE_T
     c.append(Comp("tapper base", stl("tapper_base"), PRINTED, T(), 0, (0, 0, 0)))
-    c.append(Comp("anvil, 304 SS Ø25 x 3", cy(12.5, 3, z0 - 2.0), STEEL, T(), 1, (0, 0, 50), "bought"))
+    c.append(Comp("anvil, 304 SS Ø25.4 x 6.35", cy(12.7, P.ANVIL_T, P.ANVIL_TOP - P.ANVIL_T), STEEL, T(), 1, (0, 0, 50), "bought"))
     for x in (-P.TAP_ROD_X, P.TAP_ROD_X):
         c.append(Comp("guide rod Ø6 x 100", cy(3, 100, z0 - 1), STEEL, T(x, 0, 0), 2, (0, 0, 140), "bought"))
     c.append(Comp("NEMA 11 stepper", nema(28.2, 32, 5, 20), BOUGHT, T(0, 38, P.TAP_SHAFT_Z, rx=90), 3, (0, 80, 0), "bought"))
     c.append(Comp("snail cam (2 lobes, 3 mm drop)", stl("tapper_cam"), PRINTED, T(0, 28, P.TAP_SHAFT_Z, rx=90), 4,
                   (0, 0, 60), group="cam"))
     c.append(Comp("carriage", stl("tapper_carriage"), PRINTED, T(), 5, (0, 0, 120), group="carriage"))
-    c.append(Comp("10 mL Class A cylinder", grad_cyl(), GLASS, T(0, 0, z0 + 1 + 5), 6, (0, 0, 150), "bought", 0.45,
+    c.append(Comp("10 mL Class A cylinder", grad_cyl(), GLASS, T(0, 0, P.ANVIL_TOP + 5), 6, (0, 0, 150), "bought", 0.45,
                   group="carriage"))
-    c.append(Comp("powder column", cy(P.CYL_OD / 2 - 1.3, 60, 0), "#d9c9a3", T(0, 0, z0 + 1 + 5 + 8), 6, (0, 0, 150),
+    c.append(Comp("powder column", cy(P.CYL_OD / 2 - 1.3, 60, 0), "#d9c9a3", T(0, 0, P.ANVIL_TOP + 5 + 8), 6, (0, 0, 150),
                   "context", group="powder"))
     c.append(Comp("camera tower", stl("camera_tower"), PRINTED, T(0, -150, 0), 7, (0, -60, 0)))
     c.append(Comp("camera carriage + Camera Module 3", stl("camera_carriage"), PRINTED, T(0, -150, 40, rz=0), 7, (0, -60, 0)))
@@ -296,7 +296,7 @@ def a2_density():
     c.append(Comp("LED backlight pad", led_pad(), LEDC, T(0, 110, 0), 8, (0, 60, 0), "bought"))
     return {"title": "2. Bulk and tapped density", "comps": c, "steps": [
         "Printed base: rod bosses, anvil pocket, motor plate",
-        "Glue the 304 stainless anvil disc in its pocket",
+        "Glue the 1/4 in 304 stainless anvil disc in its pocket (1 mm proud)",
         "Press the two Ø6 mm rods into the bosses",
         "Bolt the NEMA 11 to the motor plate (4 x M2.5)",
         "Two-lobe snail cam on the shaft, set screw on the flat",
@@ -312,7 +312,7 @@ def a3_tilt():
     hz = P.HINGE_Z
     c.append(Comp("tilt base", stl("tilt_base"), PRINTED, T(), 0, (0, 0, 0)))
     sz = hz - P.CENTRE_D
-    c.append(Comp("20 kg·cm metal-gear servo", std_servo(), BOUGHT, T(29, -10.35 + 10.35, sz, ry=90).dot(T()) , 1,
+    c.append(Comp("15.5 kg·cm metal-gear servo (FS5115M)", std_servo(), BOUGHT, T(29, -10.35 + 10.35, sz, ry=90).dot(T()) , 1,
                   (60, 0, 0), "bought"))
     c.append(Comp("15T pinion on the horn", stl("tilt_pinion_15t"), PRINTED, T(43.5, 0, sz, ry=90), 2, (40, 0, 0),
                   group="pinion"))
@@ -354,7 +354,7 @@ def a4_psd():
                   T(), 3, (0, -60, 0), "bought"))
     c.append(Comp("glass slide with grains", bx(-37.5, 37.5, -12.5, 12.5, 18, 19), GLASS, T(), 4, (0, -40, 30), "bought", 0.6))
     c.append(Comp("camera carriage", stl("micro_carriage"), PRINTED, T(0, 42, 100), 5, (0, 0, 80)))
-    c.append(Comp("HQ camera + 0.12-1.8x zoom lens", hq_cam_zoom(), BOUGHT, T(0, -3, 127, rx=180), 6, (0, 0, 120), "bought"))
+    c.append(Comp("Arducam IMX477 HQ camera + 0.12-1.8x zoom lens", hq_cam_zoom(), BOUGHT, T(0, -3, 127, rx=180), 6, (0, 0, 120), "bought"))
     return {"title": "4. PSD and shape from images", "comps": c, "steps": [
         "LED pad flat on the bench",
         "Printed base over the pad; window over the light",
@@ -362,7 +362,7 @@ def a4_psd():
         "Mechanical X-Y stage bolted to the base",
         "Slide with a sparse layer of grains",
         "Camera carriage on the column, thumb screw",
-        "HQ camera + zoom lens, looking down; focus with the carriage"],
+        "IMX477 HQ camera + zoom lens, looking down; focus with the carriage"],
         "view": {"azimuth": -45, "elevation": 22, "focus": (0, 0, 70), "zoom": 1.3}}
 
 
@@ -404,22 +404,22 @@ def a6_humidity():
     c.append(Comp("slurry tray (saturated salt)", stl("hc_slurry_tray"), PRINTED, T(0, 0, 2), 1, (0, 0, 100)))
     c.append(Comp("saturated salt slurry", bx(-68, 68, -33, 33, 3.6, 12), "#f1f1f1", T(0, 0, 0), 2, (0, 0, 100), "context"))
     c.append(Comp("perforated shelf", stl("hc_shelf"), PRINTED, T(0, 0, 2 + 30), 3, (0, 0, 100)))
-    c.append(Comp("sample dish, 2 mm powder layer", stl("hc_sample_dish"), PRINTED, T(-20, 0, 34.4), 4, (0, 0, 80)))
-    c.append(Comp("powder layer", cy(28.5, 2.0, 0), "#d9c9a3", T(-20, 0, 35.6), 4, (0, 0, 80), "context"))
+    c.append(Comp("sample dish Ø80, layer under 1 mm", stl("hc_sample_dish"), PRINTED, T(-20, 0, 34.4), 4, (0, 0, 80)))
+    c.append(Comp("powder layer", cy(38.5, 0.8, 0), "#d9c9a3", T(-20, 0, 35.6), 4, (0, 0, 80), "context"))
     c.append(Comp("SHT45 sensor on its clip", cat(stl("hc_sensor_clip"), board(25.4, 17.8).apply_translation([0, 0, 2]) or board(25.4, 17.8)),
                   PRINTED, T(45, 0, 34.4), 5, (0, 0, 80)))
     c.append(Comp("25 mm 5 V fan on its mount", cat(stl("hc_fan_mount"), bx(-12.5, 12.5, -12.5, 12.5, 3, 13)), PRINTED,
                   T(55, 35, 60, rx=90), 6, (0, 0, 80)))
     c.append(Comp("lid with PG7 cable gland", cat(bx(-97, 97, -67, 67, 95, 100), cy(6, 12, 100).apply_translation([60, 0, 0]) or cy(6, 12, 100)),
                   GLASS, T(), 7, (0, 0, 60), "bought", 0.35))
-    return {"title": "6. Humidity chambers (x5)", "comps": c, "steps": [
+    return {"title": "6. Humidity chambers (x6)", "comps": c, "steps": [
         "Clear airtight box, about 1.2 L",
         "Slurry tray on the floor",
-        "Saturated salt slurry: MgCl2, Mg(NO3)2, NaCl, KCl, or silica gel",
+        "Saturated slurry: MgCl2, Mg(NO3)2, NaNO3, NaCl or KCl; or silica gel",
         "Perforated shelf 30 mm above the slurry",
-        "Sample dish: 2-5 g in a 2 mm layer",
+        "Ø80 dish: about 3 g in a layer under 1 mm",
         "SHT45 on its clip next to the sample",
-        "Optional 25 mm fan to mix the air",
+        "25 mm fan mixes the air (10-50x faster equilibration)",
         "Lid on; the sensor cable leaves through a PG7 gland"],
         "view": {"azimuth": -40, "elevation": 30, "focus": (0, 0, 40), "zoom": 1.25}}
 

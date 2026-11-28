@@ -1,0 +1,153 @@
+{
+ "order": "Sat 28 Nov 2026 (day 0)",
+ "rows": [
+  {
+   "test": "1",
+   "name": "1 Heap AoR",
+   "parts_days": 9.0,
+   "print": [
+    2.72,
+    2.74
+   ],
+   "pcb": null,
+   "assembly": [
+    9.0,
+    10.0
+   ]
+  },
+  {
+   "test": "2",
+   "name": "2 Density",
+   "parts_days": 9.0,
+   "print": [
+    2.75,
+    2.8
+   ],
+   "pcb": null,
+   "assembly": [
+    9.0,
+    10.0
+   ]
+  },
+  {
+   "test": "3",
+   "name": "3 Tilting plate",
+   "parts_days": 9.0,
+   "print": [
+    2.77,
+    3.35
+   ],
+   "pcb": null,
+   "assembly": [
+    9.0,
+    10.0
+   ]
+  },
+  {
+   "test": "4",
+   "name": "4 PSD images",
+   "parts_days": 14.0,
+   "print": [
+    3.33,
+    3.39
+   ],
+   "pcb": null,
+   "assembly": [
+    14.0,
+    15.0
+   ]
+  },
+  {
+   "test": "5",
+   "name": "5 Orifice cup",
+   "parts_days": 9.0,
+   "print": [
+    3.37,
+    3.45
+   ],
+   "pcb": null,
+   "assembly": [
+    9.0,
+    10.0
+   ]
+  },
+  {
+   "test": "6",
+   "name": "6 Humidity",
+   "parts_days": 10.0,
+   "print": [
+    3.45,
+    3.82
+   ],
+   "pcb": null,
+   "assembly": [
+    10.0,
+    11.0
+   ]
+  },
+  {
+   "test": "7",
+   "name": "7 Drum",
+   "parts_days": 9.0,
+   "print": [
+    2.33,
+    3.9
+   ],
+   "pcb": null,
+   "assembly": [
+    9.0,
+    10.0
+   ]
+  },
+  {
+   "test": "8",
+   "name": "8 UCS",
+   "parts_days": 9.0,
+   "print": [
+    4.33,
+    4.46
+   ],
+   "pcb": null,
+   "assembly": [
+    9.0,
+    10.0
+   ]
+  },
+  {
+   "test": "9",
+   "name": "9 Spreading",
+   "parts_days": 9.0,
+   "print": [
+    4.4,
+    4.47
+   ],
+   "pcb": null,
+   "assembly": [
+    9.0,
+    10.0
+   ]
+  },
+  {
+   "test": "10",
+   "name": "10 Faraday cup",
+   "parts_days": 11.0,
+   "print": [
+    4.49,
+    4.54
+   ],
+   "pcb": [
+    2.0,
+    11.0
+   ],
+   "assembly": [
+    11.5,
+    12.5
+   ]
+  }
+ ],
+ "printers": {
+  "A1M-1": 4.47,
+  "A1M-2": 4.54,
+  "H2D": 2.43
+ }
+}
