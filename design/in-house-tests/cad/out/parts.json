@@ -1,0 +1,2222 @@
+{
+ "backlight_foot": {
+  "name": "backlight_foot",
+  "test": "shared",
+  "qty": 2,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 24720.0,
+  "mass_g_solid": 30.65,
+  "bbox_use_mm": [
+   60.0,
+   40.0,
+   25.0
+  ],
+  "bed_extent_mm": [
+   60.0,
+   40.0,
+   25.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 2400.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 44,
+  "build_s": 0.0
+ },
+ "blade_carriage": {
+  "name": "blade_carriage",
+  "test": "9",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 40,
+  "note": "",
+  "volume_mm3": 56484.3,
+  "mass_g_solid": 70.04,
+  "bbox_use_mm": [
+   60.0,
+   116.0,
+   32.0
+  ],
+  "bed_extent_mm": [
+   60.0,
+   116.0,
+   32.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 3764.6,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 3400,
+  "build_s": 0.2
+ },
+ "camera_carriage": {
+  "name": "camera_carriage",
+  "test": "shared",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 10128.2,
+  "mass_g_solid": 12.56,
+  "bbox_use_mm": [
+   32.0,
+   23.0,
+   36.0
+  ],
+  "bed_extent_mm": [
+   32.0,
+   23.0,
+   36.0
+  ],
+  "bed_rot_deg": [
+   0,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 96.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1330,
+  "build_s": 0.1
+ },
+ "camera_tower": {
+  "name": "camera_tower",
+  "test": "shared",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 57739.1,
+  "mass_g_solid": 71.6,
+  "bbox_use_mm": [
+   70.0,
+   50.0,
+   170.0
+  ],
+  "bed_extent_mm": [
+   70.0,
+   50.0,
+   170.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 3439.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1112,
+  "build_s": 0.1
+ },
+ "catch_cup": {
+  "name": "catch_cup",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 7281.0,
+  "mass_g_solid": 9.03,
+  "bbox_use_mm": [
+   43.97,
+   43.99,
+   39.2
+  ],
+  "bed_extent_mm": [
+   43.97,
+   43.99,
+   39.2
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 161.1,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 752,
+  "build_s": 0.0
+ },
+ "coupon_bed": {
+  "name": "coupon_bed",
+  "test": "9",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 40,
+  "note": "",
+  "volume_mm3": 66104.4,
+  "mass_g_solid": 81.97,
+  "bbox_use_mm": [
+   140.0,
+   50.0,
+   10.0
+  ],
+  "bed_extent_mm": [
+   140.0,
+   50.0,
+   10.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 6939.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1076,
+  "build_s": 0.1
+ },
+ "cup_holder": {
+  "name": "cup_holder",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 18140.6,
+  "mass_g_solid": 22.49,
+  "bbox_use_mm": [
+   119.78,
+   66.0,
+   29.0
+  ],
+  "bed_extent_mm": [
+   119.78,
+   66.0,
+   29.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 161.1,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1422,
+  "build_s": 0.1
+ },
+ "cyl_fill_holder": {
+  "name": "cyl_fill_holder",
+  "test": "2",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 11906.8,
+  "mass_g_solid": 14.76,
+  "bbox_use_mm": [
+   51.97,
+   51.98,
+   17.0
+  ],
+  "bed_extent_mm": [
+   51.97,
+   51.98,
+   17.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 816.4,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 524,
+  "build_s": 0.1
+ },
+ "drum_backdisc": {
+  "name": "drum_backdisc",
+  "test": "7",
+  "qty": 2,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "one black, one white",
+  "volume_mm3": 1360.9,
+  "mass_g_solid": 1.69,
+  "bbox_use_mm": [
+   37.98,
+   37.99,
+   1.2
+  ],
+  "bed_extent_mm": [
+   37.98,
+   37.99,
+   1.2
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1132.2,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 248,
+  "build_s": 0.0
+ },
+ "drum_bezel": {
+  "name": "drum_bezel",
+  "test": "7",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 1786.3,
+  "mass_g_solid": 2.22,
+  "bbox_use_mm": [
+   55.97,
+   55.98,
+   3.0
+  ],
+  "bed_extent_mm": [
+   55.97,
+   55.98,
+   3.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 455.1,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1522,
+  "build_s": 0.1
+ },
+ "drum_body": {
+  "name": "drum_body",
+  "test": "7",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 40,
+  "note": "",
+  "volume_mm3": 15304.2,
+  "mass_g_solid": 18.98,
+  "bbox_use_mm": [
+   55.97,
+   55.98,
+   21.0
+  ],
+  "bed_extent_mm": [
+   55.97,
+   55.98,
+   21.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 2431.7,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 3116,
+  "build_s": 0.9
+ },
+ "drum_shaft": {
+  "name": "drum_shaft",
+  "test": "7",
+  "qty": 1,
+  "printer": "H2D",
+  "infill_pct": 40,
+  "note": "245 mm tall: H2D, flange down",
+  "volume_mm3": 48477.0,
+  "mass_g_solid": 60.11,
+  "bbox_use_mm": [
+   45.99,
+   45.99,
+   245.0
+  ],
+  "bed_extent_mm": [
+   45.99,
+   45.99,
+   245.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 867.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 4240,
+  "build_s": 1.4
+ },
+ "fc_cradle": {
+  "name": "fc_cradle",
+  "test": "10",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 41802.7,
+  "mass_g_solid": 51.84,
+  "bbox_use_mm": [
+   84.0,
+   83.97,
+   21.0
+  ],
+  "bed_extent_mm": [
+   84.0,
+   83.97,
+   21.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 190.1,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1046,
+  "build_s": 0.1
+ },
+ "fc_insulator_base": {
+  "name": "fc_insulator_base",
+  "test": "10",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 11051.3,
+  "mass_g_solid": 13.7,
+  "bbox_use_mm": [
+   68.96,
+   68.98,
+   3.0
+  ],
+  "bed_extent_mm": [
+   68.96,
+   68.98,
+   3.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 3677.7,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1272,
+  "build_s": 0.0
+ },
+ "fc_lid": {
+  "name": "fc_lid",
+  "test": "10",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 15849.6,
+  "mass_g_solid": 19.65,
+  "bbox_use_mm": [
+   75.95,
+   75.98,
+   15.0
+  ],
+  "bed_extent_mm": [
+   75.95,
+   75.98,
+   15.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 4286.1,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1896,
+  "build_s": 0.1
+ },
+ "fc_pcb_box": {
+  "name": "fc_pcb_box",
+  "test": "10",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 15667.9,
+  "mass_g_solid": 19.43,
+  "bbox_use_mm": [
+   60.0,
+   50.0,
+   24.0
+  ],
+  "bed_extent_mm": [
+   60.0,
+   50.0,
+   24.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 3000.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 2556,
+  "build_s": 0.1
+ },
+ "fc_pcb_lid": {
+  "name": "fc_pcb_lid",
+  "test": "10",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 6474.2,
+  "mass_g_solid": 8.03,
+  "bbox_use_mm": [
+   60.0,
+   50.0,
+   4.0
+  ],
+  "bed_extent_mm": [
+   60.0,
+   50.0,
+   4.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 3000.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 44,
+  "build_s": 0.0
+ },
+ "funnel_collar": {
+  "name": "funnel_collar",
+  "test": "2",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 2434.1,
+  "mass_g_solid": 3.02,
+  "bbox_use_mm": [
+   39.98,
+   39.99,
+   26.0
+  ],
+  "bed_extent_mm": [
+   39.98,
+   39.99,
+   26.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 147.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1896,
+  "build_s": 0.1
+ },
+ "gate_guide": {
+  "name": "gate_guide",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 9444.1,
+  "mass_g_solid": 11.71,
+  "bbox_use_mm": [
+   65.98,
+   39.99,
+   6.0
+  ],
+  "bed_extent_mm": [
+   65.98,
+   39.99,
+   6.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1762.5,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 2200,
+  "build_s": 0.1
+ },
+ "gate_slide": {
+  "name": "gate_slide",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "",
+  "volume_mm3": 920.5,
+  "mass_g_solid": 1.14,
+  "bbox_use_mm": [
+   60.0,
+   11.6,
+   1.5
+  ],
+  "bed_extent_mm": [
+   60.0,
+   11.6,
+   1.5
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 613.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 524,
+  "build_s": 0.0
+ },
+ "hc_fan_mount": {
+  "name": "hc_fan_mount",
+  "test": "6",
+  "qty": 5,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 2865.6,
+  "mass_g_solid": 3.55,
+  "bbox_use_mm": [
+   30.0,
+   39.0,
+   13.0
+  ],
+  "bed_extent_mm": [
+   30.0,
+   39.0,
+   13.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 270.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1308,
+  "build_s": 0.1
+ },
+ "hc_sample_dish": {
+  "name": "hc_sample_dish",
+  "test": "6",
+  "qty": 5,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 4501.0,
+  "mass_g_solid": 5.58,
+  "bbox_use_mm": [
+   76.0,
+   59.98,
+   5.0
+  ],
+  "bed_extent_mm": [
+   76.0,
+   59.98,
+   5.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 2986.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 564,
+  "build_s": 0.1
+ },
+ "hc_sensor_clip": {
+  "name": "hc_sensor_clip",
+  "test": "6",
+  "qty": 5,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 2143.1,
+  "mass_g_solid": 2.66,
+  "bbox_use_mm": [
+   30.0,
+   32.0,
+   10.0
+  ],
+  "bed_extent_mm": [
+   30.0,
+   32.0,
+   10.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 240.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 336,
+  "build_s": 0.1
+ },
+ "hc_shelf": {
+  "name": "hc_shelf",
+  "test": "6",
+  "qty": 5,
+  "printer": "A1M",
+  "infill_pct": 15,
+  "note": "",
+  "volume_mm3": 33855.8,
+  "mass_g_solid": 41.98,
+  "bbox_use_mm": [
+   160.0,
+   100.0,
+   32.39
+  ],
+  "bed_extent_mm": [
+   160.0,
+   100.0,
+   32.39
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 12189.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 35604,
+  "build_s": 4.5
+ },
+ "hc_slurry_tray": {
+  "name": "hc_slurry_tray",
+  "test": "6",
+  "qty": 5,
+  "printer": "A1M",
+  "infill_pct": 15,
+  "note": "",
+  "volume_mm3": 31754.0,
+  "mass_g_solid": 39.37,
+  "bbox_use_mm": [
+   150.0,
+   90.0,
+   15.0
+  ],
+  "bed_extent_mm": [
+   150.0,
+   90.0,
+   15.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 13500.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 28,
+  "build_s": 0.0
+ },
+ "micro_base": {
+  "name": "micro_base",
+  "test": "4",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 92158.8,
+  "mass_g_solid": 114.28,
+  "bbox_use_mm": [
+   150.0,
+   110.0,
+   16.0
+  ],
+  "bed_extent_mm": [
+   150.0,
+   110.0,
+   16.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 14469.6,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 576,
+  "build_s": 0.1
+ },
+ "micro_carriage": {
+  "name": "micro_carriage",
+  "test": "4",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 20517.5,
+  "mass_g_solid": 25.44,
+  "bbox_use_mm": [
+   48.0,
+   80.0,
+   30.0
+  ],
+  "bed_extent_mm": [
+   48.0,
+   80.0,
+   30.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 340.4,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1592,
+  "build_s": 0.1
+ },
+ "micro_column": {
+  "name": "micro_column",
+  "test": "4",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 38046.0,
+  "mass_g_solid": 47.18,
+  "bbox_use_mm": [
+   20.0,
+   12.0,
+   170.0
+  ],
+  "bed_extent_mm": [
+   20.0,
+   170.0,
+   12.0
+  ],
+  "bed_rot_deg": [
+   90,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 2941.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 28,
+  "build_s": 0.0
+ },
+ "mould_ring": {
+  "name": "mould_ring",
+  "test": "8",
+  "qty": 2,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 2067.6,
+  "mass_g_solid": 2.56,
+  "bbox_use_mm": [
+   36.98,
+   36.99,
+   6.0
+  ],
+  "bed_extent_mm": [
+   36.98,
+   36.99,
+   6.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 344.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 504,
+  "build_s": 0.0
+ },
+ "orifice_cup": {
+  "name": "orifice_cup",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 40,
+  "note": "",
+  "volume_mm3": 10162.2,
+  "mass_g_solid": 12.6,
+  "bbox_use_mm": [
+   39.98,
+   39.99,
+   43.0
+  ],
+  "bed_extent_mm": [
+   39.98,
+   39.99,
+   43.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 738.9,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1508,
+  "build_s": 0.1
+ },
+ "orifice_disc_1p00": {
+  "name": "orifice_disc_1p00",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "drill/ream to 1.0 mm after printing",
+  "volume_mm3": 1548.2,
+  "mass_g_solid": 1.92,
+  "bbox_use_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_extent_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 777.1,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1596,
+  "build_s": 0.1
+ },
+ "orifice_disc_1p50": {
+  "name": "orifice_disc_1p50",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "drill/ream to 1.5 mm after printing",
+  "volume_mm3": 1544.2,
+  "mass_g_solid": 1.91,
+  "bbox_use_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_extent_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 776.1,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1596,
+  "build_s": 0.1
+ },
+ "orifice_disc_2p00": {
+  "name": "orifice_disc_2p00",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "drill/ream to 2.0 mm after printing",
+  "volume_mm3": 1539.4,
+  "mass_g_solid": 1.91,
+  "bbox_use_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_extent_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 774.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1532,
+  "build_s": 0.1
+ },
+ "orifice_disc_2p54": {
+  "name": "orifice_disc_2p54",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "drill/ream to 2.54 mm after printing",
+  "volume_mm3": 1533.4,
+  "mass_g_solid": 1.9,
+  "bbox_use_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_extent_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 772.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1532,
+  "build_s": 0.1
+ },
+ "orifice_disc_3p00": {
+  "name": "orifice_disc_3p00",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "drill/ream to 3.0 mm after printing",
+  "volume_mm3": 1527.6,
+  "mass_g_solid": 1.89,
+  "bbox_use_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_extent_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 770.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1532,
+  "build_s": 0.1
+ },
+ "orifice_disc_4p00": {
+  "name": "orifice_disc_4p00",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "drill/ream to 4.0 mm after printing",
+  "volume_mm3": 1512.5,
+  "mass_g_solid": 1.88,
+  "bbox_use_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_extent_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 765.4,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1532,
+  "build_s": 0.1
+ },
+ "orifice_disc_5p08": {
+  "name": "orifice_disc_5p08",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "drill/ream to 5.08 mm after printing",
+  "volume_mm3": 1492.8,
+  "mass_g_solid": 1.85,
+  "bbox_use_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_extent_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 757.7,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1532,
+  "build_s": 0.1
+ },
+ "orifice_disc_6p00": {
+  "name": "orifice_disc_6p00",
+  "test": "5",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "drill/ream to 6.0 mm after printing",
+  "volume_mm3": 1473.1,
+  "mass_g_solid": 1.83,
+  "bbox_use_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_extent_mm": [
+   31.99,
+   31.99,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 749.7,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1532,
+  "build_s": 0.1
+ },
+ "overflow_tray": {
+  "name": "overflow_tray",
+  "test": "1",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 23626.8,
+  "mass_g_solid": 29.3,
+  "bbox_use_mm": [
+   119.93,
+   119.96,
+   17.0
+  ],
+  "bed_extent_mm": [
+   119.93,
+   119.96,
+   17.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 190.1,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1260,
+  "build_s": 0.1
+ },
+ "pan_adapter": {
+  "name": "pan_adapter",
+  "test": "shared",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 15,
+  "note": "sits on the HR-100A pan",
+  "volume_mm3": 15131.3,
+  "mass_g_solid": 18.76,
+  "bbox_use_mm": [
+   85.91,
+   90.2,
+   13.5
+  ],
+  "bed_extent_mm": [
+   85.91,
+   90.2,
+   13.5
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 43.2,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 2336,
+  "build_s": 0.3
+ },
+ "pedestal_d12": {
+  "name": "pedestal_d12",
+  "test": "1",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "top face down for a flat, sharp rim",
+  "volume_mm3": 1120.2,
+  "mass_g_solid": 1.39,
+  "bbox_use_mm": [
+   12.99,
+   13.0,
+   12.0
+  ],
+  "bed_extent_mm": [
+   12.99,
+   13.0,
+   12.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 50.9,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1754,
+  "build_s": 1.6
+ },
+ "pedestal_d20": {
+  "name": "pedestal_d20",
+  "test": "1",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "top face down for a flat, sharp rim",
+  "volume_mm3": 1462.1,
+  "mass_g_solid": 1.81,
+  "bbox_use_mm": [
+   20.0,
+   20.0,
+   12.0
+  ],
+  "bed_extent_mm": [
+   20.0,
+   20.0,
+   12.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 139.9,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 3720,
+  "build_s": 3.6
+ },
+ "pedestal_d30": {
+  "name": "pedestal_d30",
+  "test": "1",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "top face down for a flat, sharp rim",
+  "volume_mm3": 2764.1,
+  "mass_g_solid": 3.43,
+  "bbox_use_mm": [
+   30.0,
+   30.0,
+   12.0
+  ],
+  "bed_extent_mm": [
+   30.0,
+   30.0,
+   12.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 315.7,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 6336,
+  "build_s": 14.7
+ },
+ "ring_lid": {
+  "name": "ring_lid",
+  "test": "3",
+  "qty": 2,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 1146.8,
+  "mass_g_solid": 1.42,
+  "bbox_use_mm": [
+   24.58,
+   24.59,
+   6.0
+  ],
+  "bed_extent_mm": [
+   24.58,
+   24.59,
+   6.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 474.5,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 752,
+  "build_s": 0.0
+ },
+ "riser_120": {
+  "name": "riser_120",
+  "test": "shared",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "120 mm riser",
+  "volume_mm3": 9434.0,
+  "mass_g_solid": 11.7,
+  "bbox_use_mm": [
+   13.99,
+   14.0,
+   128.0
+  ],
+  "bed_extent_mm": [
+   13.99,
+   14.0,
+   128.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 76.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 752,
+  "build_s": 0.0
+ },
+ "riser_160": {
+  "name": "riser_160",
+  "test": "shared",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "160 mm riser",
+  "volume_mm3": 12290.9,
+  "mass_g_solid": 15.24,
+  "bbox_use_mm": [
+   13.99,
+   14.0,
+   168.0
+  ],
+  "bed_extent_mm": [
+   13.99,
+   14.0,
+   168.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 76.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 752,
+  "build_s": 0.0
+ },
+ "riser_40": {
+  "name": "riser_40",
+  "test": "shared",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "40 mm riser",
+  "volume_mm3": 3720.2,
+  "mass_g_solid": 4.61,
+  "bbox_use_mm": [
+   13.99,
+   14.0,
+   48.0
+  ],
+  "bed_extent_mm": [
+   13.99,
+   14.0,
+   48.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 76.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 752,
+  "build_s": 0.0
+ },
+ "riser_80": {
+  "name": "riser_80",
+  "test": "shared",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "80 mm riser",
+  "volume_mm3": 6577.1,
+  "mass_g_solid": 8.16,
+  "bbox_use_mm": [
+   13.99,
+   14.0,
+   88.0
+  ],
+  "bed_extent_mm": [
+   13.99,
+   14.0,
+   88.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 76.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 752,
+  "build_s": 0.0
+ },
+ "sieve_cup": {
+  "name": "sieve_cup",
+  "test": "4",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 5228.0,
+  "mass_g_solid": 6.48,
+  "bbox_use_mm": [
+   33.98,
+   33.99,
+   25.0
+  ],
+  "bed_extent_mm": [
+   33.98,
+   33.99,
+   25.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 334.8,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 756,
+  "build_s": 0.0
+ },
+ "sieve_ring": {
+  "name": "sieve_ring",
+  "test": "4",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 666.1,
+  "mass_g_solid": 0.83,
+  "bbox_use_mm": [
+   29.78,
+   29.79,
+   4.0
+  ],
+  "bed_extent_mm": [
+   29.78,
+   29.79,
+   4.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 166.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 504,
+  "build_s": 0.0
+ },
+ "split_mould_A": {
+  "name": "split_mould_A",
+  "test": "8",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "standing on its end: smooth bore",
+  "volume_mm3": 7703.0,
+  "mass_g_solid": 9.55,
+  "bbox_use_mm": [
+   30.0,
+   15.0,
+   40.0
+  ],
+  "bed_extent_mm": [
+   30.0,
+   15.0,
+   40.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 196.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1268,
+  "build_s": 0.1
+ },
+ "split_mould_B": {
+  "name": "split_mould_B",
+  "test": "8",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "standing on its end: smooth bore",
+  "volume_mm3": 7703.0,
+  "mass_g_solid": 9.55,
+  "bbox_use_mm": [
+   30.0,
+   15.0,
+   40.0
+  ],
+  "bed_extent_mm": [
+   30.0,
+   15.0,
+   40.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 196.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1268,
+  "build_s": 0.1
+ },
+ "spread_bracket": {
+  "name": "spread_bracket",
+  "test": "9",
+  "qty": 2,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 17395.1,
+  "mass_g_solid": 21.57,
+  "bbox_use_mm": [
+   40.0,
+   40.0,
+   40.0
+  ],
+  "bed_extent_mm": [
+   40.0,
+   40.0,
+   40.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1569.6,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1044,
+  "build_s": 0.1
+ },
+ "strike_frame_1mm": {
+  "name": "strike_frame_1mm",
+  "test": "3",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 1008.0,
+  "mass_g_solid": 1.25,
+  "bbox_use_mm": [
+   80.0,
+   48.0,
+   1.0
+  ],
+  "bed_extent_mm": [
+   80.0,
+   48.0,
+   1.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1008.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 48,
+  "build_s": 0.0
+ },
+ "strike_frame_2mm": {
+  "name": "strike_frame_2mm",
+  "test": "3",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 2016.0,
+  "mass_g_solid": 2.5,
+  "bbox_use_mm": [
+   80.0,
+   48.0,
+   2.0
+  ],
+  "bed_extent_mm": [
+   80.0,
+   48.0,
+   2.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1008.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 48,
+  "build_s": 0.0
+ },
+ "strike_frame_3mm": {
+  "name": "strike_frame_3mm",
+  "test": "3",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 3024.0,
+  "mass_g_solid": 3.75,
+  "bbox_use_mm": [
+   80.0,
+   48.0,
+   3.0
+  ],
+  "bed_extent_mm": [
+   80.0,
+   48.0,
+   3.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1008.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 48,
+  "build_s": 0.0
+ },
+ "strike_frame_5mm": {
+  "name": "strike_frame_5mm",
+  "test": "3",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 5040.0,
+  "mass_g_solid": 6.25,
+  "bbox_use_mm": [
+   80.0,
+   48.0,
+   5.0
+  ],
+  "bed_extent_mm": [
+   80.0,
+   48.0,
+   5.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1008.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 48,
+  "build_s": 0.0
+ },
+ "tapper_base": {
+  "name": "tapper_base",
+  "test": "2",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 90308.4,
+  "mass_g_solid": 111.98,
+  "bbox_use_mm": [
+   90.0,
+   140.0,
+   46.0
+  ],
+  "bed_extent_mm": [
+   90.0,
+   140.0,
+   46.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 12539.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 3616,
+  "build_s": 0.2
+ },
+ "tapper_cam": {
+  "name": "tapper_cam",
+  "test": "2",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "",
+  "volume_mm3": 1481.5,
+  "mass_g_solid": 1.84,
+  "bbox_use_mm": [
+   22.9,
+   19.74,
+   8.0
+  ],
+  "bed_extent_mm": [
+   22.9,
+   19.74,
+   8.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 282.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1136,
+  "build_s": 0.2
+ },
+ "tapper_carriage": {
+  "name": "tapper_carriage",
+  "test": "2",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 40,
+  "note": "on its back (spine down)",
+  "volume_mm3": 49417.4,
+  "mass_g_solid": 61.28,
+  "bbox_use_mm": [
+   64.0,
+   53.0,
+   80.0
+  ],
+  "bed_extent_mm": [
+   64.0,
+   80.0,
+   53.0
+  ],
+  "bed_rot_deg": [
+   -90,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 50.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 2004,
+  "build_s": 0.2
+ },
+ "tilt_base": {
+  "name": "tilt_base",
+  "test": "3",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 130003.1,
+  "mass_g_solid": 161.2,
+  "bbox_use_mm": [
+   100.0,
+   175.0,
+   69.99
+  ],
+  "bed_extent_mm": [
+   100.0,
+   175.0,
+   69.99
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 17439.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 2780,
+  "build_s": 0.3
+ },
+ "tilt_gear_30t": {
+  "name": "tilt_gear_30t",
+  "test": "3",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "",
+  "volume_mm3": 5193.9,
+  "mass_g_solid": 6.44,
+  "bbox_use_mm": [
+   47.99,
+   47.84,
+   4.0
+  ],
+  "bed_extent_mm": [
+   47.99,
+   47.84,
+   4.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1298.9,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 4220,
+  "build_s": 1.2
+ },
+ "tilt_pinion_15t": {
+  "name": "tilt_pinion_15t",
+  "test": "3",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "",
+  "volume_mm3": 1322.1,
+  "mass_g_solid": 1.64,
+  "bbox_use_mm": [
+   25.3,
+   25.44,
+   4.0
+  ],
+  "bed_extent_mm": [
+   25.3,
+   25.44,
+   4.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 330.6,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 2236,
+  "build_s": 0.4
+ },
+ "tilt_plate": {
+  "name": "tilt_plate",
+  "test": "3",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 40,
+  "note": "coupon face down for flatness",
+  "volume_mm3": 43228.2,
+  "mass_g_solid": 53.6,
+  "bbox_use_mm": [
+   87.0,
+   128.0,
+   16.0
+  ],
+  "bed_extent_mm": [
+   87.0,
+   128.0,
+   16.0
+  ],
+  "bed_rot_deg": [
+   180,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 176.0,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 3060,
+  "build_s": 0.3
+ },
+ "tripod_leg_120": {
+  "name": "tripod_leg_120",
+  "test": "shared",
+  "qty": 3,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "print lying on a flat",
+  "volume_mm3": 6737.8,
+  "mass_g_solid": 8.35,
+  "bbox_use_mm": [
+   13.99,
+   14.0,
+   118.01
+  ],
+  "bed_extent_mm": [
+   13.99,
+   118.01,
+   14.0
+  ],
+  "bed_rot_deg": [
+   90,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 3.5,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 272,
+  "build_s": 0.0
+ },
+ "tripod_leg_160": {
+  "name": "tripod_leg_160",
+  "test": "shared",
+  "qty": 3,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "print lying on a flat",
+  "volume_mm3": 8954.8,
+  "mass_g_solid": 11.1,
+  "bbox_use_mm": [
+   13.99,
+   14.0,
+   158.01
+  ],
+  "bed_extent_mm": [
+   13.99,
+   158.01,
+   14.0
+  ],
+  "bed_rot_deg": [
+   90,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 3.5,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 272,
+  "build_s": 0.0
+ },
+ "tripod_leg_40": {
+  "name": "tripod_leg_40",
+  "test": "shared",
+  "qty": 3,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "print lying on a flat",
+  "volume_mm3": 2303.8,
+  "mass_g_solid": 2.86,
+  "bbox_use_mm": [
+   13.99,
+   14.0,
+   38.01
+  ],
+  "bed_extent_mm": [
+   13.99,
+   38.01,
+   14.0
+  ],
+  "bed_rot_deg": [
+   90,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 3.5,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 272,
+  "build_s": 0.0
+ },
+ "tripod_leg_80": {
+  "name": "tripod_leg_80",
+  "test": "shared",
+  "qty": 3,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "print lying on a flat",
+  "volume_mm3": 4520.8,
+  "mass_g_solid": 5.61,
+  "bbox_use_mm": [
+   13.99,
+   14.0,
+   78.01
+  ],
+  "bed_extent_mm": [
+   13.99,
+   78.01,
+   14.0
+  ],
+  "bed_rot_deg": [
+   90,
+   0,
+   0
+  ],
+  "bed_contact_mm2": 3.5,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 272,
+  "build_s": 0.0
+ },
+ "tripod_spider": {
+  "name": "tripod_spider",
+  "test": "shared",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 13413.9,
+  "mass_g_solid": 16.63,
+  "bbox_use_mm": [
+   122.38,
+   107.99,
+   6.0
+  ],
+  "bed_extent_mm": [
+   122.38,
+   107.99,
+   6.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 2189.2,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1896,
+  "build_s": 0.2
+ },
+ "ucs_base": {
+  "name": "ucs_base",
+  "test": "8",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 30,
+  "note": "",
+  "volume_mm3": 299153.0,
+  "mass_g_solid": 370.95,
+  "bbox_use_mm": [
+   120.0,
+   120.0,
+   170.0
+  ],
+  "bed_extent_mm": [
+   120.0,
+   120.0,
+   170.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 14339.3,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1636,
+  "build_s": 0.2
+ },
+ "ucs_piston": {
+  "name": "ucs_piston",
+  "test": "8",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 6394.1,
+  "mass_g_solid": 7.93,
+  "bbox_use_mm": [
+   29.98,
+   29.99,
+   48.0
+  ],
+  "bed_extent_mm": [
+   29.98,
+   29.99,
+   48.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 301.2,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1004,
+  "build_s": 0.0
+ },
+ "ucs_platen": {
+  "name": "ucs_platen",
+  "test": "8",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 19220.1,
+  "mass_g_solid": 23.83,
+  "bbox_use_mm": [
+   114.98,
+   40.0,
+   8.0
+  ],
+  "bed_extent_mm": [
+   114.98,
+   40.0,
+   8.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 2534.5,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1276,
+  "build_s": 0.1
+ },
+ "ucs_sample_base": {
+  "name": "ucs_sample_base",
+  "test": "8",
+  "qty": 1,
+  "printer": "A1M",
+  "infill_pct": 25,
+  "note": "",
+  "volume_mm3": 6376.4,
+  "mass_g_solid": 7.91,
+  "bbox_use_mm": [
+   43.97,
+   43.99,
+   5.5
+  ],
+  "bed_extent_mm": [
+   43.97,
+   43.99,
+   5.5
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 1506.6,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 1264,
+  "build_s": 0.0
+ },
+ "wall_ring": {
+  "name": "wall_ring",
+  "test": "3",
+  "qty": 3,
+  "printer": "A1M",
+  "infill_pct": 100,
+  "note": "auger settings: 0.20 mm layers, 3 walls",
+  "volume_mm3": 592.6,
+  "mass_g_solid": 0.73,
+  "bbox_use_mm": [
+   27.38,
+   27.39,
+   6.0
+  ],
+  "bed_extent_mm": [
+   27.38,
+   27.39,
+   6.0
+  ],
+  "bed_rot_deg": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "bed_contact_mm2": 98.6,
+  "watertight": true,
+  "fits_printer": true,
+  "faces": 504,
+  "build_s": 0.0
+ }
+}
